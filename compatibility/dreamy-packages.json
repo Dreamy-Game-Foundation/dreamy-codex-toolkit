@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "generatedFrom": "docs/research/source-ledger.json",
+  "policy": {
+    "identity": "verifiedCommit",
+    "claimRule": "A current API claim must cite a package record with status observed or drift and a verified commit.",
+    "releaseGate": "Any tag/package/lock mismatch is P0 until resolved or explicitly unsupported."
+  },
+  "packages": {
+    "com.dreamy.core": {
+      "version": "1.1.2",
+      "unity": "6000.0",
+      "verifiedCommit": "6e2d50d0ee6243c472fccd4cce08a7db9cb154b4",
+      "status": "observed",
+      "dreamyDependencies": {},
+      "thirdPartyDependencies": {},
+      "runtimeAssemblies": ["Dreamy.Core.Runtime"],
+      "editorAssemblies": [],
+      "capabilities": ["ServiceLocator", "MyEventBus<T>", "StateMachine", "Singleton variants", "AppLifecycle", "AppTickService", "DreamyLog", "extensions"],
+      "testsObserved": ["Runtime tests"]
+    },
+    "com.dreamy.assets": {
+      "version": "0.1.1",
+      "unity": "6000.0",
+      "verifiedCommit": "72d8386068d7f6875a17057f4eb0b24b0ff8c81b",
+      "status": "observed",
+      "dreamyDependencies": { "com.dreamy.core": "1.1.2" },
+      "thirdPartyDependencies": { "com.unity.addressables": "2.7.2", "com.cysharp.unitask": "2.5.10" },
+      "runtimeAssemblies": ["Dreamy.Assets.Runtime"],
+      "editorAssemblies": ["Dreamy.Assets.Editor"],
+      "capabilities": ["AssetLoader", "Addressables loading", "Resources loading", "typed cache", "shared in-flight request", "explicit unload"],
+      "testsObserved": ["sample only; no test assembly observed"]
+    },
+    "com.dreamy.ui": {
+      "version": "0.1.1",
+      "unity": "6000.0",
+      "verifiedCommit": "dbfec0cf95733c4b8193676b45b5b15c53eba2c4",
+      "status": "drift",
+      "dreamyDependencies": { "com.dreamy.core": "1.1.2", "com.dreamy.assets": "0.1.1" },
+      "thirdPartyDependencies": { "com.cysharp.unitask": "2.5.10", "com.demigiant.dotween": "0.0.3" },
+      "runtimeAssemblies": ["Dreamy.UI.Runtime"],
+      "editorAssemblies": [],
+      "capabilities": ["UIPanel", "PanelManager", "UILayerRoot", "screen/popup/overlay layers", "panel cache", "transitions", "tabs", "safe area"],
+      "testsObserved": ["sample only; no tests observed"],
+      "drift": ["Runtime asmdef references Unity.TextMeshPro but package manifest does not declare com.unity.textmeshpro"]
+    },
+    "com.dreamy.feedback": {
+      "version": "0.1.0",
+      "unity": "6000.0",
+      "verifiedCommit": "a39f7c45e99c445be5b9baba6052ed75b4c6c093",
+      "status": "observed",
+      "dreamyDependencies": { "com.dreamy.core": "1.1.2" },
+      "thirdPartyDependencies": { "com.cysharp.unitask": "2.5.10", "com.unity.textmeshpro": "3.0.6", "com.unity.ugui": "2.0.0" },
+      "runtimeAssemblies": ["Dreamy.Feedback"],
+      "editorAssemblies": ["Dreamy.Feedback.Editor"],
+      "capabilities": ["VFX feedback", "haptics", "floating text", "icon fly", "screen feedback", "camera shake", "sequence services"],
+      "testsObserved": ["validators/sample; no tests observed"]
+    },
+    "com.dreamy.dataconfig": {
+      "version": "0.2.0",
+      "unity": "6000.0",
+      "verifiedCommit": "6d199250c544ff7a42414c44fb560217b734af8b",
+      "status": "drift",
+      "dreamyDependencies": {},
+      "thirdPartyDependencies": { "com.unity.nuget.newtonsoft-json": "3.2.1" },
+      "runtimeAssemblies": ["Dreamy.DataConfig.Runtime"],
+      "editorAssemblies": ["Dreamy.DataConfig.Editor"],
+      "capabilities": ["typed read-only JSON tables", "local source", "remote source seam", "composite source", "editor validation"],
+      "testsObserved": ["prior tests removed; editor validation"],
+      "drift": ["Runtime asmdef references UniTask but package manifest does not declare com.cysharp.unitask"]
+    },
+    "com.dreamy.datasave": {
+      "version": "0.2.0",
+      "unity": "6000.0",
+      "verifiedCommit": "9fa6bd21812004b0b2d64a6119ee0514399366b8",
+      "status": "observed",
+      "dreamyDependencies": {},
+      "thirdPartyDependencies": { "com.unity.nuget.newtonsoft-json": "3.2.1" },
+      "runtimeAssemblies": ["Dreamy.Datasave.Runtime"],
+      "editorAssemblies": ["Dreamy.Datasave.Editor"],
+      "capabilities": ["versioned envelope", "atomic write", "backup restore", "migrations", "codecs", "AES+HMAC", "XOR obfuscation"],
+      "testsObserved": ["Runtime tests"]
+    },
+    "com.dreamy.audio": {
+      "version": "0.1.0",
+      "unity": "6000.0",
+      "verifiedCommit": "da1e07c9170a556dc3ccf2e73e412fb02d592200",
+      "status": "observed",
+      "dreamyDependencies": {},
+      "thirdPartyDependencies": { "com.unity.ugui": "2.0.0" },
+      "runtimeAssemblies": ["Dreamy.Audio.Runtime", "Dreamy.Audio.Runtime.Components"],
+      "editorAssemblies": ["Dreamy.Audio.Editor"],
+      "capabilities": ["AudioKey", "catalog", "library", "profile", "mixer bus", "pool", "bootstrap service", "trigger components"],
+      "testsObserved": ["EditMode tests", "PlayMode tests"]
+    },
+    "com.dreamy.localization": {
+      "version": "0.1.0",
+      "unity": "6000.0",
+      "verifiedCommit": "4a71c6fa3f4ee56c699368103e7920c9476816e0",
+      "status": "observed",
+      "dreamyDependencies": {},
+      "thirdPartyDependencies": { "com.unity.localization": "1.5.5", "com.unity.textmeshpro": "5.0.0", "com.unity.ugui": "2.0.0" },
+      "runtimeAssemblies": ["Dreamy.Localization.Runtime", "Dreamy.Localization.Runtime.UI"],
+      "editorAssemblies": ["Dreamy.Localization.Editor"],
+      "capabilities": ["CSV-first tooling", "typed key", "locale store", "TMP binding", "UGUI binding"],
+      "testsObserved": ["EditMode tests", "empty PlayMode asmdef observed"]
+    },
+    "com.dreamy.editor-tools": {
+      "version": "0.2.1",
+      "unity": "6000.0",
+      "verifiedCommit": "e00ca5cfdf8886fa1c84dd98d76ee8e983d4e7dd",
+      "status": "drift",
+      "dreamyDependencies": {},
+      "thirdPartyDependencies": { "com.unity.nuget.newtonsoft-json": "3.2.1" },
+      "runtimeAssemblies": [],
+      "editorAssemblies": ["Dreamy.EditorTools.Editor"],
+      "capabilities": ["scene window", "build window", "package window", "data window", "hotkeys", "script templates"],
+      "testsObserved": ["no tests observed"],
+      "unsupportedContracts": ["No verified public headless API", "No verified dry-run API", "No verified deterministic JSON evidence contract"]
+    }
+  },
+  "globalDrift": [
+    "Template report pins com.dreamy.core 1.1.1 while packages require 1.1.2.",
+    "Git tags, package.json versions, README examples, and lockfiles are not yet a single truth source.",
+    "Package repositories do not currently expose a unified CI baseline."
+  ]
+}

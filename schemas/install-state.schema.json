@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dreamy.tools/codex/schemas/install-state.schema.json",
+  "title": "Dreamy Install State",
+  "type": "object",
+  "required": ["schemaVersion", "toolkitVersion", "target", "managedBlocks"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "toolkitVersion": { "type": "string" },
+    "target": { "type": "string" },
+    "managedBlocks": { "type": "array" },
+    "checksums": { "type": "object" }
+  }
+}

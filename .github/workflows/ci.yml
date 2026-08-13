@@ -1,0 +1,19 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate W0-W2 artifacts
+        run: scripts/validate
+      - name: Run shell tests
+        run: |
+          tests/unit/w0-validation.sh
+          tests/unit/w2-unity-safety.sh
+          tests/unit/w4-installer-lifecycle.sh
+          tests/unit/w5-harness.sh

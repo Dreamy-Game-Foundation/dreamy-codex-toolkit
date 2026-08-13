@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schemas/module.schema.json",
+  "id": "foundation",
+  "version": "0.0.0",
+  "dependencies": [],
+  "content": [
+    "rules/core",
+    "rules/csharp",
+    "rules/unity",
+    "skills/unity-foundations",
+    "skills/unity-serialization",
+    "skills/unity-scene-prefab",
+    "skills/unity-async",
+    "skills/unity-testing",
+    "skills/unity-editor-tooling",
+    "compatibility",
+    "schemas",
+    "scripts/validate"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "policy": "Third-party skills activate only when detected in a consumer project or verified Dreamy package dependency.",
+  "packages": {
+    "com.cysharp.unitask": {
+      "observedVersions": ["2.5.10"],
+      "detectedInDreamyPackages": ["com.dreamy.assets", "com.dreamy.feedback"],
+      "drift": ["com.dreamy.dataconfig references UniTask in asmdef/source but package manifest does not declare it"]
+    },
+    "com.demigiant.dotween": {
+      "observedVersions": ["0.0.3"],
+      "detectedInDreamyPackages": ["com.dreamy.ui"]
+    },
+    "com.unity.textmeshpro": {
+      "observedVersions": ["3.0.6", "5.0.0"],
+      "detectedInDreamyPackages": ["com.dreamy.feedback", "com.dreamy.localization"],
+      "drift": ["com.dreamy.ui references Unity.TextMeshPro in asmdef but does not declare this package"]
+    },
+    "com.unity.ugui": {
+      "observedVersions": ["2.0.0"],
+      "detectedInDreamyPackages": ["com.dreamy.audio", "com.dreamy.feedback", "com.dreamy.localization"]
+    },
+    "com.unity.localization": {
+      "observedVersions": ["1.5.5"],
+      "detectedInDreamyPackages": ["com.dreamy.localization"]
+    },
+    "com.unity.addressables": {
+      "observedVersions": ["2.7.2"],
+      "detectedInDreamyPackages": ["com.dreamy.assets"]
+    },
+    "com.unity.nuget.newtonsoft-json": {
+      "observedVersions": ["3.2.1"],
+      "detectedInDreamyPackages": ["com.dreamy.dataconfig", "com.dreamy.datasave", "com.dreamy.editor-tools"]
+    }
+  }
+}

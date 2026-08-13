@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+fixture="${1:-tests/fixtures/unity/asmdef-graph.safe.json}"
+
+jq -e . "$fixture" >/dev/null
+
+jq -e '
+  def is_editor($a): (($a.includePlatforms // []) | index("Editor")) != null or ($a.name | test("(^|\\.)Editor($|\\.)"));
+  .assemblies as $all
+  | [ $all[]
+      | select(is_editor(.) | not)
+      | . as $runtime
+      | ($runtime.references // [])[]
+      | . as $ref
+      | select(
+          $ref == "UnityEditor"
+          or any($all[]; .name == $ref and is_editor(.))
+          or (
+            ($ref | startswith("GUID:"))
+            and any($all[]; ("GUID:" + (.guid // "")) == $ref and is_editor(.))
+          )
+        )
+      | {runtime: $runtime.name, invalidReference: $ref}
+    ] as $violations
+  | if ($violations | length) == 0 then true else $violations | halt_error(1) end
+' "$fixture" >/dev/null
+
+echo "Unity asmdef safety passed: $fixture"

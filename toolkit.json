@@ -1,0 +1,52 @@
+{
+  "$schema": "./schemas/toolkit.schema.json",
+  "schemaVersion": 1,
+  "name": "dreamy-codex-toolkit",
+  "version": "0.0.0",
+  "phase": "W10 Production 1.0 baseline",
+  "status": "alpha",
+  "sourceLedger": "docs/research/source-ledger.json",
+  "compatibility": {
+    "dreamyPackages": "compatibility/dreamy-packages.json",
+    "unity": "compatibility/unity.json",
+    "thirdParty": "compatibility/third-party.json"
+  },
+  "schemas": [
+    "schemas/toolkit.schema.json",
+    "schemas/module.schema.json",
+    "schemas/preset.schema.json",
+    "schemas/project-profile.schema.json",
+    "schemas/install-state.schema.json",
+    "schemas/evidence.schema.json",
+    "schemas/eval-case.schema.json"
+  ],
+  "rules": "rules/index.json",
+  "skills": "skills/index.json",
+  "harness": "harness/dreamy-harness",
+  "evals": "evals/catalog.json",
+  "presets": [
+    "presets/core.json",
+    "presets/unity-minimal.json",
+    "presets/dreamy-project.json",
+    "presets/dreamy-package.json"
+  ],
+  "modules": [
+    "modules/foundation/module.json",
+    "modules/dreamy/module.json",
+    "modules/production/module.json"
+  ],
+  "gates": {
+    "p0": [
+      "source-ledger-complete",
+      "dreamy-package-compatibility-complete",
+      "schema-files-parse",
+      "no-unsupported-current-api-claims"
+    ],
+    "v1": [
+      "installer-lifecycle-preserves-user-bytes",
+      "harness-evidence-schema-valid",
+      "runtime-editor-asmdef-check",
+      "skill-catalog-complete"
+    ]
+  }
+}

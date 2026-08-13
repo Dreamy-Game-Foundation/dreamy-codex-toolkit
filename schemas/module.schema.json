@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dreamy.tools/codex/schemas/module.schema.json",
+  "title": "Dreamy Toolkit Module",
+  "type": "object",
+  "required": ["id", "version", "content"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "version": { "type": "string", "minLength": 1 },
+    "dependencies": { "type": "array", "items": { "type": "string" } },
+    "content": { "type": "array", "items": { "type": "string" } }
+  }
+}

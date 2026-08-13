@@ -1,0 +1,16 @@
+{
+  "assemblies": [
+    {
+      "name": "Game.Runtime",
+      "guid": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "includePlatforms": [],
+      "references": ["GUID:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"]
+    },
+    {
+      "name": "Game.Editor",
+      "guid": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "includePlatforms": ["Editor"],
+      "references": []
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "$schema": "../schemas/preset.schema.json",
+  "id": "unity-minimal",
+  "description": "Unity safety baseline without Dreamy-specific routing.",
+  "modules": ["foundation"]
+}

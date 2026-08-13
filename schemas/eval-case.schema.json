@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dreamy.tools/codex/schemas/eval-case.schema.json",
+  "title": "Dreamy Eval Case",
+  "type": "object",
+  "required": ["id", "category", "prompt", "expected", "forbiddenClaims"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "category": { "type": "string", "minLength": 1 },
+    "prompt": { "type": "string", "minLength": 1 },
+    "expected": { "type": "array", "items": { "type": "string" } },
+    "forbiddenClaims": { "type": "array", "items": { "type": "string" } }
+  }
+}

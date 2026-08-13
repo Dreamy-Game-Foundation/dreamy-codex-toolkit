@@ -1,0 +1,19 @@
+{
+  "name": "dreamy-codex-toolkit",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Codex toolkit for Dreamy Unity projects and packages.",
+  "scripts": {
+    "validate": "scripts/validate",
+    "test": "scripts/validate && tests/unit/w0-validation.sh && tests/unit/w2-unity-safety.sh && tests/unit/w4-installer-lifecycle.sh && tests/unit/w5-harness.sh",
+    "test:node": "node --test tests/unit/*.test.mjs"
+  },
+  "bin": {
+    "dreamy-kit": "src/cli"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT"
+}

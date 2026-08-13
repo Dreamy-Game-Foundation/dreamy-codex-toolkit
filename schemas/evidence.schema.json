@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dreamy.tools/codex/schemas/evidence.schema.json",
+  "title": "Dreamy Evidence",
+  "type": "object",
+  "required": ["schemaVersion", "adapter", "operation", "status", "observedAt", "command", "exitCode", "artifacts", "diagnostics"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "adapter": { "type": "string", "minLength": 1 },
+    "operation": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["pass", "fail", "degraded", "not-run"] },
+    "observedAt": { "type": "string", "minLength": 1 },
+    "command": { "type": "array", "items": { "type": "string" } },
+    "exitCode": { "type": ["integer", "null"] },
+    "artifacts": { "type": "array" },
+    "diagnostics": { "type": "array", "items": { "type": "string" } },
+    "git": {
+      "type": "object",
+      "properties": {
+        "available": { "type": "boolean" },
+        "dirtyPaths": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "profileHash": { "type": ["string", "null"] },
+    "degradedReason": { "type": ["string", "null"] }
+  }
+}

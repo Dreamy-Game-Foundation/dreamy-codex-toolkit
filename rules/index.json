@@ -1,0 +1,446 @@
+{
+  "schemaVersion": 1,
+  "rules": [
+    {
+      "id": "core.inspect-before-modify",
+      "category": "core",
+      "purpose": "Inspect source, state, and ownership before editing.",
+      "scope": "Every repository change or diagnosis task.",
+      "priority": "P0",
+      "dreamyOverride": false,
+      "file": "rules/core/inspect-before-modify.md"
+    },
+    {
+      "id": "core.root-cause-first",
+      "category": "core",
+      "purpose": "Find the evidenced cause before changing behavior.",
+      "scope": "Every diagnosis and bug-fix task.",
+      "priority": "P0",
+      "dreamyOverride": false,
+      "file": "rules/core/root-cause-first.md"
+    },
+    {
+      "id": "core.minimal-safe-change",
+      "category": "core",
+      "purpose": "Use the smallest change that satisfies the requirement safely.",
+      "scope": "Every implementation task.",
+      "priority": "P0",
+      "dreamyOverride": false,
+      "file": "rules/core/minimal-safe-change.md"
+    },
+    {
+      "id": "core.follow-existing-architecture",
+      "category": "core",
+      "purpose": "Reuse verified project boundaries and capabilities.",
+      "scope": "Every design or implementation decision.",
+      "priority": "P0",
+      "dreamyOverride": true,
+      "file": "rules/core/follow-existing-architecture.md"
+    },
+    {
+      "id": "core.no-speculative-abstraction",
+      "category": "core",
+      "purpose": "Avoid abstractions for needs that are not present.",
+      "scope": "Every new helper, framework, interface, factory, or extension point.",
+      "priority": "P1",
+      "dreamyOverride": false,
+      "file": "rules/core/no-speculative-abstraction.md"
+    },
+    {
+      "id": "core.dependency-governance",
+      "category": "core",
+      "purpose": "Require owner, version, license, and rationale for dependency changes.",
+      "scope": "Every dependency manifest, lockfile, package, or vendor asset change.",
+      "priority": "P0",
+      "dreamyOverride": false,
+      "file": "rules/core/dependency-governance.md"
+    },
+    {
+      "id": "core.verify-before-done",
+      "category": "core",
+      "purpose": "Back completion claims with executable evidence.",
+      "scope": "Every task handoff and phase completion.",
+      "priority": "P0",
+      "dreamyOverride": false,
+      "file": "rules/core/verify-before-done.md"
+    },
+    {
+      "id": "core.diff-and-status",
+      "category": "core",
+      "purpose": "Review scoped diffs and preserve unrelated user changes.",
+      "scope": "Every task that creates filesystem or git diffs.",
+      "priority": "P0",
+      "dreamyOverride": false,
+      "file": "rules/core/diff-and-status.md"
+    },
+    {
+      "id": "core.docs-with-source",
+      "category": "core",
+      "purpose": "Label current, recommended, and unsupported claims explicitly.",
+      "scope": "Documentation, rules, skills, compatibility records, and research claims.",
+      "priority": "P1",
+      "dreamyOverride": false,
+      "file": "rules/core/docs-with-source.md"
+    },
+    {
+      "id": "core.secrets-and-privacy",
+      "category": "core",
+      "purpose": "Do not expose secrets, signing material, PII, or save data.",
+      "scope": "Source, logs, artifacts, builds, and external tools.",
+      "priority": "P0",
+      "dreamyOverride": false,
+      "file": "rules/core/secrets-and-privacy.md"
+    },
+    {
+      "id": "csharp.style-naming",
+      "category": "csharp",
+      "purpose": "Follow repository C# style and API naming.",
+      "scope": "Every C# file created or modified.",
+      "priority": "P1",
+      "dreamyOverride": false,
+      "file": "rules/csharp/style-naming.md"
+    },
+    {
+      "id": "csharp.api-boundaries",
+      "category": "csharp",
+      "purpose": "Keep public APIs small and backwards-compatible.",
+      "scope": "Public/internal C# APIs and package consumers.",
+      "priority": "P0",
+      "dreamyOverride": false,
+      "file": "rules/csharp/api-boundaries.md"
+    },
+    {
+      "id": "csharp.async-lifetime",
+      "category": "csharp",
+      "purpose": "Tie async work to lifecycle and observe failures.",
+      "scope": "Task, UniTask, coroutine, and callback async code.",
+      "priority": "P0",
+      "dreamyOverride": false,
+      "file": "rules/csharp/async-lifetime.md"
+    },
+    {
+      "id": "csharp.events-lifetime",
+      "category": "csharp",
+      "purpose": "Subscribe and unsubscribe symmetrically.",
+      "scope": "C# event, UnityEvent, and EventBus bindings.",
+      "priority": "P0",
+      "dreamyOverride": false,
+      "file": "rules/csharp/events-lifetime.md"
+    },
+    {
+      "id": "csharp.null-error",
+      "category": "csharp",
+      "purpose": "Validate trust boundaries and return actionable errors.",
+      "scope": "Trust boundaries and failure paths in C#.",
+      "priority": "P1",
+      "dreamyOverride": false,
+      "file": "rules/csharp/null-error.md"
+    },
+    {
+      "id": "csharp.collections-allocation",
+      "category": "csharp",
+      "purpose": "Avoid hidden allocations in measured hot paths.",
+      "scope": "Measured hot paths and allocation-sensitive code.",
+      "priority": "P1",
+      "dreamyOverride": false,
+      "file": "rules/csharp/collections-allocation.md"
+    },
+    {
+      "id": "csharp.immutability-state",
+      "category": "csharp",
+      "purpose": "Keep config immutable and route mutations through owners.",
+      "scope": "Config, persistent state, and shared runtime state.",
+      "priority": "P1",
+      "dreamyOverride": true,
+      "file": "rules/csharp/immutability-state.md"
+    },
+    {
+      "id": "csharp.testing",
+      "category": "csharp",
+      "purpose": "Keep non-trivial logic unit-testable and add regressions for bugs.",
+      "scope": "Non-trivial C# logic and bug fixes.",
+      "priority": "P0",
+      "dreamyOverride": false,
+      "file": "rules/csharp/testing.md"
+    },
+    {
+      "id": "unity.lifecycle",
+      "category": "unity",
+      "purpose": "Use correct Unity lifecycle ownership.",
+      "scope": "MonoBehaviour, ScriptableObject, and runtime service lifecycle.",
+      "priority": "P0",
+      "dreamyOverride": false,
+      "file": "rules/unity/lifecycle.md"
+    },
+    {
+      "id": "unity.serialization-safety",
+      "category": "unity",
+      "purpose": "Preserve serialized data during field, type, and asset changes.",
+      "scope": "Serialized fields, serialized types, assets, and refactors.",
+      "priority": "P0",
+      "dreamyOverride": false,
+      "file": "rules/unity/serialization-safety.md"
+    },
+    {
+      "id": "unity.meta-guid",
+      "category": "unity",
+      "purpose": "Do not regenerate or edit GUID/meta files blindly.",
+      "scope": "Unity `.meta` files, GUIDs, and asset references.",
+      "priority": "P0",
+      "dreamyOverride": false,
+      "file": "rules/unity/meta-guid.md"
+    },
+    {
+      "id": "unity.scene-prefab-safe-mutation",
+      "category": "unity",
+      "purpose": "Mutate scenes and prefabs only after hierarchy, overrides, and references are understood.",
+      "scope": "`.unity`, `.prefab`, hierarchy, override, and reference mutation.",
+      "priority": "P0",
+      "dreamyOverride": false,
+      "file": "rules/unity/scene-prefab-safe-mutation.md"
+    },
+    {
+      "id": "unity.editor-runtime-boundary",
+      "category": "unity",
+      "purpose": "Keep Runtime assemblies free of UnityEditor and editor assembly references.",
+      "scope": "Asmdefs, Editor folders, namespaces, and player code.",
+      "priority": "P0",
+      "dreamyOverride": false,
+      "file": "rules/unity/editor-runtime-boundary.md"
+    },
+    {
+      "id": "unity.scriptableobject-ownership",
+      "category": "unity",
+      "purpose": "Separate ScriptableObject authoring data from runtime mutable state.",
+      "scope": "ScriptableObject assets, clones, and runtime mutation.",
+      "priority": "P1",
+      "dreamyOverride": false,
+      "file": "rules/unity/scriptableobject-ownership.md"
+    },
+    {
+      "id": "unity.assets-lifetime",
+      "category": "unity",
+      "purpose": "Track asset load, cache, and release ownership.",
+      "scope": "Resources, Addressables, Dreamy asset loading, caches, and releases.",
+      "priority": "P0",
+      "dreamyOverride": true,
+      "file": "rules/unity/assets-lifetime.md"
+    },
+    {
+      "id": "unity.update-physics",
+      "category": "unity",
+      "purpose": "Use update loops and physics queries deliberately.",
+      "scope": "Per-frame code, fixed-step code, and physics queries.",
+      "priority": "P1",
+      "dreamyOverride": false,
+      "file": "rules/unity/update-physics.md"
+    },
+    {
+      "id": "unity.ui-input-safearea",
+      "category": "unity",
+      "purpose": "Respect runtime UI, input, touch, and safe-area constraints.",
+      "scope": "Runtime UI, input, touch, and safe-area assets/code.",
+      "priority": "P1",
+      "dreamyOverride": false,
+      "file": "rules/unity/ui-input-safearea.md"
+    },
+    {
+      "id": "unity.compile-console",
+      "category": "unity",
+      "purpose": "Check compile and console evidence after Unity mutations.",
+      "scope": "Every Unity code or serialized asset mutation.",
+      "priority": "P0",
+      "dreamyOverride": false,
+      "file": "rules/unity/compile-console.md"
+    },
+    {
+      "id": "unity.test-build",
+      "category": "unity",
+      "purpose": "Scale EditMode, PlayMode, and build validation to risk.",
+      "scope": "Unity task acceptance proportional to behavior and release risk.",
+      "priority": "P0",
+      "dreamyOverride": false,
+      "file": "rules/unity/test-build.md"
+    },
+    {
+      "id": "gameplay.feature-ownership",
+      "category": "gameplay",
+      "purpose": "Keep feature model, service, and presentation ownership explicit.",
+      "scope": "Game feature domain, application, and presentation code.",
+      "priority": "P1",
+      "dreamyOverride": true,
+      "file": "rules/gameplay/feature-ownership.md"
+    },
+    {
+      "id": "gameplay.pool-ownership",
+      "category": "gameplay",
+      "purpose": "Despawn through the owner that spawned or rented the object.",
+      "scope": "Pooled prefab and instance spawn/despawn lifecycle.",
+      "priority": "P0",
+      "dreamyOverride": false,
+      "file": "rules/gameplay/pool-ownership.md"
+    },
+    {
+      "id": "gameplay.deterministic-economy",
+      "category": "gameplay",
+      "purpose": "Make currency, rewards, shop, and inventory mutations atomic and auditable.",
+      "scope": "Economy transactions and persistent reward state.",
+      "priority": "P0",
+      "dreamyOverride": true,
+      "file": "rules/gameplay/deterministic-economy.md"
+    },
+    {
+      "id": "mobile.frame-memory-budget",
+      "category": "mobile",
+      "purpose": "Use target-device frame and memory budgets before optimizing.",
+      "scope": "Android and iOS target-device runtime work.",
+      "priority": "P0",
+      "dreamyOverride": false,
+      "file": "rules/mobile/frame-memory-budget.md"
+    },
+    {
+      "id": "mobile.thermal-battery",
+      "category": "mobile",
+      "purpose": "Account for sustained load, pause, resume, and background behavior.",
+      "scope": "Mobile runtime and lifecycle-sensitive systems.",
+      "priority": "P1",
+      "dreamyOverride": false,
+      "file": "rules/mobile/thermal-battery.md"
+    },
+    {
+      "id": "mobile.asset-compression-size",
+      "category": "mobile",
+      "purpose": "Keep texture, audio, bundle, and player size budgets visible.",
+      "scope": "Mobile assets and build size changes.",
+      "priority": "P1",
+      "dreamyOverride": false,
+      "file": "rules/mobile/asset-compression-size.md"
+    },
+    {
+      "id": "mobile.android-build",
+      "category": "mobile",
+      "purpose": "Validate Android SDK, JDK, Gradle, IL2CPP, ARM64, AAB, and permissions.",
+      "scope": "Android build and release settings.",
+      "priority": "P0",
+      "dreamyOverride": false,
+      "file": "rules/mobile/android-build.md"
+    },
+    {
+      "id": "mobile.ios-build",
+      "category": "mobile",
+      "purpose": "Validate signing, capabilities, privacy, ATT, min OS, IL2CPP, and Xcode settings.",
+      "scope": "iOS build and release settings.",
+      "priority": "P0",
+      "dreamyOverride": false,
+      "file": "rules/mobile/ios-build.md"
+    },
+    {
+      "id": "production.profile-before-optimize",
+      "category": "production",
+      "purpose": "Require baseline, capture, hotspot, change, and comparison for optimization.",
+      "scope": "Every performance optimization task.",
+      "priority": "P0",
+      "dreamyOverride": false,
+      "file": "rules/production/profile-before-optimize.md"
+    },
+    {
+      "id": "production.release-readiness",
+      "category": "production",
+      "purpose": "Require clean CI, versions, store/privacy checks, and rollback plan.",
+      "scope": "Release candidates and production rollout.",
+      "priority": "P0",
+      "dreamyOverride": true,
+      "file": "rules/production/release-readiness.md"
+    },
+    {
+      "id": "dreamy.project-package-boundary",
+      "category": "dreamy",
+      "purpose": "Keep reusable package code separate from game-specific `_Project` code.",
+      "scope": "Dreamy package and project ownership decisions.",
+      "priority": "P0",
+      "dreamyOverride": true,
+      "file": "rules/dreamy/project-package-boundary.md"
+    },
+    {
+      "id": "dreamy.composition-root",
+      "category": "dreamy",
+      "purpose": "Wire services at GameInstaller/bootstrap roots.",
+      "scope": "Dreamy startup registration and composition code.",
+      "priority": "P0",
+      "dreamyOverride": true,
+      "file": "rules/dreamy/composition-root.md"
+    },
+    {
+      "id": "dreamy.service-resolution",
+      "category": "dreamy",
+      "purpose": "Resolve services at roots or high-level owners, then pass dependencies downward.",
+      "scope": "ServiceLocator registration and consumers.",
+      "priority": "P0",
+      "dreamyOverride": true,
+      "file": "rules/dreamy/service-resolution.md"
+    },
+    {
+      "id": "dreamy.config-save-runtime",
+      "category": "dreamy",
+      "purpose": "Separate static design config, persistent save data, and ephemeral runtime state.",
+      "scope": "Dreamy data models and mutations.",
+      "priority": "P0",
+      "dreamyOverride": true,
+      "file": "rules/dreamy/config-save-runtime.md"
+    },
+    {
+      "id": "dreamy.package-direction",
+      "category": "dreamy",
+      "purpose": "Enforce package manifest and asmdef dependency direction.",
+      "scope": "Dreamy package dependencies and source references.",
+      "priority": "P0",
+      "dreamyOverride": true,
+      "file": "rules/dreamy/package-direction.md"
+    },
+    {
+      "id": "dreamy.ui-boundary",
+      "category": "dreamy",
+      "purpose": "Keep business logic outside concrete UI panels.",
+      "scope": "Dreamy UI consumers, panels, and items.",
+      "priority": "P0",
+      "dreamyOverride": true,
+      "file": "rules/dreamy/ui-boundary.md"
+    },
+    {
+      "id": "dreamy.asset-loader",
+      "category": "dreamy",
+      "purpose": "Use Dreamy asset loading with explicit owner/cache/unload decisions.",
+      "scope": "Dreamy Assets, Addressables, and Resources consumers.",
+      "priority": "P0",
+      "dreamyOverride": true,
+      "file": "rules/dreamy/asset-loader.md"
+    },
+    {
+      "id": "dreamy.audio-feedback-localization",
+      "category": "dreamy",
+      "purpose": "Use available audio, feedback, and localization packages without invented integration.",
+      "scope": "Those packages and project integrations.",
+      "priority": "P1",
+      "dreamyOverride": true,
+      "file": "rules/dreamy/audio-feedback-localization.md"
+    },
+    {
+      "id": "dreamy.version-compatibility",
+      "category": "dreamy",
+      "purpose": "Gate API use by installed package version and verified commit.",
+      "scope": "All Dreamy package API and reference generation.",
+      "priority": "P0",
+      "dreamyOverride": true,
+      "file": "rules/dreamy/version-compatibility.md"
+    },
+    {
+      "id": "dreamy.editor-tools-supported-api",
+      "category": "dreamy",
+      "purpose": "Only automate Editor Tools through verified public headless/dry-run contracts.",
+      "scope": "Codex and CI automation through Dreamy Editor Tools.",
+      "priority": "P0",
+      "dreamyOverride": true,
+      "file": "rules/dreamy/editor-tools-supported-api.md"
+    }
+  ]
+}

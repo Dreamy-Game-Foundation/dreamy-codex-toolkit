@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dreamy.tools/codex/schemas/project-profile.schema.json",
+  "title": "Dreamy Project Profile",
+  "type": "object",
+  "required": ["schemaVersion", "engine", "packages"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "engine": { "type": "object" },
+    "packages": { "type": "array" },
+    "sourceHashes": { "type": "object" }
+  }
+}

@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+json() {
+  jq -e "$1" "$2" >/dev/null
+}
+
+for file in \
+  toolkit.json \
+  compatibility/dreamy-packages.json \
+  compatibility/unity.json \
+  compatibility/third-party.json \
+  docs/research/source-ledger.json \
+  rules/index.json \
+  skills/index.json \
+  modules/foundation/module.json \
+  modules/dreamy/module.json \
+  modules/production/module.json \
+  presets/core.json \
+  presets/unity-minimal.json \
+  presets/dreamy-project.json \
+  presets/dreamy-package.json \
+  evals/catalog.json \
+  schemas/toolkit.schema.json \
+  schemas/module.schema.json \
+  schemas/preset.schema.json \
+  schemas/project-profile.schema.json \
+  schemas/install-state.schema.json \
+  schemas/evidence.schema.json \
+  schemas/eval-case.schema.json
+do
+  jq -e . "$file" >/dev/null
+done
+
+json '.schemaVersion == 1 and .name == "dreamy-codex-toolkit" and (.schemas | length) >= 7' toolkit.json
+json '.schemaVersion == 1 and (.repositories | length) >= 13' docs/research/source-ledger.json
+json '.repositories | all(.commit | test("^[0-9a-f]{40}$"))' docs/research/source-ledger.json
+json '.repositories | all(.status == "observed" or .status == "observed-external" or .status == "drift" or .status == "unsupported")' docs/research/source-ledger.json
+json '.repositories | all(if .status == "observed-external" then (.evidenceNote | type == "string" and length > 0) else true end)' docs/research/source-ledger.json
+
+json '.schemaVersion == 1 and (.packages | length) == 9' compatibility/dreamy-packages.json
+json '.packages | to_entries | all(.value.verifiedCommit | test("^[0-9a-f]{40}$"))' compatibility/dreamy-packages.json
+json '.packages | to_entries | all(.value.status == "observed" or .value.status == "drift")' compatibility/dreamy-packages.json
+json '.packages | to_entries | all((.value.capabilities | length) > 0)' compatibility/dreamy-packages.json
+json '.packages["com.dreamy.dataconfig"].status == "drift"' compatibility/dreamy-packages.json
+json '.packages["com.dreamy.ui"].status == "drift"' compatibility/dreamy-packages.json
+json '.packages["com.dreamy.editor-tools"].unsupportedContracts | index("No verified public headless API")' compatibility/dreamy-packages.json
+for dep in $(jq -r '[.packages[].thirdPartyDependencies | keys[]] | unique[]' compatibility/dreamy-packages.json); do
+  jq -e --arg dep "$dep" '.packages[$dep]' compatibility/third-party.json >/dev/null
+done
+
+json '.schemaVersion == 1 and (.rules | length) == 49' rules/index.json
+json '.rules | (map(.id) | unique | length) == length' rules/index.json
+json '.rules | all(.id and .category and .purpose and .scope and .priority and (.dreamyOverride | type == "boolean") and .file)' rules/index.json
+json '.rules | map(select(.category == "core")) | length == 10' rules/index.json
+json '.rules | map(select(.category == "csharp")) | length == 8' rules/index.json
+json '.rules | map(select(.category == "unity")) | length == 11' rules/index.json
+json '.rules | map(select(.category == "dreamy")) | length == 10' rules/index.json
+json '.rules | map(select(.category == "mobile")) | length == 5' rules/index.json
+json '.rules | map(select(.category == "production")) | length == 2' rules/index.json
+json '.rules | map(select(.category == "gameplay")) | length == 3' rules/index.json
+
+while IFS= read -r rule_file; do
+  test -f "$rule_file"
+done < <(jq -r '.rules[].file' rules/index.json)
+
+json '.schemaVersion == 1 and (.skills | length) >= 36' skills/index.json
+json '.skills | (map(.name) | unique | length) == length' skills/index.json
+json '.skills | map(select(.category == "dreamy")) | length == 16' skills/index.json
+while IFS= read -r skill_file; do
+  test -f "$skill_file"
+done < <(jq -r '.skills[].file' skills/index.json)
+
+json '.id == "foundation" and (.content | index("rules/core")) and (.content | index("rules/csharp")) and (.content | index("rules/unity"))' modules/foundation/module.json
+json '.id == "dreamy" and (.dependencies | index("foundation"))' modules/dreamy/module.json
+json '.id == "production" and (.dependencies | index("dreamy"))' modules/production/module.json
+json '.id == "core" and (.modules | index("foundation"))' presets/core.json
+json '.id == "dreamy-project" and (.modules | index("dreamy"))' presets/dreamy-project.json
+json '.id == "dreamy-package" and (.modules | index("production"))' presets/dreamy-package.json
+json '.cases | length >= 3' evals/catalog.json
+test -x src/cli
+test -x harness/dreamy-harness
+scripts/check-unity-safety tests/fixtures/unity/asmdef-graph.safe.json >/dev/null
+
+echo "W0-W10 validation passed"

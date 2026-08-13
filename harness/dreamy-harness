@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+operation="${1:-validate}"
+shift || true
+
+status="not-run"
+exit_code=0
+diagnostics=()
+
+case "$operation" in
+  validate)
+    if scripts/validate >/tmp/dreamy-harness-validate.out 2>/tmp/dreamy-harness-validate.err; then
+      status="pass"
+    else
+      status="fail"
+      exit_code=1
+      diagnostics+=("validator failed")
+    fi
+    ;;
+  asmdef)
+    fixture="${1:-tests/fixtures/unity/asmdef-graph.safe.json}"
+    if scripts/check-unity-safety "$fixture" >/tmp/dreamy-harness-asmdef.out 2>/tmp/dreamy-harness-asmdef.err; then
+      status="pass"
+    else
+      status="fail"
+      exit_code=1
+      diagnostics+=("asmdef safety failed")
+    fi
+    ;;
+  *)
+    status="degraded"
+    exit_code=1
+    diagnostics+=("unsupported harness operation")
+    ;;
+esac
+
+jq -n \
+  --arg adapter "dreamy-harness" \
+  --arg operation "$operation" \
+  --arg status "$status" \
+  --arg observedAt "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+  --argjson exitCode "$exit_code" \
+  --argjson diagnostics "$(printf '%s\n' "${diagnostics[@]}" | jq -R . | jq -s .)" \
+  '{schemaVersion:1, adapter:$adapter, operation:$operation, status:$status, observedAt:$observedAt, command:["harness/dreamy-harness", $operation], exitCode:$exitCode, artifacts:[], diagnostics:$diagnostics, git:{available:false, dirtyPaths:[]}, profileHash:null, degradedReason:(if $status == "degraded" then ($diagnostics | join("; ")) else null end)}'
+
+exit "$exit_code"

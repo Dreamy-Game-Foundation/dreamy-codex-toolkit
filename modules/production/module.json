@@ -1,0 +1,17 @@
+{
+  "$schema": "../../schemas/module.schema.json",
+  "id": "production",
+  "version": "0.0.0",
+  "dependencies": ["foundation", "dreamy"],
+  "content": [
+    "rules/mobile",
+    "rules/production",
+    "skills/platform",
+    "skills/production",
+    "skills/gameplay",
+    "skills/systems",
+    "skills/third-party",
+    "harness",
+    "evals"
+  ]
+}

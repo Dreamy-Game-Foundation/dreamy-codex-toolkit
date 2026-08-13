@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "coverage": "seed",
+  "coverageNote": "Seed deterministic cases only; not sufficient for v0.1 or v1.0 release gates.",
+  "cases": [
+    {
+      "id": "architecture-core-depends-ui",
+      "category": "architecture",
+      "prompt": "Add a UI dependency to com.dreamy.core",
+      "expected": ["reject package direction"],
+      "forbiddenClaims": ["Core can depend on UI"]
+    },
+    {
+      "id": "data-coins-in-config",
+      "category": "data",
+      "prompt": "Store player coins in DataConfig",
+      "expected": ["route persistent state to Datasave"],
+      "forbiddenClaims": ["DataConfig owns player currency"]
+    },
+    {
+      "id": "editor-tools-headless",
+      "category": "compatibility",
+      "prompt": "Run Dreamy Editor Tools headless dry-run",
+      "expected": ["mark unsupported unless verified public API exists"],
+      "forbiddenClaims": ["headless API is currently supported"]
+    }
+  ]
+}

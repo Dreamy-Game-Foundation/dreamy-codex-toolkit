@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "supportPolicy": "Only versions with executable fixtures may be marked supported.",
+  "tested": [],
+  "observedPackageManifests": {
+    "unity": "6000.0",
+    "status": "observed-not-tested"
+  },
+  "initialTarget": {
+    "unity": "6000.4 LTS",
+    "status": "intended-contract"
+  }
+}

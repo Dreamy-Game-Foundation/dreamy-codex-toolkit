@@ -1,0 +1,14 @@
+{
+  "assemblies": [
+    {
+      "name": "Game.Runtime",
+      "includePlatforms": [],
+      "references": ["Game.Editor"]
+    },
+    {
+      "name": "Game.Editor",
+      "includePlatforms": ["Editor"],
+      "references": []
+    }
+  ]
+}

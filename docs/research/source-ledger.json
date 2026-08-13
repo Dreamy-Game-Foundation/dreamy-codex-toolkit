@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "retrievedAt": "2026-08-13T00:00:00+07:00",
+  "repositories": [
+    {
+      "id": "everything-claude-unity",
+      "remote": "https://github.com/XeldarAlz/everything-claude-unity",
+      "commit": "bb28ccbd40b065b0958b02df0c03fb91c4fb7c5b",
+      "status": "observed",
+      "role": "reference-safety-taxonomy",
+      "localPath": ".research/everything-claude-unity"
+    },
+    {
+      "id": "unity-claude-skills",
+      "remote": "https://github.com/Nice-Wolf-Studio/unity-claude-skills",
+      "commit": "fefd1141f973f97a9441af1d2c90a34b09ec7108",
+      "status": "observed",
+      "role": "reference-skill-taxonomy",
+      "localPath": ".research/unity-claude-skills"
+    },
+    {
+      "id": "oh-my-game-kit",
+      "remote": "https://github.com/tranvietanh0/oh-my-game-kit",
+      "commit": "ec2cf7889924ba6a254fbbb81c3994b391ea0ba4",
+      "status": "observed",
+      "role": "reference-codex-installer",
+      "localPath": ".research/oh-my-game-kit"
+    },
+    {
+      "id": "dreamy-template-project",
+      "remote": "https://github.com/Dreamy-Game-Foundation/dreamy-template-project",
+      "commit": "0af776c9925ba3c2a9b84fdad7360277605606d5",
+      "status": "observed-external",
+      "role": "reference-template-contract",
+      "localPath": ".research/dreamy-template-project.broken",
+      "evidenceNote": "Commit was inspected during W0 research, but the local checkout directory is currently broken and must not be treated as live local evidence."
+    },
+    {
+      "id": "com.dreamy.core",
+      "remote": "https://github.com/Dreamy-Game-Foundation/com.dreamy.core",
+      "commit": "6e2d50d0ee6243c472fccd4cce08a7db9cb154b4",
+      "status": "observed",
+      "role": "dreamy-package",
+      "localPath": ".research/dreamy-packages/com.dreamy.core"
+    },
+    {
+      "id": "com.dreamy.assets",
+      "remote": "https://github.com/Dreamy-Game-Foundation/com.dreamy.assets",
+      "commit": "72d8386068d7f6875a17057f4eb0b24b0ff8c81b",
+      "status": "observed",
+      "role": "dreamy-package",
+      "localPath": ".research/dreamy-packages/com.dreamy.assets"
+    },
+    {
+      "id": "com.dreamy.ui",
+      "remote": "https://github.com/Dreamy-Game-Foundation/com.dreamy.ui",
+      "commit": "dbfec0cf95733c4b8193676b45b5b15c53eba2c4",
+      "status": "observed",
+      "role": "dreamy-package",
+      "localPath": ".research/dreamy-packages/com.dreamy.ui"
+    },
+    {
+      "id": "com.dreamy.dataconfig",
+      "remote": "https://github.com/Dreamy-Game-Foundation/com.dreamy.dataconfig",
+      "commit": "6d199250c544ff7a42414c44fb560217b734af8b",
+      "status": "observed",
+      "role": "dreamy-package",
+      "localPath": ".research/dreamy-packages/com.dreamy.dataconfig"
+    },
+    {
+      "id": "com.dreamy.datasave",
+      "remote": "https://github.com/Dreamy-Game-Foundation/com.dreamy.datasave",
+      "commit": "9fa6bd21812004b0b2d64a6119ee0514399366b8",
+      "status": "observed",
+      "role": "dreamy-package",
+      "localPath": ".research/dreamy-packages/com.dreamy.datasave"
+    },
+    {
+      "id": "com.dreamy.editor-tools",
+      "remote": "https://github.com/Dreamy-Game-Foundation/com.dreamy.editor-tools",
+      "commit": "e00ca5cfdf8886fa1c84dd98d76ee8e983d4e7dd",
+      "status": "observed",
+      "role": "dreamy-package",
+      "localPath": ".research/dreamy-packages/com.dreamy.editor-tools"
+    },
+    {
+      "id": "com.dreamy.audio",
+      "remote": "https://github.com/Dreamy-Game-Foundation/com.dreamy.audio",
+      "commit": "da1e07c9170a556dc3ccf2e73e412fb02d592200",
+      "status": "observed",
+      "role": "dreamy-package",
+      "localPath": ".research/dreamy-packages/com.dreamy.audio"
+    },
+    {
+      "id": "com.dreamy.localization",
+      "remote": "https://github.com/Dreamy-Game-Foundation/com.dreamy.localization",
+      "commit": "4a71c6fa3f4ee56c699368103e7920c9476816e0",
+      "status": "observed",
+      "role": "dreamy-package",
+      "localPath": ".research/dreamy-packages/com.dreamy.localization"
+    },
+    {
+      "id": "com.dreamy.feedback",
+      "remote": "https://github.com/Dreamy-Game-Foundation/com.dreamy.feedback",
+      "commit": "a39f7c45e99c445be5b9baba6052ed75b4c6c093",
+      "status": "observed",
+      "role": "dreamy-package",
+      "localPath": ".research/dreamy-packages/com.dreamy.feedback"
+    }
+  ]
+}

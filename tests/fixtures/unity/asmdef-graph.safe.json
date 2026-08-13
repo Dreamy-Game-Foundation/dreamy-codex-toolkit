@@ -1,0 +1,14 @@
+{
+  "assemblies": [
+    {
+      "name": "Game.Runtime",
+      "includePlatforms": [],
+      "references": ["Dreamy.Core.Runtime"]
+    },
+    {
+      "name": "Game.Editor",
+      "includePlatforms": ["Editor"],
+      "references": ["Game.Runtime", "UnityEditor"]
+    }
+  ]
+}
