@@ -606,11 +606,11 @@ analytics
 
 ## Phase 6 DoD
 
-- [ ] Gameplay skills có flow thực.
-- [ ] Ownership rõ.
-- [ ] Mobile performance awareness.
-- [ ] Không còn boilerplate-only skill.
-- [ ] 15+ gameplay routing/eval case.
+- [x] Gameplay skills có flow thực.
+- [x] Ownership rõ.
+- [x] Mobile performance awareness.
+- [x] Không còn boilerplate-only skill.
+- [x] 15+ gameplay routing/eval case.
 
 ---
 
@@ -842,13 +842,13 @@ runtime applied state
 
 ## Phase 7 DoD
 
-- [ ] Transaction boundaries.
-- [ ] Save ownership.
-- [ ] Config ownership.
-- [ ] Analytics boundary.
-- [ ] UI boundary.
-- [ ] Idempotency where relevant.
-- [ ] 15+ system evals.
+- [x] Transaction boundaries.
+- [x] Save ownership.
+- [x] Config ownership.
+- [x] Analytics boundary.
+- [x] UI boundary.
+- [x] Idempotency where relevant.
+- [x] 15+ system evals.
 
 ---
 
@@ -1019,12 +1019,12 @@ Create prompts:
 
 ## Phase 8 DoD
 
-- [ ] Native agent schema.
-- [ ] Clear sandbox.
-- [ ] Orchestration guide.
-- [ ] Agent routing eval.
-- [ ] No redundant roles.
-- [ ] Installer copies correct agent set.
+- [x] Native agent schema.
+- [x] Clear sandbox.
+- [x] Orchestration guide.
+- [x] Agent routing eval.
+- [x] No redundant roles.
+- [x] Installer copies correct agent set.
 
 ---
 
@@ -1182,14 +1182,14 @@ Options:
 
 ## Phase 9 DoD
 
-- [ ] Native paths.
-- [ ] Global preset-aware.
-- [ ] Dependency resolver.
-- [ ] Package detection.
-- [ ] Delta update.
-- [ ] State v2.
-- [ ] Migration test.
-- [ ] Windows/Linux.
+- [x] Native paths.
+- [x] Global preset-aware.
+- [x] Dependency resolver.
+- [x] Package detection.
+- [x] Delta update.
+- [x] State v2.
+- [x] Migration test.
+- [x] Windows/Linux.
 
 ---
 
@@ -1310,11 +1310,11 @@ dreamy-audio detected
 
 ## Phase 10 DoD
 
-- [ ] Real environment detection.
-- [ ] Meaningful warning.
-- [ ] JSON.
-- [ ] Broken fixture tests.
-- [ ] Harness capability report.
+- [x] Real environment detection.
+- [x] Meaningful warning.
+- [x] JSON.
+- [x] Broken fixture tests.
+- [x] Harness capability report.
 
 ---
 
@@ -1540,10 +1540,10 @@ chỉ vì static validation okay.
 - [ ] Console real.
 - [ ] EditMode real.
 - [ ] PlayMode real.
-- [ ] Stable evidence.
+- [x] Stable evidence.
 - [ ] Template project verified.
 - [ ] Android smoke build.
-- [ ] Degraded fallback correct.
+- [x] Degraded fallback correct.
 
 ---
 
@@ -1697,10 +1697,10 @@ P0 safety      = 100%
 ## Phase 12 DoD
 
 - [ ] Model runner.
-- [ ] 60 executable.
-- [ ] Score report.
-- [ ] Critical gate.
-- [ ] Actionable failures.
+- [x] 60 executable.
+- [x] Score report.
+- [x] Critical gate.
+- [x] Actionable failures.
 
 
 # PHASE 13 — COMPATIBILITY & PACKAGE DRIFT AUTOMATION
@@ -1810,9 +1810,9 @@ release/compatibility-drift-report.md
 
 - [ ] Upstream scan.
 - [ ] Candidate/verified separation.
-- [ ] Drift report.
-- [ ] CI P0 gate.
-- [ ] Package maintainer workflow.
+- [x] Drift report.
+- [x] CI P0 gate.
+- [x] Package maintainer workflow.
 
 ---
 
@@ -1937,12 +1937,12 @@ eval summary
 
 ## Phase 14 DoD
 
-- [ ] Linux CI.
-- [ ] Windows CI.
-- [ ] npm pack smoke.
-- [ ] Version sync.
-- [ ] Generated file cleanliness.
-- [ ] Release artifact reproducible.
+- [x] Linux CI.
+- [x] Windows CI.
+- [x] npm pack smoke.
+- [x] Version sync.
+- [x] Generated file cleanliness.
+- [x] Release artifact reproducible.
 
 ---
 
@@ -2212,10 +2212,10 @@ Recommended:
 ## Phase 17 DoD
 
 - [ ] No known P0.
-- [ ] Stable schemas.
-- [ ] Full docs.
-- [ ] Windows usability.
-- [ ] Upgrade path.
+- [x] Stable schemas.
+- [x] Full docs.
+- [x] Windows usability.
+- [x] Upgrade path.
 - [ ] Real-project adoption.
 
 ---
@@ -2230,69 +2230,69 @@ Chỉ claim production-ready khi đủ evidence.
 
 ## V1 Gate — Codex Native
 
-- [ ] Project skills discovered from `.agents/skills`.
-- [ ] User skills discovered from correct user root.
-- [ ] Custom agents parse and discover.
-- [ ] AGENTS chain validated.
-- [ ] No obsolete config assumptions.
+- [x] Project skills discovered from `.agents/skills`.
+- [x] User skills discovered from correct user root.
+- [x] Custom agents parse and discover.
+- [x] AGENTS chain validated.
+- [x] No obsolete config assumptions.
 
 ---
 
 ## V1 Gate — Knowledge
 
-- [ ] P0 Dreamy skills verified.
+- [x] P0 Dreamy skills verified.
 - [ ] P0 Unity skills operational/verified.
-- [ ] Gameplay core operational.
-- [ ] Mobile systems operational.
-- [ ] Rendering module meaningful.
-- [ ] No major template-only skill.
+- [x] Gameplay core operational.
+- [x] Mobile systems operational.
+- [x] Rendering module meaningful.
+- [x] No major template-only skill.
 
 ---
 
 ## V1 Gate — Installer
 
-- [ ] Install.
-- [ ] Detect.
-- [ ] Doctor.
-- [ ] Update.
-- [ ] Uninstall.
-- [ ] Dry-run.
-- [ ] State migrations.
-- [ ] Checksum protection.
-- [ ] Windows/Linux.
+- [x] Install.
+- [x] Detect.
+- [x] Doctor.
+- [x] Update.
+- [x] Uninstall.
+- [x] Dry-run.
+- [x] State migrations.
+- [x] Checksum protection.
+- [x] Windows/Linux.
 
 ---
 
 ## V1 Gate — Harness
 
-- [ ] Git status.
-- [ ] Git diff.
+- [x] Git status.
+- [x] Git diff.
 - [ ] Compile.
 - [ ] Console.
 - [ ] EditMode.
 - [ ] PlayMode.
 - [ ] Project validate.
 - [ ] Android smoke build.
-- [ ] Correct iOS degraded/build behavior.
+- [x] Correct iOS degraded/build behavior.
 
 ---
 
 ## V1 Gate — Evals
 
-- [ ] 60+ executable behavior cases.
-- [ ] Critical pass >= 98%.
-- [ ] P0 safety = 100%.
-- [ ] Routing score tracked.
-- [ ] Release eval artifact published.
+- [x] 60+ executable behavior cases.
+- [x] Critical pass >= 98%.
+- [x] P0 safety = 100%.
+- [x] Routing score tracked.
+- [x] Release eval artifact published.
 
 ---
 
 ## V1 Gate — Compatibility
 
-- [ ] Verified package records.
+- [x] Verified package records.
 - [ ] Upstream drift scan.
-- [ ] No unsupported current API claim.
-- [ ] P0 drift resolved or explicitly unsupported.
+- [x] No unsupported current API claim.
+- [x] P0 drift resolved or explicitly unsupported.
 
 ---
 
@@ -2307,13 +2307,13 @@ Chỉ claim production-ready khi đủ evidence.
 
 ## V1 Gate — Release
 
-- [ ] npm artifact.
+- [x] npm artifact.
 - [ ] GitHub release.
-- [ ] Changelog.
-- [ ] Checksums.
-- [ ] Release notes.
-- [ ] Compatibility report.
-- [ ] Eval report.
+- [x] Changelog.
+- [x] Checksums.
+- [x] Release notes.
+- [x] Compatibility report.
+- [x] Eval report.
 
 ---
 
@@ -2738,61 +2738,61 @@ production claim
 
 Mỗi operational skill:
 
-- [ ] Valid frontmatter.
-- [ ] Specific description.
-- [ ] Positive triggers.
-- [ ] Negative triggers.
-- [ ] Required inspection.
-- [ ] Domain-specific decision tree.
-- [ ] Domain-specific workflow.
-- [ ] Domain-specific failure modes.
-- [ ] Verification.
-- [ ] Dreamy integration where relevant.
-- [ ] Valid references.
-- [ ] No unsupported API claim.
-- [ ] Eval coverage if P0.
-- [ ] Routing test.
+- [x] Valid frontmatter.
+- [x] Specific description.
+- [x] Positive triggers.
+- [x] Negative triggers.
+- [x] Required inspection.
+- [x] Domain-specific decision tree.
+- [x] Domain-specific workflow.
+- [x] Domain-specific failure modes.
+- [x] Verification.
+- [x] Dreamy integration where relevant.
+- [x] Valid references.
+- [x] No unsupported API claim.
+- [x] Eval coverage if P0.
+- [x] Routing test.
 
 ---
 
 # 14. ACCEPTANCE STANDARD — AGENT
 
-- [ ] `name`.
-- [ ] `description`.
-- [ ] `developer_instructions`.
-- [ ] Narrow responsibility.
-- [ ] Correct sandbox.
-- [ ] No redundant role.
-- [ ] Correct skill expectations.
-- [ ] Native discovery.
-- [ ] Selection eval.
+- [x] `name`.
+- [x] `description`.
+- [x] `developer_instructions`.
+- [x] Narrow responsibility.
+- [x] Correct sandbox.
+- [x] No redundant role.
+- [x] Correct skill expectations.
+- [x] Native discovery.
+- [x] Selection eval.
 
 ---
 
 # 15. ACCEPTANCE STANDARD — HARNESS
 
-- [ ] Machine-readable JSON.
-- [ ] Meaningful exit code.
-- [ ] Actual adapter identified.
-- [ ] Evidence timestamp.
-- [ ] Diagnostics preserved.
-- [ ] Explicit degraded state.
-- [ ] Never fake pass.
-- [ ] Unit fixture.
-- [ ] Windows-safe.
+- [x] Machine-readable JSON.
+- [x] Meaningful exit code.
+- [x] Actual adapter identified.
+- [x] Evidence timestamp.
+- [x] Diagnostics preserved.
+- [x] Explicit degraded state.
+- [x] Never fake pass.
+- [x] Unit fixture.
+- [x] Windows-safe.
 - [ ] Real project smoke.
 
 ---
 
 # 16. ACCEPTANCE STANDARD — PRESET
 
-- [ ] Valid module graph.
-- [ ] Dependencies resolved.
-- [ ] No duplicates.
-- [ ] Context budget controlled.
-- [ ] No stub skill in production preset.
-- [ ] Package auto-detection.
-- [ ] Installer tests.
+- [x] Valid module graph.
+- [x] Dependencies resolved.
+- [x] No duplicates.
+- [x] Context budget controlled.
+- [x] No stub skill in production preset.
+- [x] Package auto-detection.
+- [x] Installer tests.
 
 ---
 
@@ -2900,100 +2900,100 @@ The toolkit is proven on the Dreamy template and real games.
 
 ## Native Codex
 
-- [ ] Project `.agents/skills`.
-- [ ] User `$HOME/.agents/skills`.
-- [ ] Project `.codex/agents`.
-- [ ] User `~/.codex/agents`.
-- [ ] Agent names.
-- [ ] No obsolete registry.
-- [ ] AGENTS discovery.
+- [x] Project `.agents/skills`.
+- [x] User `$HOME/.agents/skills`.
+- [x] Project `.codex/agents`.
+- [x] User `~/.codex/agents`.
+- [x] Agent names.
+- [x] No obsolete registry.
+- [x] AGENTS discovery.
 
 ## Portability
 
-- [ ] POSIX catalog paths.
-- [ ] Windows tests.
-- [ ] Linux tests.
-- [ ] Stable indexes.
-- [ ] No dead modules.
+- [x] POSIX catalog paths.
+- [x] Windows tests.
+- [x] Linux tests.
+- [x] Stable indexes.
+- [x] No dead modules.
 
 ## Skills
 
-- [ ] Maturity.
-- [ ] Dreamy depth.
-- [ ] Unity depth.
-- [ ] Gameplay depth.
-- [ ] Systems depth.
-- [ ] Rendering.
-- [ ] Routing tests.
-- [ ] Context budget.
+- [x] Maturity.
+- [x] Dreamy depth.
+- [x] Unity depth.
+- [x] Gameplay depth.
+- [x] Systems depth.
+- [x] Rendering.
+- [x] Routing tests.
+- [x] Context budget.
 
 ## Agents
 
-- [ ] Developer.
-- [ ] Debugger.
-- [ ] Reviewer.
-- [ ] Tester.
-- [ ] Unity Editor.
-- [ ] Performance.
-- [ ] Build.
-- [ ] Package maintainer.
-- [ ] Release validator.
-- [ ] Docs manager.
-- [ ] Skill author.
+- [x] Developer.
+- [x] Debugger.
+- [x] Reviewer.
+- [x] Tester.
+- [x] Unity Editor.
+- [x] Performance.
+- [x] Build.
+- [x] Package maintainer.
+- [x] Release validator.
+- [x] Docs manager.
+- [x] Skill author.
 
 ## Installer
 
-- [ ] Install.
-- [ ] Detect.
-- [ ] Doctor.
-- [ ] Update.
-- [ ] Uninstall.
-- [ ] Dry-run.
-- [ ] Delta update.
-- [ ] State migrations.
-- [ ] Managed byte preservation.
+- [x] Install.
+- [x] Detect.
+- [x] Doctor.
+- [x] Update.
+- [x] Uninstall.
+- [x] Dry-run.
+- [x] Delta update.
+- [x] State migrations.
+- [x] Managed byte preservation.
 
 ## Harness
 
-- [ ] Git status.
-- [ ] Git diff.
+- [x] Git status.
+- [x] Git diff.
 - [ ] Compile.
 - [ ] Console.
 - [ ] EditMode.
 - [ ] PlayMode.
 - [ ] Project validation.
-- [ ] Package validation.
-- [ ] Addressables validation.
+- [x] Package validation.
+- [x] Addressables validation.
 - [ ] Android smoke build.
-- [ ] iOS behavior.
+- [x] iOS behavior.
 
 ## Evals
 
-- [ ] 60 static contracts.
+- [x] 60 static contracts.
 - [ ] Model runner.
-- [ ] Routing.
-- [ ] Decision.
-- [ ] Safety.
-- [ ] Verification.
-- [ ] Release scoring.
+- [x] Routing.
+- [x] Decision.
+- [x] Safety.
+- [x] Verification.
+- [x] Release scoring.
 
 ## Compatibility
 
 - [ ] Upstream scan.
-- [ ] Candidate review.
-- [ ] Drift report.
-- [ ] Verified commits.
-- [ ] asmdef dependency checks.
+- [x] Candidate review.
+- [x] Drift report.
+- [x] Verified commits.
+- [x] asmdef dependency checks.
 
 ## CI
 
-- [ ] Validate.
-- [ ] Unit.
-- [ ] Static eval.
-- [ ] Windows.
-- [ ] Linux.
-- [ ] npm pack.
-- [ ] Release gate.
+- [x] Validate.
+- [x] Unit.
+- [x] Static eval.
+- [x] Windows.
+- [x] Linux.
+- [x] npm pack.
+- [x] Release gate.
 
 ## Dogfood
 
@@ -3005,7 +3005,7 @@ The toolkit is proven on the Dreamy template and real games.
 
 ## Release
 
-- [ ] alpha.2
+- [x] alpha.2
 - [ ] 0.2 alpha
 - [ ] harness alpha
 - [ ] beta

@@ -5,427 +5,475 @@
       "name": "android-build-release",
       "category": "platform",
       "priority": "P1",
-      "file": "skills\\platform\\android-build-release\\SKILL.md"
+      "file": "skills/platform/android-build-release/SKILL.md"
     },
     {
       "name": "combat",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills\\gameplay\\combat\\SKILL.md"
+      "file": "skills/gameplay/combat/SKILL.md"
     },
     {
       "name": "dreamy-architecture",
       "category": "dreamy",
       "priority": "P0",
-      "file": "skills\\dreamy\\dreamy-architecture\\SKILL.md"
+      "file": "skills/dreamy/dreamy-architecture/SKILL.md"
     },
     {
       "name": "dreamy-assets",
       "category": "dreamy",
       "priority": "P0",
-      "file": "skills\\dreamy\\dreamy-assets\\SKILL.md"
+      "file": "skills/dreamy/dreamy-assets/SKILL.md"
     },
     {
       "name": "dreamy-audio",
       "category": "dreamy",
       "priority": "P0",
-      "file": "skills\\dreamy\\dreamy-audio\\SKILL.md"
+      "file": "skills/dreamy/dreamy-audio/SKILL.md"
     },
     {
       "name": "dreamy-base",
       "category": "dreamy",
       "priority": "P0",
-      "file": "skills\\dreamy\\dreamy-base\\SKILL.md"
+      "file": "skills/dreamy/dreamy-base/SKILL.md"
     },
     {
       "name": "dreamy-core",
       "category": "dreamy",
       "priority": "P0",
-      "file": "skills\\dreamy\\dreamy-core\\SKILL.md"
+      "file": "skills/dreamy/dreamy-core/SKILL.md"
     },
     {
       "name": "dreamy-dataconfig",
       "category": "dreamy",
       "priority": "P0",
-      "file": "skills\\dreamy\\dreamy-dataconfig\\SKILL.md"
+      "file": "skills/dreamy/dreamy-dataconfig/SKILL.md"
     },
     {
       "name": "dreamy-datasave",
       "category": "dreamy",
       "priority": "P0",
-      "file": "skills\\dreamy\\dreamy-datasave\\SKILL.md"
+      "file": "skills/dreamy/dreamy-datasave/SKILL.md"
     },
     {
       "name": "dreamy-editor-tools",
       "category": "dreamy",
       "priority": "P0",
-      "file": "skills\\dreamy\\dreamy-editor-tools\\SKILL.md"
+      "file": "skills/dreamy/dreamy-editor-tools/SKILL.md"
     },
     {
       "name": "dreamy-feature",
       "category": "dreamy",
       "priority": "P0",
-      "file": "skills\\dreamy\\dreamy-feature\\SKILL.md"
+      "file": "skills/dreamy/dreamy-feature/SKILL.md"
     },
     {
       "name": "dreamy-feedback",
       "category": "dreamy",
       "priority": "P0",
-      "file": "skills\\dreamy\\dreamy-feedback\\SKILL.md"
+      "file": "skills/dreamy/dreamy-feedback/SKILL.md"
     },
     {
       "name": "dreamy-localization",
       "category": "dreamy",
       "priority": "P0",
-      "file": "skills\\dreamy\\dreamy-localization\\SKILL.md"
+      "file": "skills/dreamy/dreamy-localization/SKILL.md"
     },
     {
       "name": "dreamy-mobile",
       "category": "dreamy",
       "priority": "P0",
-      "file": "skills\\dreamy\\dreamy-mobile\\SKILL.md"
+      "file": "skills/dreamy/dreamy-mobile/SKILL.md"
     },
     {
       "name": "dreamy-package-maintainer",
       "category": "dreamy",
       "priority": "P0",
-      "file": "skills\\dreamy\\dreamy-package-maintainer\\SKILL.md"
+      "file": "skills/dreamy/dreamy-package-maintainer/SKILL.md"
     },
     {
       "name": "dreamy-template",
       "category": "dreamy",
       "priority": "P0",
-      "file": "skills\\dreamy\\dreamy-template\\SKILL.md"
+      "file": "skills/dreamy/dreamy-template/SKILL.md"
     },
     {
       "name": "dreamy-testing",
       "category": "dreamy",
       "priority": "P0",
-      "file": "skills\\dreamy\\dreamy-testing\\SKILL.md"
+      "file": "skills/dreamy/dreamy-testing/SKILL.md"
     },
     {
       "name": "dreamy-ui",
       "category": "dreamy",
       "priority": "P0",
-      "file": "skills\\dreamy\\dreamy-ui\\SKILL.md"
+      "file": "skills/dreamy/dreamy-ui/SKILL.md"
     },
     {
       "name": "enemy-ai",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills\\gameplay\\enemy-ai\\SKILL.md"
+      "file": "skills/gameplay/enemy-ai/SKILL.md"
     },
     {
       "name": "game-state",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills\\gameplay\\game-state\\SKILL.md"
+      "file": "skills/gameplay/game-state/SKILL.md"
     },
     {
       "name": "gameplay-economy-currency-reward",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills\\gameplay\\gameplay-economy-currency-reward\\SKILL.md"
+      "file": "skills/gameplay/gameplay-economy-currency-reward/SKILL.md"
     },
     {
       "name": "gameplay-loop",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills\\gameplay\\gameplay-loop\\SKILL.md"
+      "file": "skills/gameplay/gameplay-loop/SKILL.md"
     },
     {
       "name": "gameplay-pooling",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills\\gameplay\\gameplay-pooling\\SKILL.md"
+      "file": "skills/gameplay/gameplay-pooling/SKILL.md"
     },
     {
       "name": "health-damage",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills\\gameplay\\health-damage\\SKILL.md"
+      "file": "skills/gameplay/health-damage/SKILL.md"
     },
     {
       "name": "interaction",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills\\gameplay\\interaction\\SKILL.md"
+      "file": "skills/gameplay/interaction/SKILL.md"
     },
     {
       "name": "inventory",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills\\gameplay\\inventory\\SKILL.md"
+      "file": "skills/gameplay/inventory/SKILL.md"
     },
     {
       "name": "ios-build-release",
       "category": "platform",
       "priority": "P1",
-      "file": "skills\\platform\\ios-build-release\\SKILL.md"
+      "file": "skills/platform/ios-build-release/SKILL.md"
     },
     {
       "name": "level-system",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills\\gameplay\\level-system\\SKILL.md"
+      "file": "skills/gameplay/level-system/SKILL.md"
     },
     {
       "name": "mobile-production",
       "category": "platform",
       "priority": "P1",
-      "file": "skills\\platform\\mobile-production\\SKILL.md"
+      "file": "skills/platform/mobile-production/SKILL.md"
     },
     {
       "name": "movement",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills\\gameplay\\movement\\SKILL.md"
+      "file": "skills/gameplay/movement/SKILL.md"
     },
     {
       "name": "player-controller",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills\\gameplay\\player-controller\\SKILL.md"
+      "file": "skills/gameplay/player-controller/SKILL.md"
     },
     {
       "name": "production-code-review",
       "category": "production",
       "priority": "P1",
-      "file": "skills\\production\\production-code-review\\SKILL.md"
+      "file": "skills/production/production-code-review/SKILL.md"
     },
     {
       "name": "production-release",
       "category": "production",
       "priority": "P1",
-      "file": "skills\\production\\production-release\\SKILL.md"
+      "file": "skills/production/production-release/SKILL.md"
     },
     {
       "name": "progression",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills\\gameplay\\progression\\SKILL.md"
+      "file": "skills/gameplay/progression/SKILL.md"
     },
     {
       "name": "projectile",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills\\gameplay\\projectile\\SKILL.md"
+      "file": "skills/gameplay/projectile/SKILL.md"
     },
     {
       "name": "ragdoll",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills\\gameplay\\ragdoll\\SKILL.md"
+      "file": "skills/gameplay/ragdoll/SKILL.md"
     },
     {
       "name": "spawn-wave",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills\\gameplay\\spawn-wave\\SKILL.md"
+      "file": "skills/gameplay/spawn-wave/SKILL.md"
     },
     {
       "name": "store-release-readiness",
       "category": "platform",
       "priority": "P1",
-      "file": "skills\\platform\\store-release-readiness\\SKILL.md"
+      "file": "skills/platform/store-release-readiness/SKILL.md"
     },
     {
       "name": "system-ads",
       "category": "systems",
       "priority": "P1",
-      "file": "skills\\systems\\system-ads\\SKILL.md"
+      "file": "skills/systems/system-ads/SKILL.md"
     },
     {
       "name": "system-analytics",
       "category": "systems",
       "priority": "P1",
-      "file": "skills\\systems\\system-analytics\\SKILL.md"
+      "file": "skills/systems/system-analytics/SKILL.md"
     },
     {
       "name": "system-battle-pass",
       "category": "systems",
       "priority": "P1",
-      "file": "skills\\systems\\system-battle-pass\\SKILL.md"
+      "file": "skills/systems/system-battle-pass/SKILL.md"
     },
     {
       "name": "system-daily-reward",
       "category": "systems",
       "priority": "P1",
-      "file": "skills\\systems\\system-daily-reward\\SKILL.md"
+      "file": "skills/systems/system-daily-reward/SKILL.md"
     },
     {
       "name": "system-gacha",
       "category": "systems",
       "priority": "P1",
-      "file": "skills\\systems\\system-gacha\\SKILL.md"
+      "file": "skills/systems/system-gacha/SKILL.md"
     },
     {
       "name": "system-iap",
       "category": "systems",
       "priority": "P1",
-      "file": "skills\\systems\\system-iap\\SKILL.md"
+      "file": "skills/systems/system-iap/SKILL.md"
     },
     {
       "name": "system-remote-config",
       "category": "systems",
       "priority": "P1",
-      "file": "skills\\systems\\system-remote-config\\SKILL.md"
+      "file": "skills/systems/system-remote-config/SKILL.md"
     },
     {
       "name": "system-scene-loading",
       "category": "systems",
       "priority": "P1",
-      "file": "skills\\systems\\system-scene-loading\\SKILL.md"
+      "file": "skills/systems/system-scene-loading/SKILL.md"
     },
     {
       "name": "system-services-events",
       "category": "systems",
       "priority": "P1",
-      "file": "skills\\systems\\system-services-events\\SKILL.md"
+      "file": "skills/systems/system-services-events/SKILL.md"
     },
     {
       "name": "system-settings",
       "category": "systems",
       "priority": "P1",
-      "file": "skills\\systems\\system-settings\\SKILL.md"
+      "file": "skills/systems/system-settings/SKILL.md"
     },
     {
       "name": "system-shop",
       "category": "systems",
       "priority": "P1",
-      "file": "skills\\systems\\system-shop\\SKILL.md"
+      "file": "skills/systems/system-shop/SKILL.md"
     },
     {
       "name": "thirdparty-addressables",
-      "category": "third-party",
+      "category": "thirdparty",
       "priority": "P1",
-      "file": "skills\\third-party\\thirdparty-addressables\\SKILL.md"
+      "file": "skills/third-party/thirdparty-addressables/SKILL.md"
     },
     {
       "name": "thirdparty-dotween",
-      "category": "third-party",
+      "category": "thirdparty",
       "priority": "P1",
-      "file": "skills\\third-party\\thirdparty-dotween\\SKILL.md"
+      "file": "skills/third-party/thirdparty-dotween/SKILL.md"
     },
     {
       "name": "thirdparty-newtonsoft",
-      "category": "third-party",
+      "category": "thirdparty",
       "priority": "P1",
-      "file": "skills\\third-party\\thirdparty-newtonsoft\\SKILL.md"
+      "file": "skills/third-party/thirdparty-newtonsoft/SKILL.md"
     },
     {
       "name": "thirdparty-unitask",
-      "category": "third-party",
+      "category": "thirdparty",
       "priority": "P1",
-      "file": "skills\\third-party\\thirdparty-unitask\\SKILL.md"
+      "file": "skills/third-party/thirdparty-unitask/SKILL.md"
     },
     {
       "name": "tutorial",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills\\gameplay\\tutorial\\SKILL.md"
+      "file": "skills/gameplay/tutorial/SKILL.md"
     },
     {
       "name": "unity-addressables",
       "category": "unity",
-      "priority": "P0",
-      "file": "skills\\unity-addressables\\SKILL.md"
+      "priority": "P1",
+      "file": "skills/unity-addressables/SKILL.md"
     },
     {
       "name": "unity-animation",
       "category": "unity",
-      "priority": "P0",
-      "file": "skills\\unity-animation\\SKILL.md"
+      "priority": "P1",
+      "file": "skills/unity-animation/SKILL.md"
     },
     {
       "name": "unity-async",
       "category": "unity",
-      "priority": "P0",
-      "file": "skills\\unity-async\\SKILL.md"
+      "priority": "P1",
+      "file": "skills/unity-async/SKILL.md"
     },
     {
       "name": "unity-camera",
       "category": "unity",
-      "priority": "P0",
-      "file": "skills\\unity-camera\\SKILL.md"
+      "priority": "P1",
+      "file": "skills/unity-camera/SKILL.md"
+    },
+    {
+      "name": "unity-cinemachine",
+      "category": "unity",
+      "priority": "P1",
+      "file": "skills/unity-cinemachine/SKILL.md"
     },
     {
       "name": "unity-editor-tooling",
       "category": "unity",
-      "priority": "P0",
-      "file": "skills\\unity-editor-tooling\\SKILL.md"
+      "priority": "P1",
+      "file": "skills/unity-editor-tooling/SKILL.md"
     },
     {
       "name": "unity-foundations",
       "category": "unity",
-      "priority": "P0",
-      "file": "skills\\unity-foundations\\SKILL.md"
+      "priority": "P1",
+      "file": "skills/unity-foundations/SKILL.md"
     },
     {
       "name": "unity-input-system",
       "category": "unity",
-      "priority": "P0",
-      "file": "skills\\unity-input-system\\SKILL.md"
+      "priority": "P1",
+      "file": "skills/unity-input-system/SKILL.md"
+    },
+    {
+      "name": "unity-material",
+      "category": "unity",
+      "priority": "P1",
+      "file": "skills/unity-material/SKILL.md"
     },
     {
       "name": "unity-memory",
       "category": "unity",
-      "priority": "P0",
-      "file": "skills\\unity-memory\\SKILL.md"
+      "priority": "P1",
+      "file": "skills/unity-memory/SKILL.md"
+    },
+    {
+      "name": "unity-navigation",
+      "category": "unity",
+      "priority": "P1",
+      "file": "skills/unity-navigation/SKILL.md"
+    },
+    {
+      "name": "unity-particles",
+      "category": "unity",
+      "priority": "P1",
+      "file": "skills/unity-particles/SKILL.md"
     },
     {
       "name": "unity-physics",
       "category": "unity",
-      "priority": "P0",
-      "file": "skills\\unity-physics\\SKILL.md"
+      "priority": "P1",
+      "file": "skills/unity-physics/SKILL.md"
     },
     {
       "name": "unity-physics2d",
       "category": "unity",
-      "priority": "P0",
-      "file": "skills\\unity-physics2d\\SKILL.md"
+      "priority": "P1",
+      "file": "skills/unity-physics2d/SKILL.md"
     },
     {
       "name": "unity-profiling",
       "category": "unity",
-      "priority": "P0",
-      "file": "skills\\unity-profiling\\SKILL.md"
+      "priority": "P1",
+      "file": "skills/unity-profiling/SKILL.md"
+    },
+    {
+      "name": "unity-rendering",
+      "category": "unity",
+      "priority": "P1",
+      "file": "skills/unity-rendering/SKILL.md"
     },
     {
       "name": "unity-scene-prefab",
       "category": "unity",
-      "priority": "P0",
-      "file": "skills\\unity-scene-prefab\\SKILL.md"
+      "priority": "P1",
+      "file": "skills/unity-scene-prefab/SKILL.md"
     },
     {
       "name": "unity-serialization",
       "category": "unity",
-      "priority": "P0",
-      "file": "skills\\unity-serialization\\SKILL.md"
+      "priority": "P1",
+      "file": "skills/unity-serialization/SKILL.md"
+    },
+    {
+      "name": "unity-shader",
+      "category": "unity",
+      "priority": "P1",
+      "file": "skills/unity-shader/SKILL.md"
     },
     {
       "name": "unity-testing",
       "category": "unity",
-      "priority": "P0",
-      "file": "skills\\unity-testing\\SKILL.md"
+      "priority": "P1",
+      "file": "skills/unity-testing/SKILL.md"
     },
     {
       "name": "unity-ui",
       "category": "unity",
-      "priority": "P0",
-      "file": "skills\\unity-ui\\SKILL.md"
+      "priority": "P1",
+      "file": "skills/unity-ui/SKILL.md"
+    },
+    {
+      "name": "unity-urp",
+      "category": "unity",
+      "priority": "P1",
+      "file": "skills/unity-urp/SKILL.md"
+    },
+    {
+      "name": "unity-vfx",
+      "category": "unity",
+      "priority": "P1",
+      "file": "skills/unity-vfx/SKILL.md"
     },
     {
       "name": "upgrade",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills\\gameplay\\upgrade\\SKILL.md"
+      "file": "skills/gameplay/upgrade/SKILL.md"
     },
     {
       "name": "weapon",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills\\gameplay\\weapon\\SKILL.md"
+      "file": "skills/gameplay/weapon/SKILL.md"
     }
   ]
 }

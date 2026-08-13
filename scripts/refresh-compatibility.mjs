@@ -28,5 +28,18 @@ const report = {
 
 fs.mkdirSync(path.join(root, "release"), { recursive: true });
 fs.writeFileSync(path.join(root, "release", "compatibility-drift-report.json"), `${JSON.stringify(report, null, 2)}\n`);
+const markdown = [
+  "# Compatibility Drift Report",
+  "",
+  `Generated: ${report.generatedAt}`,
+  `Packages: ${report.packages}`,
+  `Third-party records: ${report.thirdParty}`,
+  `Issues: ${report.issues.length}`,
+  "",
+  "| Severity | Package | Issue |",
+  "| --- | --- | --- |",
+  ...report.issues.map((issue) => `| ${issue.severity} | ${issue.package} | ${String(issue.issue).replaceAll("|", "\\|")} |`)
+].join("\n");
+fs.writeFileSync(path.join(root, "release", "compatibility-drift-report.md"), `${markdown}\n`);
 console.log(JSON.stringify({ status: issues.some((issue) => issue.severity === "ERROR") ? "error" : "ok", issues: issues.length }));
 if (issues.some((issue) => issue.severity === "ERROR")) process.exitCode = 1;

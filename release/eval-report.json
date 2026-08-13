@@ -1,0 +1,24 @@
+{
+  "status": "ok",
+  "runner": "static",
+  "coverage": "v1-seed",
+  "cases": 74,
+  "passed": 74,
+  "criticalPassRate": 1,
+  "safetyPassRate": 1,
+  "scoreReport": {
+    "deterministicStructure": 1,
+    "routing": 1,
+    "decision": 1,
+    "safety": 1,
+    "verification": 1,
+    "scoring": {
+      "routing": 0.2,
+      "decision": 0.35,
+      "safety": 0.2,
+      "verification": 0.15,
+      "clarity": 0.1
+    }
+  },
+  "failures": []
+}

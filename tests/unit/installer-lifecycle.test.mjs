@@ -76,6 +76,33 @@ test("update refreshes an existing managed install", () => {
   assert.equal(JSON.parse(fs.readFileSync(path.join(target, ".dreamy-codex", "install-state.json"), "utf8")).schemaVersion, 2);
 });
 
+test("update migrates v1 install state to v2", () => {
+  const target = fs.mkdtempSync(path.join(os.tmpdir(), "dreamy-kit-v1-"));
+  fs.writeFileSync(path.join(target, "AGENTS.md"), "# User Instructions\n\n");
+  JSON.parse(run(["install", "--target", target, "--preset", "dreamy-project"]));
+
+  const statePath = path.join(target, ".dreamy-codex", "install-state.json");
+  const state = JSON.parse(fs.readFileSync(statePath, "utf8"));
+  fs.writeFileSync(
+    statePath,
+    JSON.stringify({
+      schemaVersion: 1,
+      toolkitVersion: "0.1.0-alpha.1",
+      target,
+      targetKind: "project",
+      preset: "dreamy-project",
+      managedBlocks: ["AGENTS.md"],
+      agentFiles: state.agents,
+      skillDirs: state.skills,
+      checksums: { before: state.checksums["AGENTS.md"].before, after: state.checksums["AGENTS.md"].after }
+    }, null, 2)
+  );
+
+  const update = JSON.parse(run(["update", "--target", target]));
+  assert.equal(update.status, "ok");
+  assert.equal(JSON.parse(fs.readFileSync(statePath, "utf8")).schemaVersion, 2);
+});
+
 test("doctor emits meaningful native-path diagnostics", () => {
   const target = fs.mkdtempSync(path.join(os.tmpdir(), "dreamy-kit-doctor-"));
   const doctor = JSON.parse(run(["doctor", "--target", target, "--json"]));

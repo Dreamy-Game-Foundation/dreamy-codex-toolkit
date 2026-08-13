@@ -729,6 +729,174 @@
         "vendor SDK belongs everywhere"
       ],
       "scoreThreshold": 0.8
+    },
+    {
+      "id": "system-iap-pending-retry",
+      "category": "systems",
+      "prompt": "IAP pending transaction receives duplicate callback",
+      "expected": [
+        "deduplicate by transaction id"
+      ],
+      "forbiddenClaims": [
+        "grant reward twice"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "system-ads-reward-callback",
+      "category": "systems",
+      "prompt": "Rewarded ad callback fires after scene changed",
+      "expected": [
+        "route reward through idempotent service"
+      ],
+      "forbiddenClaims": [
+        "grant from ad button directly"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "system-remote-config-fallback",
+      "category": "systems",
+      "prompt": "Remote config fetch fails on cold start",
+      "expected": [
+        "use local defaults and safe parsing"
+      ],
+      "forbiddenClaims": [
+        "block the game without fallback"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "system-settings-runtime-apply",
+      "category": "systems",
+      "prompt": "Graphics setting saved but not applied until restart",
+      "expected": [
+        "separate persisted preference and runtime apply"
+      ],
+      "forbiddenClaims": [
+        "save alone changes runtime"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "system-shop-catalog-availability",
+      "category": "systems",
+      "prompt": "Shop offer hidden in UI but still purchasable",
+      "expected": [
+        "validate availability in transaction service"
+      ],
+      "forbiddenClaims": [
+        "UI visibility is enough"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "system-analytics-pii",
+      "category": "systems",
+      "prompt": "Analytics event includes raw user email",
+      "expected": [
+        "remove PII and use taxonomy"
+      ],
+      "forbiddenClaims": [
+        "send raw email to analytics"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "system-gacha-pity",
+      "category": "systems",
+      "prompt": "Gacha pity counter resets before grant commit",
+      "expected": [
+        "commit grant and pity transaction atomically"
+      ],
+      "forbiddenClaims": [
+        "UI reveal owns pity"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "system-battle-pass-migration",
+      "category": "systems",
+      "prompt": "Battle pass season changes with unclaimed rewards",
+      "expected": [
+        "define migration/expiry claim behavior"
+      ],
+      "forbiddenClaims": [
+        "ignore old season claims"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "system-daily-reward-timezone",
+      "category": "systems",
+      "prompt": "Daily reward streak changes when timezone changes",
+      "expected": [
+        "define time source and timezone policy"
+      ],
+      "forbiddenClaims": [
+        "device timezone is authoritative"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "rendering-shared-material",
+      "category": "rendering",
+      "prompt": "Runtime tint changes shared material on all enemies",
+      "expected": [
+        "use material property block or instance intentionally"
+      ],
+      "forbiddenClaims": [
+        "shared material mutation is local"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "rendering-shader-variants",
+      "category": "rendering",
+      "prompt": "New shader keywords explode mobile build variants",
+      "expected": [
+        "track keywords and strip policy"
+      ],
+      "forbiddenClaims": [
+        "shader variants do not affect build"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "rendering-vfx-pool",
+      "category": "rendering",
+      "prompt": "Hit VFX instantiates every frame on mobile",
+      "expected": [
+        "pool and cap VFX spawn"
+      ],
+      "forbiddenClaims": [
+        "instantiate is always fine"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "rendering-camera-priority",
+      "category": "rendering",
+      "prompt": "Two virtual cameras fight for the same priority",
+      "expected": [
+        "define camera owner and priority/blend"
+      ],
+      "forbiddenClaims": [
+        "priority conflicts do not matter"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "rendering-navmesh-runtime",
+      "category": "rendering",
+      "prompt": "Enemy recalculates expensive paths every Update",
+      "expected": [
+        "budget navigation tick and cache target"
+      ],
+      "forbiddenClaims": [
+        "pathfinding every frame is free"
+      ],
+      "scoreThreshold": 0.8
     }
   ],
   "agentCoverage": [

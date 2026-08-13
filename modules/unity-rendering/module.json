@@ -7,8 +7,13 @@
     "unity-core"
   ],
   "content": [
-    "skills/unity-camera",
-    "skills/unity-profiling",
-    "skills/unity-memory"
+    "skills/unity-rendering",
+    "skills/unity-urp",
+    "skills/unity-shader",
+    "skills/unity-material",
+    "skills/unity-vfx",
+    "skills/unity-particles",
+    "skills/unity-navigation",
+    "skills/unity-cinemachine"
   ]
 }

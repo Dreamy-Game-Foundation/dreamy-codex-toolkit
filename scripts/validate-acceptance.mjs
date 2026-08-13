@@ -69,10 +69,15 @@ function validateHarness() {
 
 function validatePresets() {
   const moduleDir = path.join(root, "modules");
+  const toolkit = readJson("toolkit.json");
+  const listedModules = new Set((toolkit.modules ?? []).map((file) => path.basename(path.dirname(file))));
   const modules = new Map();
   for (const moduleFile of fs.readdirSync(moduleDir)) {
     const file = path.join(moduleDir, moduleFile, "module.json");
     if (fs.existsSync(file)) modules.set(moduleFile, JSON.parse(fs.readFileSync(file, "utf8")));
+  }
+  for (const id of modules.keys()) {
+    if (!listedModules.has(id)) errors.push(`dead module not listed in toolkit.json: ${id}`);
   }
   function visit(id, stack = []) {
     const module = modules.get(id);
@@ -89,6 +94,20 @@ function validatePresets() {
       seen.add(id);
       if (!modules.has(id)) errors.push(`${file}: missing module ${id}`);
     }
+    if ((preset.modules ?? []).length > 9) errors.push(`${file}: preset exceeds context module budget`);
+  }
+}
+
+function validateSkillIndex() {
+  const index = readJson("skills/index.json");
+  const names = new Set();
+  for (const skill of index.skills ?? []) {
+    if (skill.file.includes("\\")) errors.push(`${skill.name}: skill index path must use POSIX separators`);
+    if (names.has(skill.name)) errors.push(`duplicate skill index entry: ${skill.name}`);
+    names.add(skill.name);
+    const full = path.join(root, skill.file);
+    if (!fs.existsSync(full)) errors.push(`${skill.name}: indexed skill file missing`);
+    if (fs.existsSync(full) && fs.readFileSync(full, "utf8").length < 700) errors.push(`${skill.name}: skill looks like a stub`);
   }
 }
 
@@ -96,6 +115,7 @@ validateAgents();
 validateEvals();
 validateHarness();
 validatePresets();
+validateSkillIndex();
 
 if (errors.length) {
   console.error(errors.join("\n"));

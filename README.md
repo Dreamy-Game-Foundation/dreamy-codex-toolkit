@@ -12,7 +12,7 @@ Codex toolkit for Dreamy Unity projects and packages.
 
 ## Current Status
 
-Current canonical status is `0.1.0-alpha.1` / `alpha` in `toolkit.json`.
+Current canonical status is `0.1.0-alpha.2` / `alpha` in `toolkit.json`.
 
 - `toolkit.json` is the toolkit manifest.
 - `compatibility/dreamy-packages.json` records verified Dreamy package versions, commits, dependencies, capabilities, and drift.
@@ -21,8 +21,8 @@ Current canonical status is `0.1.0-alpha.1` / `alpha` in `toolkit.json`.
 - `skills/unity-*` contains the first Unity safety skill stubs.
 - `skills/index.json` catalogs Dreamy, platform, production, gameplay, systems, and third-party skills.
 - `agents/codex/*.toml` provides Dreamy Codex agent templates for implementation, package maintenance, release validation, docs, and skill authoring.
-- `src/cli` provides local `dreamy-kit` style validate/detect/install/doctor/uninstall/list commands.
-- `harness/dreamy-harness` emits evidence JSON for validation and asmdef checks.
+- `src/cli` provides local `dreamy-kit` style validate/detect/install/doctor/update/uninstall/list/eval commands.
+- `harness/dreamy-harness` emits evidence JSON for git and Unity-dependent operations, with explicit degraded status when Unity is unavailable.
 - `npm run validate` validates current artifacts and skill authoring structure.
 - `scripts/check-unity-safety` catches Runtime-to-Editor asmdef references in JSON fixtures.
 
@@ -62,8 +62,13 @@ Available presets:
 
 - `core`
 - `unity-minimal`
+- `unity-production`
+- `unity-full`
 - `dreamy-project`
+- `dreamy-production`
 - `dreamy-package`
+- `dreamy-template`
+- `dreamy-full`
 
 The installer only writes:
 

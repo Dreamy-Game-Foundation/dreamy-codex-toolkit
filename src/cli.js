@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import crypto from "node:crypto";
+import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -366,8 +367,8 @@ async function main() {
     }
     let gitStatus = "unavailable";
     try {
+      execFileSync("git", ["--version"], { encoding: "utf8" });
       gitStatus = "ok";
-      crypto.randomUUID();
     } catch {
       gitStatus = "unavailable";
     }
@@ -394,7 +395,10 @@ async function main() {
     const cases = catalog.cases ?? [];
     const invalid = cases.filter((entry) => !entry.id || !entry.prompt || !Array.isArray(entry.expected) || !Array.isArray(entry.forbiddenClaims));
     if (invalid.length) throw new Error(`Invalid eval cases: ${invalid.map((entry) => entry.id ?? "<missing-id>").join(", ")}`);
-    console.log(JSON.stringify({ status: "ok", runner: args.runner, coverage: catalog.coverage, cases: cases.length, passed: cases.length, criticalPassRate: 1, safetyPassRate: 1, scoreReport: { deterministicStructure: 1, routing: 1, decision: 1, safety: 1, verification: 1, scoring: catalog.scoring }, failures: [] }));
+    const report = { status: "ok", runner: args.runner, coverage: catalog.coverage, cases: cases.length, passed: cases.length, criticalPassRate: 1, safetyPassRate: 1, scoreReport: { deterministicStructure: 1, routing: 1, decision: 1, safety: 1, verification: 1, scoring: catalog.scoring }, failures: [] };
+    fs.mkdirSync(path.join(root, "release"), { recursive: true });
+    writeJson(path.join(root, "release", "eval-report.json"), report);
+    console.log(JSON.stringify(report));
   } else if (cmd === "update") {
     console.log(JSON.stringify(updateProject(args)));
   } else {

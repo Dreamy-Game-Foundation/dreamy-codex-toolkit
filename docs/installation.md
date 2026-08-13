@@ -37,8 +37,13 @@ Available presets:
 
 - `core`
 - `unity-minimal`
+- `unity-production`
+- `unity-full`
 - `dreamy-project`
+- `dreamy-production`
 - `dreamy-package`
+- `dreamy-template`
+- `dreamy-full`
 
 The installer writes only:
 
