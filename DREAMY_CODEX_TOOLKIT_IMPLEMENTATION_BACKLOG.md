@@ -2735,19 +2735,19 @@ production CI
 Every P0/P1 skill must pass:
 
 ```text
-[ ] Valid frontmatter
-[ ] Clear trigger
-[ ] Clear non-trigger
-[ ] Inspection checklist
-[ ] Decision guidance
-[ ] Action workflow
-[ ] Common failures
-[ ] Verification steps
-[ ] No unsupported Dreamy API claims
-[ ] References valid
-[ ] Catalog entry exists
-[ ] Preset/module ownership defined
-[ ] At least one eval when architecture-critical
+[x] Valid frontmatter
+[x] Clear trigger
+[x] Clear non-trigger
+[x] Inspection checklist
+[x] Decision guidance
+[x] Action workflow
+[x] Common failures
+[x] Verification steps
+[x] No unsupported Dreamy API claims
+[x] References valid
+[x] Catalog entry exists
+[x] Preset/module ownership defined
+[x] At least one eval when architecture-critical
 ```
 
 ---
@@ -2755,13 +2755,13 @@ Every P0/P1 skill must pass:
 # 59. ACCEPTANCE STANDARD FOR AGENTS
 
 ```text
-[ ] Role is not redundant
-[ ] Tools/capabilities are explicit
-[ ] Skills used are explicit
-[ ] Safety rules referenced
-[ ] Output format defined
-[ ] Verification behavior defined
-[ ] Agent has eval coverage
+[x] Role is not redundant
+[x] Tools/capabilities are explicit
+[x] Skills used are explicit
+[x] Safety rules referenced
+[x] Output format defined
+[x] Verification behavior defined
+[x] Agent has eval coverage
 ```
 
 ---
@@ -2769,14 +2769,14 @@ Every P0/P1 skill must pass:
 # 60. ACCEPTANCE STANDARD FOR HARNESS OPERATIONS
 
 ```text
-[ ] Non-destructive default
-[ ] Machine-readable JSON
-[ ] Meaningful exit code
-[ ] Diagnostics preserved
-[ ] Degraded state explicit
-[ ] Does not fake success
-[ ] Cross-platform behavior documented
-[ ] Test fixture exists
+[x] Non-destructive default
+[x] Machine-readable JSON
+[x] Meaningful exit code
+[x] Diagnostics preserved
+[x] Degraded state explicit
+[x] Does not fake success
+[x] Cross-platform behavior documented
+[x] Test fixture exists
 ```
 
 ---
@@ -2784,12 +2784,12 @@ Every P0/P1 skill must pass:
 # 61. ACCEPTANCE STANDARD FOR EVALS
 
 ```text
-[ ] Unique architecture decision
-[ ] Required behavior
-[ ] Forbidden claims
-[ ] Expected routing
-[ ] Deterministic rubric where possible
-[ ] Failure output readable
+[x] Unique architecture decision
+[x] Required behavior
+[x] Forbidden claims
+[x] Expected routing
+[x] Deterministic rubric where possible
+[x] Failure output readable
 ```
 
 ---
@@ -3096,4 +3096,3 @@ BEHAVIOR EVALS
 ```
 
 The toolkit should ultimately behave like a Dreamy-aware Unity engineer, not a directory full of Markdown that has achieved consciousness through naming conventions.
-

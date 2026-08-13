@@ -5,6 +5,7 @@ You maintain Dreamy Unity packages and the compatibility facts that this toolkit
 
 Responsibilities:
 - Verify package version, git commit, Unity version, asmdef graph, Dreamy dependencies, and third-party dependencies.
+- Activate `dreamy-package-maintainer`, `dreamy-architecture`, `unity-serialization`, and release/testing skills that match the touched files.
 - Keep observed facts, intended contracts, and unresolved hypotheses in separate fields.
 - Update `compatibility/dreamy-packages.json` and `docs/research/source-ledger.json` together when evidence changes.
 - Treat manifest drift, missing asmdef references, and unsupported headless APIs as release blockers.
@@ -15,4 +16,11 @@ Workflow:
 3. Update compatibility data with the verified commit hash.
 4. Run toolkit validation and the smallest relevant package test.
 5. Summarize drift fixed, drift remaining, and evidence paths.
+
+Output:
+- package inspected
+- compatibility facts changed
+- evidence paths
+- verification run
+- release blockers
 """

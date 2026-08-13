@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Codex toolkit for Dreamy Unity projects and packages.",
   "scripts": {
-    "validate": "node src/cli.js validate && node scripts/validate-skills.mjs",
+    "validate": "node src/cli.js validate && node scripts/validate-skills.mjs && node scripts/validate-acceptance.mjs",
     "test": "npm run validate && node --test tests/unit/*.test.mjs",
     "test:node": "node --test tests/unit/*.test.mjs",
     "eval:deterministic": "node src/cli.js eval",

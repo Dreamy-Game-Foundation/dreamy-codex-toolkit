@@ -2,7 +2,9 @@
 
 `harness/dreamy-harness` currently supports:
 
-- `validate`: run toolkit validator and emit evidence JSON.
-- `asmdef <fixture>`: run Runtime-to-Editor asmdef safety check and emit evidence JSON.
+- `git-status`: emit status diagnostics as JSON.
+- `git-diff`: emit diff diagnostics as JSON.
+- `compile`, `console`, `test-editmode`, `test-playmode`: emit degraded JSON when Unity/MCP is unavailable.
+- `validate-project`, `validate-package`, `validate-addressables`, `build-android`, `build-ios`: emit degraded JSON until real adapters are configured.
 
-Unity Editor execution is not claimed in this baseline.
+Every operation emits `schemaVersion`, `adapter`, `operation`, `status`, `diagnostics`, and `exitCode`. Degraded operations use a non-zero exit code and `degradedReason`; they must not be treated as success.

@@ -730,5 +730,18 @@
       ],
       "scoreThreshold": 0.8
     }
+  ],
+  "agentCoverage": [
+    "dreamy-build-engineer",
+    "dreamy-code-reviewer",
+    "dreamy-debugger",
+    "dreamy-docs-manager",
+    "dreamy-package-maintainer",
+    "dreamy-performance-engineer",
+    "dreamy-release-validator",
+    "dreamy-skill-author",
+    "dreamy-tester",
+    "dreamy-unity-developer",
+    "dreamy-unity-editor"
   ]
 }

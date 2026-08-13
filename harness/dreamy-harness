@@ -7,7 +7,7 @@ const op = process.argv[2] ?? "help";
 const target = path.resolve(process.argv[3] ?? ".");
 
 function json(value, code = 0) {
-  console.log(JSON.stringify(value, null, 2));
+  console.log(JSON.stringify({ ...value, exitCode: code }, null, 2));
   process.exitCode = code;
 }
 
@@ -20,13 +20,52 @@ function git(args) {
 }
 
 if (op === "git-status") {
-  json({ schemaVersion: 1, operation: op, target, status: git(["status", "--short"]).trim().split("\n").filter(Boolean) });
+  json({
+    schemaVersion: 1,
+    adapter: "dreamy-harness",
+    operation: op,
+    target,
+    status: "pass",
+    diagnostics: git(["status", "--short"]).trim().split("\n").filter(Boolean)
+  });
 } else if (op === "git-diff") {
-  json({ schemaVersion: 1, operation: op, target, diff: git(["diff", "--stat"]).trim() });
+  json({
+    schemaVersion: 1,
+    adapter: "dreamy-harness",
+    operation: op,
+    target,
+    status: "pass",
+    diagnostics: [git(["diff", "--stat"]).trim()].filter(Boolean)
+  });
 } else if (op === "compile" || op === "console" || op === "test-editmode" || op === "test-playmode") {
-  json({ schemaVersion: 1, operation: op, target, status: "degraded", reason: "Unity executable or MCP bridge not configured", errors: [], warnings: [], exceptions: [] }, 2);
+  json({
+    schemaVersion: 1,
+    adapter: "dreamy-harness",
+    operation: op,
+    target,
+    status: "degraded",
+    degradedReason: "Unity executable or MCP bridge not configured",
+    diagnostics: [],
+    errors: [],
+    warnings: [],
+    exceptions: []
+  }, 2);
 } else if (op === "validate-project" || op === "validate-package" || op === "validate-addressables" || op === "build-android" || op === "build-ios") {
-  json({ schemaVersion: 1, operation: op, target, status: "degraded", reason: "Static adapter implemented; real Unity bridge pending" }, 2);
+  json({
+    schemaVersion: 1,
+    adapter: "dreamy-harness",
+    operation: op,
+    target,
+    status: "degraded",
+    degradedReason: "Static adapter implemented; real Unity bridge pending",
+    diagnostics: []
+  }, 2);
 } else {
-  json({ operations: ["git-status", "git-diff", "compile", "console", "test-editmode", "test-playmode", "validate-project", "validate-package", "validate-addressables", "build-android", "build-ios"] });
+  json({
+    schemaVersion: 1,
+    adapter: "dreamy-harness",
+    operation: "help",
+    status: "pass",
+    operations: ["git-status", "git-diff", "compile", "console", "test-editmode", "test-playmode", "validate-project", "validate-package", "validate-addressables", "build-android", "build-ios"]
+  });
 }
