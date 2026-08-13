@@ -1,19 +1,53 @@
 {
   "name": "dreamy-codex-toolkit",
   "version": "0.0.0",
-  "private": true,
+  "private": false,
   "type": "module",
   "description": "Codex toolkit for Dreamy Unity projects and packages.",
   "scripts": {
-    "validate": "scripts/validate",
-    "test": "scripts/validate && tests/unit/w0-validation.sh && tests/unit/w2-unity-safety.sh && tests/unit/w4-installer-lifecycle.sh && tests/unit/w5-harness.sh",
+    "validate": "node src/cli.js validate",
+    "test": "npm run validate && node --test tests/unit/*.test.mjs",
     "test:node": "node --test tests/unit/*.test.mjs"
   },
   "bin": {
-    "dreamy-kit": "src/cli"
+    "dreamy-kit": "src/cli.js"
   },
   "engines": {
     "node": ">=20"
+  },
+  "files": [
+    "agents/",
+    "compatibility/",
+    "docs/",
+    "evals/",
+    "harness/",
+    "modules/",
+    "presets/",
+    "rules/",
+    "schemas/",
+    "scripts/",
+    "skills/",
+    "src/",
+    "templates/",
+    "toolkit.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "codex",
+    "skills",
+    "agents",
+    "unity",
+    "dreamy",
+    "game-development"
+  ],
+  "homepage": "https://github.com/Dreamy-Game-Foundation/dreamy-codex-toolkit#readme",
+  "bugs": {
+    "url": "https://github.com/Dreamy-Game-Foundation/dreamy-codex-toolkit/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dreamy-Game-Foundation/dreamy-codex-toolkit.git"
   },
   "license": "MIT"
 }
