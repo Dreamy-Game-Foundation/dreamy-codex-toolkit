@@ -3,38 +3,82 @@ name: dreamy-dataconfig
 description: Use Dreamy DataConfig for typed read-only design data and validation.
 ---
 
-# Dreamy DataConfig
+# Dreamy Dataconfig
+
+## Purpose
+
+Keep static designer-authored data separate from runtime and saved player state.
 
 ## When To Use
 
-- Reading or validating typed design-time data.
-- Moving hardcoded gameplay, economy, UI, audio, or localization values into config.
-- Reviewing whether a feature is mixing static config with mutable save/runtime state.
+- The request directly touches this domain.
+- The implementation needs architecture, lifecycle, data ownership, or verification decisions in this area.
+- Nearby code already uses this domain and the change could break it.
 
-## Read First
+## When Not To Use
 
-- `compatibility/dreamy-packages.json` record for `com.dreamy.dataconfig`
-- consumer `Packages/manifest.json`
-- affected config assets, schemas, generators, validators, and tests
+- A narrower Dreamy package skill owns the decision.
+- The task is only documentation or release metadata with no domain behavior.
+- Existing project instructions explicitly route to another skill.
+
+## Required Inspection
+
+- Project `AGENTS.md` and local instructions.
+- `Packages/manifest.json` and `Packages/packages-lock.json` when this is a Unity project.
+- Relevant asmdefs, scenes, prefabs, assets, tests, and nearby code owners.
+- `compatibility/dreamy-packages.json` before making Dreamy API claims.
+
+## Decision Tree
+
+1. Is there an existing owner or package capability? Use it.
+2. Is the behavior reusable across games? Consider package or shared module ownership.
+3. Is it project-specific? Keep it inside the project feature boundary.
+4. Is the claim unverified? Mark it as an assumption or blocker.
 
 ## Workflow
 
-1. Confirm the consumer project declares required dependencies.
-2. Keep config read-only at runtime unless verified package docs say mutation is supported.
-3. Validate missing keys, duplicate ids, type mismatches, and default-value behavior.
-4. Route player progress, balances, inventory, and unlock state to Datasave or runtime services instead of DataConfig.
+1. Inspect the current implementation and owner.
+2. Identify data, service, UI, asset, and lifecycle boundaries.
+3. Make the smallest safe change that follows existing conventions.
+4. Preserve serialized references, meta GUIDs, and user-owned text.
+5. Run the smallest available compile, test, harness, or static validation.
+6. Report evidence and remaining risks.
 
-## Current Drift
+## Architecture Rules
 
-Treat UniTask availability as drift until the consumer manifest declares it or compatibility says it is fixed.
+- Keep Runtime assemblies free of Editor references.
+- Keep persistent player state out of read-only config.
+- Keep business rules out of leaf views and pooled visual objects.
+- Prefer explicit dependencies over global lookup in leaf components.
+- Do not optimize without profile evidence.
+
+## Common Failure Modes
+
+- Unsupported Dreamy API claims.
+- Ownership drift between package and project code.
+- Hidden serialized reference breakage.
+- Lifecycle leaks in async, events, tweens, pooled objects, or Addressables handles.
 
 ## Verification
 
-- Run the smallest config validation command available in the project.
-- If no command exists, inspect import/console status and state the gap.
+- Compile/console/test result, or a concrete not-run reason.
+- Diff review for ownership, dependencies, and serialization safety.
+- Harness evidence when available.
 
-## Red Flags
+## Allowed Claims
 
-- Config asset writes during gameplay.
-- Silent fallback when a required config key is missing.
-- Claiming async APIs are available while UniTask remains drift.
+Dreamy package APIs are allowed only when backed by the compatibility registry and not listed as drift or unsupported.
+
+## References
+
+- `compatibility/dreamy-packages.json`
+- `rules/index.json`
+- `docs/skill-authoring.md`
+
+## DataConfig Boundaries
+
+Belongs in config: unit stats, level config, shop prices, reward tables, upgrade costs, offer definitions, localization tables, and tuning constants.
+
+Does not belong in config: coins, gems, inventory, level progress, settings, claim state, cooldown state, and session runtime state.
+
+Treat UniTask availability as drift until the consumer manifest declares it or compatibility says it is fixed.

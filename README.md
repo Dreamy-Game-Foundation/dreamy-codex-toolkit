@@ -2,17 +2,17 @@
 
 Codex toolkit for Dreamy Unity projects and packages.
 
-This repository is being implemented wave-by-wave from [`DREAMY_CODEX_TOOLKIT_MASTER_PLAN.md`](DREAMY_CODEX_TOOLKIT_MASTER_PLAN.md).
+`toolkit.json` is the canonical source for version, status, maturity, modules, presets, skills, evals, and harness metadata.
 
 ## Source Docs
 
-- The prompt master plan file is the original build prompt.
-- [`DREAMY_CODEX_TOOLKIT_MASTER_PLAN.md`](DREAMY_CODEX_TOOLKIT_MASTER_PLAN.md) is the implementation plan and wave checklist.
+- [`docs/history/master-plan-prompt.md`](docs/history/master-plan-prompt.md) is the original build prompt.
+- [`docs/plans/DREAMY_CODEX_TOOLKIT_MASTER_PLAN.md`](docs/plans/DREAMY_CODEX_TOOLKIT_MASTER_PLAN.md) is the implementation plan and wave checklist.
 - [`docs/installation.md`](docs/installation.md) has the detailed local install, doctor, and uninstall flow.
 
 ## Current Status
 
-W0-W10 baseline is implemented:
+Current canonical status is `0.1.0-alpha.1` / `alpha` in `toolkit.json`.
 
 - `toolkit.json` is the toolkit manifest.
 - `compatibility/dreamy-packages.json` records verified Dreamy package versions, commits, dependencies, capabilities, and drift.
@@ -23,7 +23,7 @@ W0-W10 baseline is implemented:
 - `agents/codex/*.toml` provides Dreamy Codex agent templates for implementation, package maintenance, release validation, docs, and skill authoring.
 - `src/cli` provides local `dreamy-kit` style validate/detect/install/doctor/uninstall/list commands.
 - `harness/dreamy-harness` emits evidence JSON for validation and asmdef checks.
-- `scripts/validate` validates the current artifacts with Bash and `jq`.
+- `npm run validate` validates current artifacts and skill authoring structure.
 - `scripts/check-unity-safety` catches Runtime-to-Editor asmdef references in JSON fixtures.
 
 ## Why Agents And Skills Are Short
@@ -158,6 +158,6 @@ node src/cli.js update
 
 ## Phase Order
 
-The initial pass now covers W0-W10 at a practical baseline level. Remaining work is hardening: richer Unity Editor execution, real release artifacts, broader eval runner scoring, and upstream package drift resolution.
+The alpha baseline now focuses on hardening: richer Unity Editor execution, real release artifacts, broader eval runner scoring, update lifecycle, and upstream package drift automation.
 
-`src/cli update` currently returns `not-implemented`; there is no released upgrade path in this local baseline yet.
+`src/cli update` refreshes an existing managed install and refuses when managed files have drifted.

@@ -1,17 +1,10 @@
 {
   "$schema": "../../schemas/module.schema.json",
   "id": "production",
-  "version": "0.0.0",
-  "dependencies": ["foundation", "dreamy"],
+  "version": "0.1.0-alpha.1",
+  "dependencies": [],
   "content": [
-    "rules/mobile",
-    "rules/production",
-    "skills/platform",
-    "skills/production",
-    "skills/gameplay",
-    "skills/systems",
-    "skills/third-party",
-    "harness",
-    "evals"
+    "skills/production/production-code-review",
+    "skills/production/production-release"
   ]
 }

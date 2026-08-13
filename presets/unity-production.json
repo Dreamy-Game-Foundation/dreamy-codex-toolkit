@@ -1,0 +1,11 @@
+{
+  "$schema": "../schemas/preset.schema.json",
+  "id": "unity-production",
+  "description": "Unity Production preset.",
+  "modules": [
+    "foundation",
+    "unity-core",
+    "mobile",
+    "production"
+  ]
+}

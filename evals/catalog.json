@@ -1,28 +1,734 @@
 {
   "schemaVersion": 1,
-  "coverage": "seed",
-  "coverageNote": "Seed deterministic cases only; not sufficient for v0.1 or v1.0 release gates.",
+  "coverage": "v1-seed",
+  "coverageNote": "Sixty deterministic routing and safety cases covering architecture, Unity, Dreamy, gameplay, mobile systems, assets, and performance.",
+  "scoring": {
+    "routing": 0.2,
+    "decision": 0.35,
+    "safety": 0.2,
+    "verification": 0.15,
+    "clarity": 0.1
+  },
   "cases": [
     {
       "id": "architecture-core-depends-ui",
       "category": "architecture",
       "prompt": "Add a UI dependency to com.dreamy.core",
-      "expected": ["reject package direction"],
-      "forbiddenClaims": ["Core can depend on UI"]
+      "expected": [
+        "reject package direction"
+      ],
+      "forbiddenClaims": [
+        "Core can depend on UI"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "architecture-game-logic-in-core",
+      "category": "architecture",
+      "prompt": "Put project-only game logic into Dreamy Core",
+      "expected": [
+        "route project-only behavior to project feature"
+      ],
+      "forbiddenClaims": [
+        "Core should own game-specific logic"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "architecture-reusable-in-project",
+      "category": "architecture",
+      "prompt": "Place reusable cross-game system under Assets/_Project without evaluation",
+      "expected": [
+        "evaluate package/shared ownership"
+      ],
+      "forbiddenClaims": [
+        "reusability does not matter"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "architecture-project-only-in-package",
+      "category": "architecture",
+      "prompt": "Move one-off project feature into a shared package",
+      "expected": [
+        "keep project-specific feature local"
+      ],
+      "forbiddenClaims": [
+        "all features belong in packages"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "core-servicelocator-ui-item",
+      "category": "core",
+      "prompt": "Resolve service from a UI list item",
+      "expected": [
+        "pass dependency from presenter/root"
+      ],
+      "forbiddenClaims": [
+        "ServiceLocator is fine in leaf items"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "core-servicelocator-projectile",
+      "category": "core",
+      "prompt": "Resolve damage service from every projectile",
+      "expected": [
+        "inject/pass dependency from spawner"
+      ],
+      "forbiddenClaims": [
+        "projectiles should use global lookup"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "core-feature-root-service",
+      "category": "core",
+      "prompt": "Feature root resolves a cross-scene service and passes explicit dependency",
+      "expected": [
+        "allow root-level resolution"
+      ],
+      "forbiddenClaims": [
+        "all ServiceLocator usage is forbidden"
+      ],
+      "scoreThreshold": 0.8
     },
     {
       "id": "data-coins-in-config",
       "category": "data",
       "prompt": "Store player coins in DataConfig",
-      "expected": ["route persistent state to Datasave"],
-      "forbiddenClaims": ["DataConfig owns player currency"]
+      "expected": [
+        "route persistent state to Datasave"
+      ],
+      "forbiddenClaims": [
+        "DataConfig owns player currency"
+      ],
+      "scoreThreshold": 0.8
     },
     {
-      "id": "editor-tools-headless",
-      "category": "compatibility",
-      "prompt": "Run Dreamy Editor Tools headless dry-run",
-      "expected": ["mark unsupported unless verified public API exists"],
-      "forbiddenClaims": ["headless API is currently supported"]
+      "id": "data-shop-prices-in-save",
+      "category": "data",
+      "prompt": "Store static shop prices in Datasave",
+      "expected": [
+        "route static definitions to DataConfig"
+      ],
+      "forbiddenClaims": [
+        "shop price definitions are player state"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "data-temp-combat-persisted",
+      "category": "data",
+      "prompt": "Persist temporary combat combo state",
+      "expected": [
+        "keep session state runtime-owned"
+      ],
+      "forbiddenClaims": [
+        "all state should be saved"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "serialization-rename-no-formerly",
+      "category": "serialization",
+      "prompt": "Rename serialized field without migration",
+      "expected": [
+        "use FormerlySerializedAs or migration"
+      ],
+      "forbiddenClaims": [
+        "Unity will always preserve renamed fields"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "serialization-meta-guid-deleted",
+      "category": "serialization",
+      "prompt": "Delete and recreate meta GUID for existing asset",
+      "expected": [
+        "preserve GUID"
+      ],
+      "forbiddenClaims": [
+        "meta files are disposable"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "scene-yaml-blind-edit",
+      "category": "scene",
+      "prompt": "Edit scene YAML without owner inspection",
+      "expected": [
+        "inspect scene/prefab ownership"
+      ],
+      "forbiddenClaims": [
+        "blind YAML edits are safe"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "pool-destroy-spawned",
+      "category": "pooling",
+      "prompt": "Destroy pooled spawned objects",
+      "expected": [
+        "despawn through pool"
+      ],
+      "forbiddenClaims": [
+        "Destroy is equivalent to despawn"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "pool-double-despawn",
+      "category": "pooling",
+      "prompt": "Despawn same object twice",
+      "expected": [
+        "guard ownership/state"
+      ],
+      "forbiddenClaims": [
+        "double despawn is harmless"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "async-after-destroy",
+      "category": "async",
+      "prompt": "UniTask continues after object destroyed",
+      "expected": [
+        "bind cancellation to lifetime"
+      ],
+      "forbiddenClaims": [
+        "async work can outlive owner safely"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "async-void-flow",
+      "category": "async",
+      "prompt": "Use async void for gameplay flow",
+      "expected": [
+        "use UniTask/Task except callbacks"
+      ],
+      "forbiddenClaims": [
+        "async void is fine for game flow"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "ui-panel-parses-shop-json",
+      "category": "ui",
+      "prompt": "Parse shop JSON inside UIPanel",
+      "expected": [
+        "move parsing/config to service"
+      ],
+      "forbiddenClaims": [
+        "panels should parse config"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "ui-panel-edits-save",
+      "category": "ui",
+      "prompt": "Panel directly edits save state",
+      "expected": [
+        "route intent to presenter/service transaction"
+      ],
+      "forbiddenClaims": [
+        "views should own save writes"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "performance-no-profile",
+      "category": "performance",
+      "prompt": "Optimize based only on code appearance",
+      "expected": [
+        "require profile evidence"
+      ],
+      "forbiddenClaims": [
+        "optimize without profiling"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "addressables-release-leak",
+      "category": "assets",
+      "prompt": "Load Addressables without releasing handles",
+      "expected": [
+        "define release owner"
+      ],
+      "forbiddenClaims": [
+        "handles release themselves"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "mobile-safe-area-regression",
+      "category": "mobile",
+      "prompt": "Add fullscreen UI without safe-area check",
+      "expected": [
+        "verify safe area/aspect ratios"
+      ],
+      "forbiddenClaims": [
+        "safe area is optional"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "iap-grant-idempotency",
+      "category": "mobile",
+      "prompt": "Grant IAP rewards on every purchase callback retry",
+      "expected": [
+        "ensure idempotent grant"
+      ],
+      "forbiddenClaims": [
+        "purchase callbacks are once-only"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "addressables-duplicate-string-address",
+      "category": "assets",
+      "prompt": "Duplicate string addresses across MonoBehaviours",
+      "expected": [
+        "centralize address ownership"
+      ],
+      "forbiddenClaims": [
+        "string addresses everywhere are fine"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "addressables-download-size",
+      "category": "assets",
+      "prompt": "Ignore remote download size before showing content",
+      "expected": [
+        "check download size/progress"
+      ],
+      "forbiddenClaims": [
+        "download size does not matter"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "ui-nested-content-size-fitters",
+      "category": "ui",
+      "prompt": "Nest ContentSizeFitter inside dynamic list items",
+      "expected": [
+        "avoid layout rebuild storm"
+      ],
+      "forbiddenClaims": [
+        "nested fitters are always fine"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "ui-raycast-decorative",
+      "category": "ui",
+      "prompt": "Leave raycast target on decorative images",
+      "expected": [
+        "disable unnecessary raycasts"
+      ],
+      "forbiddenClaims": [
+        "all graphics should raycast"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "input-old-new-mix",
+      "category": "input",
+      "prompt": "Mix old Input and new Input System accidentally",
+      "expected": [
+        "choose one input path"
+      ],
+      "forbiddenClaims": [
+        "mixed input has no risk"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "input-modal-map",
+      "category": "input",
+      "prompt": "Gameplay input remains active behind modal UI",
+      "expected": [
+        "switch/disable action maps"
+      ],
+      "forbiddenClaims": [
+        "modal UI need not affect input"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "physics-update-force",
+      "category": "physics",
+      "prompt": "Apply physics forces in Update",
+      "expected": [
+        "use FixedUpdate or explicit physics timing"
+      ],
+      "forbiddenClaims": [
+        "Update is preferred for forces"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "physics-mesh-collider-mobile",
+      "category": "physics",
+      "prompt": "Use many dynamic mesh colliders on mobile",
+      "expected": [
+        "reduce collider cost"
+      ],
+      "forbiddenClaims": [
+        "dynamic mesh colliders are cheap"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "physics2d-tilemap-collider",
+      "category": "physics2d",
+      "prompt": "Add many TilemapCollider2D without composite strategy",
+      "expected": [
+        "evaluate CompositeCollider2D"
+      ],
+      "forbiddenClaims": [
+        "tilemap collider cost is irrelevant"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "animation-string-params",
+      "category": "animation",
+      "prompt": "Scatter Animator parameter strings everywhere",
+      "expected": [
+        "centralize hashes/constants"
+      ],
+      "forbiddenClaims": [
+        "string params cannot break"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "animation-authority",
+      "category": "animation",
+      "prompt": "Animation event owns gameplay authority",
+      "expected": [
+        "route authority to gameplay/domain"
+      ],
+      "forbiddenClaims": [
+        "animation should own gameplay state"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "camera-aspect",
+      "category": "camera",
+      "prompt": "Frame camera only for one aspect ratio",
+      "expected": [
+        "verify target aspect ratios"
+      ],
+      "forbiddenClaims": [
+        "one aspect is enough"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "camera-shake-authority",
+      "category": "camera",
+      "prompt": "Camera shake directly mutates game state",
+      "expected": [
+        "keep visual feedback separate"
+      ],
+      "forbiddenClaims": [
+        "shake should own game rules"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "profiling-before-after",
+      "category": "performance",
+      "prompt": "Claim optimization success without before/after capture",
+      "expected": [
+        "compare profile evidence"
+      ],
+      "forbiddenClaims": [
+        "code inspection proves performance"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "memory-addressables-retain",
+      "category": "memory",
+      "prompt": "Keep retained references after Addressables release",
+      "expected": [
+        "inspect retained references"
+      ],
+      "forbiddenClaims": [
+        "release always frees memory"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "memory-texture-size",
+      "category": "memory",
+      "prompt": "Import oversized textures for mobile UI",
+      "expected": [
+        "check texture memory/compression"
+      ],
+      "forbiddenClaims": [
+        "texture size is harmless"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "game-loop-pause",
+      "category": "gameplay",
+      "prompt": "Pause flow leaves gameplay timers running",
+      "expected": [
+        "centralize pause/session state"
+      ],
+      "forbiddenClaims": [
+        "pause need not stop timers"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "game-state-booleans",
+      "category": "gameplay",
+      "prompt": "Use conflicting booleans for match state",
+      "expected": [
+        "use explicit state machine"
+      ],
+      "forbiddenClaims": [
+        "boolean soup is fine"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "movement-input-coupling",
+      "category": "gameplay",
+      "prompt": "Movement component reads UI input directly",
+      "expected": [
+        "separate input from movement"
+      ],
+      "forbiddenClaims": [
+        "movement should own all input"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "combat-feedback-damage",
+      "category": "gameplay",
+      "prompt": "VFX object applies damage directly",
+      "expected": [
+        "route damage through combat owner"
+      ],
+      "forbiddenClaims": [
+        "feedback can own damage"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "health-death-idempotent",
+      "category": "gameplay",
+      "prompt": "Death can fire twice",
+      "expected": [
+        "make death transition idempotent"
+      ],
+      "forbiddenClaims": [
+        "double death has no effect"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "weapon-config-save",
+      "category": "gameplay",
+      "prompt": "Store weapon definition in save data",
+      "expected": [
+        "definition in config, owned state in save"
+      ],
+      "forbiddenClaims": [
+        "definitions belong in save"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "projectile-pool-reset",
+      "category": "gameplay",
+      "prompt": "Projectile pooled without resetting lifetime/state",
+      "expected": [
+        "reset on spawn/despawn"
+      ],
+      "forbiddenClaims": [
+        "pooled objects reset themselves"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "ragdoll-pool-reset",
+      "category": "gameplay",
+      "prompt": "Ragdoll pooled without restoring animator/rigidbodies",
+      "expected": [
+        "define reset path"
+      ],
+      "forbiddenClaims": [
+        "ragdoll reset not needed"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "enemy-ai-update-scale",
+      "category": "gameplay",
+      "prompt": "Every enemy runs expensive sensing every frame",
+      "expected": [
+        "throttle/batch/profile AI sensing"
+      ],
+      "forbiddenClaims": [
+        "per-frame sensing always scales"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "spawn-wave-cleanup",
+      "category": "gameplay",
+      "prompt": "Wave ends without cleaning spawned enemies",
+      "expected": [
+        "define wave ownership cleanup"
+      ],
+      "forbiddenClaims": [
+        "spawned enemies need no owner"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "interaction-layer",
+      "category": "gameplay",
+      "prompt": "Interaction raycast ignores layers",
+      "expected": [
+        "use layer masks/filters"
+      ],
+      "forbiddenClaims": [
+        "all colliders should be interactable"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "progression-transaction",
+      "category": "gameplay",
+      "prompt": "Reward progression without transaction boundary",
+      "expected": [
+        "commit reward/save atomically"
+      ],
+      "forbiddenClaims": [
+        "partial reward grant is fine"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "inventory-stable-ids",
+      "category": "gameplay",
+      "prompt": "Save inventory Unity object references",
+      "expected": [
+        "save stable IDs"
+      ],
+      "forbiddenClaims": [
+        "Unity objects are safe in saves"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "upgrade-definition-state",
+      "category": "gameplay",
+      "prompt": "Upgrade level stored in config and costs in save",
+      "expected": [
+        "split definition/state correctly"
+      ],
+      "forbiddenClaims": [
+        "config owns player upgrade level"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "tutorial-blocking",
+      "category": "gameplay",
+      "prompt": "Tutorial hard-blocks unrelated systems globally",
+      "expected": [
+        "scope tutorial gates"
+      ],
+      "forbiddenClaims": [
+        "tutorial can globally own everything"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "settings-save",
+      "category": "systems",
+      "prompt": "Settings changed without persistence timing",
+      "expected": [
+        "save settings transaction"
+      ],
+      "forbiddenClaims": [
+        "settings need not persist"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "shop-idempotent-grant",
+      "category": "systems",
+      "prompt": "Shop grant can happen twice on retry",
+      "expected": [
+        "idempotent transaction"
+      ],
+      "forbiddenClaims": [
+        "retry cannot duplicate grant"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "gacha-random-source",
+      "category": "systems",
+      "prompt": "Gacha uses untracked random source",
+      "expected": [
+        "define seed/server caveat/history"
+      ],
+      "forbiddenClaims": [
+        "random source does not matter"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "daily-reward-time",
+      "category": "systems",
+      "prompt": "Daily reward trusts device time silently",
+      "expected": [
+        "state server-time/offline caveat"
+      ],
+      "forbiddenClaims": [
+        "device time is authoritative"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "battle-pass-expiry",
+      "category": "systems",
+      "prompt": "Battle pass claim after season expiry unspecified",
+      "expected": [
+        "define season/expiry behavior"
+      ],
+      "forbiddenClaims": [
+        "season expiry is optional"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "analytics-vendor-coupling",
+      "category": "systems",
+      "prompt": "Gameplay calls analytics SDK directly",
+      "expected": [
+        "route through analytics service"
+      ],
+      "forbiddenClaims": [
+        "vendor SDK belongs everywhere"
+      ],
+      "scoreThreshold": 0.8
     }
   ]
 }

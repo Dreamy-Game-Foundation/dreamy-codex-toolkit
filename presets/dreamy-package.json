@@ -1,6 +1,11 @@
 {
   "$schema": "../schemas/preset.schema.json",
   "id": "dreamy-package",
-  "description": "Dreamy package maintenance and compatibility baseline.",
-  "modules": ["foundation", "dreamy", "production"]
+  "description": "Dreamy Package preset.",
+  "modules": [
+    "foundation",
+    "dreamy-foundation",
+    "dreamy-packages",
+    "production"
+  ]
 }

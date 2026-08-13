@@ -1,0 +1,13 @@
+{
+  "$schema": "../schemas/preset.schema.json",
+  "id": "unity-full",
+  "description": "Unity Full preset.",
+  "modules": [
+    "foundation",
+    "unity-core",
+    "unity-gameplay",
+    "unity-rendering",
+    "mobile",
+    "production"
+  ]
+}

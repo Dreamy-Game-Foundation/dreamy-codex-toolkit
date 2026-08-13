@@ -1,0 +1,25 @@
+{
+  "$schema": "../../schemas/module.schema.json",
+  "id": "unity-gameplay",
+  "version": "0.1.0-alpha.1",
+  "dependencies": [],
+  "content": [
+    "skills/gameplay/gameplay-loop",
+    "skills/gameplay/game-state",
+    "skills/gameplay/player-controller",
+    "skills/gameplay/movement",
+    "skills/gameplay/combat",
+    "skills/gameplay/health-damage",
+    "skills/gameplay/weapon",
+    "skills/gameplay/projectile",
+    "skills/gameplay/ragdoll",
+    "skills/gameplay/enemy-ai",
+    "skills/gameplay/spawn-wave",
+    "skills/gameplay/interaction",
+    "skills/gameplay/progression",
+    "skills/gameplay/level-system",
+    "skills/gameplay/inventory",
+    "skills/gameplay/upgrade",
+    "skills/gameplay/tutorial"
+  ]
+}

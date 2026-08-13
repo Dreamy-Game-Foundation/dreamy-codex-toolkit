@@ -1,6 +1,8 @@
 {
   "$schema": "../schemas/preset.schema.json",
   "id": "core",
-  "description": "Minimal non-Unity Dreamy Codex Toolkit baseline.",
-  "modules": ["foundation"]
+  "description": "Core preset.",
+  "modules": [
+    "foundation"
+  ]
 }

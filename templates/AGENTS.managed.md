@@ -1,7 +1,7 @@
 <!-- DREAMY-CODEX:START schema=1 -->
 ## Dreamy Codex Toolkit
 
-Use `dreamy-project` routing when this repository contains Dreamy Unity packages.
+Use `toolkit.json` as the canonical version, status, maturity, module, preset, skill, and harness source.
 
 Safety gates:
 

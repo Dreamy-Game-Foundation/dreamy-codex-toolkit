@@ -1,0 +1,17 @@
+{
+  "$schema": "../../schemas/module.schema.json",
+  "id": "unity-core",
+  "version": "0.1.0-alpha.1",
+  "dependencies": [],
+  "content": [
+    "skills/unity-ui",
+    "skills/unity-input-system",
+    "skills/unity-physics",
+    "skills/unity-physics2d",
+    "skills/unity-animation",
+    "skills/unity-camera",
+    "skills/unity-addressables",
+    "skills/unity-profiling",
+    "skills/unity-memory"
+  ]
+}

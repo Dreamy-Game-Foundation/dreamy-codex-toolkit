@@ -28,12 +28,15 @@ test("installer writes and removes Dreamy managed files", () => {
   assert.match(fs.readFileSync(path.join(target, "AGENTS.md"), "utf8"), /DREAMY-CODEX:START/);
   assert.ok(fs.existsSync(path.join(target, ".dreamy-codex", "install-state.json")));
   assert.ok(fs.existsSync(path.join(target, ".codex", "agents", "dreamy-unity-developer.toml")));
+  assert.ok(fs.existsSync(path.join(target, ".codex", "skills", "dreamy-core", "SKILL.md")));
+  assert.equal(fs.existsSync(path.join(target, ".codex", "skills", "dreamy-audio", "SKILL.md")), false);
   assert.match(fs.readFileSync(path.join(target, ".codex", "config.toml"), "utf8"), /dreamy_unity_developer/);
 
   const uninstall = JSON.parse(run(["uninstall", "--target", target]));
   assert.equal(uninstall.status, "ok");
   assert.equal(fs.readFileSync(path.join(target, "AGENTS.md"), "utf8"), before);
   assert.equal(fs.existsSync(path.join(target, ".codex", "agents", "dreamy-unity-developer.toml")), false);
+  assert.equal(fs.existsSync(path.join(target, ".codex", "skills", "dreamy-core")), false);
   assert.doesNotMatch(fs.readFileSync(path.join(target, ".codex", "config.toml"), "utf8"), /dreamy_unity_developer/);
 });
 
@@ -54,4 +57,19 @@ test("global target installs into user Codex home", () => {
   assert.equal(fs.existsSync(path.join(codexHome, "agents", "dreamy-unity-developer.toml")), false);
   assert.equal(fs.existsSync(path.join(codexHome, "skills", "dreamy-feature")), false);
   assert.doesNotMatch(fs.readFileSync(path.join(codexHome, "config.toml"), "utf8"), /dreamy_unity_developer/);
+});
+
+test("update refreshes an existing managed install", () => {
+  const target = fs.mkdtempSync(path.join(os.tmpdir(), "dreamy-kit-update-"));
+  fs.writeFileSync(path.join(target, "AGENTS.md"), "# User Instructions\n\nKeep this text.\n");
+
+  JSON.parse(run(["install", "--target", target, "--preset", "dreamy-project"]));
+  const dryRun = JSON.parse(run(["update", "--target", target, "--dry-run"]));
+  assert.equal(dryRun.action, "update");
+  assert.equal(dryRun.dryRun, true);
+
+  const update = JSON.parse(run(["update", "--target", target]));
+  assert.equal(update.action, "update");
+  assert.equal(update.status, "ok");
+  assert.match(fs.readFileSync(path.join(target, "AGENTS.md"), "utf8"), /DREAMY-CODEX:START/);
 });

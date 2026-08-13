@@ -1,7 +1,9 @@
 # Changelog
 
-## 0.0.0
+## 0.1.0-alpha.1
 
-- Started W0 Truth baseline.
-- Added toolkit manifest, schemas, Dreamy package compatibility matrix, source ledger, research notes, and validator tests.
-- Added W1-W10 baseline: rule/skill catalogs, presets/modules, shell CLI installer, harness evidence, eval catalog, docs, and lifecycle tests.
+- Added canonical toolkit maturity metadata.
+- Added standard skill authoring docs and template.
+- Expanded Dreamy P0 skills.
+- Added Unity daily development skills, gameplay skills, mobile system skills, execution agents, harness operations, and deterministic eval seed set.
+- Added production-oriented module and preset composition.

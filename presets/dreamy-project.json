@@ -1,6 +1,12 @@
 {
   "$schema": "../schemas/preset.schema.json",
   "id": "dreamy-project",
-  "description": "Dreamy Unity project routing and installer baseline.",
-  "modules": ["foundation", "dreamy"]
+  "description": "Dreamy Project preset.",
+  "modules": [
+    "foundation",
+    "unity-core",
+    "mobile",
+    "dreamy-foundation",
+    "dreamy-packages"
+  ]
 }

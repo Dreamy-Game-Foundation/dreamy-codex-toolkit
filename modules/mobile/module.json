@@ -1,0 +1,12 @@
+{
+  "$schema": "../../schemas/module.schema.json",
+  "id": "mobile",
+  "version": "0.1.0-alpha.1",
+  "dependencies": [],
+  "content": [
+    "skills/platform/mobile-production",
+    "skills/platform/android-build-release",
+    "skills/platform/ios-build-release",
+    "skills/platform/store-release-readiness"
+  ]
+}

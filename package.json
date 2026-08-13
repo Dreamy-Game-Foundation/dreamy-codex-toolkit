@@ -1,13 +1,17 @@
 {
   "name": "dreamy-codex-toolkit",
-  "version": "0.0.0",
+  "version": "0.1.0-alpha.1",
   "private": false,
   "type": "module",
   "description": "Codex toolkit for Dreamy Unity projects and packages.",
   "scripts": {
-    "validate": "node src/cli.js validate",
+    "validate": "node src/cli.js validate && node scripts/validate-skills.mjs",
     "test": "npm run validate && node --test tests/unit/*.test.mjs",
-    "test:node": "node --test tests/unit/*.test.mjs"
+    "test:node": "node --test tests/unit/*.test.mjs",
+    "eval:deterministic": "node src/cli.js eval",
+    "compatibility:refresh": "node scripts/refresh-compatibility.mjs",
+    "release:check": "node scripts/release-check.mjs",
+    "changelog": "node scripts/changelog.mjs"
   },
   "bin": {
     "dreamy-kit": "src/cli.js"

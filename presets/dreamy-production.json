@@ -1,0 +1,15 @@
+{
+  "$schema": "../schemas/preset.schema.json",
+  "id": "dreamy-production",
+  "description": "Dreamy Production preset.",
+  "modules": [
+    "foundation",
+    "unity-core",
+    "unity-gameplay",
+    "game-systems",
+    "mobile",
+    "dreamy-foundation",
+    "dreamy-packages",
+    "production"
+  ]
+}

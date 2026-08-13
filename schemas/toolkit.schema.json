@@ -10,6 +10,18 @@
     "version": { "type": "string", "minLength": 1 },
     "phase": { "type": "string", "minLength": 1 },
     "status": { "type": "string" },
+    "maturity": {
+      "type": "object",
+      "required": ["foundation", "installer", "dreamyKnowledge", "unityKnowledge", "harness", "evals"],
+      "properties": {
+        "foundation": { "type": "string" },
+        "installer": { "type": "string" },
+        "dreamyKnowledge": { "type": "string" },
+        "unityKnowledge": { "type": "string" },
+        "harness": { "type": "string" },
+        "evals": { "type": "string" }
+      }
+    },
     "sourceLedger": { "type": "string", "minLength": 1 },
     "compatibility": {
       "type": "object",

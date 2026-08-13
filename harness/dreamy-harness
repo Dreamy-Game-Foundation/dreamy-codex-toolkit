@@ -1,47 +1,32 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/usr/bin/env node
+import { execFileSync } from "node:child_process";
+import fs from "node:fs";
+import path from "node:path";
 
-operation="${1:-validate}"
-shift || true
+const op = process.argv[2] ?? "help";
+const target = path.resolve(process.argv[3] ?? ".");
 
-status="not-run"
-exit_code=0
-diagnostics=()
+function json(value, code = 0) {
+  console.log(JSON.stringify(value, null, 2));
+  process.exitCode = code;
+}
 
-case "$operation" in
-  validate)
-    if scripts/validate >/tmp/dreamy-harness-validate.out 2>/tmp/dreamy-harness-validate.err; then
-      status="pass"
-    else
-      status="fail"
-      exit_code=1
-      diagnostics+=("validator failed")
-    fi
-    ;;
-  asmdef)
-    fixture="${1:-tests/fixtures/unity/asmdef-graph.safe.json}"
-    if scripts/check-unity-safety "$fixture" >/tmp/dreamy-harness-asmdef.out 2>/tmp/dreamy-harness-asmdef.err; then
-      status="pass"
-    else
-      status="fail"
-      exit_code=1
-      diagnostics+=("asmdef safety failed")
-    fi
-    ;;
-  *)
-    status="degraded"
-    exit_code=1
-    diagnostics+=("unsupported harness operation")
-    ;;
-esac
+function git(args) {
+  try {
+    return execFileSync("git", ["-c", `safe.directory=${target.replaceAll("\\", "/")}`, "-C", target, ...args], { encoding: "utf8" });
+  } catch (error) {
+    return error.stdout?.toString() ?? error.message;
+  }
+}
 
-jq -n \
-  --arg adapter "dreamy-harness" \
-  --arg operation "$operation" \
-  --arg status "$status" \
-  --arg observedAt "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
-  --argjson exitCode "$exit_code" \
-  --argjson diagnostics "$(printf '%s\n' "${diagnostics[@]}" | jq -R . | jq -s .)" \
-  '{schemaVersion:1, adapter:$adapter, operation:$operation, status:$status, observedAt:$observedAt, command:["harness/dreamy-harness", $operation], exitCode:$exitCode, artifacts:[], diagnostics:$diagnostics, git:{available:false, dirtyPaths:[]}, profileHash:null, degradedReason:(if $status == "degraded" then ($diagnostics | join("; ")) else null end)}'
-
-exit "$exit_code"
+if (op === "git-status") {
+  json({ schemaVersion: 1, operation: op, target, status: git(["status", "--short"]).trim().split("\n").filter(Boolean) });
+} else if (op === "git-diff") {
+  json({ schemaVersion: 1, operation: op, target, diff: git(["diff", "--stat"]).trim() });
+} else if (op === "compile" || op === "console" || op === "test-editmode" || op === "test-playmode") {
+  json({ schemaVersion: 1, operation: op, target, status: "degraded", reason: "Unity executable or MCP bridge not configured", errors: [], warnings: [], exceptions: [] }, 2);
+} else if (op === "validate-project" || op === "validate-package" || op === "validate-addressables" || op === "build-android" || op === "build-ios") {
+  json({ schemaVersion: 1, operation: op, target, status: "degraded", reason: "Static adapter implemented; real Unity bridge pending" }, 2);
+} else {
+  json({ operations: ["git-status", "git-diff", "compile", "console", "test-editmode", "test-playmode", "validate-project", "validate-package", "validate-addressables", "build-android", "build-ios"] });
+}

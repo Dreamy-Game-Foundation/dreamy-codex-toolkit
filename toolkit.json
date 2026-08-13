@@ -2,8 +2,8 @@
   "$schema": "./schemas/toolkit.schema.json",
   "schemaVersion": 1,
   "name": "dreamy-codex-toolkit",
-  "version": "0.0.0",
-  "phase": "W10 Production 1.0 baseline",
+  "version": "0.1.0-alpha.1",
+  "phase": "alpha hardening baseline",
   "status": "alpha",
   "sourceLedger": "docs/research/source-ledger.json",
   "compatibility": {
@@ -27,13 +27,24 @@
   "presets": [
     "presets/core.json",
     "presets/unity-minimal.json",
+    "presets/unity-production.json",
+    "presets/unity-full.json",
     "presets/dreamy-project.json",
-    "presets/dreamy-package.json"
+    "presets/dreamy-production.json",
+    "presets/dreamy-package.json",
+    "presets/dreamy-template.json",
+    "presets/dreamy-full.json"
   ],
   "modules": [
     "modules/foundation/module.json",
-    "modules/dreamy/module.json",
-    "modules/production/module.json"
+    "modules/unity-core/module.json",
+    "modules/unity-gameplay/module.json",
+    "modules/game-systems/module.json",
+    "modules/dreamy-foundation/module.json",
+    "modules/dreamy-packages/module.json",
+    "modules/mobile/module.json",
+    "modules/production/module.json",
+    "modules/unity-rendering/module.json"
   ],
   "gates": {
     "p0": [
@@ -48,5 +59,13 @@
       "runtime-editor-asmdef-check",
       "skill-catalog-complete"
     ]
+  },
+  "maturity": {
+    "foundation": "stable",
+    "installer": "alpha",
+    "dreamyKnowledge": "alpha",
+    "unityKnowledge": "alpha",
+    "harness": "prototype",
+    "evals": "alpha"
   }
 }

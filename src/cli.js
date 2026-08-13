@@ -88,7 +88,7 @@ function resolveTarget(target) {
     agentsMd: path.join(rootDir, "AGENTS.md"),
     agentsDir: path.join(rootDir, ".codex", "agents"),
     configFile: path.join(rootDir, ".codex", "config.toml"),
-    skillsDir: null,
+    skillsDir: path.join(rootDir, ".codex", "skills"),
     stateDir: path.join(rootDir, ".dreamy-codex"),
   };
 }
@@ -154,6 +154,38 @@ function listSkillDirs() {
   return dirs;
 }
 
+const packageSkillMap = {
+  "com.dreamy.core": "skills/dreamy/dreamy-core",
+  "com.dreamy.dataconfig": "skills/dreamy/dreamy-dataconfig",
+  "com.dreamy.datasave": "skills/dreamy/dreamy-datasave",
+  "com.dreamy.assets": "skills/dreamy/dreamy-assets",
+  "com.dreamy.ui": "skills/dreamy/dreamy-ui",
+  "com.dreamy.audio": "skills/dreamy/dreamy-audio",
+  "com.dreamy.feedback": "skills/dreamy/dreamy-feedback",
+  "com.dreamy.localization": "skills/dreamy/dreamy-localization",
+  "com.dreamy.editor-tools": "skills/dreamy/dreamy-editor-tools",
+};
+
+function skillDirsForInstall(target, preset, profile) {
+  if (target.kind === "global") return listSkillDirs();
+  const presetPath = path.join(root, "presets", `${preset}.json`);
+  const selected = new Set();
+  const detected = new Set((profile.packages ?? []).map((pkg) => pkg.name));
+  for (const moduleId of readJson(presetPath).modules ?? []) {
+    const modulePath = path.join(root, "modules", moduleId, "module.json");
+    if (!fs.existsSync(modulePath)) continue;
+    for (const item of readJson(modulePath).content ?? []) {
+      if (!item.startsWith("skills/")) continue;
+      if (moduleId === "dreamy-packages") {
+        const allowed = [...detected].some((pkg) => packageSkillMap[pkg] === item);
+        if (!allowed) continue;
+      }
+      if (fs.existsSync(path.join(root, item, "SKILL.md"))) selected.add(path.join(root, item));
+    }
+  }
+  return [...selected];
+}
+
 function installProject(args) {
   const target = resolveTarget(args.target);
   const presetPath = path.join(root, "presets", `${args.preset}.json`);
@@ -195,7 +227,7 @@ function installProject(args) {
 
   const skillDirs = [];
   if (target.skillsDir) {
-    for (const source of listSkillDirs()) {
+    for (const source of skillDirsForInstall(target, args.preset, profile)) {
       const destination = path.join(target.skillsDir, path.basename(source));
       fs.rmSync(destination, { recursive: true, force: true });
       copyDir(source, destination);
@@ -257,6 +289,19 @@ function uninstallProject(args) {
   return { action: "uninstall", target: target.root, targetKind: target.kind, status: "ok" };
 }
 
+function updateProject(args) {
+  const target = resolveTarget(args.target);
+  const statePath = path.join(target.stateDir, "install-state.json");
+  if (!fs.existsSync(statePath)) throw new Error("Missing install state; refusing update");
+  const state = readJson(statePath);
+  const preset = args.preset === "dreamy-project" ? state.preset ?? args.preset : args.preset;
+  if (args.dryRun) {
+    return { action: "update", target: target.root, targetKind: target.kind, fromVersion: state.toolkitVersion, toVersion: readJson(path.join(root, "toolkit.json")).version, preset, dryRun: true };
+  }
+  uninstallProject({ ...args, dryRun: false });
+  return { ...installProject({ ...args, preset, dryRun: false }), action: "update", fromVersion: state.toolkitVersion };
+}
+
 async function main() {
   const { cmd, args } = parseArgs(process.argv.slice(2));
   if (cmd === "validate") {
@@ -277,8 +322,14 @@ async function main() {
   } else if (cmd === "list") {
     const kit = readJson(path.join(root, "toolkit.json"));
     console.log(JSON.stringify({ presets: kit.presets, modules: kit.modules, rules: kit.rules, skills: kit.skills }));
+  } else if (cmd === "eval") {
+    const catalog = readJson(path.join(root, "evals", "catalog.json"));
+    const cases = catalog.cases ?? [];
+    const invalid = cases.filter((entry) => !entry.id || !entry.prompt || !Array.isArray(entry.expected) || !Array.isArray(entry.forbiddenClaims));
+    if (invalid.length) throw new Error(`Invalid eval cases: ${invalid.map((entry) => entry.id ?? "<missing-id>").join(", ")}`);
+    console.log(JSON.stringify({ status: "ok", coverage: catalog.coverage, cases: cases.length, scoreReport: { deterministicStructure: 1, scoring: catalog.scoring } }));
   } else if (cmd === "update") {
-    console.log(JSON.stringify({ action: "update", status: "not-implemented", reason: "No released upgrade path in local baseline" }));
+    console.log(JSON.stringify(updateProject(args)));
   } else {
     console.log(`dreamy-kit commands:
   validate
@@ -288,7 +339,8 @@ async function main() {
   uninstall [--target PATH|global] [--dry-run]
   doctor [--target PATH] [--json]
   list
-  update`);
+  eval
+  update [--target PATH|global] [--preset NAME] [--dry-run]`);
   }
 }
 

@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-13T15:56:52.589Z",
+  "packages": 9,
+  "thirdParty": 7,
+  "asmdefDependencyIssues": 2,
+  "issues": [
+    {
+      "severity": "WARN",
+      "package": "com.dreamy.ui",
+      "issue": "Runtime asmdef references Unity.TextMeshPro but package manifest does not declare com.unity.textmeshpro"
+    },
+    {
+      "severity": "WARN",
+      "package": "com.dreamy.dataconfig",
+      "issue": "Runtime asmdef references UniTask but package manifest does not declare com.cysharp.unitask"
+    },
+    {
+      "severity": "WARN",
+      "package": "com.dreamy.editor-tools",
+      "issue": "No verified public headless API"
+    },
+    {
+      "severity": "WARN",
+      "package": "com.dreamy.editor-tools",
+      "issue": "No verified dry-run API"
+    },
+    {
+      "severity": "WARN",
+      "package": "com.dreamy.editor-tools",
+      "issue": "No verified deterministic JSON evidence contract"
+    }
+  ]
+}

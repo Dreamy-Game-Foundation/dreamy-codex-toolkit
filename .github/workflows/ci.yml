@@ -9,11 +9,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Validate W0-W2 artifacts
-        run: scripts/validate
-      - name: Run shell tests
-        run: |
-          tests/unit/w0-validation.sh
-          tests/unit/w2-unity-safety.sh
-          tests/unit/w4-installer-lifecycle.sh
-          tests/unit/w5-harness.sh
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies
+        run: npm ci
+      - name: Validate
+        run: npm run validate
+      - name: Test
+        run: npm test
+      - name: Deterministic eval
+        run: npm run eval:deterministic
+      - name: Compatibility gate
+        run: npm run compatibility:refresh
+      - name: Release gate
+        run: npm run release:check

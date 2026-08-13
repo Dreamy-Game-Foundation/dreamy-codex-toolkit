@@ -1,10 +1,8 @@
 # Dreamy Codex Toolkit
 
-Use this repository to build the Dreamy Codex Toolkit from `DREAMY_CODEX_TOOLKIT_MASTER_PLAN.md`.
+Use this repository to build the Dreamy Codex Toolkit from `docs/plans/DREAMY_CODEX_TOOLKIT_MASTER_PLAN.md`.
 
-Current implementation phase:
-
-- W0 Truth baseline: machine-readable source ledger, compatibility matrix, schemas, and validator.
+Canonical repository state lives in `toolkit.json`.
 
 Rules for contributors:
 

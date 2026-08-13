@@ -1,0 +1,16 @@
+{
+  "$schema": "../../schemas/module.schema.json",
+  "id": "dreamy-foundation",
+  "version": "0.1.0-alpha.1",
+  "dependencies": [],
+  "content": [
+    "skills/dreamy/dreamy-feature",
+    "skills/dreamy/dreamy-core",
+    "skills/dreamy/dreamy-dataconfig",
+    "skills/dreamy/dreamy-datasave",
+    "skills/dreamy/dreamy-assets",
+    "skills/dreamy/dreamy-ui",
+    "skills/dreamy/dreamy-testing",
+    "skills/dreamy/dreamy-package-maintainer"
+  ]
+}

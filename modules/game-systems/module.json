@@ -1,0 +1,17 @@
+{
+  "$schema": "../../schemas/module.schema.json",
+  "id": "game-systems",
+  "version": "0.1.0-alpha.1",
+  "dependencies": [],
+  "content": [
+    "skills/systems/system-settings",
+    "skills/systems/system-shop",
+    "skills/systems/system-gacha",
+    "skills/systems/system-daily-reward",
+    "skills/systems/system-battle-pass",
+    "skills/systems/system-analytics",
+    "skills/systems/system-ads",
+    "skills/systems/system-iap",
+    "skills/systems/system-remote-config"
+  ]
+}

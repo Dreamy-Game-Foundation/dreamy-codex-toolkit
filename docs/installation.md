@@ -166,4 +166,4 @@ This prints presets, modules, rules, and skills from `toolkit.json`.
 node src/cli.js update
 ```
 
-`update` currently reports `not-implemented` because this alpha baseline does not yet define a released upgrade path.
+`update` refreshes an existing managed install. It reads `.dreamy-codex/install-state.json`, refuses user-modified managed blocks, and then reapplies the current toolkit-managed files.

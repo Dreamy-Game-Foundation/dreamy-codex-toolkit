@@ -1,0 +1,11 @@
+{
+  "$schema": "../schemas/preset.schema.json",
+  "id": "dreamy-template",
+  "description": "Dreamy Template preset.",
+  "modules": [
+    "foundation",
+    "unity-core",
+    "dreamy-foundation",
+    "dreamy-packages"
+  ]
+}

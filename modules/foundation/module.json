@@ -1,7 +1,7 @@
 {
   "$schema": "../../schemas/module.schema.json",
   "id": "foundation",
-  "version": "0.0.0",
+  "version": "0.1.0-alpha.1",
   "dependencies": [],
   "content": [
     "rules/core",

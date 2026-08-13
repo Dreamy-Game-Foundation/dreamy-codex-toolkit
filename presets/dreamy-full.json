@@ -1,0 +1,16 @@
+{
+  "$schema": "../schemas/preset.schema.json",
+  "id": "dreamy-full",
+  "description": "Dreamy Full preset.",
+  "modules": [
+    "foundation",
+    "unity-core",
+    "unity-gameplay",
+    "unity-rendering",
+    "game-systems",
+    "mobile",
+    "dreamy-foundation",
+    "dreamy-packages",
+    "production"
+  ]
+}

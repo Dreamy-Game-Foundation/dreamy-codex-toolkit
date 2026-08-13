@@ -1,0 +1,11 @@
+{
+  "$schema": "../../schemas/module.schema.json",
+  "id": "unity-rendering",
+  "version": "0.1.0-alpha.1",
+  "dependencies": [],
+  "content": [
+    "skills/unity-camera",
+    "skills/unity-profiling",
+    "skills/unity-memory"
+  ]
+}

@@ -5,34 +5,82 @@ description: Orchestrate cross-domain Dreamy features using detected capabilitie
 
 # Dreamy Feature
 
+## Purpose
+
+Route feature work across Dreamy packages, project code, static config, persistent state, services, UI, assets, and tests.
+
 ## When To Use
 
-- Building or modifying a gameplay, UI, economy, audio, feedback, asset, or save feature in a Dreamy Unity project.
-- Coordinating multiple Dreamy packages in one user-facing workflow.
-- Deciding whether data belongs in config, runtime state, save data, UI, or a shared service.
+- The request directly touches this domain.
+- The implementation needs architecture, lifecycle, data ownership, or verification decisions in this area.
+- Nearby code already uses this domain and the change could break it.
 
-## Read First
+## When Not To Use
 
-- `Packages/manifest.json`
-- `Packages/packages-lock.json` when present
-- affected asmdefs
-- `compatibility/dreamy-packages.json`
-- nearby feature folders and project `AGENTS.md`
+- A narrower Dreamy package skill owns the decision.
+- The task is only documentation or release metadata with no domain behavior.
+- Existing project instructions explicitly route to another skill.
+
+## Required Inspection
+
+- Project `AGENTS.md` and local instructions.
+- `Packages/manifest.json` and `Packages/packages-lock.json` when this is a Unity project.
+- Relevant asmdefs, scenes, prefabs, assets, tests, and nearby code owners.
+- `compatibility/dreamy-packages.json` before making Dreamy API claims.
+
+## Decision Tree
+
+1. Is there an existing owner or package capability? Use it.
+2. Is the behavior reusable across games? Consider package or shared module ownership.
+3. Is it project-specific? Keep it inside the project feature boundary.
+4. Is the claim unverified? Mark it as an assumption or blocker.
 
 ## Workflow
 
-1. Identify the feature owner, assembly, scene/prefab touch points, and Dreamy packages involved.
-2. Route static design data to DataConfig, persistent state to Datasave, UI presentation outside shared service logic, and reusable runtime behavior to Core/services.
-3. Keep the change inside the existing feature/module boundary unless the current architecture already has a shared package for it.
-4. Verify compile/test status or state why it was not run.
+1. Inspect the current implementation and owner.
+2. Identify data, service, UI, asset, and lifecycle boundaries.
+3. Make the smallest safe change that follows existing conventions.
+4. Preserve serialized references, meta GUIDs, and user-owned text.
+5. Run the smallest available compile, test, harness, or static validation.
+6. Report evidence and remaining risks.
+
+## Architecture Rules
+
+- Keep Runtime assemblies free of Editor references.
+- Keep persistent player state out of read-only config.
+- Keep business rules out of leaf views and pooled visual objects.
+- Prefer explicit dependencies over global lookup in leaf components.
+- Do not optimize without profile evidence.
+
+## Common Failure Modes
+
+- Unsupported Dreamy API claims.
+- Ownership drift between package and project code.
+- Hidden serialized reference breakage.
+- Lifecycle leaks in async, events, tweens, pooled objects, or Addressables handles.
+
+## Verification
+
+- Compile/console/test result, or a concrete not-run reason.
+- Diff review for ownership, dependencies, and serialization safety.
+- Harness evidence when available.
 
 ## Allowed Claims
 
-Only claim a Dreamy API is supported when the package record has a verified commit and the claim is not listed under drift or unsupported contracts.
+Dreamy package APIs are allowed only when backed by the compatibility registry and not listed as drift or unsupported.
 
-## Red Flags
+## References
 
-- Creating a new global service before checking existing service composition.
-- Putting persistent player state in read-only config.
-- Mutating prefabs/scenes without identifying the owning feature.
-- Referencing Editor assemblies from Runtime assemblies.
+- `compatibility/dreamy-packages.json`
+- `rules/index.json`
+- `docs/skill-authoring.md`
+
+## Dreamy Feature Decisions
+
+Ownership: existing Dreamy package beats new project code; reusable cross-game behavior should be considered for a package; project-only behavior belongs under the project feature boundary.
+
+Data: designer-authored mostly read-only data goes to DataConfig; player-owned persistent state goes to Datasave; temporary combat/session state stays runtime-owned.
+
+Services: cross-scene services belong in composition roots or service registration; feature-local services stay under the feature root; leaf components should receive explicit dependencies.
+
+UI: panels render state and send intent; presenters/services/domain logic handle business operations.

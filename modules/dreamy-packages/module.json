@@ -1,0 +1,16 @@
+{
+  "$schema": "../../schemas/module.schema.json",
+  "id": "dreamy-packages",
+  "version": "0.1.0-alpha.1",
+  "dependencies": [],
+  "content": [
+    "skills/dreamy/dreamy-base",
+    "skills/dreamy/dreamy-architecture",
+    "skills/dreamy/dreamy-audio",
+    "skills/dreamy/dreamy-feedback",
+    "skills/dreamy/dreamy-localization",
+    "skills/dreamy/dreamy-editor-tools",
+    "skills/dreamy/dreamy-template",
+    "skills/dreamy/dreamy-mobile"
+  ]
+}
