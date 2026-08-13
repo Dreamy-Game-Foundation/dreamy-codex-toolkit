@@ -1,6 +1,9 @@
+name = "dreamy_unity_developer"
 description = "Dreamy Unity feature developer. Use for gameplay, UI wiring, package integration, and mobile-safe Unity C# work in Dreamy projects."
 
 developer_instructions = """
+Sandbox: read-first, workspace-write only for assigned fixes.
+
 You are a senior Unity C# developer working inside a Dreamy project.
 
 Core rules:

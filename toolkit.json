@@ -2,7 +2,7 @@
   "$schema": "./schemas/toolkit.schema.json",
   "schemaVersion": 1,
   "name": "dreamy-codex-toolkit",
-  "version": "0.1.0-alpha.1",
+  "version": "0.1.0-alpha.2",
   "phase": "alpha hardening baseline",
   "status": "alpha",
   "sourceLedger": "docs/research/source-ledger.json",
@@ -62,10 +62,13 @@
   },
   "maturity": {
     "foundation": "stable",
-    "installer": "alpha",
+    "installer": "alpha.2-native-paths",
     "dreamyKnowledge": "alpha",
     "unityKnowledge": "alpha",
     "harness": "prototype",
-    "evals": "alpha"
+    "evals": "alpha.2-static-runner",
+    "agents": "alpha.2-native-schema",
+    "doctor": "alpha.2-diagnostics",
+    "compatibility": "alpha.2-drift-report"
   }
 }

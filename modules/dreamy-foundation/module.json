@@ -2,7 +2,9 @@
   "$schema": "../../schemas/module.schema.json",
   "id": "dreamy-foundation",
   "version": "0.1.0-alpha.1",
-  "dependencies": [],
+  "dependencies": [
+    "foundation"
+  ],
   "content": [
     "skills/dreamy/dreamy-feature",
     "skills/dreamy/dreamy-core",

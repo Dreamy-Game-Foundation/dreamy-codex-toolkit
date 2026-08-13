@@ -20,9 +20,11 @@ function validateAgents() {
   for (const file of fs.readdirSync(dir).filter((name) => name.endsWith(".toml"))) {
     const id = file.replace(/\.toml$/, "");
     const text = fs.readFileSync(path.join(dir, file), "utf8");
+    requireText(text, new RegExp(`^name\\s*=\\s*"${id.replaceAll("-", "_")}"`, "m"), `${file}: missing native name`);
     requireText(text, /^description\s*=\s*".{40,}"/m, `${file}: role/description is missing or vague`);
     requireText(text, /Responsibilities:|Rules:|Core rules:|Check in order:/, `${file}: tools/capabilities or safety rules not explicit`);
     requireText(text, /skills|Activate|Skill structure|validation path/i, `${file}: skills used are not explicit`);
+    requireText(text, /sandbox/i, `${file}: sandbox strategy is not explicit`);
     requireText(text, /Output:|Completion:|Completion gates:/, `${file}: output format is not defined`);
     requireText(text, /verify|verification|validation|Run|evidence/i, `${file}: verification behavior is not defined`);
     if (!covered.has(id)) errors.push(`${file}: missing eval agentCoverage entry`);
@@ -57,6 +59,7 @@ function validateHarness() {
   if (gitStatus.status !== "pass" || !Array.isArray(gitStatus.diagnostics) || gitStatus.exitCode !== 0) {
     errors.push("harness git-status must emit pass JSON diagnostics and exit 0");
   }
+  if (!gitStatus.timestamp || !gitStatus.adapter) errors.push("harness git-status missing timestamp or adapter");
 
   const compile = runHarness(["compile", root], 2);
   if (compile.status !== "degraded" || !compile.degradedReason || compile.exitCode === 0) {
@@ -64,9 +67,35 @@ function validateHarness() {
   }
 }
 
+function validatePresets() {
+  const moduleDir = path.join(root, "modules");
+  const modules = new Map();
+  for (const moduleFile of fs.readdirSync(moduleDir)) {
+    const file = path.join(moduleDir, moduleFile, "module.json");
+    if (fs.existsSync(file)) modules.set(moduleFile, JSON.parse(fs.readFileSync(file, "utf8")));
+  }
+  function visit(id, stack = []) {
+    const module = modules.get(id);
+    if (!module) errors.push(`missing module ${id}`);
+    if (stack.includes(id)) errors.push(`module cycle ${[...stack, id].join(" -> ")}`);
+    for (const dep of module?.dependencies ?? []) visit(dep, [...stack, id]);
+  }
+  for (const id of modules.keys()) visit(id);
+  for (const file of fs.readdirSync(path.join(root, "presets")).filter((name) => name.endsWith(".json"))) {
+    const preset = readJson(`presets/${file}`);
+    const seen = new Set();
+    for (const id of preset.modules ?? []) {
+      if (seen.has(id)) errors.push(`${file}: duplicate module ${id}`);
+      seen.add(id);
+      if (!modules.has(id)) errors.push(`${file}: missing module ${id}`);
+    }
+  }
+}
+
 validateAgents();
 validateEvals();
 validateHarness();
+validatePresets();
 
 if (errors.length) {
   console.error(errors.join("\n"));

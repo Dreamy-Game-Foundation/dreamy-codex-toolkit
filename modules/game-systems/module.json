@@ -2,7 +2,9 @@
   "$schema": "../../schemas/module.schema.json",
   "id": "game-systems",
   "version": "0.1.0-alpha.1",
-  "dependencies": [],
+  "dependencies": [
+    "foundation"
+  ],
   "content": [
     "skills/systems/system-settings",
     "skills/systems/system-shop",

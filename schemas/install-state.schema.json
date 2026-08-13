@@ -3,12 +3,19 @@
   "$id": "https://dreamy.tools/codex/schemas/install-state.schema.json",
   "title": "Dreamy Install State",
   "type": "object",
-  "required": ["schemaVersion", "toolkitVersion", "target", "managedBlocks"],
+  "required": ["schemaVersion", "toolkitVersion", "target", "preset", "resolvedModules", "skills", "agents", "managedFiles", "checksums"],
   "properties": {
-    "schemaVersion": { "const": 1 },
+    "schemaVersion": { "const": 2 },
     "toolkitVersion": { "type": "string" },
     "target": { "type": "string" },
-    "managedBlocks": { "type": "array" },
-    "checksums": { "type": "object" }
+    "targetKind": { "enum": ["project", "global"] },
+    "preset": { "type": "string" },
+    "resolvedModules": { "type": "array", "items": { "type": "string" } },
+    "skills": { "type": "array", "items": { "type": "string" } },
+    "agents": { "type": "array", "items": { "type": "string" } },
+    "managedFiles": { "type": "array", "items": { "type": "string" } },
+    "checksums": { "type": "object" },
+    "detectedPackages": { "type": "array" },
+    "compatibilitySnapshot": { "type": "object" }
   }
 }

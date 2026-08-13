@@ -32,7 +32,7 @@ This toolkit is still an alpha baseline. Some `skills/*/SKILL.md` files are rout
 
 Dreamy package API guidance should only become longer after it is tied to verified commits in `compatibility/dreamy-packages.json` and observed sources in `docs/research/source-ledger.json`. That keeps the toolkit from inventing unsupported APIs.
 
-The installer now writes a managed block into the target project's `AGENTS.md`, copies Dreamy agent templates into `.codex/agents`, and registers them in `.codex/config.toml`.
+The installer writes a managed block into the target project's `AGENTS.md`, copies Dreamy agent templates into `.codex/agents`, and installs project skills into `.agents/skills` for native Codex discovery.
 
 Installed agents:
 
@@ -69,7 +69,7 @@ The installer only writes:
 
 - a Dreamy managed block in the target `AGENTS.md`
 - Dreamy agent templates in `.codex/agents`
-- a Dreamy managed agent block in `.codex/config.toml`
+- Dreamy skills in `.agents/skills`
 - `.dreamy-codex/project-profile.json`
 - `.dreamy-codex/install-state.json`
 
@@ -105,13 +105,13 @@ Install globally into your user Codex folder:
 dreamy-kit install --target global --preset dreamy-project
 ```
 
-On Windows this writes to:
+On Windows this writes agents and AGENTS to:
 
 ```text
 C:\Users\<you>\.codex\
 ```
 
-Global install copies Dreamy skills into `.codex/skills`, Dreamy agents into `.codex/agents`, registers agents in `.codex/config.toml`, and writes `.codex/AGENTS.md`.
+Global install copies Dreamy skills into `%USERPROFILE%\.agents\skills`, Dreamy agents into `%USERPROFILE%\.codex\agents`, and writes `%USERPROFILE%\.codex\AGENTS.md`.
 
 Clone for local development:
 
@@ -138,7 +138,7 @@ dreamy-kit uninstall --target global
 
 Uninstall removes only the managed Dreamy block that this toolkit owns. It refuses to proceed if `.dreamy-codex/install-state.json` is missing, the markers are malformed, or `AGENTS.md` changed after install.
 
-It also removes Dreamy-owned `.codex/agents/dreamy-*.toml` files recorded during install and removes the Dreamy managed agent block from `.codex/config.toml`.
+It also removes Dreamy-owned `.codex/agents/dreamy-*.toml` and `.agents/skills/<dreamy-skill>` entries recorded during install.
 
 Use a dry run when you only want to inspect intent:
 

@@ -2,7 +2,9 @@
   "$schema": "../../schemas/module.schema.json",
   "id": "unity-core",
   "version": "0.1.0-alpha.1",
-  "dependencies": [],
+  "dependencies": [
+    "foundation"
+  ],
   "content": [
     "skills/unity-ui",
     "skills/unity-input-system",

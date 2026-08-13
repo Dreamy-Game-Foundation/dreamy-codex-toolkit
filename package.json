@@ -1,6 +1,6 @@
 {
   "name": "dreamy-codex-toolkit",
-  "version": "0.1.0-alpha.1",
+  "version": "0.1.0-alpha.2",
   "private": false,
   "type": "module",
   "description": "Codex toolkit for Dreamy Unity projects and packages.",
@@ -11,7 +11,8 @@
     "eval:deterministic": "node src/cli.js eval",
     "compatibility:refresh": "node scripts/refresh-compatibility.mjs",
     "release:check": "node scripts/release-check.mjs",
-    "changelog": "node scripts/changelog.mjs"
+    "changelog": "node scripts/changelog.mjs",
+    "pack:smoke": "node scripts/pack-smoke.mjs"
   },
   "bin": {
     "dreamy-kit": "src/cli.js"

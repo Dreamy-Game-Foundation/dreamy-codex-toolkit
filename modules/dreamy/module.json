@@ -2,7 +2,9 @@
   "$schema": "../../schemas/module.schema.json",
   "id": "dreamy",
   "version": "0.0.0",
-  "dependencies": ["foundation"],
+  "dependencies": [
+    "foundation"
+  ],
   "content": [
     "rules/dreamy",
     "skills/dreamy",

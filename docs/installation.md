@@ -44,7 +44,7 @@ The installer writes only:
 
 - the Dreamy managed block in `AGENTS.md`
 - Dreamy Codex agent templates in `.codex/agents`
-- a Dreamy managed agent block in `.codex/config.toml`
+- Dreamy skills in `.agents/skills`
 - `.dreamy-codex/project-profile.json`
 - `.dreamy-codex/install-state.json`
 
@@ -91,9 +91,8 @@ C:\Users\<you>\.codex\
 Global install writes:
 
 - `.codex/AGENTS.md`
-- `.codex/config.toml`
 - `.codex/agents/dreamy-*.toml`
-- `.codex/skills/<dreamy-skill>/SKILL.md`
+- `.agents/skills/<dreamy-skill>/SKILL.md`
 - `.codex/.dreamy-codex/install-state.json`
 
 Pin a release tag after releases exist:
@@ -138,7 +137,7 @@ Uninstall removes only the owned Dreamy managed block from `AGENTS.md`. It refus
 - Dreamy managed block markers are malformed
 - the current `AGENTS.md` checksum differs from the checksum recorded during install
 
-It also removes Dreamy-owned agent files recorded in `.dreamy-codex/install-state.json` and removes the managed Dreamy agent block from `.codex/config.toml`.
+It also removes Dreamy-owned agent and skill files recorded in `.dreamy-codex/install-state.json`.
 
 Preview without writing:
 

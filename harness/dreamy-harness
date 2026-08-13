@@ -7,7 +7,7 @@ const op = process.argv[2] ?? "help";
 const target = path.resolve(process.argv[3] ?? ".");
 
 function json(value, code = 0) {
-  console.log(JSON.stringify({ ...value, exitCode: code }, null, 2));
+  console.log(JSON.stringify({ timestamp: new Date().toISOString(), ...value, exitCode: code }, null, 2));
   process.exitCode = code;
 }
 
