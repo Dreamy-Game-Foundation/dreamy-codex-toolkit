@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import crypto from "node:crypto";
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { validate as validateArtifacts } from "../scripts/validate.mjs";
@@ -53,12 +54,43 @@ function removeBlock(content, start, end) {
   return `${content.slice(0, startIndex).trimEnd()}\n${content.slice(endIndex + end.length).trimStart()}`.trimEnd() + "\n";
 }
 
-function targetRoot(target) {
+function codexHome() {
+  return process.env.DREAMY_CODEX_HOME
+    ? path.resolve(process.env.DREAMY_CODEX_HOME)
+    : path.join(os.homedir(), ".codex");
+}
+
+function projectRoot(target) {
   const full = path.resolve(target);
   if (!fs.existsSync(full) || !fs.statSync(full).isDirectory()) {
     throw new Error(`Target does not exist: ${target}`);
   }
   return full;
+}
+
+function resolveTarget(target) {
+  if (target === "global") {
+    const rootDir = codexHome();
+    return {
+      kind: "global",
+      root: rootDir,
+      agentsMd: path.join(rootDir, "AGENTS.md"),
+      agentsDir: path.join(rootDir, "agents"),
+      configFile: path.join(rootDir, "config.toml"),
+      skillsDir: path.join(rootDir, "skills"),
+      stateDir: path.join(rootDir, ".dreamy-codex"),
+    };
+  }
+  const rootDir = projectRoot(target);
+  return {
+    kind: "project",
+    root: rootDir,
+    agentsMd: path.join(rootDir, "AGENTS.md"),
+    agentsDir: path.join(rootDir, ".codex", "agents"),
+    configFile: path.join(rootDir, ".codex", "config.toml"),
+    skillsDir: null,
+    stateDir: path.join(rootDir, ".dreamy-codex"),
+  };
 }
 
 function detectProject(target) {
@@ -98,23 +130,50 @@ ${configEnd}
 `;
 }
 
+function copyDir(source, destination) {
+  fs.mkdirSync(destination, { recursive: true });
+  for (const entry of fs.readdirSync(source, { withFileTypes: true })) {
+    const from = path.join(source, entry.name);
+    const to = path.join(destination, entry.name);
+    if (entry.isDirectory()) copyDir(from, to);
+    else if (entry.isFile()) fs.copyFileSync(from, to);
+  }
+}
+
+function listSkillDirs() {
+  const dirs = [];
+  function walk(dir) {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (!entry.isDirectory()) continue;
+      if (fs.existsSync(path.join(full, "SKILL.md"))) dirs.push(full);
+      else walk(full);
+    }
+  }
+  walk(path.join(root, "skills"));
+  return dirs;
+}
+
 function installProject(args) {
-  const target = targetRoot(args.target);
+  const target = resolveTarget(args.target);
   const presetPath = path.join(root, "presets", `${args.preset}.json`);
   if (!fs.existsSync(presetPath)) throw new Error(`Unknown preset: ${args.preset}`);
 
-  const profile = { ...detectProject(target), preset: args.preset };
+  const profile = target.kind === "global"
+    ? { schemaVersion: 1, engine: { name: "global" }, preset: args.preset, packages: [] }
+    : { ...detectProject(target.root), preset: args.preset };
   if (args.dryRun) {
-    return { action: "install", target, preset: args.preset, profile, dryRun: true };
+    return { action: "install", target: target.root, targetKind: target.kind, preset: args.preset, profile, dryRun: true };
   }
 
-  const agentsMd = path.join(target, "AGENTS.md");
+  fs.mkdirSync(target.root, { recursive: true });
+  const agentsMd = target.agentsMd;
   const existingAgents = fs.existsSync(agentsMd) ? fs.readFileSync(agentsMd, "utf8") : "";
   if (existingAgents.includes(managedStart)) {
     throw new Error("AGENTS.md already contains a Dreamy managed block");
   }
 
-  const stateDir = path.join(target, ".dreamy-codex");
+  const stateDir = target.stateDir;
   fs.mkdirSync(stateDir, { recursive: true });
   writeJson(path.join(stateDir, "project-profile.json"), profile);
 
@@ -125,7 +184,7 @@ function installProject(args) {
   fs.writeFileSync(agentsMd, nextAgents, "utf8");
 
   const agentSource = path.join(root, "agents", "codex");
-  const agentTarget = path.join(target, ".codex", "agents");
+  const agentTarget = target.agentsDir;
   fs.mkdirSync(agentTarget, { recursive: true });
   const agentFiles = [];
   for (const file of fs.readdirSync(agentSource).filter((name) => name.startsWith("dreamy-") && name.endsWith(".toml"))) {
@@ -134,7 +193,17 @@ function installProject(args) {
     agentFiles.push(destination);
   }
 
-  const configFile = path.join(target, ".codex", "config.toml");
+  const skillDirs = [];
+  if (target.skillsDir) {
+    for (const source of listSkillDirs()) {
+      const destination = path.join(target.skillsDir, path.basename(source));
+      fs.rmSync(destination, { recursive: true, force: true });
+      copyDir(source, destination);
+      skillDirs.push(destination);
+    }
+  }
+
+  const configFile = target.configFile;
   const existingConfig = fs.existsSync(configFile) ? fs.readFileSync(configFile, "utf8") : "";
   const cleanedConfig = removeBlock(existingConfig, configStart, configEnd).trimEnd();
   fs.mkdirSync(path.dirname(configFile), { recursive: true });
@@ -143,26 +212,28 @@ function installProject(args) {
   writeJson(path.join(stateDir, "install-state.json"), {
     schemaVersion: 1,
     toolkitVersion: readJson(path.join(root, "toolkit.json")).version,
-    target,
+    target: target.root,
+    targetKind: target.kind,
     preset: args.preset,
     managedBlocks: ["AGENTS.md", ".codex/config.toml"],
     agentFiles,
+    skillDirs,
     codexConfig: configFile,
     checksums: { before: beforeHash, after: afterHash },
   });
 
-  return { action: "install", target, preset: args.preset, status: "ok" };
+  return { action: "install", target: target.root, targetKind: target.kind, preset: args.preset, status: "ok" };
 }
 
 function uninstallProject(args) {
-  const target = targetRoot(args.target);
-  if (args.dryRun) return { action: "uninstall", target, dryRun: true };
+  const target = resolveTarget(args.target);
+  if (args.dryRun) return { action: "uninstall", target: target.root, targetKind: target.kind, dryRun: true };
 
-  const statePath = path.join(target, ".dreamy-codex", "install-state.json");
+  const statePath = path.join(target.stateDir, "install-state.json");
   if (!fs.existsSync(statePath)) throw new Error("Missing install state; refusing to remove unowned managed block");
   const state = readJson(statePath);
 
-  const agentsMd = path.join(target, "AGENTS.md");
+  const agentsMd = target.agentsMd;
   if (fs.existsSync(agentsMd)) {
     const content = fs.readFileSync(agentsMd, "utf8");
     const startCount = content.split(managedStart).length - 1;
@@ -179,8 +250,11 @@ function uninstallProject(args) {
   for (const file of state.agentFiles ?? []) {
     if (fs.existsSync(file)) fs.rmSync(file, { force: true });
   }
+  for (const dir of state.skillDirs ?? []) {
+    if (fs.existsSync(dir)) fs.rmSync(dir, { recursive: true, force: true });
+  }
 
-  return { action: "uninstall", target, status: "ok" };
+  return { action: "uninstall", target: target.root, targetKind: target.kind, status: "ok" };
 }
 
 async function main() {
@@ -189,14 +263,17 @@ async function main() {
     await validateArtifacts();
     console.log("validate: OK");
   } else if (cmd === "detect") {
-    console.log(JSON.stringify(detectProject(targetRoot(args.target))));
+    const target = resolveTarget(args.target);
+    console.log(JSON.stringify(target.kind === "global" ? { schemaVersion: 1, engine: { name: "global" }, preset: args.preset, packages: [] } : detectProject(target.root)));
   } else if (cmd === "install") {
     console.log(JSON.stringify(installProject(args)));
   } else if (cmd === "uninstall") {
     console.log(JSON.stringify(uninstallProject(args)));
   } else if (cmd === "doctor") {
     await validateArtifacts();
-    console.log(JSON.stringify({ ...detectProject(targetRoot(args.target)), doctor: { status: "ok" } }));
+    const target = resolveTarget(args.target);
+    const profile = target.kind === "global" ? { schemaVersion: 1, engine: { name: "global" }, preset: args.preset, packages: [] } : detectProject(target.root);
+    console.log(JSON.stringify({ ...profile, doctor: { status: "ok" } }));
   } else if (cmd === "list") {
     const kit = readJson(path.join(root, "toolkit.json"));
     console.log(JSON.stringify({ presets: kit.presets, modules: kit.modules, rules: kit.rules, skills: kit.skills }));
@@ -207,7 +284,8 @@ async function main() {
   validate
   detect [--target PATH] [--json]
   install [--target PATH] [--preset NAME] [--dry-run]
-  uninstall [--target PATH] [--dry-run]
+  install --target global [--preset NAME] [--dry-run]
+  uninstall [--target PATH|global] [--dry-run]
   doctor [--target PATH] [--json]
   list
   update`);

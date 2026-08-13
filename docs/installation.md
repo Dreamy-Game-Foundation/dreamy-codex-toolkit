@@ -76,6 +76,26 @@ npx --yes github:Dreamy-Game-Foundation/dreamy-codex-toolkit#main validate
 npx --yes github:Dreamy-Game-Foundation/dreamy-codex-toolkit#main install --target /path/to/unity-project --preset dreamy-project
 ```
 
+Install into the current user's Codex home:
+
+```bash
+dreamy-kit install --target global --preset dreamy-project
+```
+
+On Windows this resolves to:
+
+```text
+C:\Users\<you>\.codex\
+```
+
+Global install writes:
+
+- `.codex/AGENTS.md`
+- `.codex/config.toml`
+- `.codex/agents/dreamy-*.toml`
+- `.codex/skills/<dreamy-skill>/SKILL.md`
+- `.codex/.dreamy-codex/install-state.json`
+
 Pin a release tag after releases exist:
 
 ```bash
@@ -124,6 +144,12 @@ Preview without writing:
 
 ```bash
 node src/cli.js uninstall --target /path/to/unity-project --dry-run
+```
+
+For global uninstall:
+
+```bash
+dreamy-kit uninstall --target global
 ```
 
 ## List Toolkit Contents

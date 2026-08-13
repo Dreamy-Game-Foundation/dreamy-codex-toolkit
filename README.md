@@ -99,6 +99,20 @@ After a release tag exists, prefer pinning the tag:
 npx --yes github:Dreamy-Game-Foundation/dreamy-codex-toolkit#v0.1.0 install --target /path/to/unity-project --preset dreamy-project
 ```
 
+Install globally into your user Codex folder:
+
+```bash
+dreamy-kit install --target global --preset dreamy-project
+```
+
+On Windows this writes to:
+
+```text
+C:\Users\<you>\.codex\
+```
+
+Global install copies Dreamy skills into `.codex/skills`, Dreamy agents into `.codex/agents`, registers agents in `.codex/config.toml`, and writes `.codex/AGENTS.md`.
+
 Clone for local development:
 
 ```bash
@@ -114,6 +128,12 @@ Run:
 
 ```bash
 dreamy-kit uninstall --target /path/to/unity-project
+```
+
+For global uninstall:
+
+```bash
+dreamy-kit uninstall --target global
 ```
 
 Uninstall removes only the managed Dreamy block that this toolkit owns. It refuses to proceed if `.dreamy-codex/install-state.json` is missing, the markers are malformed, or `AGENTS.md` changed after install.
