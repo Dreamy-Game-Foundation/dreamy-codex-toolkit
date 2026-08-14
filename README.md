@@ -10,47 +10,56 @@
 
 ---
 
+## ⚡ 1-Click Copy & Paste Installation
+
+Open your terminal **inside your Unity project folder** and copy-paste one of the single blocks below:
+
+### Global CLI Installation (Recommended)
+```bash
+npm install --global https://github.com/Dreamy-Game-Foundation/dreamy-codex-toolkit/archive/refs/heads/main.tar.gz && dreamy-kit install
+```
+
+### Direct `npx` (No Global Install)
+```bash
+npx --yes github:Dreamy-Game-Foundation/dreamy-codex-toolkit#main install
+```
+
+---
+
 ## 📋 Table of Contents
 
+- [⚡ 1-Click Copy & Paste Installation](#-1-click-copy--paste-installation)
 - [✨ Key Features](#-key-features)
 - [📦 Architecture & Concepts](#-architecture--concepts)
 - [⚙️ Prerequisites](#️-prerequisites)
 - [🚀 Installation Guide](#-installation-guide)
-  - [Option 1: One-Off Execution via `npx` (Recommended)](#option-1-one-off-execution-via-npx-recommended)
-  - [Option 2: Global CLI Installation (`dreamy-kit`)](#option-2-global-cli-installation-dreamy-kit)
-  - [Option 3: Local Repository Clone (Development)](#option-3-local-repository-clone-development)
-  - [Global User Target Installation](#global-user-target-installation)
+  - [1. 1-Line Script Installers](#1-1-line-script-installers)
+  - [2. Interactive Setup Wizard](#2-interactive-setup-wizard)
+  - [3. Local Repository Clone (Development)](#3-local-repository-clone-development)
+  - [4. Global Target Installation](#4-global-target-installation)
+- [🗑️ Uninstallation & Global Purge](#️-uninstallation--global-purge)
+  - [Local Project Uninstall](#local-project-uninstall)
+  - [Global Toolkit Purge](#global-toolkit-purge)
 - [⚙️ Configuration & Presets](#️-configuration--presets)
-  - [Available Presets](#available-presets)
-  - [Environment Variables](#environment-variables)
-  - [Installed Files & State Tracking](#installed-files--state-tracking)
 - [🛠️ CLI Reference (`dreamy-kit`)](#️-cli-reference-dreamy-kit)
 - [🤖 Agents & Skills Ecosystem](#-agents--skills-ecosystem)
-  - [Codex Agents](#codex-agents)
-  - [Skills Architecture](#skills-architecture)
-- [🔄 Maintenance & Lifecycle](#-maintenance--lifecycle)
-  - [Project Diagnostics (`doctor`)](#project-diagnostics-doctor)
-  - [Updating Managed Installs](#updating-managed-installs)
-  - [Clean Uninstallation](#clean-uninstallation)
+- [🔄 Maintenance & Diagnostics](#-maintenance--diagnostics)
 - [🧪 Development & Testing](#-development--testing)
-- [📄 License & Documentation](#-license--documentation)
 
 ---
 
 ## ✨ Key Features
 
-- **Non-Destructive Managed Block**: Modifies target `AGENTS.md` safely using SHA256 checksums and explicit delimiter markers. Never overwrites user-authored rules.
-- **Native Codex Agent Templates**: Installs specialized `.toml` agent prompts into `.codex/agents/` for seamless activation.
-- **Modular Presets & Skill Discovery**: Select preset bundles (`dreamy-project`, `dreamy-package`, `unity-full`, etc.) that automatically filter skills based on installed `com.dreamy.*` Unity packages.
-- **Architectural & Safety Gates**: Enforces strict C# and Unity practices, such as preventing Runtime-to-Editor assembly definition references (`asmdef`).
-- **Package Drift & Compatibility Tracking**: Maintains verified compatibility records in `compatibility/dreamy-packages.json`.
-- **Degraded-State Harness & Diagnostics**: Emits machine-readable JSON evidence and diagnostic checks (`doctor`) even when Unity is offline or headlessly executing.
+- **Professional Terminal Output**: Clean, human-readable CLI logs with emojis and status checks by default (use `--json` for machine JSON output).
+- **Default Current Directory (`.`)**: All commands work in the current terminal directory without typing or modifying path arguments.
+- **Non-Destructive Managed Block**: Modifies target `AGENTS.md` safely using SHA256 checksums and explicit delimiter markers.
+- **Native Codex Agent Templates**: Installs specialized `.toml` agent prompts into `.codex/agents/`.
+- **Modular Presets & Skill Discovery**: Automatically filters skills based on installed `com.dreamy.*` Unity packages.
+- **Global Purge Capability**: Single command `dreamy-kit purge` to completely clean global user profile assets.
 
 ---
 
 ## 📦 Architecture & Concepts
-
-The toolkit follows a strictly managed, modular design:
 
 ```text
 dreamy-codex-toolkit/
@@ -58,15 +67,15 @@ dreamy-codex-toolkit/
 ├── package.json                  # npm package definition (exports `dreamy-kit` bin)
 ├── agents/codex/*.toml           # Codex agent prompt definitions
 ├── compatibility/               # Unity & Dreamy package compatibility registries
-├── docs/                         # Specifications, implementation plans, and installation guides
-├── harness/                      # Evidence collector and degraded execution harness
+├── docs/                         # Specifications and installation guides
+├── harness/                      # Evidence collector and execution harness
 ├── modules/                      # Modular groupings of skills, rules, and agents
-├── presets/                      # Target configuration bundles (core, dreamy-project, etc.)
+├── presets/                      # Target configuration bundles
 ├── rules/                        # Core architecture & safety rules catalog
-├── schemas/                      # JSON Schema definitions for manifests, profiles, and state
-├── skills/                       # Domain skills (Dreamy core, Unity gameplay, rendering, etc.)
-├── src/cli.js                    # Toolkit CLI entry point (`dreamy-kit`)
-└── templates/                    # Managed AGENTS.md templates
+├── schemas/                      # JSON Schema definitions
+├── scripts/                      # 1-line installation scripts (sh, ps1, bat)
+├── skills/                       # Domain skills
+└── src/cli.js                    # Toolkit CLI entry point (`dreamy-kit`)
 ```
 
 ---
@@ -76,25 +85,14 @@ dreamy-codex-toolkit/
 - **Node.js**: `v20.0.0` or newer
 - **npm**: `v9.0.0` or newer
 - **Git**: Installed and accessible in PATH
-- **Unity**: 2022.3 LTS or newer (Optional for local CLI usage; required for live Unity harness execution)
 
 ---
 
 ## 🚀 Installation Guide
 
-### Option 0: ⚡ 1-Click / Interactive Wizard for Beginners (Recommended)
+*(Note: All commands default to the current terminal directory. You do NOT need to specify `--target` unless targeting another folder).*
 
-If you are new or want an effortless setup:
-
-#### 1. Interactive Step-by-Step Terminal Wizard:
-Run a single command in your terminal inside your Unity project folder:
-
-```bash
-npx --yes github:Dreamy-Game-Foundation/dreamy-codex-toolkit#main
-```
-This launches an interactive wizard that automatically detects your Unity project, scans installed `com.dreamy.*` packages, and guides you step-by-step!
-
-#### 2. Quick 1-Line Script (Automated):
+### 1. 1-Line Script Installers
 
 - **macOS / Linux**:
   ```bash
@@ -111,88 +109,72 @@ This launches an interactive wizard that automatically detects your Unity projec
 
 ---
 
-### Option 1: 1-Line Execution via `npx` (No Install & No Path Editing Required)
+### 2. Interactive Setup Wizard
 
-Open your terminal **inside your Unity project folder** and run any 1-line command directly:
+Run `dreamy-kit` or `npx` with zero arguments inside your Unity project folder to launch the interactive prompt:
 
 ```bash
-# ⚡ 1. Interactive Setup / Install (Defaults to current folder):
 npx --yes github:Dreamy-Game-Foundation/dreamy-codex-toolkit#main
+```
 
-# 📦 2. Explicit Install with default preset (Defaults to current folder):
-npx --yes github:Dreamy-Game-Foundation/dreamy-codex-toolkit#main install
+---
 
-# 🩺 3. Doctor / Diagnostic Check (Defaults to current folder):
-npx --yes github:Dreamy-Game-Foundation/dreamy-codex-toolkit#main doctor
+### 3. Local Repository Clone (Development)
 
-# 🔄 4. Update managed toolkit (Defaults to current folder):
-npx --yes github:Dreamy-Game-Foundation/dreamy-codex-toolkit#main update
+```bash
+git clone https://github.com/Dreamy-Game-Foundation/dreamy-codex-toolkit.git
+cd dreamy-codex-toolkit
+npm test
+node src/cli.js install
+```
 
-# 🗑️ 5. Clean Uninstall (Defaults to current folder):
+---
+
+### 4. Global Target Installation
+
+To install Dreamy agents and skills into your global user profile (`~/.codex` / `%USERPROFILE%\.codex`):
+
+```bash
+dreamy-kit install --target global
+```
+
+---
+
+## 🗑️ Uninstallation & Global Purge
+
+*(This section is dedicated exclusively to removing or purging installed toolkit files).*
+
+### Local Project Uninstall
+
+To remove managed Dreamy blocks and agents from the current Unity project folder:
+
+```bash
+dreamy-kit uninstall
+```
+*Or via npx:*
+```bash
 npx --yes github:Dreamy-Game-Foundation/dreamy-codex-toolkit#main uninstall
 ```
 
-*Note: If you ever need to target a different directory explicitly, you can still optionally add `--target /path/to/project`.*
-
 ---
 
-### Option 2: Global CLI Installation (`dreamy-kit`)
+### Global Toolkit Purge
 
-Install `dreamy-kit` globally on your machine once:
-
-```bash
-npm install --global https://github.com/Dreamy-Game-Foundation/dreamy-codex-toolkit/archive/refs/heads/main.tar.gz
-```
-
-After global installation, simply `cd` into any Unity project folder and run **1-word commands**:
+To completely purge all Dreamy managed files from your global user profile (`~/.codex` and `~/.agents`):
 
 ```bash
-dreamy-kit          # Runs interactive setup wizard on current folder
-dreamy-kit install  # Installs default preset into current folder
-dreamy-kit doctor   # Runs diagnostics on current folder
-dreamy-kit update   # Updates managed files in current folder
-dreamy-kit uninstall # Removes managed files from current folder
+dreamy-kit purge
 ```
-
----
-
-### Option 3: Local Repository Clone (Development)
-
-Clone the repository to contribute or test locally:
-
+*Or via npx:*
 ```bash
-# 1. Clone the repository
-git clone https://github.com/Dreamy-Game-Foundation/dreamy-codex-toolkit.git
-cd dreamy-codex-toolkit
-
-# 2. Run validation and unit tests
-npm test
-
-# 3. Execute installation on a project using local source
-node src/cli.js install --target /path/to/unity-project --preset dreamy-project
+npx --yes github:Dreamy-Game-Foundation/dreamy-codex-toolkit#main purge
 ```
-
----
-
-### Global User Target Installation
-
-To make Dreamy agents and skills available globally for **all projects** under your user profile:
-
-```bash
-dreamy-kit install --target global --preset dreamy-project
-```
-
-This writes managed assets to your global Codex environment:
-- **Windows**: `C:\Users\<User>\.codex\` and `C:\Users\<User>\.agents\skills\`
-- **Linux / macOS**: `~/.codex/` and `~/.agents/skills/`
 
 ---
 
 ## ⚙️ Configuration & Presets
 
-### Available Presets
-
-Pass `--preset <name>` during `install` or `update` to choose your desired setup:
+### Presets Reference
 
 | Preset Name | Target Use Case | Included Capabilities |
 | :--- | :--- | :--- |
@@ -208,67 +190,21 @@ Pass `--preset <name>` during `install` or `update` to choose your desired setup
 
 ---
 
-### Environment Variables
-
-Override default target directories by setting the following environment variables:
-
-| Environment Variable | Description | Default Path |
-| :--- | :--- | :--- |
-| `DREAMY_CODEX_HOME` | Directory for Codex configuration & agent templates | `~/.codex` (`%USERPROFILE%\.codex` on Windows) |
-| `DREAMY_AGENTS_HOME` | Directory for shared skill packages | `~/.agents` (`%USERPROFILE%\.agents` on Windows) |
-
-Example usage:
-```bash
-export DREAMY_CODEX_HOME="/custom/path/to/.codex"
-export DREAMY_AGENTS_HOME="/custom/path/to/.agents"
-dreamy-kit install --target global
-```
-
----
-
-### Installed Files & State Tracking
-
-When installed into a target project (`/path/to/unity-project`), the toolkit writes **only** the following paths:
-
-```text
-unity-project/
-├── AGENTS.md                            # Appends managed block delimited by DREAMY-CODEX markers
-├── .agents/
-│   └── skills/                          # Installed Dreamy skills (e.g. dreamy-core, dreamy-ui)
-├── .codex/
-│   └── agents/                          # Installed Codex agent definitions (dreamy-*.toml)
-└── .dreamy-codex/
-    ├── project-profile.json             # Detected packages and project metadata snapshot
-    └── install-state.json               # State registry & SHA256 checksums for safe update/uninstall
-```
-
----
-
 ## 🛠️ CLI Reference (`dreamy-kit`)
 
-> [!NOTE]
-> - If you haven't installed `dreamy-kit` globally via `npm install -g`, run commands using `npx dreamy-kit <command>` or `npx github:Dreamy-Game-Foundation/dreamy-codex-toolkit <command>`.
-> - Developer commands (`npm test`, `npm run ...`) must be run from inside the `dreamy-codex-toolkit` project folder.
-
-The CLI entry point `dreamy-kit` (or `npx dreamy-kit` / `node src/cli.js`) provides the following subcommands:
-
-```text
-dreamy-kit <command> [options]
-# or: npx dreamy-kit <command> [options]
-```
-
-### Commands Summary
+Commands default to the current directory. Output is clean, human-readable terminal text. Add `--json` for machine JSON output.
 
 | Subcommand | Description | Key Options |
 | :--- | :--- | :--- |
-| `detect` | Inspects target path, identifies Unity engine & `com.dreamy.*` packages | `--target PATH`, `--json` |
-| `install` | Installs agents, skills, and `AGENTS.md` managed block | `--target PATH\|global`, `--preset NAME`, `--dry-run` |
-| `update` | Refreshes managed assets and updates toolkit version | `--target PATH\|global`, `--preset NAME`, `--force`, `--backup`, `--dry-run` |
-| `uninstall` | Safely removes managed block and installed toolkit files | `--target PATH\|global`, `--dry-run` |
-| `doctor` | Runs diagnostic health checks on workspace & dependencies | `--target PATH`, `--json` |
-| `validate` | Validates schemas, rules, skill manifests, and acceptance tests | *(None)* |
-| `list` | Lists all registered presets, modules, rules, and skills in JSON | *(None)* |
-| `eval` | Executes deterministic evaluation harness and outputs report | `--runner static` |
+| `setup` / `init` | Interactive step-by-step setup wizard | *(None)* |
+| `install` | Installs agents, skills, and `AGENTS.md` block | `--preset NAME`, `--dry-run`, `--json` |
+| `update` | Refreshes managed assets to latest version | `--force`, `--backup`, `--dry-run`, `--json` |
+| `uninstall` | Removes managed files from current project | `--dry-run`, `--json` |
+| **`purge`** | **Purges all global user profile assets (`~/.codex`)** | `--dry-run`, `--json` |
+| `doctor` | Runs diagnostic health checks | `--json` |
+| `detect` | Inspects Unity engine & `com.dreamy.*` packages | `--json` |
+| `validate` | Validates schemas, rules, and acceptance tests | *(None)* |
+| `list` | Catalogs presets, modules, rules, and skills | *(None)* |
 
 ---
 
@@ -276,116 +212,43 @@ dreamy-kit <command> [options]
 
 ### Codex Agents
 
-The toolkit installs five specialized Codex agent roles defined in `.codex/agents/`:
-
-1. 🎮 **`dreamy_unity_developer`** (`dreamy-unity-developer.toml`)
-   - Focus: Feature implementation, gameplay C# scripting, and Unity component assembly.
-2. 📦 **`dreamy_package_maintainer`** (`dreamy-package-maintainer.toml`)
-   - Focus: Unity Package Manager (UPM) structure, asmdef configuration, versioning, and API compatibility.
-3. 🛡️ **`dreamy_release_validator`** (`dreamy-release-validator.toml`)
-   - Focus: Pre-release verification, safety gate validation, and harness log evaluation.
-4. 📝 **`dreamy_docs_manager`** (`dreamy-docs-manager.toml`)
-   - Focus: Maintaining `README.md`, `CHANGELOG.md`, API references, and architecture docs.
-5. 🛠️ **`dreamy_skill_author`** (`dreamy-skill-author.toml`)
-   - Focus: Designing, expanding, and validating Dreamy domain skills.
+1. 🎮 **`dreamy_unity_developer`**: Gameplay, C# scripting, component assembly.
+2. 📦 **`dreamy_package_maintainer`**: UPM structure, asmdefs, compatibility.
+3. 🛡️ **`dreamy_release_validator`**: Pre-release checks and evidence logs.
+4. 📝 **`dreamy_docs_manager`**: Maintenance of READMEs, CHANGELOGs, and docs.
+5. 🛠️ **`dreamy_skill_author`**: Skill design and expansion.
 
 ---
 
-### Skills Architecture
-
-Skills provide modular, structured instruction sets for agents. They reside under `skills/` and are categorized as follows:
-
-- **Dreamy Core Skills**: `dreamy-core`, `dreamy-dataconfig`, `dreamy-datasave`, `dreamy-assets`, `dreamy-ui`, `dreamy-audio`, `dreamy-feedback`, `dreamy-localization`, `dreamy-editor-tools`.
-- **Unity Engine Skills**: `unity-csharp-safety`, `unity-asmdef-architecture`, `unity-performance-optimization`, `unity-ui-toolkit`, `unity-addressables`, `unity-input-system`.
-- **Production & Gameplay**: `production-safety`, `gameplay-architecture`, `game-systems`.
-
----
-
-## 🔄 Maintenance & Lifecycle
+## 🔄 Maintenance & Diagnostics
 
 ### Project Diagnostics (`doctor`)
 
-Run `doctor` to inspect system readiness, file integrity, and package compatibility:
-
 ```bash
-dreamy-kit doctor --target /path/to/unity-project
+dreamy-kit doctor
 ```
-
-Example JSON output overview:
-```json
-{
-  "status": "ok",
-  "checks": [
-    { "id": "node", "severity": "INFO", "message": "Node v20.11.0" },
-    { "id": "project-agents", "severity": "INFO", "message": "/path/to/unity-project/.codex/agents" },
-    { "id": "dreamy-com.dreamy.core", "severity": "INFO", "message": "1.2.0 compatible" }
-  ],
-  "capabilities": {
-    "unity": true,
-    "harness": { "git": "ok", "unity": "degraded" }
-  }
-}
-```
-
----
 
 ### Updating Managed Installs
 
-To update installed agents and skills to the latest toolkit version:
-
 ```bash
-# Preview update changes
-dreamy-kit update --target /path/to/unity-project --dry-run
-
-# Execute update
-dreamy-kit update --target /path/to/unity-project
-```
-
-*Handling Modified Managed Files:*
-If `AGENTS.md` was manually altered inside the managed block, `update` will halt to prevent accidental data loss. Use `--force` and `--backup` to override:
-
-```bash
-dreamy-kit update --target /path/to/unity-project --force --backup
-```
-
----
-
-### Clean Uninstallation
-
-`uninstall` removes only the managed block from `AGENTS.md` and the files recorded in `.dreamy-codex/install-state.json`. It will refuse to run if checksum drift indicates unmanaged modifications:
-
-```bash
-# Preview uninstallation
-dreamy-kit uninstall --target /path/to/unity-project --dry-run
-
-# Perform uninstallation
-dreamy-kit uninstall --target /path/to/unity-project
+dreamy-kit update
 ```
 
 ---
 
 ## 🧪 Development & Testing
 
-Run full validation and unit testing suite locally:
+Run developer tests inside the repository directory:
 
 ```bash
-# Run schema validation, skill check, acceptance tests, and unit tests
+cd /path/to/dreamy-codex-toolkit
 npm test
-
-# Run unit tests only
-npm run test:node
-
-# Run artifact validation only
-npm run validate
-
-# Run evaluation harness
-npm run eval:deterministic
 ```
 
 ---
 
 ## 📄 License & Documentation
 
-- **License**: MIT License - see [LICENSE](LICENSE) for details.
-- **Master Plan**: See [`docs/plans/DREAMY_CODEX_TOOLKIT_MASTER_PLAN.md`](docs/plans/DREAMY_CODEX_TOOLKIT_MASTER_PLAN.md) for roadmap details.
-- **Detailed Install Doc**: See [`docs/installation.md`](docs/installation.md).
+- **License**: MIT License - see [LICENSE](LICENSE).
+- **Master Plan**: See [`docs/plans/DREAMY_CODEX_TOOLKIT_MASTER_PLAN.md`](docs/plans/DREAMY_CODEX_TOOLKIT_MASTER_PLAN.md).
+- **Installation Doc**: See [`docs/installation.md`](docs/installation.md).

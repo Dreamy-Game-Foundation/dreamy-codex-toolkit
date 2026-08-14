@@ -16,7 +16,7 @@ const configEnd = "# DREAMY-CODEX agents:end";
 
 function parseArgs(argv) {
   const [cmd = "setup", ...rest] = argv;
-  const args = { target: ".", preset: "dreamy-project", dryRun: false, force: false, backup: false, runner: "static" };
+  const args = { target: ".", preset: "dreamy-project", dryRun: false, force: false, backup: false, runner: "static", json: false };
   for (let i = 0; i < rest.length; i += 1) {
     const arg = rest[i];
     if (arg === "--target" || arg === "--preset" || arg === "--runner") {
@@ -28,7 +28,7 @@ function parseArgs(argv) {
     } else if (arg === "--backup") {
       args.backup = true;
     } else if (arg === "--json") {
-      continue;
+      args.json = true;
     } else {
       throw new Error(`Unknown argument: ${arg}`);
     }
@@ -390,8 +390,98 @@ async function runInteractiveSetup(args) {
   }
 }
 
+function formatInstallOutput(result) {
+  console.log("\n========================================================");
+  console.log("✨ Dreamy Codex Toolkit Installer");
+  console.log("========================================================\n");
+  console.log(`🎯 Action : ${result.action}`);
+  console.log(`📁 Target : ${result.target} (${result.targetKind})`);
+  console.log(`📦 Preset : ${result.preset}`);
+  if (result.dryRun) {
+    console.log(`\n🔍 Dry run summary:`);
+    console.log(`   - Modules resolved : ${(result.resolvedModules || []).join(", ")}`);
+    console.log(`   - Agents to copy    : ${result.agents}`);
+    console.log(`   - Skills to copy    : ${result.skills}`);
+    console.log(`\nℹ️ Dry run completed. No files were modified.\n`);
+  } else {
+    console.log(`\n✅ Installation finished successfully!`);
+    console.log(`📄 Managed block written to AGENTS.md.`);
+    console.log(`🤖 Dreamy Codex agents & skills configured.\n`);
+  }
+}
+
+function formatUninstallOutput(result) {
+  console.log("\n========================================================");
+  console.log("🧹 Dreamy Codex Toolkit Uninstaller");
+  console.log("========================================================\n");
+  console.log(`🎯 Action : ${result.action}`);
+  console.log(`📁 Target : ${result.target} (${result.targetKind})`);
+  if (result.dryRun) {
+    console.log(`\nℹ️ Dry run completed. No files were deleted.\n`);
+  } else {
+    console.log(`\n✅ Managed Dreamy block removed from AGENTS.md.`);
+    console.log(`🧹 Cleaned up owned agents and skills.\n`);
+  }
+}
+
+function formatUpdateOutput(result) {
+  console.log("\n========================================================");
+  console.log("🔄 Dreamy Codex Toolkit Updater");
+  console.log("========================================================\n");
+  console.log(`🎯 Action : ${result.action}`);
+  console.log(`📁 Target : ${result.target} (${result.targetKind})`);
+  console.log(`📦 Preset : ${result.preset}`);
+  if (result.fromVersion) console.log(`🏷️ Version: ${result.fromVersion} -> latest`);
+  if (result.dryRun) {
+    console.log(`\nℹ️ Dry run completed. Managed files are up to date.\n`);
+  } else {
+    console.log(`\n✅ Successfully refreshed Dreamy agents and skills!\n`);
+  }
+}
+
+function formatDoctorOutput(doc) {
+  console.log("\n========================================================");
+  console.log("🩺 Dreamy Codex Toolkit Diagnostics (Doctor)");
+  console.log("========================================================\n");
+  console.log(`Overall Status: ${doc.status === "ok" ? "✅ OK" : doc.status === "warn" ? "⚠️ WARNING" : "❌ ERROR"}\n`);
+  console.log("Checks:");
+  for (const check of doc.checks) {
+    const icon = check.severity === "INFO" ? "ℹ️" : check.severity === "WARN" ? "⚠️" : "❌";
+    console.log(`  ${icon} [${check.id}] ${check.message}`);
+  }
+  console.log(`\nCapabilities:`);
+  console.log(`  - Unity detected : ${doc.capabilities.unity ? "Yes" : "No"}`);
+  console.log(`  - Harness Git    : ${doc.capabilities.harness.git}`);
+  console.log(`  - Harness Unity  : ${doc.capabilities.harness.unity}`);
+  if (doc.recommendations && doc.recommendations.length > 0) {
+    console.log(`\nRecommendations:`);
+    for (const rec of doc.recommendations) {
+      console.log(`  👉 ${rec}`);
+    }
+  }
+  console.log("");
+}
+
+function formatDetectOutput(profile) {
+  console.log("\n========================================================");
+  console.log("🔍 Dreamy Codex Project Detection");
+  console.log("========================================================\n");
+  console.log(`Engine  : ${profile.engine?.name ?? "unknown"}`);
+  console.log(`Preset  : ${profile.preset ?? "dreamy-project"}`);
+  if (profile.packages && profile.packages.length > 0) {
+    console.log(`\n📦 Found ${profile.packages.length} com.dreamy.* packages:`);
+    for (const pkg of profile.packages) {
+      console.log(`   - ${pkg.name} (${pkg.version}) [status: ${pkg.compatibilityStatus}]`);
+    }
+  } else {
+    console.log(`\n📦 No com.dreamy.* packages detected.`);
+  }
+  console.log("");
+}
+
 async function main() {
   const { cmd, args } = parseArgs(process.argv.slice(2));
+  const wantsJson = Boolean(args.json || !process.stdout.isTTY);
   if (cmd === "setup" || cmd === "init") {
     await runInteractiveSetup(args);
   } else if (cmd === "validate") {
@@ -399,11 +489,18 @@ async function main() {
     console.log("validate: OK");
   } else if (cmd === "detect") {
     const target = resolveTarget(args.target);
-    console.log(JSON.stringify(target.kind === "global" ? { schemaVersion: 1, engine: { name: "global" }, preset: args.preset, packages: [] } : detectProject(target.root)));
+    const profile = target.kind === "global" ? { schemaVersion: 1, engine: { name: "global" }, preset: args.preset, packages: [] } : detectProject(target.root);
+    if (wantsJson) console.log(JSON.stringify(profile));
+    else formatDetectOutput(profile);
   } else if (cmd === "install") {
-    console.log(JSON.stringify(installProject(args)));
-  } else if (cmd === "uninstall") {
-    console.log(JSON.stringify(uninstallProject(args)));
+    const res = installProject(args);
+    if (wantsJson) console.log(JSON.stringify(res));
+    else formatInstallOutput(res);
+  } else if (cmd === "uninstall" || cmd === "purge") {
+    if (cmd === "purge" && args.target === ".") args.target = "global";
+    const res = uninstallProject(args);
+    if (wantsJson) console.log(JSON.stringify(res));
+    else formatUninstallOutput(res);
   } else if (cmd === "doctor") {
     await validateArtifacts();
     const target = resolveTarget(args.target);
@@ -429,7 +526,7 @@ async function main() {
       gitStatus = "unavailable";
     }
     const status = checks.some((check) => check.severity === "ERROR") ? "error" : checks.some((check) => check.severity === "WARN") ? "warn" : "ok";
-    console.log(JSON.stringify({
+    const docRes = {
       status,
       checks,
       capabilities: {
@@ -442,7 +539,9 @@ async function main() {
       },
       recommendations: checks.filter((check) => check.severity !== "INFO").map((check) => check.message),
       profile
-    }));
+    };
+    if (wantsJson) console.log(JSON.stringify(docRes));
+    else formatDoctorOutput(docRes);
   } else if (cmd === "list") {
     const kit = readJson(path.join(root, "toolkit.json"));
     console.log(JSON.stringify({ presets: kit.presets, modules: kit.modules, rules: kit.rules, skills: kit.skills }));
@@ -456,18 +555,21 @@ async function main() {
     writeJson(path.join(root, "release", "eval-report.json"), report);
     console.log(JSON.stringify(report));
   } else if (cmd === "update") {
-    console.log(JSON.stringify(updateProject(args)));
+    const res = updateProject(args);
+    if (wantsJson) console.log(JSON.stringify(res));
+    else formatUpdateOutput(res);
   } else {
     console.log(`dreamy-kit commands:
+  setup / init
   validate
   detect [--target PATH] [--json]
-  install [--target PATH] [--preset NAME] [--dry-run]
-  install --target global [--preset NAME] [--dry-run]
-  uninstall [--target PATH|global] [--dry-run]
+  install [--target PATH|global] [--preset NAME] [--dry-run] [--json]
+  uninstall [--target PATH|global] [--dry-run] [--json]
+  purge [--dry-run] [--json]
   doctor [--target PATH] [--json]
   list
   eval
-  update [--target PATH|global] [--preset NAME] [--dry-run]`);
+  update [--target PATH|global] [--preset NAME] [--dry-run] [--json]`);
   }
 }
 
