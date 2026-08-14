@@ -21,6 +21,10 @@ Guide URP renderer assets, quality levels, renderer features, post-processing, c
 - A narrower Dreamy package skill owns the behavior.
 - The request only edits docs or release metadata.
 
+## Domain Model
+
+URPAsset -> RendererData -> CameraStack -> Lights/Shadows/PostFX -> QualityTier -> Build/Runtime Budget.
+
 ## Required Inspection
 
 - Project AGENTS.md, render pipeline assets, quality settings, scenes, prefabs, materials, shaders, and relevant asmdefs.
@@ -48,6 +52,12 @@ Guide URP renderer assets, quality levels, renderer features, post-processing, c
 - Keep visual feedback from owning gameplay state.
 - Prefer measured profiling evidence over guessed optimization.
 - Keep mobile memory, overdraw, and shader variant cost visible.
+
+## Anti-patterns
+
+- Visual asset or camera feedback owns gameplay state.
+- Runtime mutation changes a shared authoring asset unintentionally.
+- Optimization claimed without target-device profile evidence.
 
 ## Common Failure Modes
 

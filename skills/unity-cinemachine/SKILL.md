@@ -21,6 +21,10 @@ Guide Cinemachine cameras, virtual camera priority, blends, confiners, shake, an
 - A narrower Dreamy package skill owns the behavior.
 - The request only edits docs or release metadata.
 
+## Domain Model
+
+CinemachineBrain -> VirtualCamera -> Target/Follow/LookAt -> Priority/Blend -> Confiner/Impulse -> Aspect verification.
+
 ## Required Inspection
 
 - Project AGENTS.md, render pipeline assets, quality settings, scenes, prefabs, materials, shaders, and relevant asmdefs.
@@ -48,6 +52,12 @@ Guide Cinemachine cameras, virtual camera priority, blends, confiners, shake, an
 - Keep visual feedback from owning gameplay state.
 - Prefer measured profiling evidence over guessed optimization.
 - Keep mobile memory, overdraw, and shader variant cost visible.
+
+## Anti-patterns
+
+- Visual asset or camera feedback owns gameplay state.
+- Runtime mutation changes a shared authoring asset unintentionally.
+- Optimization claimed without target-device profile evidence.
 
 ## Common Failure Modes
 

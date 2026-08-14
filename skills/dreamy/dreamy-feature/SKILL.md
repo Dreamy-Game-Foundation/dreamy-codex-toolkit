@@ -1,101 +1,99 @@
 ---
 name: dreamy-feature
-description: Orchestrate cross-domain Dreamy features using detected capabilities and verification evidence.
+description: Orchestrate cross-domain Dreamy features across package capability, project ownership, config, save, services, UI, assets, tests, and evidence.
 ---
 
 # Dreamy Feature
 
 ## Purpose
 
-Route feature work across Dreamy packages, project code, static config, persistent state, services, UI, assets, and tests.
+Use this to route a feature before implementation when more than one Dreamy/gameplay/system area is involved.
 
 ## When To Use
 
-- The request directly touches this domain.
-- The implementation needs architecture, lifecycle, data ownership, or verification decisions in this area.
-- Nearby code already uses this domain and the change could break it.
+- The task changes, reviews, debugs, or plans behavior in this domain.
+- Nearby code already implements this domain and the change can alter ownership, lifecycle, data, assets, platform behavior, or verification.
+- A review/debugging/planning task needs this domain's decision model or failure modes.
 
 ## When Not To Use
 
-- A narrower Dreamy package skill owns the decision.
-- The task is only documentation or release metadata with no domain behavior.
-- Existing project instructions explicitly route to another skill.
+- A narrower skill owns the concrete behavior more directly.
+- The request is documentation-only and does not make domain, API, or verification claims.
+- The project lacks the package or platform and the task is not about detection, fallback, or migration.
+
+## Domain Model
+
+Feature request -> capability check -> project/package owner -> DataConfig/Datasave/runtime split -> service/UI/asset routing -> tests/evidence.
 
 ## Required Inspection
 
-- Project `AGENTS.md` and local instructions.
-- `Packages/manifest.json` and `Packages/packages-lock.json` when this is a Unity project.
-- Relevant asmdefs, scenes, prefabs, assets, tests, and nearby code owners.
-- `compatibility/dreamy-packages.json` before making Dreamy API claims.
+- Project `AGENTS.md`, local instructions, nearby code owners, tests, and recent diffs.
+- Unity projects: `Packages/manifest.json`, `Packages/packages-lock.json`, asmdefs, scenes/prefabs/assets relevant to this domain.
+- Compatibility catalogs before Dreamy, Unity-package, or third-party API claims.
+- Existing runtime owner, persistence owner, UI/presenter owner, asset owner, and lifecycle cleanup path.
 
 ## Decision Tree
 
-- Reusable capability already exists? Use verified package/project owner.
-- No existing owner and project-specific? Implement under the project feature boundary.
-- No existing owner and reusable across games? Treat as package candidate only with dependency direction justified.
-- Static definition? Route to DataConfig.
-- Persistent player state? Route to Datasave.
-- Session state? Keep runtime-owned.
-- Cross-scene service? Composition root.
-- Feature-wide service? Feature root/presenter/controller.
-- Leaf component? Explicit dependency.
+- Existing package/project owner exists? Use it.
+- Project-specific? Keep under project feature boundary.
+- Reusable across games? Consider package after dependency check.
+- Static definition? DataConfig.
+- Persistent player state? Datasave.
+- Session state? Runtime owner.
+- If the owner is unclear, stop at a plan/architecture decision before mutating code.
 
 ## Workflow
 
-1. Inspect the current implementation and owner.
-2. Identify data, service, UI, asset, and lifecycle boundaries.
-3. Make the smallest safe change that follows existing conventions.
-4. Preserve serialized references, meta GUIDs, and user-owned text.
-5. Run the smallest available compile, test, harness, or static validation.
-6. Report evidence and remaining risks.
+1. Inspect current owner and existing project convention.
+2. Map static config, persistent state, runtime state, UI, service, asset, and lifecycle ownership where applicable.
+3. Choose the smallest change that preserves architecture, serialization, and dependency direction.
+4. Add or update focused tests/fixtures when behavior, migration, or lifecycle risk changes.
+5. Run compile, console, targeted tests, harness/static validation, or record the exact unavailable gate.
+6. Review diff for unrelated churn and unsupported API claims.
 
 ## Architecture Rules
 
 - Keep Runtime assemblies free of Editor references.
-- Keep persistent player state out of read-only config.
-- Keep business rules out of leaf views and pooled visual objects.
-- Prefer explicit dependencies over global lookup in leaf components.
-- Do not optimize without profile evidence.
+- Keep DataConfig, Datasave, runtime state, UI, and service responsibilities separate.
+- Resolve global services at roots/high-level owners; pass explicit dependencies to leaves.
+- Preserve `.meta` GUIDs, serialized references, prefab overrides, and package dependency direction.
+- Optimize only from measured evidence.
+
+## Common Patterns
+
+- Shop: offers in DataConfig, balances in Datasave, transaction in service, UI sends intent.
+- Unit upgrade: cost curve in DataConfig, owned count/level in Datasave, card UI renders state.
+
+## Anti-patterns
+
+- UI directly mutates save or economy.
+- Package candidate references current project code.
+- Asset loading policy hidden inside a panel/list item.
 
 ## Common Failure Modes
 
-- Unsupported Dreamy API claims.
-- Ownership drift between package and project code.
-- Hidden serialized reference breakage.
-- Lifecycle leaks in async, events, tweens, pooled objects, or Addressables handles.
-- Feature code bypasses DataConfig/Datasave boundaries.
-- UI owns transaction or save mutation.
-- Package candidate depends on current project types.
-- Asset loading policy hidden in a panel/list item.
+- Unsupported or drifted API claim.
+- Hidden owner change between package, project, UI, runtime state, or persistence.
+- Lifecycle leak through async work, events, tweens, pooled objects, Addressables handles, or scene transitions.
+- Verification skipped without a precise degraded reason.
 
 ## Verification
 
-- Compile/console/test result, or a concrete not-run reason.
-- Diff review for ownership, dependencies, and serialization safety.
-- Harness evidence when available.
+- Compile/console/test result when Unity is available, otherwise degraded harness/static evidence with exact reason.
+- Focused regression for duplicate calls, cancellation/destruction, save/load, migration, or platform branch when relevant.
+- Diff review for serialization, `.meta`, asmdef/manifest, scene/prefab, and unrelated changes.
+
+## Dreamy Integration
+
+- Inspect Dreamy package compatibility before using package APIs.
+- Keep observed facts, intended contracts, and unresolved hypotheses separate.
+- Route project-specific glue to project code and reusable capability to package/shared ownership only when dependency direction is clean.
 
 ## Allowed Claims
 
-Dreamy package APIs are allowed only when backed by the compatibility registry and not listed as drift or unsupported.
+Dreamy package APIs are allowed only when backed by `compatibility/dreamy-packages.json` and not listed as drift or unsupported.
 
 ## References
 
-- `compatibility/dreamy-packages.json`
-- `rules/index.json`
-- `docs/skill-authoring.md`
-
-## Dreamy Feature Decisions
-
-Ownership: existing Dreamy package beats new project code; reusable cross-game behavior should be considered for a package; project-only behavior belongs under the project feature boundary.
-
-Data: designer-authored mostly read-only data goes to DataConfig; player-owned persistent state goes to Datasave; temporary combat/session state stays runtime-owned.
-
-Services: cross-scene services belong in composition roots or service registration; feature-local services stay under the feature root; leaf components should receive explicit dependencies.
-
-UI: panels render state and send intent; presenters/services/domain logic handle business operations.
-
-## Examples
-
-Shop: OfferDefinition -> DataConfig; currency and purchase state -> Datasave; purchase operation -> ShopService/EconomyService; UI -> ShopPanel intent/render; feedback/audio and analytics after confirmed transaction.
-
-Unit upgrade: upgrade curve -> DataConfig; owned cards and unit level -> Datasave; upgrade transaction -> service; card UI -> view-only render and intent.
+- Always read `AGENTS.md`, `rules/index.json`, and the relevant compatibility catalog before making ownership or API claims.
+- Use nearby project code and rule files as the reference source; add a skill-local reference only when repeated gotchas need more depth.

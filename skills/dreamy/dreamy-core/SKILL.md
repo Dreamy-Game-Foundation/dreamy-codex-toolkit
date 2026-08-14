@@ -1,97 +1,102 @@
 ---
 name: dreamy-core
-description: Use verified Dreamy Core service, event, state, lifecycle, logging, and tick capabilities.
+description: Use verified Dreamy Core service locator, event bus, state machine, app lifecycle, logging, and tick capabilities safely.
 ---
 
 # Dreamy Core
 
 ## Purpose
 
-Guide Core usage for services, event bus, state machines, lifecycle, logging, ticking, and extensions.
+Guide use of Core primitives while keeping leaf objects explicit and package claims verified.
 
 ## When To Use
 
-- The request directly touches this domain.
-- The implementation needs architecture, lifecycle, data ownership, or verification decisions in this area.
-- Nearby code already uses this domain and the change could break it.
+- The task changes, reviews, debugs, or plans behavior in this domain.
+- Nearby code already implements this domain and the change can alter ownership, lifecycle, data, assets, platform behavior, or verification.
+- A review/debugging/planning task needs this domain's decision model or failure modes.
 
 ## When Not To Use
 
-- A narrower Dreamy package skill owns the decision.
-- The task is only documentation or release metadata with no domain behavior.
-- Existing project instructions explicitly route to another skill.
+- A narrower skill owns the concrete behavior more directly.
+- The request is documentation-only and does not make domain, API, or verification claims.
+- The project lacks the package or platform and the task is not about detection, fallback, or migration.
+
+## Domain Model
+
+Composition root -> service registration -> feature root/presenter -> explicit leaf dependency; Event source -> event definition -> subscriber lifecycle; State -> guard -> entry/exit.
 
 ## Required Inspection
 
-- Project `AGENTS.md` and local instructions.
-- `Packages/manifest.json` and `Packages/packages-lock.json` when this is a Unity project.
-- Relevant asmdefs, scenes, prefabs, assets, tests, and nearby code owners.
-- `compatibility/dreamy-packages.json` before making Dreamy API claims.
+- Project `AGENTS.md`, local instructions, nearby code owners, tests, and recent diffs.
+- Unity projects: `Packages/manifest.json`, `Packages/packages-lock.json`, asmdefs, scenes/prefabs/assets relevant to this domain.
+- Compatibility catalogs before Dreamy, Unity-package, or third-party API claims.
+- Existing runtime owner, persistence owner, UI/presenter owner, asset owner, and lifecycle cleanup path.
 
 ## Decision Tree
 
-- Service lookup needed? Allow at composition/feature/presenter roots; inject to leaves.
-- Cross-feature notification? Use event bus only when direct ownership would couple unrelated features.
-- Mutually exclusive runtime mode? Use a state machine with transition guards.
-- Simple boolean or one-off branch? Do not create a state machine.
-- Repeated ticking across systems? Prefer a central tick service only when it reduces scattered Update loops.
+- Service lookup at composition roots, feature roots, presenters, or high-level controllers is acceptable.
+- Leaf UI, projectiles, VFX, and pooled items should receive dependencies explicitly.
+- Use EventBus for cross-feature notification, not local direct calls.
+- Use a state machine for mutually exclusive states, not simple booleans.
+- If the owner is unclear, stop at a plan/architecture decision before mutating code.
 
 ## Workflow
 
-1. Inspect the current implementation and owner.
-2. Identify data, service, UI, asset, and lifecycle boundaries.
-3. Make the smallest safe change that follows existing conventions.
-4. Preserve serialized references, meta GUIDs, and user-owned text.
-5. Run the smallest available compile, test, harness, or static validation.
-6. Report evidence and remaining risks.
+1. Inspect current owner and existing project convention.
+2. Map static config, persistent state, runtime state, UI, service, asset, and lifecycle ownership where applicable.
+3. Choose the smallest change that preserves architecture, serialization, and dependency direction.
+4. Add or update focused tests/fixtures when behavior, migration, or lifecycle risk changes.
+5. Run compile, console, targeted tests, harness/static validation, or record the exact unavailable gate.
+6. Review diff for unrelated churn and unsupported API claims.
 
 ## Architecture Rules
 
 - Keep Runtime assemblies free of Editor references.
-- Keep persistent player state out of read-only config.
-- Keep business rules out of leaf views and pooled visual objects.
-- Prefer explicit dependencies over global lookup in leaf components.
-- Do not optimize without profile evidence.
+- Keep DataConfig, Datasave, runtime state, UI, and service responsibilities separate.
+- Resolve global services at roots/high-level owners; pass explicit dependencies to leaves.
+- Preserve `.meta` GUIDs, serialized references, prefab overrides, and package dependency direction.
+- Optimize only from measured evidence.
+
+## Common Patterns
+
+- Resolve once at owner boundary and pass dependencies downward.
+- Pair event subscription with lifecycle cleanup.
+- State machines own transition guards and entry/exit cleanup.
+
+## Anti-patterns
+
+- ServiceLocator.Get in each projectile or list item.
+- Event soup replacing clear owner calls.
+- State machine with no single state owner.
 
 ## Common Failure Modes
 
-- Unsupported Dreamy API claims.
-- Ownership drift between package and project code.
-- Hidden serialized reference breakage.
-- Lifecycle leaks in async, events, tweens, pooled objects, or Addressables handles.
-- Event soup where direct call or owner method would be clearer.
-- Duplicate service registration or late registration race.
-- State machine without entry/exit cleanup.
-- Tick service used as a hidden global update bucket.
+- Unsupported or drifted API claim.
+- Hidden owner change between package, project, UI, runtime state, or persistence.
+- Lifecycle leak through async work, events, tweens, pooled objects, Addressables handles, or scene transitions.
+- Verification skipped without a precise degraded reason.
 
 ## Verification
 
-- Compile/console/test result, or a concrete not-run reason.
-- Diff review for ownership, dependencies, and serialization safety.
-- Harness evidence when available.
+- Compile/console/test result when Unity is available, otherwise degraded harness/static evidence with exact reason.
+- Focused regression for duplicate calls, cancellation/destruction, save/load, migration, or platform branch when relevant.
+- Diff review for serialization, `.meta`, asmdef/manifest, scene/prefab, and unrelated changes.
+
+## Dreamy Integration
+
+- Inspect Dreamy package compatibility before using package APIs.
+- Keep observed facts, intended contracts, and unresolved hypotheses separate.
+- Route project-specific glue to project code and reusable capability to package/shared ownership only when dependency direction is clean.
 
 ## Allowed Claims
 
-Dreamy package APIs are allowed only when backed by the compatibility registry and not listed as drift or unsupported.
+Dreamy package APIs are allowed only when backed by `compatibility/dreamy-packages.json` and not listed as drift or unsupported.
 
 ## References
 
-- `compatibility/dreamy-packages.json`
-- `rules/index.json`
-- `docs/skill-authoring.md`
-
-## Verified Capability Areas
-
-- ServiceLocator for bootstrap, installers, feature roots, presenters, and top-level controllers.
-- EventBus for cross-feature notifications and decoupled application events.
-- StateMachine for explicit mutually-exclusive states.
-- AppLifecycle and AppTickService for centralized app lifecycle and ticking when it reduces scattered Update loops.
-- DreamyLog and extensions when compatibility records verify availability.
-
-Avoid ServiceLocator in UI list items, projectiles, VFX objects, pooled leaves, and tiny components.
-
-Read deeper references when present:
-- `references/service-locator.md` for registration timing, lifetime, duplicate registration, and test strategy.
-- `references/event-bus.md` for event ownership and unsubscribe rules.
-- `references/state-machine.md` for guards, entry/exit, and simple-boolean alternatives.
-- `references/app-lifecycle.md` and `references/tick-service.md` for app-owned lifetimes and Update replacement.
+- Always read `AGENTS.md`, `rules/index.json`, and the relevant compatibility catalog before making ownership or API claims.
+- Read `references/service-locator.md` when the task touches this skill's deeper service locator behavior.
+- Read `references/event-bus.md` when the task touches this skill's deeper event bus behavior.
+- Read `references/state-machine.md` when the task touches this skill's deeper state machine behavior.
+- Read `references/app-lifecycle.md` when the task touches this skill's deeper app lifecycle behavior.
+- Read `references/tick-service.md` when the task touches this skill's deeper tick service behavior.

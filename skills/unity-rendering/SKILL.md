@@ -21,6 +21,10 @@ Guide frame rendering ownership, render pipeline choice, batching, overdraw, lig
 - A narrower Dreamy package skill owns the behavior.
 - The request only edits docs or release metadata.
 
+## Domain Model
+
+RenderPipeline/Quality -> Camera/Light/Material/Shader -> Draw/Batch/Overdraw -> Profile Evidence.
+
 ## Required Inspection
 
 - Project AGENTS.md, render pipeline assets, quality settings, scenes, prefabs, materials, shaders, and relevant asmdefs.
@@ -48,6 +52,12 @@ Guide frame rendering ownership, render pipeline choice, batching, overdraw, lig
 - Keep visual feedback from owning gameplay state.
 - Prefer measured profiling evidence over guessed optimization.
 - Keep mobile memory, overdraw, and shader variant cost visible.
+
+## Anti-patterns
+
+- Visual asset or camera feedback owns gameplay state.
+- Runtime mutation changes a shared authoring asset unintentionally.
+- Optimization claimed without target-device profile evidence.
 
 ## Common Failure Modes
 

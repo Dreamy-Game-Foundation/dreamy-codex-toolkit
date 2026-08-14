@@ -1,90 +1,89 @@
 ---
 name: movement
-description: Implement or review Unity character movement involving input intent, authority, physics versus transform motion, grounding, rotation, root motion, navigation, or mobile joystick control.
+description: Implement or review Unity gameplay input intent, movement authority, physics versus transform movement, grounding, rotation, root motion, navigation, and mobile joystick behavior.
 ---
 
 # Movement
 
 ## Purpose
 
-Guide movement implementation with clear ownership, deterministic state, save/config separation, feedback hooks, and tests.
+Guide input intent, movement authority, physics versus transform movement, grounding, rotation, root motion, navigation, and mobile joystick behavior with explicit config/save/runtime ownership, lifecycle cleanup, feedback boundaries, and tests.
 
 ## When To Use
 
-- The request directly touches this domain.
-- The implementation needs architecture, lifecycle, data ownership, or verification decisions in this area.
-- Nearby code already uses this domain and the change could break it.
+- The task changes, reviews, debugs, or plans behavior in this domain.
+- Nearby code already implements this domain and the change can alter ownership, lifecycle, data, assets, platform behavior, or verification.
+- A review/debugging/planning task needs this domain's decision model or failure modes.
 
 ## When Not To Use
 
-- A narrower Dreamy package skill owns the decision.
-- The task is only documentation or release metadata with no domain behavior.
-- Existing project instructions explicitly route to another skill.
-
-## Required Inspection
-
-- Project `AGENTS.md` and local instructions.
-- `Packages/manifest.json` and `Packages/packages-lock.json` when this is a Unity project.
-- Relevant asmdefs, scenes, prefabs, assets, tests, and nearby code owners.
-- `compatibility/dreamy-packages.json` before making Dreamy API claims.
-
-## Decision Tree
-
-- Physics body? Move through Rigidbody/Rigidbody2D in fixed-step with clear collision ownership.
-- Kinematic/controller motion? Own grounding, slope, step, and collision response explicitly.
-- Transform-only motion? Use for non-physical actors or visual-only movement.
-- NavMesh/AI movement? AI decides intent; navigation system owns path following.
-- Mobile joystick/camera-relative input? Convert input intent before movement authority applies it.
-
-## Workflow
-
-1. Inspect the current implementation and owner.
-2. Identify data, service, UI, asset, and lifecycle boundaries.
-3. Make the smallest safe change that follows existing conventions.
-4. Preserve serialized references, meta GUIDs, and user-owned text.
-5. Run the smallest available compile, test, harness, or static validation.
-6. Report evidence and remaining risks.
-
-## Architecture Rules
-
-- Keep Runtime assemblies free of Editor references.
-- Keep persistent player state out of read-only config.
-- Keep business rules out of leaf views and pooled visual objects.
-- Prefer explicit dependencies over global lookup in leaf components.
-- Do not optimize without profile evidence.
-- Input creates movement intent; movement authority applies it.
-- Runtime state owns current velocity, grounding, dash/cooldown, and navigation target.
-- Config owns speed, acceleration, friction, and tuning curves.
-
-## Common Failure Modes
-
-- Unsupported Dreamy API claims.
-- Ownership drift between package and project code.
-- Hidden serialized reference breakage.
-- Lifecycle leaks in async, events, tweens, pooled objects, or Addressables handles.
-- Mixing transform writes with physics-controlled bodies.
-- Input component directly mutates domain state.
-- Grounding state split across Animator, controller, and MonoBehaviour flags without owner.
-- Mobile joystick and keyboard paths diverge in rules.
-
-## Verification
-
-- Compile/console/test result, or a concrete not-run reason.
-- Diff review for ownership, dependencies, and serialization safety.
-- Harness evidence when available.
-
-## Allowed Claims
-
-Dreamy package APIs are allowed only when backed by the compatibility registry and not listed as drift or unsupported.
-
-## References
-
-- `compatibility/dreamy-packages.json`
-- `rules/index.json`
-- `docs/skill-authoring.md`
+- A narrower skill owns the concrete behavior more directly.
+- The request is documentation-only and does not make domain, API, or verification claims.
+- The project lacks the package or platform and the task is not about detection, fallback, or migration.
 
 ## Domain Model
 
 InputIntent -> MovementAuthority -> MovementState -> Motor/Physics/Nav -> Collision/Grounding -> Animation/Feedback.
 
-Inspect update loop choice, physics mode, root motion, rotation authority, camera-relative transform, nav fallback, and deterministic tests for movement state transitions.
+## Required Inspection
+
+- Project `AGENTS.md`, local instructions, nearby code owners, tests, and recent diffs.
+- Unity projects: `Packages/manifest.json`, `Packages/packages-lock.json`, asmdefs, scenes/prefabs/assets relevant to this domain.
+- Compatibility catalogs before Dreamy, Unity-package, or third-party API claims.
+- Existing runtime owner, persistence owner, UI/presenter owner, asset owner, and lifecycle cleanup path.
+
+## Decision Tree
+
+- Physics bodies move in fixed-step.
+- Input creates intent; motor applies authority.
+- Config owns speed/accel; runtime owns velocity/grounding.
+- If the owner is unclear, stop at a plan/architecture decision before mutating code.
+
+## Workflow
+
+1. Inspect current owner and existing project convention.
+2. Map static config, persistent state, runtime state, UI, service, asset, and lifecycle ownership where applicable.
+3. Choose the smallest change that preserves architecture, serialization, and dependency direction.
+4. Add or update focused tests/fixtures when behavior, migration, or lifecycle risk changes.
+5. Run compile, console, targeted tests, harness/static validation, or record the exact unavailable gate.
+6. Review diff for unrelated churn and unsupported API claims.
+
+## Architecture Rules
+
+- Keep Runtime assemblies free of Editor references.
+- Keep DataConfig, Datasave, runtime state, UI, and service responsibilities separate.
+- Resolve global services at roots/high-level owners; pass explicit dependencies to leaves.
+- Preserve `.meta` GUIDs, serialized references, prefab overrides, and package dependency direction.
+- Optimize only from measured evidence.
+
+## Common Patterns
+
+- Definitions/tuning live in DataConfig; player-owned progress lives in Datasave; current session state stays runtime-owned.
+- Views render state and send intent; services/domain owners mutate game state.
+
+## Anti-patterns
+
+- Mixing transform writes with physics body.
+- Grounding split across unrelated booleans.
+
+## Common Failure Modes
+
+- Unsupported or drifted API claim.
+- Hidden owner change between package, project, UI, runtime state, or persistence.
+- Lifecycle leak through async work, events, tweens, pooled objects, Addressables handles, or scene transitions.
+- Verification skipped without a precise degraded reason.
+
+## Verification
+
+- Compile/console/test result when Unity is available, otherwise degraded harness/static evidence with exact reason.
+- Focused regression for duplicate calls, cancellation/destruction, save/load, migration, or platform branch when relevant.
+- Diff review for serialization, `.meta`, asmdef/manifest, scene/prefab, and unrelated changes.
+
+## Allowed Claims
+
+Only claim installed package, Unity, platform, or Dreamy behavior after inspecting manifests, project files, compatibility data, or harness evidence.
+
+## References
+
+- Always read `AGENTS.md`, `rules/index.json`, and the relevant compatibility catalog before making ownership or API claims.
+- Use nearby project code and rule files as the reference source; add a skill-local reference only when repeated gotchas need more depth.

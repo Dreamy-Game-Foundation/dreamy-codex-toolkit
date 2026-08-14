@@ -21,6 +21,10 @@ Guide ParticleSystem modules, pooling, overdraw, collision cost, sub emitters, a
 - A narrower Dreamy package skill owns the behavior.
 - The request only edits docs or release metadata.
 
+## Domain Model
+
+ParticlePrefab -> SpawnRequest -> Pool/Instantiate -> PlayLifetime -> Stop/Cleanup -> Mobile Budget.
+
 ## Required Inspection
 
 - Project AGENTS.md, render pipeline assets, quality settings, scenes, prefabs, materials, shaders, and relevant asmdefs.
@@ -48,6 +52,12 @@ Guide ParticleSystem modules, pooling, overdraw, collision cost, sub emitters, a
 - Keep visual feedback from owning gameplay state.
 - Prefer measured profiling evidence over guessed optimization.
 - Keep mobile memory, overdraw, and shader variant cost visible.
+
+## Anti-patterns
+
+- Visual asset or camera feedback owns gameplay state.
+- Runtime mutation changes a shared authoring asset unintentionally.
+- Optimization claimed without target-device profile evidence.
 
 ## Common Failure Modes
 

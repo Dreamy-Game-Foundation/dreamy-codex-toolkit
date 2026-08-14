@@ -6,10 +6,12 @@ const required = [
   "## Purpose",
   "## When To Use",
   "## When Not To Use",
+  "## Domain Model",
   "## Required Inspection",
   "## Decision Tree",
   "## Workflow",
   "## Architecture Rules",
+  "## Anti-patterns",
   "## Common Failure Modes",
   "## Verification",
   "## Allowed Claims",
@@ -43,6 +45,16 @@ for (const file of files) {
   if (!description || description.length < 40) errors.push(`${rel}: description too short`);
   if (name && names.has(name)) errors.push(`${rel}: duplicate skill name ${name}`);
   if (name) names.add(name);
+  if (/The request directly touches this domain|Is there an existing owner or package capability|docs\/skill-authoring\.md/.test(text)) {
+    errors.push(`${rel}: contains generic template routing text`);
+  }
+  if (/The task mentions guide/i.test(text)) {
+    errors.push(`${rel}: generated when-to-use text is not polished`);
+  }
+  for (const match of text.matchAll(/`references\/([^`]+)`/g)) {
+    const referencePath = path.join(path.dirname(file), "references", match[1]);
+    if (!fs.existsSync(referencePath)) errors.push(`${rel}: missing referenced file references/${match[1]}`);
+  }
   if (rel.includes("/dreamy/") || rel.includes("skills/unity-") || rel.includes("skills/gameplay/") || rel.includes("skills/systems/system-")) {
     for (const heading of required) {
       if (!text.includes(heading)) errors.push(`${rel}: missing ${heading}`);

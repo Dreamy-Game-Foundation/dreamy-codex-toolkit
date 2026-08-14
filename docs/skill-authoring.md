@@ -37,3 +37,4 @@ description:
 - References must say when to read them; do not make a reference graveyard.
 - Every P0/P1 skill should tell Codex what to inspect, decide, change, and verify.
 - If `name`, title, and description are hidden, the body should still reveal the domain.
+- Skill-local references live in `references/*.md` beside the skill and are validated for broken links.
