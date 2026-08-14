@@ -111,41 +111,47 @@ This launches an interactive wizard that automatically detects your Unity projec
 
 ---
 
-### Option 1: Standard Execution via `npx`
+### Option 1: 1-Line Execution via `npx` (No Install & No Path Editing Required)
 
-Run directly from GitHub against your target Unity project:
+Open your terminal **inside your Unity project folder** and run any 1-line command directly:
 
 ```bash
-# 1. Detect project configuration and installed com.dreamy.* packages
-npx --yes github:Dreamy-Game-Foundation/dreamy-codex-toolkit#main detect --target /path/to/unity-project
+# ⚡ 1. Interactive Setup / Install (Defaults to current folder):
+npx --yes github:Dreamy-Game-Foundation/dreamy-codex-toolkit#main
 
-# 2. Install the default dreamy-project preset
-npx --yes github:Dreamy-Game-Foundation/dreamy-codex-toolkit#main install --target /path/to/unity-project --preset dreamy-project
+# 📦 2. Explicit Install with default preset (Defaults to current folder):
+npx --yes github:Dreamy-Game-Foundation/dreamy-codex-toolkit#main install
 
-# 3. Verify installation health
-npx --yes github:Dreamy-Game-Foundation/dreamy-codex-toolkit#main doctor --target /path/to/unity-project
+# 🩺 3. Doctor / Diagnostic Check (Defaults to current folder):
+npx --yes github:Dreamy-Game-Foundation/dreamy-codex-toolkit#main doctor
+
+# 🔄 4. Update managed toolkit (Defaults to current folder):
+npx --yes github:Dreamy-Game-Foundation/dreamy-codex-toolkit#main update
+
+# 🗑️ 5. Clean Uninstall (Defaults to current folder):
+npx --yes github:Dreamy-Game-Foundation/dreamy-codex-toolkit#main uninstall
 ```
 
-*To pin a specific release version:*
-```bash
-npx --yes github:Dreamy-Game-Foundation/dreamy-codex-toolkit#v0.1.0 install --target /path/to/unity-project --preset dreamy-project
-```
+*Note: If you ever need to target a different directory explicitly, you can still optionally add `--target /path/to/project`.*
 
 ---
 
 ### Option 2: Global CLI Installation (`dreamy-kit`)
 
-Install the `dreamy-kit` executable globally on your system:
+Install `dreamy-kit` globally on your machine once:
 
 ```bash
-# Install globally via GitHub tarball
 npm install --global https://github.com/Dreamy-Game-Foundation/dreamy-codex-toolkit/archive/refs/heads/main.tar.gz
+```
 
-# Test executable availability
-dreamy-kit --help
+After global installation, simply `cd` into any Unity project folder and run **1-word commands**:
 
-# Install into a Unity project
-dreamy-kit install --target /path/to/unity-project --preset dreamy-project
+```bash
+dreamy-kit          # Runs interactive setup wizard on current folder
+dreamy-kit install  # Installs default preset into current folder
+dreamy-kit doctor   # Runs diagnostics on current folder
+dreamy-kit update   # Updates managed files in current folder
+dreamy-kit uninstall # Removes managed files from current folder
 ```
 
 ---
@@ -240,10 +246,15 @@ unity-project/
 
 ## 🛠️ CLI Reference (`dreamy-kit`)
 
-The CLI entry point `dreamy-kit` (or `node src/cli.js`) provides the following subcommands:
+> [!NOTE]
+> - If you haven't installed `dreamy-kit` globally via `npm install -g`, run commands using `npx dreamy-kit <command>` or `npx github:Dreamy-Game-Foundation/dreamy-codex-toolkit <command>`.
+> - Developer commands (`npm test`, `npm run ...`) must be run from inside the `dreamy-codex-toolkit` project folder.
+
+The CLI entry point `dreamy-kit` (or `npx dreamy-kit` / `node src/cli.js`) provides the following subcommands:
 
 ```text
 dreamy-kit <command> [options]
+# or: npx dreamy-kit <command> [options]
 ```
 
 ### Commands Summary
