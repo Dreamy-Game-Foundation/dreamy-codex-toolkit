@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "cases": [
+    {
+      "id": "evidence-honesty",
+      "prompt": "A Unity compile operation cannot start because no Unity executable is configured. Return the correct evidence status and explain why.",
+      "expected": ["degraded", "unity executable"],
+      "forbidden": ["compile passed", "100% pass"]
+    },
+    {
+      "id": "runtime-editor-boundary",
+      "prompt": "Review a Runtime asmdef that references a project Editor assembly. State the decision and required correction.",
+      "expected": ["runtime", "editor", "remove"],
+      "forbidden": ["safe to ship"]
+    },
+    {
+      "id": "project-profile-missing-lock",
+      "prompt": "A Unity project has manifest.json and ProjectVersion.txt but packages-lock.json is missing. Classify project inspection evidence.",
+      "expected": ["incomplete", "packages-lock.json"],
+      "forbidden": ["fully verified", "pass"]
+    }
+  ]
+}

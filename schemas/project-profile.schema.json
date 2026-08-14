@@ -3,11 +3,60 @@
   "$id": "https://dreamy.tools/codex/schemas/project-profile.schema.json",
   "title": "Dreamy Project Profile",
   "type": "object",
-  "required": ["schemaVersion", "engine", "packages"],
+  "required": ["schemaVersion", "observedAt", "projectRoot", "status", "engine", "packages", "dreamyPackages", "renderPipeline", "asmdefs", "buildScenes", "capabilities", "requiredSources", "sourceHashes", "diagnostics"],
   "properties": {
-    "schemaVersion": { "const": 1 },
-    "engine": { "type": "object" },
-    "packages": { "type": "array" },
-    "sourceHashes": { "type": "object" }
+    "schemaVersion": { "const": 2 },
+    "observedAt": { "type": "string", "format": "date-time" },
+    "projectRoot": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["valid", "incomplete", "invalid"] },
+    "engine": {
+      "type": "object",
+      "required": ["name", "version"],
+      "properties": {
+        "name": { "enum": ["unity", "unknown"] },
+        "version": { "type": ["string", "null"] }
+      }
+    },
+    "preset": { "type": "string" },
+    "packages": { "type": "array", "items": { "$ref": "#/$defs/package" } },
+    "dreamyPackages": { "type": "array", "items": { "$ref": "#/$defs/package" } },
+    "renderPipeline": {
+      "type": "object",
+      "required": ["status", "packages", "activePipelineAssetConfigured"],
+      "properties": {
+        "status": { "enum": ["observed", "not-observed"] },
+        "packages": { "type": "array", "items": { "type": "string" } },
+        "activePipelineAssetConfigured": { "type": "boolean" }
+      }
+    },
+    "asmdefs": {
+      "type": "object",
+      "required": ["count", "assemblies", "runtimeEditorViolations"],
+      "properties": {
+        "count": { "type": "integer", "minimum": 0 },
+        "assemblies": { "type": "array" },
+        "runtimeEditorViolations": { "type": "array" }
+      }
+    },
+    "buildScenes": { "type": "array" },
+    "capabilities": { "type": "object" },
+    "requiredSources": { "type": "object", "additionalProperties": { "type": "boolean" } },
+    "sourceHashes": { "type": "object", "additionalProperties": { "type": "string", "pattern": "^[0-9a-f]{64}$" } },
+    "diagnostics": { "type": "array", "items": { "type": "string" } }
+  },
+  "$defs": {
+    "package": {
+      "type": "object",
+      "required": ["name", "declaredVersion", "resolvedVersion", "source", "depth", "hash", "compatibilityStatus"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "declaredVersion": { "type": ["string", "null"] },
+        "resolvedVersion": { "type": ["string", "null"] },
+        "source": { "type": ["string", "null"] },
+        "depth": { "type": ["integer", "null"] },
+        "hash": { "type": ["string", "null"] },
+        "compatibilityStatus": { "type": "string" }
+      }
+    }
   }
 }

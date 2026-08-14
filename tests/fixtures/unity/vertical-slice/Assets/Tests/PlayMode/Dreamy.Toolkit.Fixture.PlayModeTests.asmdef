@@ -1,0 +1,8 @@
+{
+  "name": "Dreamy.Toolkit.Fixture.PlayModeTests",
+  "rootNamespace": "Dreamy.Toolkit.Fixture.Tests",
+  "references": ["Dreamy.Toolkit.Fixture.Runtime"],
+  "includePlatforms": [],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "autoReferenced": false
+}

@@ -7,6 +7,8 @@ import path from "node:path";
 import readline from "node:readline/promises";
 import { fileURLToPath } from "node:url";
 import { validate as validateArtifacts } from "../scripts/validate.mjs";
+import { buildCatalogValidationReport } from "./eval-catalog.js";
+import { inspectProject } from "./project-profile.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const managedStart = "<!-- DREAMY-CODEX:START schema=1 -->";
@@ -16,7 +18,7 @@ const configEnd = "# DREAMY-CODEX agents:end";
 
 function parseArgs(argv) {
   const [cmd = "setup", ...rest] = argv;
-  const args = { target: ".", preset: "dreamy-project", dryRun: false, force: false, backup: false, runner: "static", json: false };
+  const args = { target: ".", preset: "dreamy-project", dryRun: false, force: false, backup: false, runner: "catalog", json: false };
   for (let i = 0; i < rest.length; i += 1) {
     const arg = rest[i];
     if (arg === "--target" || arg === "--preset" || arg === "--runner") {
@@ -104,25 +106,7 @@ function resolveTarget(target) {
 }
 
 function detectProject(target) {
-  const manifest = path.join(target, "Packages", "manifest.json");
-  if (!fs.existsSync(manifest)) {
-    return { schemaVersion: 1, engine: { name: "unknown" }, preset: "dreamy-project", packages: [] };
-  }
-  const dependencies = readJson(manifest).dependencies ?? {};
-  const lockPath = path.join(target, "Packages", "packages-lock.json");
-  const lockDependencies = fs.existsSync(lockPath) ? readJson(lockPath).dependencies ?? {} : {};
-  const compatibility = readJson(path.join(root, "compatibility", "dreamy-packages.json")).packages ?? {};
-  const packages = Object.entries(dependencies)
-    .filter(([name]) => name.startsWith("com.dreamy."))
-    .map(([name, version]) => ({
-      name,
-      version,
-      resolvedVersion: lockDependencies[name]?.version,
-      source: lockDependencies[name]?.source,
-      hash: lockDependencies[name]?.hash,
-      compatibilityStatus: compatibility[name]?.status ?? "unknown"
-    }));
-  return { schemaVersion: 1, engine: { name: "unity" }, preset: "dreamy-project", packages };
+  return inspectProject(target, { compatibilityFile: path.join(root, "compatibility", "dreamy-packages.json") });
 }
 
 function copyDir(source, destination) {
@@ -184,7 +168,7 @@ function resolveModules(preset) {
 
 function skillDirsForInstall(target, preset, profile) {
   const selected = new Set();
-  const detected = new Set((profile.packages ?? []).map((pkg) => pkg.name));
+  const detected = new Set((profile.dreamyPackages ?? profile.packages ?? []).map((pkg) => pkg.name));
   for (const moduleId of resolveModules(preset)) {
     const modulePath = path.join(root, "modules", moduleId, "module.json");
     if (!fs.existsSync(modulePath)) continue;
@@ -223,8 +207,8 @@ function writeManagedState(target, preset, profile, desired, beforeHash, afterHa
     agents: desired.agents.map((entry) => entry.destination),
     managedFiles: [target.agentsMd],
     checksums: { "AGENTS.md": { before: beforeHash, after: afterHash } },
-    detectedPackages: profile.packages ?? [],
-    compatibilitySnapshot: Object.fromEntries((profile.packages ?? []).map((pkg) => [pkg.name, compatibility[pkg.name]?.status ?? "unknown"]))
+    detectedPackages: profile.dreamyPackages ?? profile.packages ?? [],
+    compatibilitySnapshot: Object.fromEntries((profile.dreamyPackages ?? profile.packages ?? []).map((pkg) => [pkg.name, compatibility[pkg.name]?.status ?? "unknown"]))
   });
 }
 
@@ -357,10 +341,11 @@ async function runInteractiveSetup(args) {
       : detectProject(target.root);
 
     console.log(`\n🔍 Project engine detected: ${profile.engine.name}`);
-    if (profile.packages && profile.packages.length > 0) {
-      console.log(`📦 Found ${profile.packages.length} com.dreamy.* packages:`);
-      for (const pkg of profile.packages) {
-        console.log(`   - ${pkg.name} (${pkg.version})`);
+    const detectedDreamyPackages = profile.dreamyPackages ?? profile.packages ?? [];
+    if (detectedDreamyPackages.length > 0) {
+      console.log(`📦 Found ${detectedDreamyPackages.length} com.dreamy.* packages:`);
+      for (const pkg of detectedDreamyPackages) {
+        console.log(`   - ${pkg.name} (${pkg.declaredVersion ?? pkg.resolvedVersion ?? "unknown"})`);
       }
     }
 
@@ -472,10 +457,12 @@ function formatDetectOutput(profile) {
   console.log("╰──────────────────────────────────────────────────────────╯");
   console.log(`  ► Engine Detected   : ${profile.engine?.name ?? "unknown"}`);
   console.log(`  ► Recommended Preset: ${profile.preset ?? "dreamy-project"}`);
-  if (profile.packages && profile.packages.length > 0) {
-    console.log(`\n  📦 Detected ${profile.packages.length} com.dreamy.* packages:`);
-    for (const pkg of profile.packages) {
-      console.log(`     • ${pkg.name.padEnd(28)} v${pkg.version.padEnd(8)} [status: ${pkg.compatibilityStatus}]`);
+  const dreamyPackages = profile.dreamyPackages ?? profile.packages ?? [];
+  if (dreamyPackages.length > 0) {
+    console.log(`\n  📦 Detected ${dreamyPackages.length} com.dreamy.* packages:`);
+    for (const pkg of dreamyPackages) {
+      const version = pkg.declaredVersion ?? pkg.resolvedVersion ?? "unknown";
+      console.log(`     • ${pkg.name.padEnd(28)} v${version.padEnd(8)} [status: ${pkg.compatibilityStatus}]`);
     }
   } else {
     console.log("\n  📦 No com.dreamy.* packages detected in Packages/manifest.json.");
@@ -518,8 +505,8 @@ async function main() {
     add("project-skills", fs.existsSync(target.skillsDir) ? "INFO" : "WARN", target.skillsDir);
     if (target.kind === "project") {
       add("unity-manifest", fs.existsSync(path.join(target.root, "Packages", "manifest.json")) ? "INFO" : "WARN", "Packages/manifest.json");
-      for (const pkg of profile.packages) {
-        add(`dreamy-${pkg.name}`, pkg.compatibilityStatus === "drift" ? "WARN" : "INFO", `${pkg.version} ${pkg.compatibilityStatus}`);
+      for (const pkg of profile.dreamyPackages ?? []) {
+        add(`dreamy-${pkg.name}`, pkg.compatibilityStatus === "drift" ? "WARN" : "INFO", `${pkg.declaredVersion ?? pkg.resolvedVersion ?? "unknown"} ${pkg.compatibilityStatus}`);
       }
     }
     let gitStatus = "unavailable";
@@ -550,11 +537,10 @@ async function main() {
     const kit = readJson(path.join(root, "toolkit.json"));
     console.log(JSON.stringify({ presets: kit.presets, modules: kit.modules, rules: kit.rules, skills: kit.skills }));
   } else if (cmd === "eval") {
-    const catalog = readJson(path.join(root, "evals", "catalog.json"));
-    const cases = catalog.cases ?? [];
-    const invalid = cases.filter((entry) => !entry.id || !entry.prompt || !Array.isArray(entry.expected) || !Array.isArray(entry.forbiddenClaims));
-    if (invalid.length) throw new Error(`Invalid eval cases: ${invalid.map((entry) => entry.id ?? "<missing-id>").join(", ")}`);
-    const report = { status: "ok", runner: args.runner, coverage: catalog.coverage, cases: cases.length, passed: cases.length, criticalPassRate: 1, safetyPassRate: 1, scoreReport: { deterministicStructure: 1, routing: 1, decision: 1, safety: 1, verification: 1, scoring: catalog.scoring }, failures: [] };
+    if (args.runner !== "catalog") throw new Error("The eval command validates the catalog only. Use npm run benchmark for semantic runs.");
+    const catalogPath = path.join(root, "evals", "catalog.json");
+    const catalogText = fs.readFileSync(catalogPath, "utf8");
+    const report = buildCatalogValidationReport(catalogText, path.join(root, "schemas"));
     fs.mkdirSync(path.join(root, "release"), { recursive: true });
     writeJson(path.join(root, "release", "eval-report.json"), report);
     console.log(JSON.stringify(report));
@@ -572,7 +558,8 @@ async function main() {
   purge [--dry-run] [--json]
   doctor [--target PATH] [--json]
   list
-  eval
+  eval [--runner catalog]
+  benchmark (use npm run benchmark -- --manifest PATH --command PATH)
   update [--target PATH|global] [--preset NAME] [--dry-run] [--json]`);
   }
 }

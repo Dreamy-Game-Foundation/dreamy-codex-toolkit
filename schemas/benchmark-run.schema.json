@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dreamy.tools/codex/schemas/benchmark-run.schema.json",
+  "title": "Dreamy Benchmark Run",
+  "type": "object",
+  "required": ["schemaVersion", "kind", "purpose", "releaseEligible", "runId", "status", "startedAt", "finishedAt", "manifestHash", "provenance", "treatments", "summary"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "kind": { "const": "semantic-benchmark" },
+    "purpose": { "enum": ["selftest", "development", "quality"] },
+    "releaseEligible": { "type": "boolean" },
+    "runId": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["complete", "degraded", "failed"] },
+    "startedAt": { "type": "string", "format": "date-time" },
+    "finishedAt": { "type": "string", "format": "date-time" },
+    "manifestHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "provenance": {
+      "type": "object",
+      "required": ["toolkitCommit", "toolkitDirty", "model", "reasoning", "node", "platform", "arch"],
+      "properties": {
+        "toolkitCommit": { "type": ["string", "null"], "pattern": "^[0-9a-f]{40}$" },
+        "toolkitDirty": { "type": "boolean" },
+        "model": { "type": "string", "minLength": 1 },
+        "reasoning": { "type": "string", "minLength": 1 },
+        "node": { "type": "string", "minLength": 1 },
+        "platform": { "type": "string", "minLength": 1 },
+        "arch": { "type": "string", "minLength": 1 }
+      }
+    },
+    "treatments": { "type": "array" },
+    "summary": {
+      "type": "object",
+      "required": ["attempted", "passed", "failed", "notRun"],
+      "properties": {
+        "attempted": { "type": "integer", "minimum": 0 },
+        "passed": { "type": "integer", "minimum": 0 },
+        "failed": { "type": "integer", "minimum": 0 },
+        "notRun": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}

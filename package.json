@@ -9,6 +9,8 @@
     "test": "npm run validate && node --test tests/unit/*.test.mjs",
     "test:node": "node --test tests/unit/*.test.mjs",
     "eval:deterministic": "node src/cli.js eval",
+    "benchmark": "node scripts/benchmark.mjs",
+    "benchmark:selftest": "node scripts/benchmark.mjs --manifest benchmarks/manifests/selftest.json",
     "compatibility:refresh": "node scripts/refresh-compatibility.mjs",
     "release:check": "node scripts/release-check.mjs",
     "changelog": "node scripts/changelog.mjs",
@@ -22,6 +24,9 @@
   },
   "files": [
     "agents/",
+    "benchmarks/adapters/",
+    "benchmarks/cases/",
+    "benchmarks/manifests/",
     "compatibility/",
     "docs/",
     "evals/",
@@ -54,5 +59,9 @@
     "type": "git",
     "url": "git+https://github.com/Dreamy-Game-Foundation/dreamy-codex-toolkit.git"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1"
+  }
 }

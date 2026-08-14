@@ -6,6 +6,9 @@
 - Added native agent names, sandbox guidance, orchestration docs, and agent coverage validation.
 - Added install-state v2, preset module dependency resolution, delta update, and richer doctor diagnostics.
 - Added rendering skills, more system/rendering evals, pack smoke, and release/eval artifacts.
+- Replaced false semantic eval passes with hash-bound catalog validation and full JSON Schema checks.
+- Added machine-readable Unity project profiles, local batchmode harness adapters, and a pinned vertical-slice fixture.
+- Added a treatment-aware benchmark command adapter with isolated artifacts and deterministic pilot grading.
 
 
 ## 0.1.0-alpha.1

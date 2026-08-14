@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dreamy.tools/codex/schemas/eval-report.schema.json",
+  "title": "Dreamy Eval Catalog Validation Report",
+  "type": "object",
+  "required": ["schemaVersion", "kind", "status", "runner", "generatedAt", "catalogHash", "coverage", "catalogCases", "validatedCases", "semantic"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "kind": { "const": "catalog-validation" },
+    "status": { "const": "validated" },
+    "runner": { "const": "catalog" },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "catalogHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "coverage": { "type": "string" },
+    "catalogCases": { "type": "integer", "minimum": 0 },
+    "validatedCases": { "type": "integer", "minimum": 0 },
+    "semantic": {
+      "type": "object",
+      "required": ["status", "reason"],
+      "properties": {
+        "status": { "const": "not-run" },
+        "reason": { "type": "string", "minLength": 1 }
+      }
+    },
+    "passed": false,
+    "scoreReport": false,
+    "criticalPassRate": false
+  }
+}

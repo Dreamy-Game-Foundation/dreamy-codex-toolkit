@@ -4,12 +4,13 @@
 
 Each case records a unique `id`, `prompt`, expected behavior, forbidden claims, and a numeric `scoreThreshold`. The catalog also includes `agentCoverage` so agent templates cannot be added without explicit eval coverage.
 
-The current `dreamy-kit eval` implementation validates catalog structure only. It does not invoke a model, inspect a response, mutate a fixture, or run a task grader. Therefore its all-cases-pass output must not be interpreted as semantic pass rate or evidence that the toolkit improves agent behavior. A stored report with a different case count is stale and must not satisfy a release gate.
+`dreamy-kit eval` validates every case with JSON Schema and writes a hash-bound `catalog-validation` report. It deliberately contains no `passed`, pass-rate, or semantic score field because it does not invoke a model. A report with a different catalog hash or case count fails the release freshness check.
 
-Until the evidence-honesty phase in `docs/toolkit-completion-plan.md` is complete:
+Semantic execution is separate:
 
-- treat the generated report as catalog-validation output;
-- do not use its `passed`, routing, decision, safety, or verification values in release claims;
-- use `fail`, `degraded`, or `not-run` when semantic/runtime evidence is missing.
+- `npm run eval:deterministic` validates catalog structure only;
+- `npm run benchmark -- --manifest benchmarks/manifests/pilot.json --command <adapter>` invokes an external agent adapter and grades observed output;
+- omitting `--command` produces a `degraded` benchmark with `not-run` trials rather than fake passes.
+- production release only consumes a separately published `release/benchmark-report.json` that is quality-purpose, release-eligible, complete, and bound to a clean toolkit commit.
 
 The controlled experiment, case contract, metrics, and release gates are defined in `docs/toolkit-benchmark-plan.md`.

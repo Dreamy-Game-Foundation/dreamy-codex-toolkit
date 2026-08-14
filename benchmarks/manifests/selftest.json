@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "name": "dreamy-benchmark-infrastructure-selftest",
+  "purpose": "selftest",
+  "releaseEligible": false,
+  "model": "synthetic-selftest",
+  "reasoning": "not-applicable",
+  "repetitions": 1,
+  "timeoutMs": 30000,
+  "adapter": {
+    "executable": "node",
+    "args": ["{repoRoot}/benchmarks/adapters/selftest-agent.mjs", "{promptFile}", "{outputFile}"]
+  },
+  "caseFiles": ["../cases/pilot.json"],
+  "treatments": [
+    { "id": "SELFTEST", "description": "Synthetic adapter; never use as model quality evidence", "sources": [] }
+  ]
+}

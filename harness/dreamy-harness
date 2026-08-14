@@ -1,98 +1,177 @@
 #!/usr/bin/env node
-import { execFileSync } from "node:child_process";
+import crypto from "node:crypto";
+import { spawnSync } from "node:child_process";
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { inspectProject } from "../src/project-profile.js";
+import { createSchemaValidator, validateWithSchema } from "../src/schema-validation.js";
 
+const toolkitRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const op = process.argv[2] ?? "help";
 const target = path.resolve(process.argv[3] ?? ".");
+const schemas = createSchemaValidator(path.join(toolkitRoot, "schemas"));
+
+function sha256File(file) {
+  return crypto.createHash("sha256").update(fs.readFileSync(file)).digest("hex");
+}
+
+function artifact(file, kind) {
+  return { path: file, kind, sha256: sha256File(file) };
+}
 
 function json(value, code = 0) {
   const observedAt = new Date().toISOString();
-  console.log(JSON.stringify({ observedAt, timestamp: observedAt, command: process.argv.slice(1), artifacts: [], ...value, exitCode: code }, null, 2));
+  const evidence = { schemaVersion: 1, adapter: "dreamy-harness", observedAt, timestamp: observedAt, command: process.argv.slice(1), artifacts: [], diagnostics: [], ...value, exitCode: code };
+  validateWithSchema(schemas, "https://dreamy.tools/codex/schemas/evidence.schema.json", evidence, `${op} evidence`);
+  console.log(JSON.stringify(evidence, null, 2));
   process.exitCode = code;
 }
 
+function run(executable, args) {
+  return spawnSync(executable, args, { encoding: "utf8", windowsHide: true, timeout: Number(process.env.DREAMY_UNITY_TIMEOUT_MS ?? 300_000) });
+}
+
 function git(args) {
-  try {
-    return execFileSync("git", ["-c", `safe.directory=${target.replaceAll("\\", "/")}`, "-C", target, ...args], { encoding: "utf8" });
-  } catch (error) {
-    return error.stdout?.toString() ?? error.message;
+  return run("git", ["-c", `safe.directory=${target.replaceAll("\\", "/")}`, "-C", target, ...args]);
+}
+
+function projectProfile() {
+  return inspectProject(target, { compatibilityFile: path.join(toolkitRoot, "compatibility", "dreamy-packages.json") });
+}
+
+function unityOperation(operation) {
+  const unity = process.env.DREAMY_UNITY_PATH || process.env.UNITY_PATH;
+  if (!unity || !fs.existsSync(unity)) {
+    json({ operation, target, status: "degraded", degradedReason: "Set DREAMY_UNITY_PATH to a Unity Editor executable", diagnostics: [] }, 2);
+    return;
   }
+  const profile = projectProfile();
+  if (profile.status === "invalid") {
+    json({ operation, target, status: "fail", diagnostics: profile.diagnostics, profile }, 1);
+    return;
+  }
+  const outputDir = fs.mkdtempSync(path.join(os.tmpdir(), "dreamy-harness-"));
+  const logFile = path.join(outputDir, `${operation}.log`);
+  const args = ["-batchmode", "-nographics", "-projectPath", target, "-logFile", logFile];
+  let resultFile = null;
+  if (operation === "test-editmode" || operation === "test-playmode") {
+    resultFile = path.join(outputDir, `${operation}.xml`);
+    args.push("-runTests", "-testPlatform", operation === "test-editmode" ? "EditMode" : "PlayMode", "-testResults", resultFile);
+  } else {
+    args.push("-quit");
+  }
+  if (operation === "build-android" || operation === "build-ios") {
+    const method = process.env.DREAMY_UNITY_BUILD_METHOD;
+    if (!method) {
+      json({ operation, target, status: "degraded", degradedReason: "Set DREAMY_UNITY_BUILD_METHOD to a verified static Unity build method", diagnostics: [] }, 2);
+      return;
+    }
+    args.push("-buildTarget", operation === "build-android" ? "Android" : "iOS", "-executeMethod", method);
+  }
+  const result = run(unity, args);
+  const log = fs.existsSync(logFile) ? fs.readFileSync(logFile, "utf8") : `${result.stdout ?? ""}\n${result.stderr ?? ""}`;
+  if (!fs.existsSync(logFile)) fs.writeFileSync(logFile, log, "utf8");
+  const lines = log.split(/\r?\n/);
+  const errors = lines.filter((line) => /\berror\b|compilation failed/i.test(line)).slice(0, 100);
+  const warnings = lines.filter((line) => /\bwarning\b/i.test(line)).slice(0, 100);
+  const exceptions = lines.filter((line) => /\bexception\b/i.test(line)).slice(0, 100);
+  const artifacts = [artifact(logFile, "unity-log")];
+  if (resultFile && fs.existsSync(resultFile)) artifacts.push(artifact(resultFile, "unity-test-results"));
+  const infrastructureFailure = Boolean(result.error) || /\[Licensing::[^\]]+\].*(failed|unavailable|error)|Access token is unavailable/i.test(log);
+  if (infrastructureFailure) {
+    const degradedReason = result.error?.code === "ETIMEDOUT"
+      ? `Unity timed out after ${process.env.DREAMY_UNITY_TIMEOUT_MS ?? 300_000} ms`
+      : result.error?.message ?? "Unity licensing is unavailable; the project outcome was not observed";
+    json({ operation, target, status: "degraded", degradedReason, diagnostics: [degradedReason], errors, warnings, exceptions, artifacts, profileHash: crypto.createHash("sha256").update(JSON.stringify(profile.sourceHashes)).digest("hex") }, 2);
+    return;
+  }
+  const testResultPassed = !resultFile || (fs.existsSync(resultFile) && /<test-run\b[^>]*\bfailed="0"/i.test(fs.readFileSync(resultFile, "utf8")));
+  const passed = result.status === 0 && errors.length === 0 && testResultPassed;
+  const failureDiagnostic = resultFile && !testResultPassed
+      ? "Unity test result is missing or contains failures"
+      : `Unity exited ${result.status ?? "without an exit code"}`;
+  json({ operation, target, status: passed ? "pass" : "fail", diagnostics: passed ? ["Unity batchmode completed without observed errors"] : [failureDiagnostic], errors, warnings, exceptions, artifacts, profileHash: crypto.createHash("sha256").update(JSON.stringify(profile.sourceHashes)).digest("hex") }, passed ? 0 : 1);
 }
 
 if (op === "git-status") {
+  const result = git(["status", "--short"]);
+  const passed = result.status === 0;
   json({
-    schemaVersion: 1,
-    adapter: "dreamy-harness",
     operation: op,
     target,
-    status: "pass",
-    diagnostics: git(["status", "--short"]).trim().split("\n").filter(Boolean)
-  });
+    status: passed ? "pass" : "fail",
+    diagnostics: passed ? result.stdout.trim().split("\n").filter(Boolean) : [result.stderr || "git status failed"]
+  }, passed ? 0 : 1);
 } else if (op === "git-diff") {
+  const result = git(["diff", "--stat"]);
+  const passed = result.status === 0;
   json({
-    schemaVersion: 1,
-    adapter: "dreamy-harness",
     operation: op,
     target,
-    status: "pass",
-    diagnostics: [git(["diff", "--stat"]).trim()].filter(Boolean)
-  });
-} else if (op === "compile" || op === "console" || op === "test-editmode" || op === "test-playmode") {
-  json({
-    schemaVersion: 1,
-    adapter: "dreamy-harness",
-    operation: op,
-    target,
-    status: "degraded",
-    degradedReason: "Unity executable or MCP bridge not configured",
-    diagnostics: [],
-    errors: [],
-    warnings: [],
-    exceptions: []
-  }, 2);
+    status: passed ? "pass" : "fail",
+    diagnostics: passed ? [result.stdout.trim()].filter(Boolean) : [result.stderr || "git diff failed"]
+  }, passed ? 0 : 1);
+} else if (["compile", "console", "test-editmode", "test-playmode"].includes(op)) {
+  unityOperation(op);
 } else if (op === "project-inspect" || op === "validate-project") {
-  const manifest = path.join(target, "Packages", "manifest.json");
-  const lock = path.join(target, "Packages", "packages-lock.json");
-  const version = path.join(target, "ProjectSettings", "ProjectVersion.txt");
+  const profile = projectProfile();
+  validateWithSchema(schemas, "https://dreamy.tools/codex/schemas/project-profile.schema.json", profile, "project profile");
+  const code = profile.status === "valid" ? 0 : profile.status === "incomplete" ? 2 : 1;
   json({
-    schemaVersion: 1,
-    adapter: "dreamy-harness",
     operation: op,
     target,
-    status: "pass",
-    diagnostics: [
-      fs.existsSync(manifest) ? "Packages/manifest.json present" : "Packages/manifest.json missing",
-      fs.existsSync(lock) ? "Packages/packages-lock.json present" : "Packages/packages-lock.json missing",
-      fs.existsSync(version) ? "ProjectVersion.txt present" : "ProjectVersion.txt missing"
-    ]
-  });
+    status: profile.status === "valid" ? "pass" : profile.status === "incomplete" ? "degraded" : "fail",
+    degradedReason: profile.status === "incomplete" ? "Project sources are incomplete; see diagnostics" : undefined,
+    diagnostics: profile.diagnostics,
+    profile
+  }, code);
 } else if (op === "asmdef") {
   const fixture = process.argv[3] ? path.resolve(process.argv[3]) : target;
-  const text = fs.existsSync(fixture) ? fs.readFileSync(fixture, "utf8") : "";
-  const unsafe = /UnityEditor|guid-unsafe|unsafe/i.test(text) || /unsafe/i.test(path.basename(fixture));
+  if (!fs.existsSync(fixture)) {
+    json({ operation: op, target: fixture, status: "fail", diagnostics: ["asmdef target does not exist"] }, 1);
+  } else if (fs.statSync(fixture).isDirectory()) {
+    const profile = inspectProject(fixture, { compatibilityFile: path.join(toolkitRoot, "compatibility", "dreamy-packages.json") });
+    const unsafe = profile.asmdefs.runtimeEditorViolations.length > 0;
+    json({ operation: op, target: fixture, status: unsafe ? "fail" : "pass", diagnostics: unsafe ? profile.diagnostics : [`Parsed ${profile.asmdefs.count} asmdef files`], profile }, unsafe ? 1 : 0);
+  } else {
+  let data;
+  try { data = JSON.parse(fs.readFileSync(fixture, "utf8")); } catch (error) {
+    json({ operation: op, target: fixture, status: "fail", diagnostics: [`Invalid asmdef JSON: ${error.message}`] }, 1);
+    data = null;
+  }
+  if (data) {
+  const unsafeReferences = (data.references ?? []).filter((reference) => reference === "UnityEditor" || /\.Editor$/.test(reference));
+  const runtime = !(data.includePlatforms ?? []).includes("Editor") && !fixture.replaceAll("\\", "/").includes("/Editor/");
+  const unsafe = runtime && unsafeReferences.length > 0;
   json({
-    schemaVersion: 1,
-    adapter: "dreamy-harness",
     operation: op,
     target: fixture,
     status: unsafe ? "fail" : "pass",
-    diagnostics: unsafe ? ["Runtime/Editor or GUID safety issue detected by static asmdef fixture"] : ["static asmdef fixture passed"]
+    diagnostics: unsafe ? [`Runtime asmdef references Editor assemblies: ${unsafeReferences.join(", ")}`] : ["Parsed asmdef JSON; no direct Runtime-to-Editor reference found"]
   }, unsafe ? 1 : 0);
-} else if (op === "package-check" || op === "validate-package" || op === "validate-addressables" || op === "build-android" || op === "build-ios") {
+  }
+  }
+} else if (op === "package-check" || op === "validate-package") {
+  const profile = projectProfile();
+  const code = profile.status === "valid" ? 0 : profile.status === "incomplete" ? 2 : 1;
   json({
-    schemaVersion: 1,
-    adapter: "dreamy-harness",
     operation: op,
     target,
-    status: "degraded",
-    degradedReason: "Static adapter implemented; real Unity bridge pending",
-    diagnostics: []
-  }, 2);
+    status: profile.status === "valid" ? "pass" : profile.status === "incomplete" ? "degraded" : "fail",
+    degradedReason: profile.status === "incomplete" ? "Package lock or other project sources are incomplete" : undefined,
+    diagnostics: profile.diagnostics,
+    profile
+  }, code);
+} else if (op === "validate-addressables") {
+  const profile = projectProfile();
+  const observed = profile.capabilities.addressables.status === "observed";
+  json({ operation: op, target, status: "degraded", degradedReason: observed ? "Addressables package observed; Unity content validation still requires an Editor bridge" : "Addressables package was not observed", diagnostics: profile.diagnostics, profile }, 2);
+} else if (op === "build-android" || op === "build-ios") {
+  unityOperation(op);
 } else {
   json({
-    schemaVersion: 1,
-    adapter: "dreamy-harness",
     operation: "help",
     status: "pass",
     operations: ["git-status", "git-diff", "compile", "console", "test-editmode", "test-playmode", "project-inspect", "asmdef", "package-check", "validate-project", "validate-package", "validate-addressables", "build-android", "build-ios"]

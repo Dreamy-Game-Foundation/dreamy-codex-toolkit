@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { createSchemaValidator, validateWithSchema } from "../src/schema-validation.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -21,6 +22,8 @@ function assertHexCommit(value, label) {
 
 export async function validate() {
   const toolkit = await readJson("toolkit.json");
+  const schemas = createSchemaValidator(path.join(root, "schemas"));
+  validateWithSchema(schemas, "https://dreamy.tools/codex/schemas/toolkit.schema.json", toolkit, "toolkit.json");
   assert(toolkit.schemaVersion === 1, "toolkit.schemaVersion must be 1");
   assert(Array.isArray(toolkit.schemas) && toolkit.schemas.length >= 7, "toolkit.schemas must list baseline schemas");
 
@@ -123,11 +126,25 @@ export async function validate() {
   assert(corePreset.id === "core", "core preset id mismatch");
   assert(corePreset.modules.includes("foundation"), "core preset must include foundation module");
 
+  for (const modulePath of toolkit.modules ?? []) {
+    const module = await readJson(modulePath);
+    validateWithSchema(schemas, "https://dreamy.tools/codex/schemas/module.schema.json", module, modulePath);
+  }
+  for (const presetPath of toolkit.presets ?? []) {
+    const preset = await readJson(presetPath);
+    validateWithSchema(schemas, "https://dreamy.tools/codex/schemas/preset.schema.json", preset, presetPath);
+  }
+  const evalCatalog = await readJson(toolkit.evals);
+  for (const entry of evalCatalog.cases ?? []) {
+    validateWithSchema(schemas, "https://dreamy.tools/codex/schemas/eval-case.schema.json", entry, `eval ${entry.id ?? "<missing-id>"}`);
+  }
+
   return {
     repositories: ledger.repositories.length,
     dreamyPackages: packageEntries.length,
     schemas: toolkit.schemas.length,
-    rules: rules.rules.length
+    rules: rules.rules.length,
+    schemaValidatedArtifacts: 1 + toolkit.modules.length + toolkit.presets.length + (evalCatalog.cases ?? []).length
   };
 }
 
@@ -135,7 +152,7 @@ async function readJsonLikeText(relativePath) {
   await readFile(path.join(root, relativePath), "utf8");
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (path.resolve(fileURLToPath(import.meta.url)) === path.resolve(process.argv[1])) {
   validate()
     .then((result) => {
       console.log(`W0/W1/W2 validation passed: ${result.repositories} repositories, ${result.dreamyPackages} packages, ${result.schemas} schemas, ${result.rules} rules`);

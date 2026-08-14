@@ -18,7 +18,9 @@
     "schemas/project-profile.schema.json",
     "schemas/install-state.schema.json",
     "schemas/evidence.schema.json",
-    "schemas/eval-case.schema.json"
+    "schemas/eval-case.schema.json",
+    "schemas/eval-report.schema.json",
+    "schemas/benchmark-run.schema.json"
   ],
   "rules": "rules/index.json",
   "skills": "skills/index.json",
@@ -65,8 +67,8 @@
     "installer": "alpha.2-native-paths",
     "dreamyKnowledge": "alpha",
     "unityKnowledge": "alpha",
-    "harness": "prototype",
-    "evals": "alpha.2-static-runner",
+    "harness": "alpha.2-local-unity-adapter",
+    "evals": "alpha.2-evidence-honest",
     "agents": "alpha.2-native-schema",
     "doctor": "alpha.2-diagnostics",
     "compatibility": "alpha.2-drift-report"

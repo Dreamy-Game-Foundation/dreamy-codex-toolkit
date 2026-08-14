@@ -1,0 +1,8 @@
+{
+  "name": "Dreamy.Toolkit.Fixture.EditModeTests",
+  "rootNamespace": "Dreamy.Toolkit.Fixture.Tests",
+  "references": ["Dreamy.Toolkit.Fixture.Runtime"],
+  "includePlatforms": ["Editor"],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "autoReferenced": false
+}

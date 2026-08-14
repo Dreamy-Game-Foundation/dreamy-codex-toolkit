@@ -23,13 +23,14 @@ Toolkit chỉ được xem là tốt khi cùng một agent/model, trên cùng ta
 | Project-analysis skill | Đã viết; canonical validation xanh | `skills/unity-project-analysis/**`, `skills/index.json`, `modules/foundation/module.json` |
 | Project-analyst agent | Đã viết; acceptance validation xanh | `agents/codex/dreamy-project-analyst.toml`, `evals/catalog.json` |
 | Agent contract drift | Đã sửa; acceptance validation xanh | `dreamy-release-validator.toml`, `dreamy-skill-author.toml` |
-| Machine capability profile | Chưa làm | `src/cli.js`, `schemas/project-profile.schema.json`, `harness/dreamy-harness` |
-| Semantic benchmark | Chưa làm | `benchmarks/**`, eval/report schemas, runner và graders |
-| Real Unity harness | Chưa làm | Unity fixture + harness adapters |
+| Machine capability profile | Đã triển khai và có negative fixtures | `src/project-profile.js`, project-profile schema, harness tests |
+| Evidence honesty | Đã triển khai; catalog không còn giả semantic pass | eval-report schema, release freshness gate, negative tests |
+| Semantic benchmark | Runner/command adapter/pilot manifest đã chạy; corpus 24 task chưa đủ | `scripts/benchmark.mjs`, `benchmarks/**` |
+| Real Unity harness | Local batchmode adapter + pinned fixture đã có; Editor compile/test bị chặn bởi license | `harness/dreamy-harness`, `tests/fixtures/unity/vertical-slice`, `docs/harness.md` |
 
 ## File-level work packages
 
-### WP-A — Project profile từ máy
+### WP-A — Project profile từ máy (đã triển khai)
 
 Mục tiêu: biến project-analysis từ prompt contract thành dữ liệu có thể kiểm tra.
 
@@ -60,7 +61,7 @@ Files:
 
 Acceptance: xóa/tạo một route target giả trong fixture phải làm acceptance test fail.
 
-### WP-C — Evidence honesty
+### WP-C — Evidence honesty (đã triển khai)
 
 Files:
 
@@ -72,7 +73,7 @@ Files:
 
 Acceptance: catalog 100% valid nhưng không có model output phải báo `validated`, không báo semantic `pass`.
 
-### WP-D — Real Unity harness
+### WP-D — Real Unity harness (adapter đã có, Editor verification còn mở)
 
 Files:
 

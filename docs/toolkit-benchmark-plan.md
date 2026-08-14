@@ -25,7 +25,25 @@ Không dùng số lượng eval case, keyword hit hoặc file tồn tại làm p
 
 ## Trạng thái benchmark hiện tại
 
-`evals/catalog.json` là seed corpus routing/safety. Runner hiện tại chỉ validate shape và không chạy model. `release/eval-report.json` hiện tại phải được đọc là **catalog validation artifact**, không phải semantic benchmark result.
+`evals/catalog.json` là seed corpus routing/safety. `dreamy-kit eval` chỉ tạo **catalog validation artifact**, không phải semantic benchmark result. `scripts/benchmark.mjs` đã cung cấp command adapter, treatment source hashing, trial isolation, output artifacts và contains/forbidden grader cho pilot; đây mới là runner scaffold, chưa phải kết quả so sánh chất lượng.
+
+Chạy pilot:
+
+```bash
+npm run benchmark -- --manifest benchmarks/manifests/pilot.json --command /path/to/agent-wrapper
+```
+
+Agent wrapper nhận hai argument mặc định: đường dẫn prompt và đường dẫn output. Đặt `THE1_ROOT` để bật K1. Nếu thiếu command hoặc source root, trial phải là `not-run` và run phải là `degraded`.
+
+Run report ghi toolkit commit/dirty state, model/reasoning labels, Node/OS/architecture, source hashes, command, output hash và trial grading. `--publish-release` chỉ chấp nhận run `purpose=quality`, `releaseEligible=true`, hoàn tất và chạy từ clean toolkit commit; self-test hoặc pilot nhỏ không thể trở thành release evidence.
+
+Kiểm plumbing mà không gọi model:
+
+```bash
+npm run benchmark:selftest
+```
+
+Self-test dùng synthetic adapter và chỉ chứng minh runner/artifact/grader hoạt động; kết quả của nó tuyệt đối không được dùng làm quality claim.
 
 ## Treatments
 

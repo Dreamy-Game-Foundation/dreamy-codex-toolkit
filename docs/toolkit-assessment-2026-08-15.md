@@ -114,6 +114,18 @@ Ba file roadmap/spec ở root cộng với master plan chứa nhiều nghìn dò
 
 Các bổ sung trên là vertical slice đầu tiên. Harness/CLI profile, semantic runner và domain skills tiếp theo vẫn phải thực hiện theo completion plan, không được coi là đã hoàn thiện.
 
+## Cập nhật triển khai sau assessment
+
+Các finding P0 có thể xử lý thuần repository đã được triển khai:
+
+- eval catalog dùng JSON Schema thật và không còn sinh pass rate/score giả;
+- release check khóa report theo SHA-256 + case count và công khai `productionReadiness: blocked` khi semantic benchmark/Unity matrix chưa có;
+- project profile machine-readable đọc Unity revision, manifest/lock, render pipeline evidence, asmdef graph, build scenes, capabilities và source hashes;
+- harness có local Unity batchmode adapter, artifact checksum và negative outcome đúng; khi thiếu Editor vẫn `degraded`;
+- benchmark command adapter, K0/K1/K2/K3 manifest, isolated trial artifacts và deterministic pilot grader đã có test.
+
+Điểm 49/100 ở đầu tài liệu vẫn là snapshot trước triển khai và chưa được nâng, vì chưa có Unity 6000.4 run, corpus 24 task hoặc kết quả so sánh K0–K3. Skill/domain expansion tiếp tục bị chặn có chủ đích cho tới khi benchmark failure chỉ ra cohort cần làm sâu.
+
 ## Quyết định maturity
 
 | Nhãn | Quyết định | Điều kiện |

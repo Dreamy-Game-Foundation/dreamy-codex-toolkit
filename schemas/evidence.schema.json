@@ -12,7 +12,18 @@
     "observedAt": { "type": "string", "minLength": 1 },
     "command": { "type": "array", "items": { "type": "string" } },
     "exitCode": { "type": ["integer", "null"] },
-    "artifacts": { "type": "array" },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "kind", "sha256"],
+        "properties": {
+          "path": { "type": "string", "minLength": 1 },
+          "kind": { "type": "string", "minLength": 1 },
+          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+        }
+      }
+    },
     "diagnostics": { "type": "array", "items": { "type": "string" } },
     "git": {
       "type": "object",
@@ -23,5 +34,15 @@
     },
     "profileHash": { "type": ["string", "null"] },
     "degradedReason": { "type": ["string", "null"] }
-  }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "pass" } }, "required": ["status"] },
+      "then": { "properties": { "exitCode": { "const": 0 } } }
+    },
+    {
+      "if": { "properties": { "status": { "const": "degraded" } }, "required": ["status"] },
+      "then": { "required": ["degradedReason"], "properties": { "exitCode": { "not": { "const": 0 } }, "degradedReason": { "type": "string", "minLength": 1 } } }
+    }
+  ]
 }

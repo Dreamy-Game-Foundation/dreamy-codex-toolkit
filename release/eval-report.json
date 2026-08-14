@@ -1,24 +1,15 @@
 {
-  "status": "ok",
-  "runner": "static",
+  "schemaVersion": 1,
+  "kind": "catalog-validation",
+  "status": "validated",
+  "runner": "catalog",
+  "generatedAt": "2026-08-14T19:12:54.397Z",
+  "catalogHash": "08e106565dd0336e41367f3923aaa152c85ca5df5e5679d8956e3079c2f10b42",
   "coverage": "v1-seed",
-  "cases": 74,
-  "passed": 74,
-  "criticalPassRate": 1,
-  "safetyPassRate": 1,
-  "scoreReport": {
-    "deterministicStructure": 1,
-    "routing": 1,
-    "decision": 1,
-    "safety": 1,
-    "verification": 1,
-    "scoring": {
-      "routing": 0.2,
-      "decision": 0.35,
-      "safety": 0.2,
-      "verification": 0.15,
-      "clarity": 0.1
-    }
-  },
-  "failures": []
+  "catalogCases": 77,
+  "validatedCases": 77,
+  "semantic": {
+    "status": "not-run",
+    "reason": "Catalog validation does not execute an agent or grade semantic output."
+  }
 }

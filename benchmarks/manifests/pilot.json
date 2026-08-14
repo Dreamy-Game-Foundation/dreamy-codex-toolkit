@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "name": "dreamy-toolkit-pilot",
+  "purpose": "quality",
+  "releaseEligible": false,
+  "model": "set-by-run-owner",
+  "reasoning": "set-by-run-owner",
+  "repetitions": 1,
+  "timeoutMs": 300000,
+  "maxSourceBytes": 1000000,
+  "adapter": {
+    "executable": null,
+    "args": ["{promptFile}", "{outputFile}"]
+  },
+  "caseFiles": ["../cases/pilot.json"],
+  "treatments": [
+    { "id": "K0", "description": "No toolkit sources", "sources": [] },
+    { "id": "K1", "description": "The1 reference agents", "sources": [{ "root": "THE1_ROOT", "paths": ["agents"] }] },
+    { "id": "K2", "description": "Dreamy rules and core agents", "sources": [{ "root": "repo", "paths": ["rules", "agents/codex"] }] },
+    { "id": "K3", "description": "Full Dreamy toolkit", "sources": [{ "root": "repo", "paths": ["rules", "agents/codex", "skills", "compatibility"] }] }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "name": "Dreamy.Toolkit.Fixture.Runtime",
+  "rootNamespace": "Dreamy.Toolkit.Fixture",
+  "references": [],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "autoReferenced": true
+}

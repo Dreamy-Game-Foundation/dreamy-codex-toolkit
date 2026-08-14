@@ -16,7 +16,7 @@ Current readiness and next steps:
 - [Benchmark plan](docs/toolkit-benchmark-plan.md)
 - [Dogfood protocol](docs/dogfood-protocol.md)
 
-The current eval runner validates catalog structure; it does not yet execute or grade model outputs. Do not interpret its all-cases-pass report as proof of agent quality. Unity-dependent harness operations also remain degraded until a real Editor bridge is configured.
+The eval command validates catalog structure and deliberately emits no semantic pass score. The separate benchmark runner executes a configured agent command and stores treatment-level artifacts. Unity harness operations use local batchmode when `DREAMY_UNITY_PATH` is configured and otherwise report `degraded`; no tested Unity matrix is claimed yet.
 
 ---
 
@@ -238,6 +238,7 @@ Commands default to the current directory unless `--target global` is specified.
 | `detect` | Inspects Unity engine & `com.dreamy.*` packages | `--target PATH`, `--json` |
 | `validate` | Validates schemas, rules, and acceptance tests | *(None)* |
 | `list` | Catalogs presets, modules, rules, and skills | *(None)* |
+| `eval` | JSON-Schema validates the eval catalog without semantic pass claims | `--runner catalog` |
 
 ---
 
