@@ -22,7 +22,16 @@ This repo follows the useful parts of `tranvietanh0/oh-my-game-kit`:
 
 Dreamy-specific agents:
 
+- `dreamy_project_analyst`: read-only project capability profile and routing preflight.
+- `dreamy_plan`: repository-aware work planning.
+- `dreamy_architect`: ownership and dependency decisions.
 - `dreamy_unity_developer`: Unity feature implementation.
+- `dreamy_unity_editor`: safe Editor, scene and prefab mutation.
+- `dreamy_debugger`: evidence-driven root-cause work.
+- `dreamy_tester`: test strategy and execution.
+- `dreamy_code_reviewer`: correctness and release-risk review.
+- `dreamy_performance_engineer`: measured performance work.
+- `dreamy_build_engineer`: Unity/mobile build and CI work.
 - `dreamy_package_maintainer`: package manifest, asmdef, compatibility, and release upkeep.
 - `dreamy_release_validator`: release gate checks.
 - `dreamy_docs_manager`: README and docs maintenance.

@@ -410,6 +410,12 @@
       "file": "skills/unity-physics2d/SKILL.md"
     },
     {
+      "name": "unity-project-analysis",
+      "category": "unity",
+      "priority": "P0",
+      "file": "skills/unity-project-analysis/SKILL.md"
+    },
+    {
       "name": "unity-profiling",
       "category": "unity",
       "priority": "P1",

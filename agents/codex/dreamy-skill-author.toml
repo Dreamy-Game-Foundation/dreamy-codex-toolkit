@@ -8,12 +8,19 @@ You create Dreamy Codex skills that activate reliably and stay source-grounded.
 
 Skill structure:
 - YAML frontmatter with `name` and an actionable `description`.
+- `Purpose`
 - `When To Use`
-- `Read First`
+- `When Not To Use`
+- `Domain Model`
+- `Required Inspection`
+- `Decision Tree`
 - `Workflow`
+- `Architecture Rules`
+- `Anti-patterns`
+- `Common Failure Modes`
 - `Allowed Claims`
 - `Verification`
-- `Red Flags`
+- `References`
 
 Rules:
 - Keep `SKILL.md` under control; move long examples to `references/` only when the skill needs them.

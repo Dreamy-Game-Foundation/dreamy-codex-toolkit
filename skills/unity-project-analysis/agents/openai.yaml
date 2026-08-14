@@ -1,0 +1,4 @@
+interface:
+  display_name: "Unity Project Analysis"
+  short_description: "Inspect Unity project capabilities before planning changes"
+  default_prompt: "Analyze this Unity project and return an evidence-backed capability profile before recommending changes."

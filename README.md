@@ -8,6 +8,16 @@
 
 `toolkit.json` serves as the canonical source of truth for versioning, maturity, presets, modules, rules, skills, and harness metadata.
 
+Current readiness and next steps:
+
+- [Toolkit assessment](docs/toolkit-assessment-2026-08-15.md)
+- [Comparison with The1 Unity Claude Agents](docs/toolkit-comparison-the1.md)
+- [Completion plan](docs/toolkit-completion-plan.md)
+- [Benchmark plan](docs/toolkit-benchmark-plan.md)
+- [Dogfood protocol](docs/dogfood-protocol.md)
+
+The current eval runner validates catalog structure; it does not yet execute or grade model outputs. Do not interpret its all-cases-pass report as proof of agent quality. Unity-dependent harness operations also remain degraded until a real Editor bridge is configured.
+
 ---
 
 ## ⚡ 1-Click Copy & Paste Installation
@@ -235,11 +245,22 @@ Commands default to the current directory unless `--target global` is specified.
 
 ### Codex Agents
 
-1. 🎮 **`dreamy_unity_developer`**: Gameplay, C# scripting, component assembly.
-2. 📦 **`dreamy_package_maintainer`**: UPM structure, asmdefs, compatibility.
-3. 🛡️ **`dreamy_release_validator`**: Pre-release checks and evidence logs.
-4. 📝 **`dreamy_docs_manager`**: Maintenance of READMEs, CHANGELOGs, and docs.
-5. 🛠️ **`dreamy_skill_author`**: Skill design and expansion.
+| Agent | Responsibility |
+|---|---|
+| `dreamy_project_analyst` | Read-only project capability profile and routing preflight |
+| `dreamy_plan` | Repository-aware implementation plans |
+| `dreamy_architect` | Ownership, dependency, data and lifecycle decisions |
+| `dreamy_unity_developer` | Gameplay, UI wiring and Unity C# implementation |
+| `dreamy_unity_editor` | Safe scene, prefab and Editor state mutation |
+| `dreamy_debugger` | Evidence-driven root-cause diagnosis and fixes |
+| `dreamy_tester` | Test-layer selection, fixtures and execution |
+| `dreamy_code_reviewer` | Correctness, safety and regression review |
+| `dreamy_performance_engineer` | Profile-driven CPU/GPU/memory/mobile optimization |
+| `dreamy_build_engineer` | Unity, Android, iOS and CI build work |
+| `dreamy_package_maintainer` | UPM manifests, asmdefs and compatibility truth |
+| `dreamy_release_validator` | Release gates and evidence validation |
+| `dreamy_docs_manager` | README, architecture, install and source-grounded docs |
+| `dreamy_skill_author` | Skill and reference creation/maintenance |
 
 ---
 

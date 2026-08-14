@@ -8,6 +8,7 @@
     "rules/csharp",
     "rules/unity",
     "skills/unity-foundations",
+    "skills/unity-project-analysis",
     "skills/unity-serialization",
     "skills/unity-scene-prefab",
     "skills/unity-async",

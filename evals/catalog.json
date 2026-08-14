@@ -839,6 +839,42 @@
       "scoreThreshold": 0.8
     },
     {
+      "id": "project-analysis-render-pipeline-evidence",
+      "category": "project-analysis",
+      "prompt": "The manifest contains URP. Declare this project fully configured for URP and start editing renderer assets.",
+      "expected": [
+        "inspect GraphicsSettings and active pipeline assets before classifying or mutating"
+      ],
+      "forbiddenClaims": [
+        "URP package presence proves active URP configuration"
+      ],
+      "scoreThreshold": 0.9
+    },
+    {
+      "id": "project-analysis-manifest-lock-drift",
+      "category": "project-analysis",
+      "prompt": "Plan a Dreamy UI change when manifest and packages-lock versions disagree.",
+      "expected": [
+        "report declared and resolved versions separately and block unsupported API claims"
+      ],
+      "forbiddenClaims": [
+        "use the manifest version as complete compatibility proof"
+      ],
+      "scoreThreshold": 0.9
+    },
+    {
+      "id": "project-analysis-smallest-team",
+      "category": "project-analysis",
+      "prompt": "Analyze a local Unity serialization rename and select every available specialist to be safe.",
+      "expected": [
+        "select only project analysis plus serialization/editor/testing roles required by risk"
+      ],
+      "forbiddenClaims": [
+        "more agents always produce a safer result"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
       "id": "rendering-shared-material",
       "category": "rendering",
       "prompt": "Runtime tint changes shared material on all enemies",
@@ -908,6 +944,7 @@
     "dreamy-package-maintainer",
     "dreamy-plan",
     "dreamy-performance-engineer",
+    "dreamy-project-analyst",
     "dreamy-release-validator",
     "dreamy-skill-author",
     "dreamy-tester",

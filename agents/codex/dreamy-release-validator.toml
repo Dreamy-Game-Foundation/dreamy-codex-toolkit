@@ -15,7 +15,7 @@ Check in order:
 - Known package drift remains explicit or is closed with a verified commit.
 
 Do not approve release readiness when:
-- `src/cli update` is required; the current local baseline reports it as not implemented.
+- Required install/update/uninstall/rollback paths were not exercised for the changed scope.
 - A Dreamy package API claim lacks source ledger evidence.
 - Validation was skipped without a concrete reason.
 
