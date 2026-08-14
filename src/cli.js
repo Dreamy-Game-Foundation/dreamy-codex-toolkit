@@ -391,97 +391,101 @@ async function runInteractiveSetup(args) {
 }
 
 function formatInstallOutput(result) {
-  console.log("\n========================================================");
-  console.log("✨ Dreamy Codex Toolkit Installer");
-  console.log("========================================================\n");
-  console.log(`🎯 Action : ${result.action}`);
-  console.log(`📁 Target : ${result.target} (${result.targetKind})`);
-  console.log(`📦 Preset : ${result.preset}`);
+  console.log("\n╭──────────────────────────────────────────────────────────╮");
+  console.log("│ 🚀  DREAMY CODEX TOOLKIT - INSTALLATION                  │");
+  console.log("╰──────────────────────────────────────────────────────────╯");
+  console.log(`  ► Action : ${result.action}`);
+  console.log(`  ► Target : ${result.target} [${result.targetKind}]`);
+  console.log(`  ► Preset : ${result.preset}`);
   if (result.dryRun) {
-    console.log(`\n🔍 Dry run summary:`);
-    console.log(`   - Modules resolved : ${(result.resolvedModules || []).join(", ")}`);
-    console.log(`   - Agents to copy    : ${result.agents}`);
-    console.log(`   - Skills to copy    : ${result.skills}`);
-    console.log(`\nℹ️ Dry run completed. No files were modified.\n`);
+    console.log("\n  🔍 [DRY RUN SUMMARY - No files were modified]");
+    console.log(`     • Modules resolved : ${(result.resolvedModules || []).join(", ")}`);
+    console.log(`     • Agents to copy   : ${result.agents}`);
+    console.log(`     • Skills to copy   : ${result.skills}\n`);
   } else {
-    console.log(`\n✅ Installation finished successfully!`);
-    console.log(`📄 Managed block written to AGENTS.md.`);
-    console.log(`🤖 Dreamy Codex agents & skills configured.\n`);
+    console.log("\n  ✨ INSTALLATION COMPLETED SUCCESSFULLY!");
+    console.log("     ✔ Written managed block to AGENTS.md");
+    console.log("     ✔ Configured Codex agents in .codex/agents/");
+    console.log("     ✔ Configured Dreamy skills in .agents/skills/");
+    console.log("     ✔ Generated project profile & install state\n");
   }
 }
 
 function formatUninstallOutput(result) {
-  console.log("\n========================================================");
-  console.log("🧹 Dreamy Codex Toolkit Uninstaller");
-  console.log("========================================================\n");
-  console.log(`🎯 Action : ${result.action}`);
-  console.log(`📁 Target : ${result.target} (${result.targetKind})`);
+  console.log("\n╭──────────────────────────────────────────────────────────╮");
+  console.log("│ 🧹  DREAMY CODEX TOOLKIT - UNINSTALLATION                │");
+  console.log("╰──────────────────────────────────────────────────────────╯");
+  console.log(`  ► Action : ${result.action}`);
+  console.log(`  ► Target : ${result.target} [${result.targetKind}]`);
   if (result.dryRun) {
-    console.log(`\nℹ️ Dry run completed. No files were deleted.\n`);
+    console.log("\n  🔍 [DRY RUN SUMMARY - No files were deleted]\n");
   } else {
-    console.log(`\n✅ Managed Dreamy block removed from AGENTS.md.`);
-    console.log(`🧹 Cleaned up owned agents and skills.\n`);
+    console.log("\n  ✨ UNINSTALLATION COMPLETED!");
+    console.log("     ✔ Removed Dreamy managed block from AGENTS.md");
+    console.log("     ✔ Cleaned up owned agents and skills\n");
   }
 }
 
 function formatUpdateOutput(result) {
-  console.log("\n========================================================");
-  console.log("🔄 Dreamy Codex Toolkit Updater");
-  console.log("========================================================\n");
-  console.log(`🎯 Action : ${result.action}`);
-  console.log(`📁 Target : ${result.target} (${result.targetKind})`);
-  console.log(`📦 Preset : ${result.preset}`);
-  if (result.fromVersion) console.log(`🏷️ Version: ${result.fromVersion} -> latest`);
+  console.log("\n╭──────────────────────────────────────────────────────────╮");
+  console.log("│ 🔄  DREAMY CODEX TOOLKIT - UPDATE                        │");
+  console.log("╰──────────────────────────────────────────────────────────╯");
+  console.log(`  ► Action : ${result.action}`);
+  console.log(`  ► Target : ${result.target} [${result.targetKind}]`);
+  console.log(`  ► Preset : ${result.preset}`);
+  if (result.fromVersion) console.log(`  ► Version: ${result.fromVersion} ➔ latest`);
   if (result.dryRun) {
-    console.log(`\nℹ️ Dry run completed. Managed files are up to date.\n`);
+    console.log("\n  🔍 [DRY RUN SUMMARY - Managed files are up to date]\n");
   } else {
-    console.log(`\n✅ Successfully refreshed Dreamy agents and skills!\n`);
+    console.log("\n  ✨ UPDATE COMPLETED SUCCESSFULLY!");
+    console.log("     ✔ Refreshed all managed Dreamy agents and skills\n");
   }
 }
 
 function formatDoctorOutput(doc) {
-  console.log("\n========================================================");
-  console.log("🩺 Dreamy Codex Toolkit Diagnostics (Doctor)");
-  console.log("========================================================\n");
-  console.log(`Overall Status: ${doc.status === "ok" ? "✅ OK" : doc.status === "warn" ? "⚠️ WARNING" : "❌ ERROR"}\n`);
-  console.log("Checks:");
+  console.log("\n╭──────────────────────────────────────────────────────────╮");
+  console.log("│ 🩺  DREAMY CODEX TOOLKIT - DIAGNOSTICS                   │");
+  console.log("╰──────────────────────────────────────────────────────────╯");
+  const statusBadge = doc.status === "ok" ? "🟢 HEALTHY (OK)" : doc.status === "warn" ? "🟡 WARNINGS FOUND" : "🔴 ERRORS DETECTED";
+  console.log(`  ► Overall Status : ${statusBadge}`);
+  console.log("\n  📋 Diagnostic Checks:");
   for (const check of doc.checks) {
-    const icon = check.severity === "INFO" ? "ℹ️" : check.severity === "WARN" ? "⚠️" : "❌";
-    console.log(`  ${icon} [${check.id}] ${check.message}`);
+    const symbol = check.severity === "INFO" ? "  ✔" : check.severity === "WARN" ? "  ⚠️" : "  ✖";
+    console.log(`    ${symbol} [${check.id.padEnd(20)}] ${check.message}`);
   }
-  console.log(`\nCapabilities:`);
-  console.log(`  - Unity detected : ${doc.capabilities.unity ? "Yes" : "No"}`);
-  console.log(`  - Harness Git    : ${doc.capabilities.harness.git}`);
-  console.log(`  - Harness Unity  : ${doc.capabilities.harness.unity}`);
+  console.log("\n  ⚙️ System Capabilities:");
+  console.log(`     • Unity Engine Detected  : ${doc.capabilities.unity ? "Yes" : "No"}`);
+  console.log(`     • Harness Git Status     : ${doc.capabilities.harness.git}`);
+  console.log(`     • Harness Unity Execution: ${doc.capabilities.harness.unity}`);
   if (doc.recommendations && doc.recommendations.length > 0) {
-    console.log(`\nRecommendations:`);
+    console.log("\n  💡 Recommendations:");
     for (const rec of doc.recommendations) {
-      console.log(`  👉 ${rec}`);
+      console.log(`     👉 ${rec}`);
     }
   }
   console.log("");
 }
 
 function formatDetectOutput(profile) {
-  console.log("\n========================================================");
-  console.log("🔍 Dreamy Codex Project Detection");
-  console.log("========================================================\n");
-  console.log(`Engine  : ${profile.engine?.name ?? "unknown"}`);
-  console.log(`Preset  : ${profile.preset ?? "dreamy-project"}`);
+  console.log("\n╭──────────────────────────────────────────────────────────╮");
+  console.log("│ 🔍  DREAMY CODEX TOOLKIT - PROJECT DETECTION             │");
+  console.log("╰──────────────────────────────────────────────────────────╯");
+  console.log(`  ► Engine Detected   : ${profile.engine?.name ?? "unknown"}`);
+  console.log(`  ► Recommended Preset: ${profile.preset ?? "dreamy-project"}`);
   if (profile.packages && profile.packages.length > 0) {
-    console.log(`\n📦 Found ${profile.packages.length} com.dreamy.* packages:`);
+    console.log(`\n  📦 Detected ${profile.packages.length} com.dreamy.* packages:`);
     for (const pkg of profile.packages) {
-      console.log(`   - ${pkg.name} (${pkg.version}) [status: ${pkg.compatibilityStatus}]`);
+      console.log(`     • ${pkg.name.padEnd(28)} v${pkg.version.padEnd(8)} [status: ${pkg.compatibilityStatus}]`);
     }
   } else {
-    console.log(`\n📦 No com.dreamy.* packages detected.`);
+    console.log("\n  📦 No com.dreamy.* packages detected in Packages/manifest.json.");
   }
   console.log("");
 }
 
 async function main() {
   const { cmd, args } = parseArgs(process.argv.slice(2));
-  const wantsJson = Boolean(args.json || !process.stdout.isTTY);
+  const wantsJson = Boolean(args.json);
   if (cmd === "setup" || cmd === "init") {
     await runInteractiveSetup(args);
   } else if (cmd === "validate") {

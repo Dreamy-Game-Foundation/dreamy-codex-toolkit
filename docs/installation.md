@@ -2,45 +2,29 @@
 
 ## ⚡ 1-Click Copy & Paste Installation
 
-Open your terminal inside your Unity project directory and run:
+### 🌐 Global System User Profile Installation (For All Projects)
+*Installs Dreamy agents and skills globally into `~/.codex/` and `~/.agents/skills/`. No Unity manifest warning required.*
+
+```bash
+npm install --global https://github.com/Dreamy-Game-Foundation/dreamy-codex-toolkit/archive/refs/heads/main.tar.gz && dreamy-kit install --target global
+```
+
+Or via 1-line script:
+- **macOS / Linux**: `curl -fsSL https://raw.githubusercontent.com/Dreamy-Game-Foundation/dreamy-codex-toolkit/main/scripts/install.sh | bash -s global`
+
+---
+
+### 📁 Single Unity Project Installation (For Current Directory)
+*Open terminal inside your specific Unity project folder and run:*
 
 ```bash
 npm install --global https://github.com/Dreamy-Game-Foundation/dreamy-codex-toolkit/archive/refs/heads/main.tar.gz && dreamy-kit install
 ```
 
-Or without global installation:
+Or without global CLI installation:
 
 ```bash
 npx --yes github:Dreamy-Game-Foundation/dreamy-codex-toolkit#main install
-```
-
----
-
-## 🚀 Installation Options
-
-### 1. 1-Line Script Installers
-
-- **macOS / Linux**:
-  ```bash
-  curl -fsSL https://raw.githubusercontent.com/Dreamy-Game-Foundation/dreamy-codex-toolkit/main/scripts/install.sh | bash
-  ```
-
-- **Windows (PowerShell)**:
-  ```powershell
-  iwr -useb https://raw.githubusercontent.com/Dreamy-Game-Foundation/dreamy-codex-toolkit/main/scripts/install.ps1 | iex
-  ```
-
-- **Windows (Double-Click)**:
-  Download and double-click [`scripts/install.bat`](scripts/install.bat).
-
----
-
-### 2. Interactive Setup Wizard
-
-```bash
-dreamy-kit
-# or
-npx --yes github:Dreamy-Game-Foundation/dreamy-codex-toolkit#main
 ```
 
 ---
@@ -67,14 +51,14 @@ dreamy-kit purge
 
 ## 🩺 Diagnostic Checks (`doctor`)
 
-To check system and project health:
+To check system health globally:
+
+```bash
+dreamy-kit doctor --target global
+```
+
+To check current project health:
 
 ```bash
 dreamy-kit doctor
-```
-
-Add `--json` for machine JSON output:
-
-```bash
-dreamy-kit doctor --json
 ```

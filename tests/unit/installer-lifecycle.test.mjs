@@ -10,7 +10,8 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", ".
 const cli = path.join(root, "src", "cli.js");
 
 function run(args, cwd = root, env = {}) {
-  return execFileSync(process.execPath, [cli, ...args], { cwd, encoding: "utf8", env: { ...process.env, ...env } });
+  const finalArgs = args.includes("--json") ? args : [...args, "--json"];
+  return execFileSync(process.execPath, [cli, ...finalArgs], { cwd, encoding: "utf8", env: { ...process.env, ...env } });
 }
 
 test("installer writes and removes Dreamy managed files", () => {
