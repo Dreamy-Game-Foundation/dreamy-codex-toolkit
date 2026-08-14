@@ -2,6 +2,22 @@
 
 Run commands from the toolkit repository root.
 
+## Quick Interactive Setup (For Beginners)
+
+Run `npx` with zero arguments inside your Unity project folder:
+
+```bash
+npx --yes github:Dreamy-Game-Foundation/dreamy-codex-toolkit#main
+```
+
+Or run the 1-line script:
+
+- **macOS / Linux**: `curl -fsSL https://raw.githubusercontent.com/Dreamy-Game-Foundation/dreamy-codex-toolkit/main/scripts/install.sh | bash`
+- **Windows (PowerShell)**: `iwr -useb https://raw.githubusercontent.com/Dreamy-Game-Foundation/dreamy-codex-toolkit/main/scripts/install.ps1 | iex`
+- **Windows (Double-Click)**: Double-click `scripts/install.bat`.
+
+---
+
 ## Requirements
 
 - Node.js 20 or newer

@@ -82,9 +82,38 @@ dreamy-codex-toolkit/
 
 ## 🚀 Installation Guide
 
-### Option 1: One-Off Execution via `npx` (Recommended)
+### Option 0: ⚡ 1-Click / Interactive Wizard for Beginners (Recommended)
 
-No global installation required. Run directly from GitHub against your target Unity project:
+If you are new or want an effortless setup:
+
+#### 1. Interactive Step-by-Step Terminal Wizard:
+Run a single command in your terminal inside your Unity project folder:
+
+```bash
+npx --yes github:Dreamy-Game-Foundation/dreamy-codex-toolkit#main
+```
+This launches an interactive wizard that automatically detects your Unity project, scans installed `com.dreamy.*` packages, and guides you step-by-step!
+
+#### 2. Quick 1-Line Script (Automated):
+
+- **macOS / Linux**:
+  ```bash
+  curl -fsSL https://raw.githubusercontent.com/Dreamy-Game-Foundation/dreamy-codex-toolkit/main/scripts/install.sh | bash
+  ```
+
+- **Windows (PowerShell)**:
+  ```powershell
+  iwr -useb https://raw.githubusercontent.com/Dreamy-Game-Foundation/dreamy-codex-toolkit/main/scripts/install.ps1 | iex
+  ```
+
+- **Windows (Double-Click)**:
+  Download and double-click [`scripts/install.bat`](scripts/install.bat).
+
+---
+
+### Option 1: Standard Execution via `npx`
+
+Run directly from GitHub against your target Unity project:
 
 ```bash
 # 1. Detect project configuration and installed com.dreamy.* packages

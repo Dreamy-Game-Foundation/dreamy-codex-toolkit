@@ -4,6 +4,7 @@ import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import readline from "node:readline/promises";
 import { fileURLToPath } from "node:url";
 import { validate as validateArtifacts } from "../scripts/validate.mjs";
 
@@ -14,7 +15,7 @@ const configStart = "# DREAMY-CODEX agents:start";
 const configEnd = "# DREAMY-CODEX agents:end";
 
 function parseArgs(argv) {
-  const [cmd = "help", ...rest] = argv;
+  const [cmd = "setup", ...rest] = argv;
   const args = { target: ".", preset: "dreamy-project", dryRun: false, force: false, backup: false, runner: "static" };
   for (let i = 0; i < rest.length; i += 1) {
     const arg = rest[i];
@@ -336,9 +337,64 @@ function updateProject(args) {
   return { action: "update", target: target.root, targetKind: target.kind, status: "ok", fromVersion: state.toolkitVersion, preset };
 }
 
+async function runInteractiveSetup(args) {
+  if (!process.stdin.isTTY) {
+    console.log(JSON.stringify(installProject(args)));
+    return;
+  }
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+  try {
+    console.log("\n========================================================");
+    console.log("✨ Welcome to Dreamy Codex Toolkit Easy Installer");
+    console.log("========================================================\n");
+
+    const answerTarget = await rl.question(`📁 Enter Unity project folder (Press ENTER for current folder '.'): `);
+    const targetPath = answerTarget.trim() || args.target || ".";
+
+    const target = resolveTarget(targetPath);
+    const profile = target.kind === "global"
+      ? { schemaVersion: 1, engine: { name: "global" }, preset: args.preset, packages: [] }
+      : detectProject(target.root);
+
+    console.log(`\n🔍 Project engine detected: ${profile.engine.name}`);
+    if (profile.packages && profile.packages.length > 0) {
+      console.log(`📦 Found ${profile.packages.length} com.dreamy.* packages:`);
+      for (const pkg of profile.packages) {
+        console.log(`   - ${pkg.name} (${pkg.version})`);
+      }
+    }
+
+    console.log("\n🎯 Presets:");
+    console.log("   1) dreamy-project    (Recommended for Dreamy Unity Game projects)");
+    console.log("   2) dreamy-package    (Recommended for UPM package development)");
+    console.log("   3) dreamy-full       (Install ALL available skills & agents)");
+    console.log("   4) unity-production  (Standard Unity production setup)");
+    console.log("   5) core              (Minimal core setup)");
+
+    const answerPreset = await rl.question("\nSelect preset (1-5 or name, default: dreamy-project): ");
+    let preset = args.preset || "dreamy-project";
+    const pChoice = answerPreset.trim();
+    if (pChoice === "1") preset = "dreamy-project";
+    else if (pChoice === "2") preset = "dreamy-package";
+    else if (pChoice === "3") preset = "dreamy-full";
+    else if (pChoice === "4") preset = "unity-production";
+    else if (pChoice === "5") preset = "core";
+    else if (pChoice) preset = pChoice;
+
+    console.log(`\n🚀 Installing preset '${preset}' to '${target.root}'...`);
+    const result = installProject({ target: targetPath, preset, dryRun: false });
+    console.log(`\n✅ Success! Dreamy Codex agents & skills have been installed.`);
+    console.log(`📄 Managed block written to: ${target.agentsMd}\n`);
+  } finally {
+    rl.close();
+  }
+}
+
 async function main() {
   const { cmd, args } = parseArgs(process.argv.slice(2));
-  if (cmd === "validate") {
+  if (cmd === "setup" || cmd === "init") {
+    await runInteractiveSetup(args);
+  } else if (cmd === "validate") {
     await validateArtifacts();
     console.log("validate: OK");
   } else if (cmd === "detect") {
