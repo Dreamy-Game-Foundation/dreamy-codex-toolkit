@@ -1,6 +1,6 @@
 ---
 name: system-iap
-description: Use for mobile game iap systems, ownership, transactions, UI binding, save, and verification.
+description: Implement or review mobile IAP product definitions, purchase callbacks, receipts, transaction IDs, duplicate checks, validation policy, restore flow, grants, persistence, and analytics.
 ---
 
 # System Iap
@@ -30,10 +30,11 @@ Guide mobile game iap systems with config ownership, persistent state, transacti
 
 ## Decision Tree
 
-1. Is there an existing owner or package capability? Use it.
-2. Is the behavior reusable across games? Consider package or shared module ownership.
-3. Is it project-specific? Keep it inside the project feature boundary.
-4. Is the claim unverified? Mark it as an assumption or blocker.
+- Product unavailable: UI disables or shows fallback; do not synthesize success.
+- Purchase pending: persist pending state if needed, but do not grant as success.
+- Store callback success: validate policy, check transaction ID/receipt, then grant idempotently.
+- Callback fires twice: duplicate check returns already processed without second grant.
+- Restore: non-consumable/subscription restoration differs from consumable purchase.
 
 ## Workflow
 
@@ -51,6 +52,10 @@ Guide mobile game iap systems with config ownership, persistent state, transacti
 - Keep business rules out of leaf views and pooled visual objects.
 - Prefer explicit dependencies over global lookup in leaf components.
 - Do not optimize without profile evidence.
+- UI is not the source of truth for purchase result.
+- Never grant twice for the same transaction.
+- Receipt validation policy must be explicit: local, server, deferred, or unsupported.
+- Product catalog comes from config/store sync; player-owned purchase state goes to Datasave.
 
 ## Common Failure Modes
 
@@ -58,6 +63,10 @@ Guide mobile game iap systems with config ownership, persistent state, transacti
 - Ownership drift between package and project code.
 - Hidden serialized reference breakage.
 - Lifecycle leaks in async, events, tweens, pooled objects, or Addressables handles.
+- Granting on button click or pending purchase.
+- Missing transaction ID dedupe.
+- Treating restore as normal consumable grant.
+- Losing grant when app pauses between callback and save.
 
 ## Verification
 
@@ -74,3 +83,11 @@ Dreamy package APIs are allowed only when backed by the compatibility registry a
 - `compatibility/dreamy-packages.json`
 - `rules/index.json`
 - `docs/skill-authoring.md`
+- Read `references/idempotency.md` when transaction duplicate behavior is unclear.
+- Read platform references when Android/iOS store behavior is platform-specific.
+
+## Domain Model
+
+ProductDefinition -> StoreProduct -> PurchaseRequest -> StoreResult -> TransactionId/Receipt -> DuplicateCheck -> ValidationPolicy -> Grant -> Persist -> Analytics.
+
+Test unavailable product, cancel, pending, duplicate callback, old processed transaction, validation failure, grant failure, save failure, restore, and app pause/resume.

@@ -1,6 +1,6 @@
 ---
 name: system-shop
-description: Use for mobile game shop systems, ownership, transactions, UI binding, save, and verification.
+description: Implement or review mobile shop systems involving offer definitions, eligibility, price, currency transaction, reward grant, persistence, UI refresh, and analytics.
 ---
 
 # System Shop
@@ -30,10 +30,11 @@ Guide mobile game shop systems with config ownership, persistent state, transact
 
 ## Decision Tree
 
-1. Is there an existing owner or package capability? Use it.
-2. Is the behavior reusable across games? Consider package or shared module ownership.
-3. Is it project-specific? Keep it inside the project feature boundary.
-4. Is the claim unverified? Mark it as an assumption or blocker.
+- Offer definition, price, labels, limits: DataConfig.
+- Currency balance, purchased/claimed state, inventory grant: Datasave through transaction owner.
+- UI button/list: render eligibility and send purchase intent only.
+- External purchase involved? Delegate to IAP skill and require idempotency.
+- Server authority available? Local result is pending until verified by the authority policy.
 
 ## Workflow
 
@@ -51,6 +52,9 @@ Guide mobile game shop systems with config ownership, persistent state, transact
 - Keep business rules out of leaf views and pooled visual objects.
 - Prefer explicit dependencies over global lookup in leaf components.
 - Do not optimize without profile evidence.
+- Currency deduction and reward grant are one logical transaction.
+- UI never grants directly.
+- Analytics fire after confirmed result, not before transaction outcome.
 
 ## Common Failure Modes
 
@@ -58,6 +62,10 @@ Guide mobile game shop systems with config ownership, persistent state, transact
 - Ownership drift between package and project code.
 - Hidden serialized reference breakage.
 - Lifecycle leaks in async, events, tweens, pooled objects, or Addressables handles.
+- Duplicate purchase button click grants twice.
+- UI parses shop JSON and bypasses config/service.
+- Currency deducted without reward grant on failure.
+- Analytics reports success before persistence.
 
 ## Verification
 
@@ -74,3 +82,9 @@ Dreamy package APIs are allowed only when backed by the compatibility registry a
 - `compatibility/dreamy-packages.json`
 - `rules/index.json`
 - `docs/skill-authoring.md`
+
+## Domain Model
+
+OfferDefinition(DataConfig) -> ShopService -> Eligibility -> Price -> Transaction -> Grant -> Persist -> UIRefresh -> Analytics.
+
+Verify insufficient funds, duplicate click, missing offer, expired/locked offer, grant failure, save failure, reopen UI, and analytics ordering.

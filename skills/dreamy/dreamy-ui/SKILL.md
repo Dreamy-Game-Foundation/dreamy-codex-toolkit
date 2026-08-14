@@ -30,10 +30,12 @@ Keep UI panels focused on presentation while routing business logic through pres
 
 ## Decision Tree
 
-1. Is there an existing owner or package capability? Use it.
-2. Is the behavior reusable across games? Consider package or shared module ownership.
-3. Is it project-specific? Keep it inside the project feature boundary.
-4. Is the claim unverified? Mark it as an assumption or blocker.
+- Screen/popup/overlay? Use existing layer/navigation owner.
+- Panel opened repeatedly? Verify bind/unbind, subscriptions, async cancellation, and tween cleanup.
+- Button/list item? Collect intent and render state only.
+- Business/economy/save/SDK operation? Presenter/controller/service.
+- Back handling/navigation policy? UI manager/root/presenter, not leaf item.
+- Tab state? Runtime UI state unless persisted by explicit product requirement.
 
 ## Workflow
 
@@ -51,6 +53,9 @@ Keep UI panels focused on presentation while routing business logic through pres
 - Keep business rules out of leaf views and pooled visual objects.
 - Prefer explicit dependencies over global lookup in leaf components.
 - Do not optimize without profile evidence.
+- UI does not own economy, save JSON, config parsing, SDK policy, or raw Addressables policy.
+- View renders state; presenter/controller/service owns decisions.
+- UI must tolerate reopen, duplicate events, cancellation, and safe-area/mobile constraints.
 
 ## Common Failure Modes
 
@@ -58,6 +63,11 @@ Keep UI panels focused on presentation while routing business logic through pres
 - Ownership drift between package and project code.
 - Hidden serialized reference breakage.
 - Lifecycle leaks in async, events, tweens, pooled objects, or Addressables handles.
+- ShopPanel directly edits coins.
+- RewardButton writes save data.
+- UI subscriptions duplicate after reopen.
+- Transition tween mutates destroyed/hidden panel.
+- Panel cache returns stale data without rebinding.
 
 ## Verification
 
@@ -82,3 +92,5 @@ Allowed: bind buttons, render state, show/hide, run visual transitions, send use
 Avoid: loading/saving player data directly, calculating economy, parsing config JSON, initializing SDKs, or owning cross-feature business operations.
 
 Inspect panel prefab or scene, owning layer, PanelManager behavior, presenter/service, navigation, back behavior, safe area, TMP, and Addressables use.
+
+Domain model: Screen/Popup/Overlay -> Panel lifecycle -> Binding -> Presenter state -> Intent -> Navigation/back -> Transition/cache -> Cleanup.

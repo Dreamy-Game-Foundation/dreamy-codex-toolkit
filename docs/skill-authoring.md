@@ -28,7 +28,12 @@ description:
 ## Rules
 
 - Descriptions must name concrete triggers.
+- Include when-not-to-use boundaries so routing can reject near-misses.
+- Include a domain model for P0/P1 production skills.
+- Include a real decision tree, not generic "inspect then change" text.
+- Include anti-patterns and failure modes specific to the domain.
 - Dreamy API claims must be tied to `compatibility/dreamy-packages.json`.
 - Generic Unity knowledge belongs in generic Unity skills; Dreamy skills add package-specific routing and overrides.
-- Long examples belong in `references/` only when they are needed.
+- References must say when to read them; do not make a reference graveyard.
 - Every P0/P1 skill should tell Codex what to inspect, decide, change, and verify.
+- If `name`, title, and description are hidden, the body should still reveal the domain.

@@ -30,10 +30,11 @@ Keep static designer-authored data separate from runtime and saved player state.
 
 ## Decision Tree
 
-1. Is there an existing owner or package capability? Use it.
-2. Is the behavior reusable across games? Consider package or shared module ownership.
-3. Is it project-specific? Keep it inside the project feature boundary.
-4. Is the claim unverified? Mark it as an assumption or blocker.
+- Designer-authored, mostly read-only tuning or catalog? DataConfig.
+- Player-owned mutable state? Datasave.
+- Runtime cooldown/current target/current HP? Runtime owner.
+- Missing config? Define fallback/error behavior at service boundary, not in every panel.
+- Key rename? Preserve stable IDs or provide migration/map.
 
 ## Workflow
 
@@ -51,6 +52,10 @@ Keep static designer-authored data separate from runtime and saved player state.
 - Keep business rules out of leaf views and pooled visual objects.
 - Prefer explicit dependencies over global lookup in leaf components.
 - Do not optimize without profile evidence.
+- Config schema has an owner and validation path.
+- Runtime consumers treat config as read-only.
+- UI and leaf objects should not parse config files independently.
+- Remote/fallback config behavior must be explicit and verified before claimed.
 
 ## Common Failure Modes
 
@@ -58,6 +63,10 @@ Keep static designer-authored data separate from runtime and saved player state.
 - Ownership drift between package and project code.
 - Hidden serialized reference breakage.
 - Lifecycle leaks in async, events, tweens, pooled objects, or Addressables handles.
+- Mutating config as player state.
+- Unstable keys break saves and analytics.
+- Silent default hides missing config.
+- Each panel loads/parses JSON independently.
 
 ## Verification
 
@@ -82,3 +91,5 @@ Belongs in config: unit stats, level config, shop prices, reward tables, upgrade
 Does not belong in config: coins, gems, inventory, level progress, settings, claim state, cooldown state, and session runtime state.
 
 Treat UniTask availability as drift until the consumer manifest declares it or compatibility says it is fixed.
+
+Validate schema, required keys, duplicate IDs, missing references, fallback/default policy, and authoring workflow before changing runtime consumers.

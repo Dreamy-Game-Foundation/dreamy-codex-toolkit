@@ -1,6 +1,6 @@
 ---
 name: enemy-ai
-description: Use for enemy ai gameplay implementation and verification.
+description: Implement or review enemy AI involving sensing, target selection, decision state, actions, navigation, cooldowns, fallback behavior, death, disable, and pooling.
 ---
 
 # Enemy Ai
@@ -30,10 +30,11 @@ Guide enemy ai implementation with clear ownership, deterministic state, save/co
 
 ## Decision Tree
 
-1. Is there an existing owner or package capability? Use it.
-2. Is the behavior reusable across games? Consider package or shared module ownership.
-3. Is it project-specific? Keep it inside the project feature boundary.
-4. Is the claim unverified? Mark it as an assumption or blocker.
+- Simple patrol/chase/attack? Use explicit state owner with guarded transitions.
+- Navigation failure? Define fallback, repath timing, and stuck handling.
+- Target lost/dead? AI clears target and transitions intentionally.
+- Animator-driven action? Animator signals timing; AI/combat owner decides rules.
+- Pooled enemy? Reset state, subscriptions, target, nav, cooldowns, and effects on despawn.
 
 ## Workflow
 
@@ -51,6 +52,9 @@ Guide enemy ai implementation with clear ownership, deterministic state, save/co
 - Keep business rules out of leaf views and pooled visual objects.
 - Prefer explicit dependencies over global lookup in leaf components.
 - Do not optimize without profile evidence.
+- Sense -> Decide -> Act should have one state owner.
+- AI reads config for ranges/cooldowns; runtime owns current target/state/cooldown.
+- Combat and reward systems own damage/death/reward policy.
 
 ## Common Failure Modes
 
@@ -58,6 +62,10 @@ Guide enemy ai implementation with clear ownership, deterministic state, save/co
 - Ownership drift between package and project code.
 - Hidden serialized reference breakage.
 - Lifecycle leaks in async, events, tweens, pooled objects, or Addressables handles.
+- AI state scattered across Animator, NavMeshAgent, and MonoBehaviour booleans.
+- Dead/disabled enemy still receives event bus updates.
+- Duplicate attack subscriptions after pooling.
+- Target reference points to despawned object.
 
 ## Verification
 
@@ -74,3 +82,9 @@ Dreamy package APIs are allowed only when backed by the compatibility registry a
 - `compatibility/dreamy-packages.json`
 - `rules/index.json`
 - `docs/skill-authoring.md`
+
+## Domain Model
+
+Sense -> TargetSelection -> DecisionState -> Action -> Navigation/CombatRequest -> Cooldown -> Fallback -> Death/Disable Cleanup.
+
+Inspect perception ownership, faction filters, state transition guards, nav authority, action cancellation, death cleanup, and pooling reset.

@@ -1,6 +1,6 @@
 ---
 name: combat
-description: Use for combat gameplay implementation and verification.
+description: Implement or review Unity combat involving attacks, hit detection, damage, health, death, knockback, combat state, or combat feedback.
 ---
 
 # Combat
@@ -30,10 +30,11 @@ Guide combat implementation with clear ownership, deterministic state, save/conf
 
 ## Decision Tree
 
-1. Is there an existing owner or package capability? Use it.
-2. Is the behavior reusable across games? Consider package or shared module ownership.
-3. Is it project-specific? Keep it inside the project feature boundary.
-4. Is the claim unverified? Mark it as an assumption or blocker.
+- Hitscan: use ray/query hit detection and create damage requests.
+- Projectile: projectile owns travel/lifetime; damage system owns damage policy.
+- AoE: query targets, then issue deterministic damage requests.
+- Melee: model attack window/hitbox/target filtering separately from animation.
+- DoT/status: runtime effect owner tracks ticks, duration, stacking, and cleanup.
 
 ## Workflow
 
@@ -51,6 +52,9 @@ Guide combat implementation with clear ownership, deterministic state, save/conf
 - Keep business rules out of leaf views and pooled visual objects.
 - Prefer explicit dependencies over global lookup in leaf components.
 - Do not optimize without profile evidence.
+- Attack definitions and tuning live in config; current HP, current target, invulnerability windows, and temporary buffs live in runtime owners.
+- Animation events may signal timing, but they do not own final game rules.
+- Combat feedback listens to combat result events; VFX should not directly kill or grant rewards.
 
 ## Common Failure Modes
 
@@ -58,6 +62,10 @@ Guide combat implementation with clear ownership, deterministic state, save/conf
 - Ownership drift between package and project code.
 - Hidden serialized reference breakage.
 - Lifecycle leaks in async, events, tweens, pooled objects, or Addressables handles.
+- Double-hit during one attack window.
+- Projectile or VFX mutates Health directly without damage policy.
+- Death state fires multiple times.
+- UI health bar becomes source of truth.
 
 ## Verification
 
@@ -74,3 +82,9 @@ Dreamy package APIs are allowed only when backed by the compatibility registry a
 - `compatibility/dreamy-packages.json`
 - `rules/index.json`
 - `docs/skill-authoring.md`
+
+## Domain Model
+
+AttackIntent -> AttackDefinition -> AttackRuntime -> HitDetection -> DamageRequest -> DamageCalculation -> HealthMutation -> Death/StateChange -> FeedbackEvent.
+
+Inspect source owner, target selection, team/faction filtering, damage modifiers, immunity, knockback, death ownership, feedback hooks, pooling cleanup, and save boundaries.

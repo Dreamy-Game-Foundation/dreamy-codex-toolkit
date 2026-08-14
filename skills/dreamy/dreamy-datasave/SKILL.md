@@ -30,10 +30,12 @@ Protect persistent player data with versioning, stable IDs, migrations, and safe
 
 ## Decision Tree
 
-1. Is there an existing owner or package capability? Use it.
-2. Is the behavior reusable across games? Consider package or shared module ownership.
-3. Is it project-specific? Keep it inside the project feature boundary.
-4. Is the claim unverified? Mark it as an assumption or blocker.
+- Must survive restart and belongs to a player? Datasave.
+- Static tuning/catalog? DataConfig.
+- Current session-only state? Runtime owner.
+- Schema changes? Add data version and migration.
+- External transaction? Persist processed transaction ID before/with grant outcome.
+- Future version file? Fail safely or route through explicit forward compatibility policy.
 
 ## Workflow
 
@@ -51,6 +53,10 @@ Protect persistent player data with versioning, stable IDs, migrations, and safe
 - Keep business rules out of leaf views and pooled visual objects.
 - Prefer explicit dependencies over global lookup in leaf components.
 - Do not optimize without profile evidence.
+- Save stable IDs, not UnityEngine.Object references.
+- Save timing follows transactions and app pause/resume; never every frame.
+- Corruption recovery and backup policy must be explicit.
+- Encryption is tamper resistance, not real authority.
 
 ## Common Failure Modes
 
@@ -58,6 +64,10 @@ Protect persistent player data with versioning, stable IDs, migrations, and safe
 - Ownership drift between package and project code.
 - Hidden serialized reference breakage.
 - Lifecycle leaks in async, events, tweens, pooled objects, or Addressables handles.
+- Old save schema loads with silent default data loss.
+- Duplicate purchase/reward because transaction ID is not persisted.
+- App pause interrupts a transaction between grant and save.
+- Future save version overwrites current install.
 
 ## Verification
 
@@ -83,3 +93,5 @@ Dreamy package APIs are allowed only when backed by the compatibility registry a
 - Save after meaningful transactions and on app pause, not every frame.
 - Define corruption handling, backup restore, and codec expectations explicitly.
 - Treat local save security as tamper resistance, not real server authority.
+
+Critical scenarios: first install, normal load, missing file, corrupt primary with valid backup, old version, future version, migration failure, app pause during transaction, duplicate save calls.

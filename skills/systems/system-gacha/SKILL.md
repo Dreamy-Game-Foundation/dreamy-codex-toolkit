@@ -1,6 +1,6 @@
 ---
 name: system-gacha
-description: Use for mobile game gacha systems, ownership, transactions, UI binding, save, and verification.
+description: Implement or review gacha systems involving pool definitions, weights, rarity, roll, pity, guarantee, duplicate conversion, reward grant, persistence, presentation, and analytics.
 ---
 
 # System Gacha
@@ -30,10 +30,11 @@ Guide mobile game gacha systems with config ownership, persistent state, transac
 
 ## Decision Tree
 
-1. Is there an existing owner or package capability? Use it.
-2. Is the behavior reusable across games? Consider package or shared module ownership.
-3. Is it project-specific? Keep it inside the project feature boundary.
-4. Is the claim unverified? Mark it as an assumption or blocker.
+- Pool/weights/rarity/pity rules: DataConfig.
+- Currency, pity counter, owned items, duplicate conversion state: Datasave through transaction owner.
+- Roll result: determined before presentation animation.
+- Multi-roll: one audited transaction containing all results.
+- Server-authoritative game: client display waits for server result policy.
 
 ## Workflow
 
@@ -51,6 +52,9 @@ Guide mobile game gacha systems with config ownership, persistent state, transac
 - Keep business rules out of leaf views and pooled visual objects.
 - Prefer explicit dependencies over global lookup in leaf components.
 - Do not optimize without profile evidence.
+- Presentation animation is not the source of truth.
+- Roll, cost, pity update, grant, duplicate conversion, and persistence form one logical transaction.
+- RNG seed/authority policy must be explicit for deterministic tests or server play.
 
 ## Common Failure Modes
 
@@ -58,6 +62,10 @@ Guide mobile game gacha systems with config ownership, persistent state, transac
 - Ownership drift between package and project code.
 - Hidden serialized reference breakage.
 - Lifecycle leaks in async, events, tweens, pooled objects, or Addressables handles.
+- Animation decides reward result.
+- Pity increments on failed purchase.
+- Duplicate conversion grants without persisting owned item state.
+- Multi-roll partially persists after failure.
 
 ## Verification
 
@@ -74,3 +82,9 @@ Dreamy package APIs are allowed only when backed by the compatibility registry a
 - `compatibility/dreamy-packages.json`
 - `rules/index.json`
 - `docs/skill-authoring.md`
+
+## Domain Model
+
+PoolDefinition -> Weight/Rarity -> RollRequest -> CostTransaction -> Pity/Guarantee -> Result -> DuplicateConversion -> Grant -> Persist -> Presentation -> Analytics.
+
+Verify weight boundaries, pity trigger, duplicate conversion, insufficient currency, duplicate click, save failure, and result/presentation separation.

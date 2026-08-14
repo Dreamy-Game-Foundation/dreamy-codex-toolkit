@@ -1,6 +1,6 @@
 ---
 name: movement
-description: Use for movement gameplay implementation and verification.
+description: Implement or review Unity character movement involving input intent, authority, physics versus transform motion, grounding, rotation, root motion, navigation, or mobile joystick control.
 ---
 
 # Movement
@@ -30,10 +30,11 @@ Guide movement implementation with clear ownership, deterministic state, save/co
 
 ## Decision Tree
 
-1. Is there an existing owner or package capability? Use it.
-2. Is the behavior reusable across games? Consider package or shared module ownership.
-3. Is it project-specific? Keep it inside the project feature boundary.
-4. Is the claim unverified? Mark it as an assumption or blocker.
+- Physics body? Move through Rigidbody/Rigidbody2D in fixed-step with clear collision ownership.
+- Kinematic/controller motion? Own grounding, slope, step, and collision response explicitly.
+- Transform-only motion? Use for non-physical actors or visual-only movement.
+- NavMesh/AI movement? AI decides intent; navigation system owns path following.
+- Mobile joystick/camera-relative input? Convert input intent before movement authority applies it.
 
 ## Workflow
 
@@ -51,6 +52,9 @@ Guide movement implementation with clear ownership, deterministic state, save/co
 - Keep business rules out of leaf views and pooled visual objects.
 - Prefer explicit dependencies over global lookup in leaf components.
 - Do not optimize without profile evidence.
+- Input creates movement intent; movement authority applies it.
+- Runtime state owns current velocity, grounding, dash/cooldown, and navigation target.
+- Config owns speed, acceleration, friction, and tuning curves.
 
 ## Common Failure Modes
 
@@ -58,6 +62,10 @@ Guide movement implementation with clear ownership, deterministic state, save/co
 - Ownership drift between package and project code.
 - Hidden serialized reference breakage.
 - Lifecycle leaks in async, events, tweens, pooled objects, or Addressables handles.
+- Mixing transform writes with physics-controlled bodies.
+- Input component directly mutates domain state.
+- Grounding state split across Animator, controller, and MonoBehaviour flags without owner.
+- Mobile joystick and keyboard paths diverge in rules.
 
 ## Verification
 
@@ -74,3 +82,9 @@ Dreamy package APIs are allowed only when backed by the compatibility registry a
 - `compatibility/dreamy-packages.json`
 - `rules/index.json`
 - `docs/skill-authoring.md`
+
+## Domain Model
+
+InputIntent -> MovementAuthority -> MovementState -> Motor/Physics/Nav -> Collision/Grounding -> Animation/Feedback.
+
+Inspect update loop choice, physics mode, root motion, rotation authority, camera-relative transform, nav fallback, and deterministic tests for movement state transitions.

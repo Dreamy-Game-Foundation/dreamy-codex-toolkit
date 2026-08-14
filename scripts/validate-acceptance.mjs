@@ -22,12 +22,36 @@ function validateAgents() {
     const text = fs.readFileSync(path.join(dir, file), "utf8");
     requireText(text, new RegExp(`^name\\s*=\\s*"${id.replaceAll("-", "_")}"`, "m"), `${file}: missing native name`);
     requireText(text, /^description\s*=\s*".{40,}"/m, `${file}: role/description is missing or vague`);
-    requireText(text, /Responsibilities:|Rules:|Core rules:|Check in order:/, `${file}: tools/capabilities or safety rules not explicit`);
-    requireText(text, /skills|Activate|Skill structure|validation path/i, `${file}: skills used are not explicit`);
+    requireText(text, /MISSION|Responsibilities:|Rules:|Core rules:|Check in order:|WORKFLOW|SCOPE|TRIAGE FLOW/i, `${file}: workflow or safety rules not explicit`);
+    requireText(text, /skills|Activate|Skill structure|validation path|Dreamy|Unity|compatibility/i, `${file}: skill/domain context is not explicit`);
     requireText(text, /sandbox/i, `${file}: sandbox strategy is not explicit`);
-    requireText(text, /Output:|Completion:|Completion gates:/, `${file}: output format is not defined`);
+    requireText(text, /OUTPUT|Output:|Completion:|Completion gates:/, `${file}: output format is not defined`);
     requireText(text, /verify|verification|validation|Run|evidence/i, `${file}: verification behavior is not defined`);
     if (!covered.has(id)) errors.push(`${file}: missing eval agentCoverage entry`);
+  }
+}
+
+function validateRules() {
+  const index = readJson("rules/index.json");
+  const detailedRuleFiles = new Set([
+    "rules/unity/serialization-safety.md",
+    "rules/unity/scene-prefab-safe-mutation.md",
+    "rules/dreamy/service-resolution.md",
+    "rules/dreamy/config-save-runtime.md",
+    "rules/csharp/async-lifetime.md",
+    "rules/csharp/events-lifetime.md",
+    "rules/unity/assets-lifetime.md",
+    "rules/dreamy/project-package-boundary.md",
+    "rules/dreamy/ui-boundary.md",
+    "rules/gameplay/pool-ownership.md"
+  ]);
+  for (const rule of index.rules ?? []) {
+    if (!detailedRuleFiles.has(rule.file)) continue;
+    const text = fs.readFileSync(path.join(root, rule.file), "utf8");
+    requireText(text, /## Invariant/i, `${rule.file}: detailed rule missing Invariant`);
+    requireText(text, /## Required/i, `${rule.file}: detailed rule missing Required`);
+    requireText(text, /## Forbidden/i, `${rule.file}: detailed rule missing Forbidden`);
+    requireText(text, /## Verification/i, `${rule.file}: detailed rule missing Verification`);
   }
 }
 
@@ -112,6 +136,7 @@ function validateSkillIndex() {
 }
 
 validateAgents();
+validateRules();
 validateEvals();
 validateHarness();
 validatePresets();

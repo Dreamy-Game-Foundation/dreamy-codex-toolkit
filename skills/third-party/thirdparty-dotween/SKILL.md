@@ -30,10 +30,11 @@ Use for DOTween sequence, kill, lifecycle, and tween ownership.
 
 ## Decision Tree
 
-1. Is there an existing owner or package capability? Use it.
-2. Is the behavior reusable across games? Consider package or shared module ownership.
-3. Is it project-specific? Keep it inside the project feature boundary.
-4. Is the claim unverified? Mark it as an assumption or blocker.
+- UI show/hide? Kill or reuse previous tween before starting another.
+- Pooled object? Kill/reset tween on despawn before returning to pool.
+- Object lifetime tied to tween? Use linking/kill policy verified by installed DOTween version.
+- Sequence with callbacks? Ensure `OnComplete` does not mutate destroyed/hidden objects.
+- Reusable animation? Keep tween ownership in presenter/view owner, not global helper.
 
 ## Workflow
 
@@ -51,6 +52,10 @@ Use for DOTween sequence, kill, lifecycle, and tween ownership.
 - Keep business rules out of leaf views and pooled visual objects.
 - Prefer explicit dependencies over global lookup in leaf components.
 - Do not optimize without profile evidence.
+- Every tween/sequence has an owner and cleanup point.
+- Reopening a panel should not stack duplicate tweens.
+- Pooled instances must not keep active tweens after despawn.
+- Avoid hiding business logic in animation callbacks.
 
 ## Common Failure Modes
 
@@ -58,6 +63,10 @@ Use for DOTween sequence, kill, lifecycle, and tween ownership.
 - Ownership drift between package and project code.
 - Hidden serialized reference breakage.
 - Lifecycle leaks in async, events, tweens, pooled objects, or Addressables handles.
+- `OnComplete` grants reward or mutates save.
+- Old tween changes object after it has been returned to pool.
+- Multiple Show calls create stacked sequences.
+- Kill is missing on hide/destroy/despawn.
 
 ## Verification
 
@@ -74,3 +83,8 @@ Dreamy package APIs are allowed only when backed by the compatibility registry a
 - `compatibility/dreamy-packages.json`
 - `rules/index.json`
 - `docs/skill-authoring.md`
+- Read lifecycle references when tween ownership spans pooled objects, panels, or async flow.
+
+## Domain Model
+
+TweenRequest -> Owner -> Tween/Sequence -> Link/Kill Policy -> Callback Guard -> Completion or Cancellation -> Cleanup.

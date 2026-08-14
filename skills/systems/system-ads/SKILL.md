@@ -1,6 +1,6 @@
 ---
 name: system-ads
-description: Use for mobile game ads systems, ownership, transactions, UI binding, save, and verification.
+description: Implement or review mobile ads initialization, load, availability, placement, cooldown, frequency cap, rewarded callbacks, idempotent grants, persistence, consent, and analytics.
 ---
 
 # System Ads
@@ -30,10 +30,11 @@ Guide mobile game ads systems with config ownership, persistent state, transacti
 
 ## Decision Tree
 
-1. Is there an existing owner or package capability? Use it.
-2. Is the behavior reusable across games? Consider package or shared module ownership.
-3. Is it project-specific? Keep it inside the project feature boundary.
-4. Is the claim unverified? Mark it as an assumption or blocker.
+- Interstitial: gate by placement, cooldown, frequency cap, consent, and app state.
+- Rewarded ad: grant only on verified reward callback, not on show success.
+- Duplicate reward callback: idempotency key prevents second grant.
+- No fill/not ready: return explicit unavailable state and keep UI consistent.
+- App pause/resume: expect SDK callbacks around lifecycle transitions.
 
 ## Workflow
 
@@ -51,6 +52,9 @@ Guide mobile game ads systems with config ownership, persistent state, transacti
 - Keep business rules out of leaf views and pooled visual objects.
 - Prefer explicit dependencies over global lookup in leaf components.
 - Do not optimize without profile evidence.
+- Ad service owns SDK init/load/show state; UI sends placement intent.
+- Rewarded grant uses the same transaction discipline as economy rewards.
+- Consent/privacy policy gates SDK initialization and tracking behavior.
 
 ## Common Failure Modes
 
@@ -58,6 +62,10 @@ Guide mobile game ads systems with config ownership, persistent state, transacti
 - Ownership drift between package and project code.
 - Hidden serialized reference breakage.
 - Lifecycle leaks in async, events, tweens, pooled objects, or Addressables handles.
+- Granting reward when `Show()` starts instead of reward callback.
+- Duplicate callback grants twice.
+- Cooldown/frequency cap lives only in UI and resets on reopen.
+- Analytics success fires for failed/no-fill show.
 
 ## Verification
 
@@ -74,3 +82,9 @@ Dreamy package APIs are allowed only when backed by the compatibility registry a
 - `compatibility/dreamy-packages.json`
 - `rules/index.json`
 - `docs/skill-authoring.md`
+
+## Domain Model
+
+Initialize -> Load -> Availability -> ShowRequest(placement) -> SDKShow -> VerifiedRewardCallback -> IdempotentGrant -> Persist -> Analytics.
+
+Verify no-fill, load failure, skipped/closed ad, duplicate reward callback, app pause/resume, consent disabled, cooldown, and UI reopen.

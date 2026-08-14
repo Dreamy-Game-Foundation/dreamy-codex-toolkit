@@ -30,10 +30,11 @@ Manage runtime content loading, shared in-flight requests, cache ownership, and 
 
 ## Decision Tree
 
-1. Is there an existing owner or package capability? Use it.
-2. Is the behavior reusable across games? Consider package or shared module ownership.
-3. Is it project-specific? Keep it inside the project feature boundary.
-4. Is the claim unverified? Mark it as an assumption or blocker.
+- Static scene-only reference? Serialized field can be simpler.
+- Runtime dynamic asset? Use verified Dreamy AssetLoader/Addressables owner.
+- Frequent pooled prefab? Load once and let the pool/service own instances and release.
+- Sprite atlas/UI content? Decide cache owner and release at screen/feature/app lifetime.
+- Large optional remote content? Require remote content, failure, progress, and cancellation policy.
 
 ## Workflow
 
@@ -51,6 +52,10 @@ Manage runtime content loading, shared in-flight requests, cache ownership, and 
 - Keep business rules out of leaf views and pooled visual objects.
 - Prefer explicit dependencies over global lookup in leaf components.
 - Do not optimize without profile evidence.
+- Who loads must know who releases.
+- In-flight deduplication belongs in loader/service, not leaf UI.
+- Project owns Addressables groups/profiles/build configuration.
+- Package owns reusable loading helpers only.
 
 ## Common Failure Modes
 
@@ -58,6 +63,10 @@ Manage runtime content loading, shared in-flight requests, cache ownership, and 
 - Ownership drift between package and project code.
 - Hidden serialized reference breakage.
 - Lifecycle leaks in async, events, tweens, pooled objects, or Addressables handles.
+- Immediate release after returning loaded result.
+- Repeated load/release in scroll lists or hot loops.
+- Leaf UI hides Addressables handle ownership.
+- Cancelled panel load still mutates closed panel.
 
 ## Verification
 
@@ -80,3 +89,5 @@ Dreamy package APIs are allowed only when backed by the compatibility registry a
 Serialized scene references are fine for static scene-owned content. Runtime content, reusable prefabs, sprites, atlases, remote content, and pooled load flows should route through the verified loader when available.
 
 Who loads must know who releases. Avoid random Addressables calls scattered across leaf MonoBehaviours.
+
+Verify load ownership, cache policy, in-flight dedupe, release, prefab instantiation, failure behavior, cancellation, warmup, and Resources fallback policy.

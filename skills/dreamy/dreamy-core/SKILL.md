@@ -30,10 +30,11 @@ Guide Core usage for services, event bus, state machines, lifecycle, logging, ti
 
 ## Decision Tree
 
-1. Is there an existing owner or package capability? Use it.
-2. Is the behavior reusable across games? Consider package or shared module ownership.
-3. Is it project-specific? Keep it inside the project feature boundary.
-4. Is the claim unverified? Mark it as an assumption or blocker.
+- Service lookup needed? Allow at composition/feature/presenter roots; inject to leaves.
+- Cross-feature notification? Use event bus only when direct ownership would couple unrelated features.
+- Mutually exclusive runtime mode? Use a state machine with transition guards.
+- Simple boolean or one-off branch? Do not create a state machine.
+- Repeated ticking across systems? Prefer a central tick service only when it reduces scattered Update loops.
 
 ## Workflow
 
@@ -58,6 +59,10 @@ Guide Core usage for services, event bus, state machines, lifecycle, logging, ti
 - Ownership drift between package and project code.
 - Hidden serialized reference breakage.
 - Lifecycle leaks in async, events, tweens, pooled objects, or Addressables handles.
+- Event soup where direct call or owner method would be clearer.
+- Duplicate service registration or late registration race.
+- State machine without entry/exit cleanup.
+- Tick service used as a hidden global update bucket.
 
 ## Verification
 
@@ -84,3 +89,9 @@ Dreamy package APIs are allowed only when backed by the compatibility registry a
 - DreamyLog and extensions when compatibility records verify availability.
 
 Avoid ServiceLocator in UI list items, projectiles, VFX objects, pooled leaves, and tiny components.
+
+Read deeper references when present:
+- `references/service-locator.md` for registration timing, lifetime, duplicate registration, and test strategy.
+- `references/event-bus.md` for event ownership and unsubscribe rules.
+- `references/state-machine.md` for guards, entry/exit, and simple-boolean alternatives.
+- `references/app-lifecycle.md` and `references/tick-service.md` for app-owned lifetimes and Update replacement.

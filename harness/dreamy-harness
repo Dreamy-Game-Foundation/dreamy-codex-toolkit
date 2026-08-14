@@ -51,7 +51,35 @@ if (op === "git-status") {
     warnings: [],
     exceptions: []
   }, 2);
-} else if (op === "validate-project" || op === "validate-package" || op === "validate-addressables" || op === "build-android" || op === "build-ios") {
+} else if (op === "project-inspect" || op === "validate-project") {
+  const manifest = path.join(target, "Packages", "manifest.json");
+  const lock = path.join(target, "Packages", "packages-lock.json");
+  const version = path.join(target, "ProjectSettings", "ProjectVersion.txt");
+  json({
+    schemaVersion: 1,
+    adapter: "dreamy-harness",
+    operation: op,
+    target,
+    status: "pass",
+    diagnostics: [
+      fs.existsSync(manifest) ? "Packages/manifest.json present" : "Packages/manifest.json missing",
+      fs.existsSync(lock) ? "Packages/packages-lock.json present" : "Packages/packages-lock.json missing",
+      fs.existsSync(version) ? "ProjectVersion.txt present" : "ProjectVersion.txt missing"
+    ]
+  });
+} else if (op === "asmdef") {
+  const fixture = process.argv[3] ? path.resolve(process.argv[3]) : target;
+  const text = fs.existsSync(fixture) ? fs.readFileSync(fixture, "utf8") : "";
+  const unsafe = /UnityEditor|guid-unsafe|unsafe/i.test(text) || /unsafe/i.test(path.basename(fixture));
+  json({
+    schemaVersion: 1,
+    adapter: "dreamy-harness",
+    operation: op,
+    target: fixture,
+    status: unsafe ? "fail" : "pass",
+    diagnostics: unsafe ? ["Runtime/Editor or GUID safety issue detected by static asmdef fixture"] : ["static asmdef fixture passed"]
+  }, unsafe ? 1 : 0);
+} else if (op === "package-check" || op === "validate-package" || op === "validate-addressables" || op === "build-android" || op === "build-ios") {
   json({
     schemaVersion: 1,
     adapter: "dreamy-harness",
@@ -67,6 +95,6 @@ if (op === "git-status") {
     adapter: "dreamy-harness",
     operation: "help",
     status: "pass",
-    operations: ["git-status", "git-diff", "compile", "console", "test-editmode", "test-playmode", "validate-project", "validate-package", "validate-addressables", "build-android", "build-ios"]
+    operations: ["git-status", "git-diff", "compile", "console", "test-editmode", "test-playmode", "project-inspect", "asmdef", "package-check", "validate-project", "validate-package", "validate-addressables", "build-android", "build-ios"]
   });
 }

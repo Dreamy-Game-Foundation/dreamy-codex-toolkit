@@ -30,10 +30,15 @@ Route feature work across Dreamy packages, project code, static config, persiste
 
 ## Decision Tree
 
-1. Is there an existing owner or package capability? Use it.
-2. Is the behavior reusable across games? Consider package or shared module ownership.
-3. Is it project-specific? Keep it inside the project feature boundary.
-4. Is the claim unverified? Mark it as an assumption or blocker.
+- Reusable capability already exists? Use verified package/project owner.
+- No existing owner and project-specific? Implement under the project feature boundary.
+- No existing owner and reusable across games? Treat as package candidate only with dependency direction justified.
+- Static definition? Route to DataConfig.
+- Persistent player state? Route to Datasave.
+- Session state? Keep runtime-owned.
+- Cross-scene service? Composition root.
+- Feature-wide service? Feature root/presenter/controller.
+- Leaf component? Explicit dependency.
 
 ## Workflow
 
@@ -58,6 +63,10 @@ Route feature work across Dreamy packages, project code, static config, persiste
 - Ownership drift between package and project code.
 - Hidden serialized reference breakage.
 - Lifecycle leaks in async, events, tweens, pooled objects, or Addressables handles.
+- Feature code bypasses DataConfig/Datasave boundaries.
+- UI owns transaction or save mutation.
+- Package candidate depends on current project types.
+- Asset loading policy hidden in a panel/list item.
 
 ## Verification
 
@@ -84,3 +93,9 @@ Data: designer-authored mostly read-only data goes to DataConfig; player-owned p
 Services: cross-scene services belong in composition roots or service registration; feature-local services stay under the feature root; leaf components should receive explicit dependencies.
 
 UI: panels render state and send intent; presenters/services/domain logic handle business operations.
+
+## Examples
+
+Shop: OfferDefinition -> DataConfig; currency and purchase state -> Datasave; purchase operation -> ShopService/EconomyService; UI -> ShopPanel intent/render; feedback/audio and analytics after confirmed transaction.
+
+Unit upgrade: upgrade curve -> DataConfig; owned cards and unit level -> Datasave; upgrade transaction -> service; card UI -> view-only render and intent.
