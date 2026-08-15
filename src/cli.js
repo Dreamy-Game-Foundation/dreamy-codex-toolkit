@@ -157,6 +157,42 @@ function hasAnyManagedBlockMarker(text) {
   return text.includes(managedStart) || text.includes(managedEnd);
 }
 
+function removeDreamyManagedFragments(text) {
+  const lineEnding = lineEndingValue(detectLineEnding(text));
+  let next = text.replace(new RegExp(`\\n?${escapeRegExp(managedStart)}[\\s\\S]*?${escapeRegExp(managedEnd)}\\r?\\n?`, "g"), lineEnding);
+  next = next
+    .split(/\r\n|\n/)
+    .filter((line) => !line.includes("DREAMY-CODEX:START") && !line.includes("DREAMY-CODEX:END"))
+    .join(lineEnding);
+  return next.replace(new RegExp(`${escapeRegExp(lineEnding)}{3,}`, "g"), `${lineEnding}${lineEnding}`);
+}
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function projectHasUnityMarkers(rootDir) {
+  return fs.existsSync(path.join(rootDir, "Packages", "manifest.json")) ||
+    fs.existsSync(path.join(rootDir, "ProjectSettings", "ProjectVersion.txt"));
+}
+
+function profileForTarget(target, preset) {
+  if (target.kind === "global") {
+    return { schemaVersion: 1, engine: { name: "global" }, preset, packages: [], dreamyPackages: [] };
+  }
+  if (!projectHasUnityMarkers(target.root)) {
+    return {
+      schemaVersion: 1,
+      engine: { name: "unknown" },
+      preset,
+      packages: [],
+      dreamyPackages: [],
+      diagnostics: ["No Unity project markers found; skipped deep project scan."]
+    };
+  }
+  return { ...detectProject(target.root), preset };
+}
+
 function cleanupUninstallState(target, purge = false) {
   if (!fs.existsSync(target.stateDir)) return;
   if (purge) {
@@ -242,6 +278,16 @@ function listSkillDirs() {
   }
   walk(path.join(root, "skills"));
   return dirs;
+}
+
+function knownManagedArtifacts(target) {
+  const agents = fs.existsSync(path.join(root, "agents", "codex"))
+    ? fs.readdirSync(path.join(root, "agents", "codex"))
+      .filter((file) => file.endsWith(".toml"))
+      .map((file) => path.join(target.agentsDir, file))
+    : [];
+  const skills = listSkillDirs().map((dir) => path.join(target.skillsDir, path.basename(dir)));
+  return { agents, skills };
 }
 
 function skillMetadata(skillDir) {
@@ -355,9 +401,7 @@ function installProject(args) {
   const presetPath = path.join(root, "presets", `${args.preset}.json`);
   if (!fs.existsSync(presetPath)) throw new Error(`Unknown preset: ${args.preset}`);
 
-  const profile = target.kind === "global"
-    ? { schemaVersion: 1, engine: { name: "global" }, preset: args.preset, packages: [] }
-    : { ...detectProject(target.root), preset: args.preset };
+  const profile = profileForTarget(target, args.preset);
   const desired = desiredInstall(target, args.preset, profile);
   if (args.dryRun) {
     return { action: "install", target: target.root, targetKind: target.kind, preset: args.preset, profile, resolvedModules: desired.resolvedModules, skills: desired.skills.length, agents: desired.agents.length, dryRun: true };
@@ -368,10 +412,10 @@ function installProject(args) {
   const existingAgents = fs.existsSync(agentsMd) ? fs.readFileSync(agentsMd, "utf8") : "";
   const hasManagedStart = existingAgents.includes(managedStart);
   const hasManagedEnd = existingAgents.includes(managedEnd);
+  const adoptingExistingBlock = hasManagedStart || hasManagedEnd;
   if (hasManagedStart || hasManagedEnd) {
     if (!(hasManagedStart && hasManagedEnd)) throw new Error("Malformed Dreamy managed block markers");
     validateManagedBlock(existingAgents);
-    throw new Error("AGENTS.md already contains a Dreamy managed block");
   }
 
   const stateDir = target.stateDir;
@@ -382,7 +426,7 @@ function installProject(args) {
   const managedBlock = renderManagedBlock(lineEnding);
   const beforeHash = fs.existsSync(agentsMd) ? sha256File(agentsMd) : "";
   const separator = existingAgents ? existingAgents.endsWith(lineEndingValue(lineEnding)) ? lineEndingValue(lineEnding) : `${lineEndingValue(lineEnding)}${lineEndingValue(lineEnding)}` : "";
-  const nextAgents = `${existingAgents}${separator}${managedBlock}`;
+  const nextAgents = adoptingExistingBlock ? replaceManagedBlock(existingAgents, managedBlock) : `${existingAgents}${separator}${managedBlock}`;
   const afterHash = sha256(nextAgents);
   fs.writeFileSync(agentsMd, nextAgents, "utf8");
 
@@ -398,7 +442,7 @@ function installProject(args) {
 
   writeManagedState(target, args.preset, profile, desired, beforeHash, afterHash, sha256(managedBlock), lineEnding);
 
-  return { action: "install", target: target.root, targetKind: target.kind, preset: args.preset, status: "ok" };
+  return { action: "install", target: target.root, targetKind: target.kind, preset: args.preset, status: "ok", adoptedExistingBlock: adoptingExistingBlock };
 }
 
 function uninstallProject(args) {
@@ -409,7 +453,15 @@ function uninstallProject(args) {
   const statePath = path.join(target.stateDir, "install-state.json");
   if (!fs.existsSync(statePath)) {
     const content = fs.existsSync(target.agentsMd) ? fs.readFileSync(target.agentsMd, "utf8") : "";
-    if (hasAnyManagedBlockMarker(content)) throw new Error("Missing install state; refusing to remove unowned managed block");
+    if (hasAnyManagedBlockMarker(content)) {
+      if (!args.force && !args.purge) throw new Error("Missing install state; rerun with --force after reviewing AGENTS.md");
+      fs.writeFileSync(target.agentsMd, removeDreamyManagedFragments(content), "utf8");
+    }
+    if (args.purge || args.force || target.kind === "global") {
+      const fallback = knownManagedArtifacts(target);
+      for (const file of fallback.agents) if (fs.existsSync(file)) fs.rmSync(file, { force: true });
+      for (const dir of fallback.skills) if (fs.existsSync(dir)) fs.rmSync(dir, { recursive: true, force: true });
+    }
     cleanupUninstallState(target, args.purge);
     return { action, target: target.root, targetKind: target.kind, status: "ok", alreadyRemoved: true };
   }
@@ -420,13 +472,29 @@ function uninstallProject(args) {
     const content = fs.readFileSync(agentsMd, "utf8");
     const expectedBlockHash = stateManagedBlockHash(state);
     if (expectedBlockHash) {
-      if (hashManagedBlock(content) !== expectedBlockHash && !args.force) throw new Error("Dreamy managed block checksum drift; refusing uninstall");
+      let blockHash = null;
+      try {
+        blockHash = hashManagedBlock(content);
+      } catch (error) {
+        if (!args.force && !args.purge) throw error;
+      }
+      if (blockHash && blockHash !== expectedBlockHash && !args.force && !args.purge) throw new Error("Dreamy managed block checksum drift; refusing uninstall");
     } else {
       const expected = legacyWholeFileHash(state);
-      if (expected && sha256(content) !== expected && !args.force) throw new Error("AGENTS.md checksum drift; refusing uninstall");
-      validateManagedBlock(content);
+      if (expected && sha256(content) !== expected && !args.force && !args.purge) throw new Error("AGENTS.md checksum drift; refusing uninstall");
+      try {
+        validateManagedBlock(content);
+      } catch (error) {
+        if (!args.force && !args.purge) throw error;
+      }
     }
-    fs.writeFileSync(agentsMd, removeManagedBlock(content), "utf8");
+    let nextContent;
+    try {
+      nextContent = removeManagedBlock(content);
+    } catch {
+      nextContent = removeDreamyManagedFragments(content);
+    }
+    fs.writeFileSync(agentsMd, nextContent, "utf8");
   }
 
   for (const file of state.agents ?? state.agentFiles ?? []) {
@@ -434,6 +502,11 @@ function uninstallProject(args) {
   }
   for (const dir of state.skills ?? state.skillDirs ?? []) {
     if (fs.existsSync(dir)) fs.rmSync(dir, { recursive: true, force: true });
+  }
+  if (args.purge || target.kind === "global") {
+    const fallback = knownManagedArtifacts(target);
+    for (const file of fallback.agents) if (fs.existsSync(file)) fs.rmSync(file, { force: true });
+    for (const dir of fallback.skills) if (fs.existsSync(dir)) fs.rmSync(dir, { recursive: true, force: true });
   }
 
   cleanupUninstallState(target, args.purge);
@@ -444,12 +517,14 @@ function uninstallProject(args) {
 function updateProject(args) {
   const target = resolveTarget(args.target);
   const statePath = path.join(target.stateDir, "install-state.json");
-  if (!fs.existsSync(statePath)) throw new Error("Missing install state; refusing update");
+  if (!fs.existsSync(statePath)) {
+    const content = fs.existsSync(target.agentsMd) ? fs.readFileSync(target.agentsMd, "utf8") : "";
+    if (hasAnyManagedBlockMarker(content)) return { ...installProject(args), action: "update", adoptedExistingBlock: true };
+    throw new Error("Missing install state; run dreamy-kit install first");
+  }
   const state = readJson(statePath);
   const preset = args.preset === "dreamy-project" ? state.preset ?? args.preset : args.preset;
-  const profile = target.kind === "global"
-    ? { schemaVersion: 1, engine: { name: "global" }, preset, packages: [] }
-    : { ...detectProject(target.root), preset };
+  const profile = profileForTarget(target, preset);
   const desired = desiredInstall(target, preset, profile);
   if (args.dryRun) {
     return { action: "update", target: target.root, targetKind: target.kind, fromVersion: state.toolkitVersion, toVersion: readJson(path.join(root, "toolkit.json")).version, preset, resolvedModules: desired.resolvedModules, skills: desired.skills.length, agents: desired.agents.length, dryRun: true };
@@ -501,9 +576,7 @@ async function runInteractiveSetup(args) {
     const targetPath = answerTarget.trim() || args.target || ".";
 
     const target = resolveTarget(targetPath);
-    const profile = target.kind === "global"
-      ? { schemaVersion: 1, engine: { name: "global" }, preset: args.preset, packages: [] }
-      : detectProject(target.root);
+    const profile = profileForTarget(target, args.preset);
 
     console.log(`\n🔍 Project engine detected: ${profile.engine.name}`);
     const detectedDreamyPackages = profile.dreamyPackages ?? profile.packages ?? [];
@@ -554,11 +627,17 @@ function formatInstallOutput(result) {
     console.log(`     • Skills to copy   : ${result.skills}\n`);
   } else {
     console.log("\n  ✨ INSTALLATION COMPLETED SUCCESSFULLY!");
+    if (result.adoptedExistingBlock) console.log("     ✔ Adopted and refreshed existing Dreamy managed block");
     console.log("     ✔ Written managed block to AGENTS.md");
     console.log("     ✔ Configured Codex agents in .codex/agents/");
     console.log("     ✔ Configured Dreamy skills in .agents/skills/");
     console.log("     ✔ Generated project profile & install state\n");
   }
+  printCommandBlock("Next commands", [
+    `dreamy-kit doctor${result.targetKind === "global" ? " --target global" : ""}`,
+    `dreamy-kit update${result.targetKind === "global" ? " --target global" : ""}`,
+    `dreamy-kit uninstall${result.targetKind === "global" ? " --target global" : ""}`
+  ]);
 }
 
 function formatUninstallOutput(result) {
@@ -574,6 +653,10 @@ function formatUninstallOutput(result) {
     console.log("     ✔ Removed Dreamy managed block from AGENTS.md");
     console.log("     ✔ Cleaned up owned agents and skills\n");
   }
+  const installTarget = result.targetKind === "global" ? " --target global" : "";
+  printCommandBlock(result.action === "purge" ? "Reinstall command" : "Install again", [
+    `dreamy-kit install${installTarget}`
+  ]);
 }
 
 function formatUpdateOutput(result) {
@@ -588,8 +671,13 @@ function formatUpdateOutput(result) {
     console.log("\n  🔍 [DRY RUN SUMMARY - Managed files are up to date]\n");
   } else {
     console.log("\n  ✨ UPDATE COMPLETED SUCCESSFULLY!");
+    if (result.adoptedExistingBlock) console.log("     ✔ Rebuilt missing install state from existing Dreamy block");
     console.log("     ✔ Refreshed all managed Dreamy agents and skills\n");
   }
+  printCommandBlock("Next commands", [
+    `dreamy-kit doctor${result.targetKind === "global" ? " --target global" : ""}`,
+    `dreamy-kit uninstall${result.targetKind === "global" ? " --target global" : ""}`
+  ]);
 }
 
 function formatDoctorOutput(doc) {
@@ -613,7 +701,28 @@ function formatDoctorOutput(doc) {
       console.log(`     👉 ${rec}`);
     }
   }
+  printCommandBlock("Copy commands", suggestedDoctorCommands(doc));
   console.log("");
+}
+
+function printCommandBlock(title, commands) {
+  if (!commands.length) return;
+  console.log(`\n  ${title}:`);
+  console.log("```bash");
+  for (const command of commands) console.log(command);
+  console.log("```");
+}
+
+function suggestedDoctorCommands(doc) {
+  const targetArg = doc.targetKind === "global" ? " --target global" : "";
+  if (doc.status === "ok") {
+    return [`dreamy-kit update${targetArg}`, `dreamy-kit uninstall${targetArg}`];
+  }
+  const hasStateProblem = doc.checks.some((check) => check.id === "install-state" || check.id === "managed-block");
+  if (hasStateProblem) {
+    return [`dreamy-kit uninstall${targetArg} --force`, `dreamy-kit install${targetArg}`];
+  }
+  return [`dreamy-kit doctor${targetArg} --json`, `dreamy-kit update${targetArg}`];
 }
 
 function formatDetectOutput(profile) {
@@ -645,7 +754,7 @@ async function main() {
     console.log("validate: OK");
   } else if (cmd === "detect") {
     const target = resolveTarget(args.target);
-    const profile = target.kind === "global" ? { schemaVersion: 1, engine: { name: "global" }, preset: args.preset, packages: [] } : detectProject(target.root);
+    const profile = profileForTarget(target, args.preset);
     if (wantsJson) console.log(JSON.stringify(profile));
     else formatDetectOutput(profile);
   } else if (cmd === "install") {
@@ -663,7 +772,7 @@ async function main() {
     const target = resolveTarget(args.target);
     const toolkit = readJson(path.join(root, "toolkit.json"));
     const pkg = readJson(path.join(root, "package.json"));
-    const profile = target.kind === "global" ? { schemaVersion: 1, engine: { name: "global" }, preset: args.preset, packages: [] } : detectProject(target.root);
+    const profile = profileForTarget(target, args.preset);
     const checks = [];
     const add = (id, severity, message) => checks.push({ id, severity, message });
     add("node", "INFO", `Node ${process.version}`);
@@ -723,6 +832,7 @@ async function main() {
     const status = checks.some((check) => check.severity === "ERROR") ? "error" : checks.some((check) => check.severity === "WARN") ? "warn" : "ok";
     const docRes = {
       status,
+      targetKind: target.kind,
       checks,
       capabilities: {
         codexHome: codexHome(),
@@ -742,9 +852,7 @@ async function main() {
     const kit = readJson(path.join(root, "toolkit.json"));
     if (args.resolved) {
       const target = resolveTarget(args.target);
-      const profile = target.kind === "global"
-        ? { schemaVersion: 1, engine: { name: "global" }, preset: args.preset, packages: [] }
-        : { ...detectProject(target.root), preset: args.preset };
+      const profile = profileForTarget(target, args.preset);
       const desired = desiredInstall(target, args.preset, profile);
       console.log(JSON.stringify({
         preset: args.preset,

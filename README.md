@@ -193,11 +193,17 @@ To remove managed Dreamy blocks and agents from the current Unity project folder
 dreamy-kit uninstall
 ```
 
+If a previous alpha install left a Dreamy marker without state, review `AGENTS.md` and then run:
+
+```bash
+dreamy-kit uninstall --force
+```
+
 ---
 
 ### Global Toolkit Purge
 
-To completely purge all Dreamy managed files from your global user profile (`~/.codex` and `~/.agents`):
+To completely purge all Dreamy managed files from your global user profile (`~/.codex` and `~/.agents`), including stale alpha-era agents and skills:
 
 ```bash
 dreamy-kit purge
@@ -225,15 +231,15 @@ dreamy-kit purge
 
 ## 🛠️ CLI Reference (`dreamy-kit`)
 
-Commands default to the current directory unless `--target global` is specified. Output is clean, human-readable terminal text. Add `--json` for machine JSON output.
+Commands default to the current directory unless `--target global` is specified. Output is clean, human-readable terminal text with copyable command blocks. Add `--json` for machine JSON output.
 
 | Subcommand | Description | Key Options |
 | :--- | :--- | :--- |
 | `setup` / `init` | Interactive step-by-step setup wizard | *(None)* |
-| `install` | Installs agents, skills, and `AGENTS.md` block | `--target PATH\|global`, `--preset NAME`, `--dry-run`, `--json` |
+| `install` | Installs agents, skills, and `AGENTS.md` block; refreshes a single existing Dreamy block | `--target PATH\|global`, `--preset NAME`, `--dry-run`, `--json` |
 | `update` | Refreshes managed assets to latest version | `--target PATH\|global`, `--force`, `--backup`, `--dry-run`, `--json` |
-| `uninstall` | Removes managed files from current project | `--target PATH\|global`, `--dry-run`, `--json` |
-| **`purge`** | **Purges all global user profile assets (`~/.codex`)** | `--dry-run`, `--json` |
+| `uninstall` | Removes managed files from current project or global target | `--target PATH\|global`, `--force`, `--dry-run`, `--json` |
+| **`purge`** | **Purges all known global Dreamy managed assets (`~/.codex` and `~/.agents`)** | `--dry-run`, `--json` |
 | `doctor` | Runs diagnostic health checks | `--target PATH\|global`, `--json`, `--fix` |
 | `detect` | Inspects Unity engine & `com.dreamy.*` packages | `--target PATH`, `--json` |
 | `validate` | Validates schemas, rules, and acceptance tests | *(None)* |

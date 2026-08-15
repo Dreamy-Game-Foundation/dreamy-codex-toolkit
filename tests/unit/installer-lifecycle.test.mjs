@@ -66,6 +66,23 @@ test("global target installs into user Codex home", () => {
   assert.equal(fs.existsSync(path.join(agentsHome, "skills", "dreamy-feature")), false);
 });
 
+test("install adopts an existing single Dreamy managed block", () => {
+  const target = fs.mkdtempSync(path.join(os.tmpdir(), "dreamy-kit-adopt-"));
+  fs.writeFileSync(
+    path.join(target, "AGENTS.md"),
+    "# User Instructions\n\n<!-- DREAMY-CODEX:START schema=1 -->\nold managed content\n<!-- DREAMY-CODEX:END -->\n"
+  );
+
+  const install = JSON.parse(run(["install", "--target", target, "--preset", "core"]));
+  assert.equal(install.status, "ok");
+  assert.equal(install.adoptedExistingBlock, true);
+  assert.ok(fs.existsSync(path.join(target, ".dreamy-codex", "install-state.json")));
+  assert.match(fs.readFileSync(path.join(target, "AGENTS.md"), "utf8"), /## Dreamy Codex Toolkit/);
+
+  const update = JSON.parse(run(["update", "--target", target]));
+  assert.equal(update.status, "ok");
+});
+
 test("agent installation follows resolved modules instead of installing every agent", () => {
   const target = fs.mkdtempSync(path.join(os.tmpdir(), "dreamy-kit-agents-"));
   const install = JSON.parse(run(["install", "--target", target, "--preset", "core"]));
@@ -124,6 +141,23 @@ test("purge removes Dreamy state but preserves unrelated Codex and Agents files"
   const repeated = JSON.parse(run(["purge"], root, env));
   assert.equal(repeated.status, "ok");
   assert.equal(repeated.alreadyRemoved, true);
+});
+
+test("purge recovers malformed global markers and removes known managed artifacts", () => {
+  const codexHome = fs.mkdtempSync(path.join(os.tmpdir(), "dreamy-codex-broken-purge-"));
+  const agentsHome = fs.mkdtempSync(path.join(os.tmpdir(), "dreamy-agents-broken-purge-"));
+  const env = { DREAMY_CODEX_HOME: codexHome, DREAMY_AGENTS_HOME: agentsHome };
+  fs.mkdirSync(path.join(codexHome, "agents"), { recursive: true });
+  fs.mkdirSync(path.join(agentsHome, "skills", "dreamy-core"), { recursive: true });
+  fs.writeFileSync(path.join(codexHome, "AGENTS.md"), "<!-- DREAMY-CODEX:START schema=1 -->\nunterminated\n");
+  fs.writeFileSync(path.join(codexHome, "agents", "dreamy-unity-developer.toml"), "name = \"dreamy-unity-developer\"\n");
+  fs.writeFileSync(path.join(agentsHome, "skills", "dreamy-core", "SKILL.md"), "# Dreamy Core\n");
+
+  const purge = JSON.parse(run(["purge"], root, env));
+  assert.equal(purge.status, "ok");
+  assert.doesNotMatch(fs.readFileSync(path.join(codexHome, "AGENTS.md"), "utf8"), /DREAMY-CODEX/);
+  assert.equal(fs.existsSync(path.join(codexHome, "agents", "dreamy-unity-developer.toml")), false);
+  assert.equal(fs.existsSync(path.join(agentsHome, "skills", "dreamy-core")), false);
 });
 
 test("update refreshes an existing managed install", () => {

@@ -44,17 +44,27 @@ cat > "$tmp_existing/AGENTS.md" <<'EOF'
 unowned
 <!-- DREAMY-CODEX:END -->
 EOF
-if src/cli install --target "$tmp_existing" >/tmp/dreamy-partial.out 2>/tmp/dreamy-partial.err; then
-  echo "duplicate managed block unexpectedly installed"
+src/cli install --target "$tmp_existing" >/tmp/dreamy-partial.out
+test -e "$tmp_existing/.dreamy-codex/project-profile.json"
+grep -q 'Dreamy Codex Toolkit' "$tmp_existing/AGENTS.md"
+
+src/cli uninstall --target "$tmp_existing" >/tmp/dreamy-adopted-uninstall.out
+if grep -q 'DREAMY-CODEX:START' "$tmp_existing/AGENTS.md"; then
+  echo "adopted managed block remained after uninstall"
   exit 1
 fi
-test ! -e "$tmp_existing/.dreamy-codex/project-profile.json"
 
-if src/cli uninstall --target "$tmp_existing" >/tmp/dreamy-unowned.out 2>/tmp/dreamy-unowned.err; then
+tmp_unowned="$(mktemp -d)"
+cat > "$tmp_unowned/AGENTS.md" <<'EOF'
+<!-- DREAMY-CODEX:START schema=1 -->
+unowned
+<!-- DREAMY-CODEX:END -->
+EOF
+if src/cli uninstall --target "$tmp_unowned" >/tmp/dreamy-unowned.out 2>/tmp/dreamy-unowned.err; then
   echo "unowned managed block unexpectedly removed"
   exit 1
 fi
-grep -q 'unowned' "$tmp_existing/AGENTS.md"
+grep -q 'unowned' "$tmp_unowned/AGENTS.md"
 
 tmp_malformed="$(mktemp -d)"
 mkdir -p "$tmp_malformed/.dreamy-codex"

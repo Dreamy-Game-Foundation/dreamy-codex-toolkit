@@ -39,9 +39,15 @@ To remove managed toolkit files from your current Unity project:
 dreamy-kit uninstall
 ```
 
+If a broken alpha install left Dreamy markers without state, review `AGENTS.md` and then run:
+
+```bash
+dreamy-kit uninstall --force
+```
+
 ### Global User Profile Purge
 
-To completely remove all Dreamy managed files from your global user profile (`~/.codex` / `%USERPROFILE%\.codex`):
+To completely remove all Dreamy managed files from your global user profile (`~/.codex` plus toolkit skills in `~/.agents`):
 
 ```bash
 dreamy-kit purge

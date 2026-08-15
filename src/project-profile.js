@@ -16,8 +16,15 @@ function relative(root, file) {
 
 function walk(root, predicate, result = []) {
   if (!fs.existsSync(root)) return result;
-  for (const entry of fs.readdirSync(root, { withFileTypes: true })) {
-    if (["Library", "Temp", "Logs", "obj", "Build", "Builds", "UserSettings"].includes(entry.name)) continue;
+  let entries = [];
+  try {
+    entries = fs.readdirSync(root, { withFileTypes: true });
+  } catch (error) {
+    if (["EACCES", "EPERM", "ENOENT"].includes(error.code)) return result;
+    throw error;
+  }
+  for (const entry of entries) {
+    if ([".cache", ".git", ".gradle", ".idea", ".local", ".npm", ".vscode", "Library", "Temp", "Logs", "obj", "Build", "Builds", "UserSettings", "node_modules"].includes(entry.name)) continue;
     const full = path.join(root, entry.name);
     if (entry.isDirectory()) walk(full, predicate, result);
     else if (entry.isFile() && predicate(full)) result.push(full);
