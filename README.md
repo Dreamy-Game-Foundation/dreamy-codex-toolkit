@@ -253,6 +253,7 @@ Commands default to the current directory unless `--target global` is specified.
 | `dreamy_architect` | Ownership, dependency, data and lifecycle decisions |
 | `dreamy_unity_developer` | Gameplay, UI wiring and Unity C# implementation |
 | `dreamy_unity_editor` | Safe scene, prefab and Editor state mutation |
+| `dreamy_mcp_operator` | Unity MCP/editor bridge inspection, narrow state mutation and degraded fallback |
 | `dreamy_debugger` | Evidence-driven root-cause diagnosis and fixes |
 | `dreamy_tester` | Test-layer selection, fixtures and execution |
 | `dreamy_code_reviewer` | Correctness, safety and regression review |

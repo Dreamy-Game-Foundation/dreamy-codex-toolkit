@@ -37,9 +37,17 @@
       "name": "dreamy_unity_editor",
       "depth": "D4",
       "primarySkills": ["unity-scene-prefab", "unity-editor-tooling", "unity-serialization"],
-      "handoffTo": ["dreamy_unity_developer", "dreamy_tester", "dreamy_code_reviewer"],
+      "handoffTo": ["dreamy_mcp_operator", "dreamy_unity_developer", "dreamy_tester", "dreamy_code_reviewer"],
       "evalGroups": ["scene-prefab-mutation", "asset-guid-safety"],
       "writePolicy": "assigned-editor-state-mutation"
+    },
+    {
+      "name": "dreamy_mcp_operator",
+      "depth": "D4",
+      "primarySkills": ["unity-mcp", "unity-scene-prefab", "unity-editor-tooling"],
+      "handoffTo": ["dreamy_unity_editor", "dreamy_unity_developer", "dreamy_debugger", "dreamy_package_maintainer", "dreamy_release_validator"],
+      "evalGroups": ["mcp-stateful-editor", "mcp-degraded-fallback"],
+      "writePolicy": "assigned-mcp-editor-operation"
     },
     {
       "name": "dreamy_debugger",

@@ -7,9 +7,11 @@
   ],
   "agents": [
     "dreamy-unity-developer",
-    "dreamy-unity-editor"
+    "dreamy-unity-editor",
+    "dreamy-mcp-operator"
   ],
   "content": [
+    "skills/unity-mcp",
     "skills/unity-ui",
     "skills/unity-input-system",
     "skills/unity-physics",

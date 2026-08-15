@@ -1194,6 +1194,27 @@
       "evalCases": []
     },
     {
+      "name": "unity-mcp",
+      "category": "unity",
+      "priority": "P0",
+      "file": "skills/unity-mcp/SKILL.md",
+      "depth": "D4",
+      "maturity": "specialist",
+      "owners": [
+        "dreamy_mcp_operator",
+        "dreamy_unity_editor",
+        "dreamy_release_validator"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "mcp-tool-output",
+        "editor-state-snapshot"
+      ],
+      "references": 1,
+      "evalCases": []
+    },
+    {
       "name": "unity-memory",
       "category": "unity",
       "priority": "P1",
@@ -1294,6 +1315,26 @@
       "evalCases": []
     },
     {
+      "name": "unity-profiling",
+      "category": "unity",
+      "priority": "P1",
+      "file": "skills/unity-profiling/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "asmdefs"
+      ],
+      "references": 0,
+      "evalCases": []
+    },
+    {
       "name": "unity-project-analysis",
       "category": "unity",
       "priority": "P0",
@@ -1315,26 +1356,6 @@
         "depth-false-urp-inference",
         "depth-manifest-lock-drift-route"
       ]
-    },
-    {
-      "name": "unity-profiling",
-      "category": "unity",
-      "priority": "P1",
-      "file": "skills/unity-profiling/SKILL.md",
-      "depth": "D3",
-      "maturity": "practitioner",
-      "owners": [
-        "dreamy_unity_developer",
-        "dreamy_tester",
-        "dreamy_code_reviewer"
-      ],
-      "requiresEvidence": [
-        "project-code",
-        "manifest",
-        "asmdefs"
-      ],
-      "references": 0,
-      "evalCases": []
     },
     {
       "name": "unity-rendering",
