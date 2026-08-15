@@ -1,6 +1,15 @@
 {
   "schemaVersion": 1,
   "supportPolicy": "Only versions with executable fixtures may be marked supported.",
+  "fixtures": [
+    {
+      "id": "vertical-slice",
+      "path": "tests/fixtures/unity/vertical-slice",
+      "unityVersion": "6000.4.12f1",
+      "operations": ["project-inspect", "compile", "test-editmode", "test-playmode"],
+      "status": "fixture-ready-not-tested"
+    }
+  ],
   "tested": [],
   "observedPackageManifests": {
     "unity": "6000.0",

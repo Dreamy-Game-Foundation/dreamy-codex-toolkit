@@ -3,13 +3,22 @@
   "$id": "https://dreamy.tools/codex/schemas/evidence.schema.json",
   "title": "Dreamy Evidence",
   "type": "object",
-  "required": ["schemaVersion", "adapter", "operation", "status", "observedAt", "command", "exitCode", "artifacts", "diagnostics"],
+  "required": ["schemaVersion", "adapter", "operation", "status", "observedAt", "startedAt", "completedAt", "durationMs", "platform", "projectPath", "command", "exitCode", "artifacts", "diagnostics"],
   "properties": {
     "schemaVersion": { "const": 1 },
     "adapter": { "type": "string", "minLength": 1 },
     "operation": { "type": "string", "minLength": 1 },
     "status": { "enum": ["pass", "fail", "degraded", "not-run"] },
     "observedAt": { "type": "string", "minLength": 1 },
+    "startedAt": { "type": "string", "minLength": 1 },
+    "completedAt": { "type": "string", "minLength": 1 },
+    "durationMs": { "type": "integer", "minimum": 0 },
+    "platform": { "type": "string", "minLength": 1 },
+    "projectPath": { "type": "string", "minLength": 1 },
+    "unityVersion": { "type": ["string", "null"] },
+    "unityExecutable": { "type": ["string", "null"] },
+    "manifestHash": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" },
+    "packagesLockHash": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" },
     "command": { "type": "array", "items": { "type": "string" } },
     "exitCode": { "type": ["integer", "null"] },
     "artifacts": {
@@ -25,6 +34,8 @@
       }
     },
     "diagnostics": { "type": "array", "items": { "type": "string" } },
+    "errors": { "type": "array", "items": { "type": "string" } },
+    "warnings": { "type": "array", "items": { "type": "string" } },
     "git": {
       "type": "object",
       "properties": {

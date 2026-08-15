@@ -1,6 +1,7 @@
 ---
 name: dreamy-localization
 description: Use Dreamy localization for stable keys, CSV/table ownership, locale switching, font/TMP constraints, plural/fallback behavior, and UI rebinding.
+requires.packages: ["com.dreamy.localization"]
 ---
 
 # Dreamy Localization

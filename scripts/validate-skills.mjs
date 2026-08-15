@@ -31,6 +31,8 @@ function walk(dir) {
 const files = walk(path.join(root, "skills"));
 const names = new Set();
 const errors = [];
+const compatibility = JSON.parse(fs.readFileSync(path.join(root, "compatibility", "dreamy-packages.json"), "utf8"));
+const knownDreamyPackages = new Set(Object.keys(compatibility.packages ?? {}));
 for (const file of files) {
   const rel = path.relative(root, file).replaceAll("\\", "/");
   const text = fs.readFileSync(file, "utf8");
@@ -41,8 +43,24 @@ for (const file of files) {
   }
   const name = frontmatter[1].match(/^name:\s*(.+)$/m)?.[1]?.trim();
   const description = frontmatter[1].match(/^description:\s*(.+)$/m)?.[1]?.trim();
+  const requiredPackages = frontmatter[1].match(/^requires\.packages:\s*(\[.*\])\s*$/m)?.[1];
   if (!name) errors.push(`${rel}: missing name`);
   if (!description || description.length < 40) errors.push(`${rel}: description too short`);
+  if (requiredPackages) {
+    try {
+      const packages = JSON.parse(requiredPackages);
+      if (!Array.isArray(packages) || packages.some((pkg) => typeof pkg !== "string")) {
+        errors.push(`${rel}: requires.packages must be a JSON string array`);
+      }
+      for (const pkg of packages) {
+        if (pkg.startsWith("com.dreamy.") && !knownDreamyPackages.has(pkg)) {
+          errors.push(`${rel}: requires.packages references unknown Dreamy package ${pkg}`);
+        }
+      }
+    } catch {
+      errors.push(`${rel}: requires.packages must be valid JSON`);
+    }
+  }
   if (name && names.has(name)) errors.push(`${rel}: duplicate skill name ${name}`);
   if (name) names.add(name);
   if (/The request directly touches this domain|Is there an existing owner or package capability|docs\/skill-authoring\.md/.test(text)) {

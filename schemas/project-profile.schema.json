@@ -17,6 +17,14 @@
         "version": { "type": ["string", "null"] }
       }
     },
+    "unity": {
+      "type": "object",
+      "required": ["version", "renderPipeline"],
+      "properties": {
+        "version": { "type": ["string", "null"] },
+        "renderPipeline": { "enum": ["urp", "hdrp", "custom", "unknown"] }
+      }
+    },
     "preset": { "type": "string" },
     "packages": { "type": "array", "items": { "$ref": "#/$defs/package" } },
     "dreamyPackages": { "type": "array", "items": { "$ref": "#/$defs/package" } },
@@ -40,8 +48,23 @@
     },
     "buildScenes": { "type": "array" },
     "capabilities": { "type": "object" },
+    "capabilityGraph": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "state", "reasons"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "state": { "enum": ["detected", "inferred", "unknown"] },
+          "reasons": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "violations": { "type": "array" },
+    "confidence": { "type": "object" },
     "requiredSources": { "type": "object", "additionalProperties": { "type": "boolean" } },
     "sourceHashes": { "type": "object", "additionalProperties": { "type": "string", "pattern": "^[0-9a-f]{64}$" } },
+    "inputHashes": { "type": "object", "additionalProperties": { "type": "string", "pattern": "^[0-9a-f]{64}$" } },
     "diagnostics": { "type": "array", "items": { "type": "string" } }
   },
   "$defs": {

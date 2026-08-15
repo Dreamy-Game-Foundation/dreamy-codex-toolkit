@@ -1,6 +1,7 @@
 ---
 name: dreamy-audio
 description: Use Dreamy audio integration for music, SFX, mixer groups, user settings, pooling, feedback triggers, and localization-aware playback without invented APIs.
+requires.packages: ["com.dreamy.audio"]
 ---
 
 # Dreamy Audio

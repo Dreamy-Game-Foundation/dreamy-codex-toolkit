@@ -120,6 +120,8 @@ export function runBenchmark(options) {
   const manifestPath = path.resolve(options.manifest);
   const manifestText = fs.readFileSync(manifestPath, "utf8");
   const manifest = JSON.parse(manifestText);
+  const policyPath = path.join(root, "benchmarks", "release-policy.json");
+  const policy = fs.existsSync(policyPath) ? readJson(policyPath) : null;
   const startedAt = new Date().toISOString();
   const runId = `${startedAt.replace(/[:.]/g, "-")}-${hash(manifestText).slice(0, 8)}`;
   const runDir = path.resolve(options.output ?? path.join(root, "benchmarks", "runs", runId));
@@ -145,7 +147,7 @@ export function runBenchmark(options) {
         const prompt = [benchmarkCase.prompt, source.sections.length ? `Treatment sources:\n${source.sections.join("\n\n")}` : ""].filter(Boolean).join("\n\n");
         fs.writeFileSync(promptFile, prompt, "utf8");
         if (!command || source.status !== "ready") {
-          results.push({ treatment: treatment.id, caseId: benchmarkCase.id, repetition, status: "not-run", reason: !command ? "No benchmark command configured" : source.reason, sourceProvenance: source.provenance });
+          results.push({ treatment: treatment.id, caseId: benchmarkCase.id, group: benchmarkCase.group ?? null, criticalSafety: Boolean(benchmarkCase.criticalSafety), repetition, status: "not-run", reason: !command ? "No benchmark command configured" : source.reason, sourceProvenance: source.provenance });
           continue;
         }
         const args = renderArgs(commandArgs, {
@@ -171,6 +173,8 @@ export function runBenchmark(options) {
         results.push({
           treatment: treatment.id,
           caseId: benchmarkCase.id,
+          group: benchmarkCase.group ?? null,
+          criticalSafety: Boolean(benchmarkCase.criticalSafety),
           repetition,
           status: adapterStatus?.status === "not-run" ? "not-run" : executionOk && grading.pass ? "pass" : "fail",
           reason: adapterStatus?.reason ?? null,
@@ -207,6 +211,7 @@ export function runBenchmark(options) {
     finishedAt: new Date().toISOString(),
     manifest: path.relative(root, manifestPath).replaceAll("\\", "/"),
     manifestHash: hash(manifestText),
+    policy,
     adapter: command ? { executable: command, args: commandArgs } : null,
     provenance: {
       ...gitProvenance(),

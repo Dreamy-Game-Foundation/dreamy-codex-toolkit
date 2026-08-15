@@ -36,6 +36,25 @@ if (!fs.existsSync(benchmarkReportPath)) {
     const benchmark = JSON.parse(fs.readFileSync(benchmarkReportPath, "utf8"));
     const schemas = createSchemaValidator(path.join(root, "schemas"));
     validateWithSchema(schemas, "https://dreamy.tools/codex/schemas/benchmark-run.schema.json", benchmark, "release/benchmark-report.json");
+    const policy = benchmark.policy ?? JSON.parse(fs.readFileSync(path.join(root, "benchmarks", "release-policy.json"), "utf8"));
+    const passRate = benchmark.summary.attempted > 0 ? benchmark.summary.passed / benchmark.summary.attempted : 0;
+    const groups = new Set((benchmark.treatments ?? []).map((item) => item.group).filter(Boolean));
+    const criticalFailures = (benchmark.treatments ?? []).filter((item) => item.criticalSafety && item.status === "fail").length;
+    if (passRate < policy.minimumPassRate) productionBlockers.push(`benchmark pass rate ${passRate.toFixed(3)} is below policy ${policy.minimumPassRate}`);
+    if (criticalFailures > policy.criticalSafetyFailuresAllowed) productionBlockers.push(`benchmark has ${criticalFailures} critical safety failures`);
+    for (const group of policy.requiredGroups ?? []) {
+      if (!groups.has(group)) productionBlockers.push(`benchmark missing required group: ${group}`);
+    }
+    if ((policy.requireRepetitions ?? 1) > 1) {
+      const repetitions = new Map();
+      for (const item of benchmark.treatments ?? []) {
+        const key = `${item.treatment}:${item.caseId}`;
+        repetitions.set(key, Math.max(repetitions.get(key) ?? 0, item.repetition ?? 1));
+      }
+      if ([...repetitions.values()].some((count) => count < policy.requireRepetitions)) {
+        productionBlockers.push(`benchmark repetitions are below policy ${policy.requireRepetitions}`);
+      }
+    }
     if (benchmark.status !== "complete" || benchmark.purpose !== "quality" || !benchmark.releaseEligible || benchmark.provenance.toolkitDirty) {
       productionBlockers.push("benchmark report is not a complete, release-eligible quality run from a clean toolkit commit");
     } else {
@@ -47,6 +66,16 @@ if (!fs.existsSync(benchmarkReportPath)) {
 }
 const unityCompatibility = JSON.parse(fs.readFileSync(path.join(root, toolkit.compatibility.unity), "utf8"));
 if ((unityCompatibility.tested ?? []).length === 0) productionBlockers.push("Unity tested matrix is empty");
+const dreamyCompatibility = JSON.parse(fs.readFileSync(path.join(root, toolkit.compatibility.dreamyPackages), "utf8"));
+const stableBlockerStatuses = new Set(dreamyCompatibility.policy?.stableReleaseBlockerStatuses ?? ["drift", "known-drift", "unsupported"]);
+for (const [name, record] of Object.entries(dreamyCompatibility.packages ?? {})) {
+  if (stableBlockerStatuses.has(record.status)) {
+    productionBlockers.push(`${name} compatibility status '${record.status}' blocks stable release`);
+  }
+}
+if ((dreamyCompatibility.globalDrift ?? []).length > 0) {
+  productionBlockers.push("global Dreamy ecosystem drift remains unresolved");
+}
 if (!fs.existsSync(path.join(root, "release/compatibility-drift-report.json"))) errors.push("compatibility drift JSON report is missing");
 if (!fs.existsSync(path.join(root, "release/compatibility-drift-report.md"))) errors.push("compatibility drift Markdown report is missing");
 if (!fs.existsSync(path.join(root, "release/npm-pack-smoke.json"))) errors.push("npm pack smoke report is missing; run npm run pack:smoke");

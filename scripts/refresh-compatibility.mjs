@@ -1,25 +1,21 @@
 import fs from "node:fs";
 import path from "node:path";
+import { collectCompatibilityIssues, readCompatibilityEvidence, readJson, root } from "./compatibility-lib.mjs";
 
-const root = path.resolve(import.meta.dirname, "..");
-const dreamy = JSON.parse(fs.readFileSync(path.join(root, "compatibility/dreamy-packages.json"), "utf8"));
-const thirdParty = JSON.parse(fs.readFileSync(path.join(root, "compatibility/third-party.json"), "utf8"));
-const knownThirdParty = new Set(Object.keys(thirdParty.packages ?? {}));
-const issues = [];
-
-for (const [name, pkg] of Object.entries(dreamy.packages ?? {})) {
-  if (!pkg.version) issues.push({ severity: "ERROR", package: name, issue: "missing version" });
-  if (!/^[0-9a-f]{40}$/.test(pkg.verifiedCommit ?? "")) issues.push({ severity: "ERROR", package: name, issue: "invalid verifiedCommit" });
-  for (const dep of Object.keys(pkg.thirdPartyDependencies ?? {})) {
-    if (!knownThirdParty.has(dep)) issues.push({ severity: "ERROR", package: name, issue: `unknown third-party dependency ${dep}` });
-  }
-  for (const drift of pkg.drift ?? []) issues.push({ severity: "WARN", package: name, issue: drift });
-  for (const unsupported of pkg.unsupportedContracts ?? []) issues.push({ severity: "WARN", package: name, issue: unsupported });
-}
+const dreamy = readJson("compatibility/dreamy-packages.json");
+const thirdParty = readJson("compatibility/third-party.json");
+const evidence = readCompatibilityEvidence();
+const issues = collectCompatibilityIssues(dreamy, thirdParty);
 
 const report = {
   schemaVersion: 1,
-  generatedAt: new Date().toISOString(),
+  evidenceRetrievedAt: evidence?.evidenceRetrievedAt ?? null,
+  reportGeneratedAt: new Date().toISOString(),
+  evidenceSnapshot: evidence ? {
+    fetchMethod: evidence.fetchMethod,
+    upstreamFetchPerformed: evidence.upstreamFetchPerformed,
+    sources: evidence.sources
+  } : null,
   packages: Object.keys(dreamy.packages ?? {}).length,
   thirdParty: Object.keys(thirdParty.packages ?? {}).length,
   asmdefDependencyIssues: issues.filter((issue) => /asmdef/i.test(issue.issue)).length,
@@ -31,7 +27,8 @@ fs.writeFileSync(path.join(root, "release", "compatibility-drift-report.json"), 
 const markdown = [
   "# Compatibility Drift Report",
   "",
-  `Generated: ${report.generatedAt}`,
+  `Report generated: ${report.reportGeneratedAt}`,
+  `Evidence retrieved: ${report.evidenceRetrievedAt ?? "not refreshed from upstream"}`,
   `Packages: ${report.packages}`,
   `Third-party records: ${report.thirdParty}`,
   `Issues: ${report.issues.length}`,

@@ -1,6 +1,7 @@
 ---
 name: dreamy-core
 description: Use verified Dreamy Core service locator, event bus, state machine, app lifecycle, logging, and tick capabilities safely.
+requires.packages: ["com.dreamy.core"]
 ---
 
 # Dreamy Core

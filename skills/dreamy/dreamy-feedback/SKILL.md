@@ -1,6 +1,7 @@
 ---
 name: dreamy-feedback
 description: Use Dreamy feedback for haptics, camera shake, screen effects, particles, audio cues, and UI feedback while keeping gameplay authority elsewhere.
+requires.packages: ["com.dreamy.feedback"]
 ---
 
 # Dreamy Feedback

@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "minimumPassRate": 0.95,
+  "criticalSafetyFailuresAllowed": 0,
+  "requiredGroups": [
+    "architecture",
+    "unity",
+    "dreamy",
+    "production",
+    "evidence-honesty"
+  ],
+  "requireCleanGit": true,
+  "requireRepetitions": 3
+}

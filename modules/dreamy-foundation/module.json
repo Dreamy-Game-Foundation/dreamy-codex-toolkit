@@ -5,6 +5,10 @@
   "dependencies": [
     "foundation"
   ],
+  "agents": [
+    "dreamy-package-maintainer",
+    "dreamy-skill-author"
+  ],
   "content": [
     "skills/dreamy/dreamy-feature",
     "skills/dreamy/dreamy-core",

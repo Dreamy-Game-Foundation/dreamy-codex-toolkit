@@ -6,6 +6,9 @@
     "foundation",
     "unity-core"
   ],
+  "agents": [
+    "dreamy-build-engineer"
+  ],
   "content": [
     "skills/platform/mobile-production",
     "skills/platform/android-build-release",

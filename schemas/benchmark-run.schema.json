@@ -14,6 +14,7 @@
     "startedAt": { "type": "string", "format": "date-time" },
     "finishedAt": { "type": "string", "format": "date-time" },
     "manifestHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "policy": { "type": ["object", "null"] },
     "provenance": {
       "type": "object",
       "required": ["toolkitCommit", "toolkitDirty", "model", "reasoning", "node", "platform", "arch"],
@@ -27,7 +28,16 @@
         "arch": { "type": "string", "minLength": 1 }
       }
     },
-    "treatments": { "type": "array" },
+    "treatments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "group": { "type": ["string", "null"] },
+          "criticalSafety": { "type": "boolean" }
+        }
+      }
+    },
     "summary": {
       "type": "object",
       "required": ["attempted", "passed", "failed", "notRun"],

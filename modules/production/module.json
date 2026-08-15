@@ -5,6 +5,10 @@
   "dependencies": [
     "foundation"
   ],
+  "agents": [
+    "dreamy-performance-engineer",
+    "dreamy-release-validator"
+  ],
   "content": [
     "skills/production/production-code-review",
     "skills/production/production-release"

@@ -11,7 +11,10 @@
     "eval:deterministic": "node src/cli.js eval",
     "benchmark": "node scripts/benchmark.mjs",
     "benchmark:selftest": "node scripts/benchmark.mjs --manifest benchmarks/manifests/selftest.json",
-    "compatibility:refresh": "node scripts/refresh-compatibility.mjs",
+    "compatibility:fetch": "node scripts/compatibility-fetch.mjs",
+    "compatibility:validate": "node scripts/compatibility-validate.mjs",
+    "compatibility:report": "node scripts/refresh-compatibility.mjs",
+    "compatibility:refresh": "npm run compatibility:fetch && npm run compatibility:validate && npm run compatibility:report",
     "release:check": "node scripts/release-check.mjs",
     "changelog": "node scripts/changelog.mjs",
     "pack:smoke": "node scripts/pack-smoke.mjs"

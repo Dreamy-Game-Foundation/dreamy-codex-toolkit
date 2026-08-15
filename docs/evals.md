@@ -12,5 +12,6 @@ Semantic execution is separate:
 - `npm run benchmark -- --manifest benchmarks/manifests/pilot.json --command <adapter>` invokes an external agent adapter and grades observed output;
 - omitting `--command` produces a `degraded` benchmark with `not-run` trials rather than fake passes.
 - production release only consumes a separately published `release/benchmark-report.json` that is quality-purpose, release-eligible, complete, and bound to a clean toolkit commit.
+- release benchmark thresholds live in `benchmarks/release-policy.json` and are evaluated by `npm run release:check`.
 
 The controlled experiment, case contract, metrics, and release gates are defined in `docs/toolkit-benchmark-plan.md`.

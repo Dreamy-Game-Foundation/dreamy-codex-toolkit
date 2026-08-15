@@ -25,10 +25,14 @@ function parseArgs(argv) {
       args[arg.slice(2)] = rest[++i];
     } else if (arg === "--dry-run") {
       args.dryRun = true;
+    } else if (arg === "--resolved") {
+      args.resolved = true;
     } else if (arg === "--force") {
       args.force = true;
     } else if (arg === "--backup") {
       args.backup = true;
+    } else if (arg === "--fix") {
+      args.fix = true;
     } else if (arg === "--json") {
       args.json = true;
     } else {
@@ -55,11 +59,118 @@ function sha256File(file) {
   return sha256(fs.readFileSync(file));
 }
 
-function removeBlock(content, start, end) {
-  const startIndex = content.indexOf(start);
-  const endIndex = content.indexOf(end);
-  if (startIndex === -1 || endIndex === -1 || endIndex < startIndex) return content;
-  return `${content.slice(0, startIndex).trimEnd()}\n${content.slice(endIndex + end.length).trimStart()}`.trimEnd() + "\n";
+function detectLineEnding(text) {
+  return text.includes("\r\n") ? "crlf" : "lf";
+}
+
+function lineEndingValue(lineEnding) {
+  return lineEnding === "crlf" ? "\r\n" : "\n";
+}
+
+function normalizeLineEndings(text, lineEnding) {
+  return text.replace(/\r\n|\n/g, lineEndingValue(lineEnding));
+}
+
+function findManagedBlock(text) {
+  const startIndexes = [];
+  let startFrom = 0;
+  while (true) {
+    const index = text.indexOf(managedStart, startFrom);
+    if (index === -1) break;
+    startIndexes.push(index);
+    startFrom = index + managedStart.length;
+  }
+
+  const endIndexes = [];
+  let endFrom = 0;
+  while (true) {
+    const index = text.indexOf(managedEnd, endFrom);
+    if (index === -1) break;
+    endIndexes.push(index);
+    endFrom = index + managedEnd.length;
+  }
+
+  if (startIndexes.length !== 1 || endIndexes.length !== 1) {
+    throw new Error("Malformed Dreamy managed block markers");
+  }
+  if (endIndexes[0] < startIndexes[0]) {
+    throw new Error("Malformed Dreamy managed block markers");
+  }
+
+  return {
+    start: startIndexes[0],
+    end: endIndexes[0] + managedEnd.length,
+  };
+}
+
+function extractManagedBlock(text) {
+  const block = findManagedBlock(text);
+  return text.slice(block.start, block.end);
+}
+
+function hashManagedBlock(text) {
+  return sha256(extractManagedBlock(text));
+}
+
+function validateManagedBlock(text) {
+  findManagedBlock(text);
+  return true;
+}
+
+function replaceManagedBlock(text, newBlock) {
+  const block = findManagedBlock(text);
+  const lineEnding = detectLineEnding(text);
+  return `${text.slice(0, block.start)}${normalizeLineEndings(newBlock, lineEnding)}${text.slice(block.end)}`;
+}
+
+function removeManagedBlock(text) {
+  const block = findManagedBlock(text);
+  let removeStart = block.start;
+  let removeEnd = block.end;
+  const before = text.slice(0, block.start);
+  const after = text.slice(block.end);
+  const lineEnding = lineEndingValue(detectLineEnding(text));
+  if (before.endsWith(`${lineEnding}${lineEnding}`)) {
+    removeStart -= lineEnding.length;
+  } else if (!after && before.endsWith(lineEnding)) {
+    removeStart -= lineEnding.length;
+  }
+  if (after.startsWith(lineEnding)) {
+    removeEnd += lineEnding.length;
+  }
+  return `${text.slice(0, removeStart)}${text.slice(removeEnd)}`;
+}
+
+function renderManagedBlock(lineEnding = "lf") {
+  return normalizeLineEndings(fs.readFileSync(path.join(root, "templates", "AGENTS.managed.md"), "utf8"), lineEnding);
+}
+
+function stateManagedBlockHash(state) {
+  return state.managedBlockHash ?? state.checksums?.["AGENTS.md"]?.managedBlockHash ?? null;
+}
+
+function legacyWholeFileHash(state) {
+  return state.schemaVersion === 1 ? state.checksums?.after : state.checksums?.["AGENTS.md"]?.after;
+}
+
+function hasAnyManagedBlockMarker(text) {
+  return text.includes(managedStart) || text.includes(managedEnd);
+}
+
+function cleanupUninstallState(target, purge = false) {
+  if (!fs.existsSync(target.stateDir)) return;
+  if (purge) {
+    fs.rmSync(target.stateDir, { recursive: true, force: true });
+    return;
+  }
+
+  for (const fileName of ["install-state.json", "project-profile.json"]) {
+    const file = path.join(target.stateDir, fileName);
+    if (fs.existsSync(file)) fs.rmSync(file, { force: true });
+  }
+  if (fs.existsSync(target.stateDir) && fs.readdirSync(target.stateDir).length === 0) {
+    fs.rmdirSync(target.stateDir);
+  }
 }
 
 function codexHome() {
@@ -133,17 +244,29 @@ function listSkillDirs() {
   return dirs;
 }
 
-const packageSkillMap = {
-  "com.dreamy.core": "skills/dreamy/dreamy-core",
-  "com.dreamy.dataconfig": "skills/dreamy/dreamy-dataconfig",
-  "com.dreamy.datasave": "skills/dreamy/dreamy-datasave",
-  "com.dreamy.assets": "skills/dreamy/dreamy-assets",
-  "com.dreamy.ui": "skills/dreamy/dreamy-ui",
-  "com.dreamy.audio": "skills/dreamy/dreamy-audio",
-  "com.dreamy.feedback": "skills/dreamy/dreamy-feedback",
-  "com.dreamy.localization": "skills/dreamy/dreamy-localization",
-  "com.dreamy.editor-tools": "skills/dreamy/dreamy-editor-tools",
-};
+function skillMetadata(skillDir) {
+  const file = path.join(skillDir, "SKILL.md");
+  if (!fs.existsSync(file)) return {};
+  const text = fs.readFileSync(file, "utf8");
+  const frontmatter = text.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  if (!frontmatter) return {};
+  const metadata = {};
+  const packages = frontmatter[1].match(/^requires\.packages:\s*(\[.*\])\s*$/m)?.[1];
+  if (packages) {
+    try {
+      metadata.requiredPackages = JSON.parse(packages);
+    } catch {
+      throw new Error(`Invalid requires.packages metadata in ${path.relative(root, file)}`);
+    }
+  }
+  return metadata;
+}
+
+function skillAllowedForProfile(target, skillDir, detectedPackages) {
+  const requiredPackages = skillMetadata(skillDir).requiredPackages ?? [];
+  if (target.kind === "global" || requiredPackages.length === 0) return true;
+  return requiredPackages.some((pkg) => detectedPackages.has(pkg));
+}
 
 function resolveModules(preset) {
   const presetPath = path.join(root, "presets", `${preset}.json`);
@@ -174,27 +297,39 @@ function skillDirsForInstall(target, preset, profile) {
     if (!fs.existsSync(modulePath)) continue;
     for (const item of readJson(modulePath).content ?? []) {
       if (!item.startsWith("skills/")) continue;
-      if (moduleId === "dreamy-packages") {
-        const allowed = target.kind === "global" || [...detected].some((pkg) => packageSkillMap[pkg] === item);
-        if (!allowed) continue;
+      const skillDir = path.join(root, item);
+      if (fs.existsSync(path.join(skillDir, "SKILL.md")) && skillAllowedForProfile(target, skillDir, detected)) {
+        selected.add(skillDir);
       }
-      if (fs.existsSync(path.join(root, item, "SKILL.md"))) selected.add(path.join(root, item));
     }
   }
   return [...selected];
 }
 
+function agentFilesForInstall(preset) {
+  const selected = new Set();
+  for (const moduleId of resolveModules(preset)) {
+    const modulePath = path.join(root, "modules", moduleId, "module.json");
+    if (!fs.existsSync(modulePath)) continue;
+    for (const agent of readJson(modulePath).agents ?? []) {
+      const file = agent.endsWith(".toml") ? agent : `${agent}.toml`;
+      const source = path.join(root, "agents", "codex", file);
+      if (!fs.existsSync(source)) throw new Error(`Module ${moduleId} references missing agent: ${agent}`);
+      selected.add(source);
+    }
+  }
+  return [...selected].sort();
+}
+
 function desiredInstall(target, preset, profile) {
-  const agentSource = path.join(root, "agents", "codex");
-  const agents = fs.readdirSync(agentSource)
-    .filter((name) => name.startsWith("dreamy-") && name.endsWith(".toml"))
-    .map((file) => ({ source: path.join(agentSource, file), destination: path.join(target.agentsDir, file) }));
+  const agents = agentFilesForInstall(preset)
+    .map((source) => ({ source, destination: path.join(target.agentsDir, path.basename(source)) }));
   const skills = skillDirsForInstall(target, preset, profile)
     .map((source) => ({ source, destination: path.join(target.skillsDir, path.basename(source)) }));
   return { agents, skills, resolvedModules: resolveModules(preset) };
 }
 
-function writeManagedState(target, preset, profile, desired, beforeHash, afterHash) {
+function writeManagedState(target, preset, profile, desired, beforeHash, afterHash, managedBlockHash, lineEnding) {
   const compatibility = readJson(path.join(root, "compatibility", "dreamy-packages.json")).packages ?? {};
   writeJson(path.join(target.stateDir, "install-state.json"), {
     schemaVersion: 2,
@@ -206,7 +341,10 @@ function writeManagedState(target, preset, profile, desired, beforeHash, afterHa
     skills: desired.skills.map((entry) => entry.destination),
     agents: desired.agents.map((entry) => entry.destination),
     managedFiles: [target.agentsMd],
-    checksums: { "AGENTS.md": { before: beforeHash, after: afterHash } },
+    managedBlockHash,
+    managedTemplateVersion: "schema=1",
+    lineEnding,
+    checksums: { "AGENTS.md": { before: beforeHash, after: afterHash, managedBlockHash } },
     detectedPackages: profile.dreamyPackages ?? profile.packages ?? [],
     compatibilitySnapshot: Object.fromEntries((profile.dreamyPackages ?? profile.packages ?? []).map((pkg) => [pkg.name, compatibility[pkg.name]?.status ?? "unknown"]))
   });
@@ -228,7 +366,11 @@ function installProject(args) {
   fs.mkdirSync(target.root, { recursive: true });
   const agentsMd = target.agentsMd;
   const existingAgents = fs.existsSync(agentsMd) ? fs.readFileSync(agentsMd, "utf8") : "";
-  if (existingAgents.includes(managedStart)) {
+  const hasManagedStart = existingAgents.includes(managedStart);
+  const hasManagedEnd = existingAgents.includes(managedEnd);
+  if (hasManagedStart || hasManagedEnd) {
+    if (!(hasManagedStart && hasManagedEnd)) throw new Error("Malformed Dreamy managed block markers");
+    validateManagedBlock(existingAgents);
     throw new Error("AGENTS.md already contains a Dreamy managed block");
   }
 
@@ -236,9 +378,11 @@ function installProject(args) {
   fs.mkdirSync(stateDir, { recursive: true });
   writeJson(path.join(stateDir, "project-profile.json"), profile);
 
-  const managedBlock = fs.readFileSync(path.join(root, "templates", "AGENTS.managed.md"), "utf8");
+  const lineEnding = detectLineEnding(existingAgents);
+  const managedBlock = renderManagedBlock(lineEnding);
   const beforeHash = fs.existsSync(agentsMd) ? sha256File(agentsMd) : "";
-  const nextAgents = existingAgents ? `${existingAgents.replace(/\s*$/, "\n\n")}${managedBlock}` : managedBlock;
+  const separator = existingAgents ? existingAgents.endsWith(lineEndingValue(lineEnding)) ? lineEndingValue(lineEnding) : `${lineEndingValue(lineEnding)}${lineEndingValue(lineEnding)}` : "";
+  const nextAgents = `${existingAgents}${separator}${managedBlock}`;
   const afterHash = sha256(nextAgents);
   fs.writeFileSync(agentsMd, nextAgents, "utf8");
 
@@ -252,28 +396,37 @@ function installProject(args) {
     copyDir(entry.source, entry.destination);
   }
 
-  writeManagedState(target, args.preset, profile, desired, beforeHash, afterHash);
+  writeManagedState(target, args.preset, profile, desired, beforeHash, afterHash, sha256(managedBlock), lineEnding);
 
   return { action: "install", target: target.root, targetKind: target.kind, preset: args.preset, status: "ok" };
 }
 
 function uninstallProject(args) {
   const target = resolveTarget(args.target);
-  if (args.dryRun) return { action: "uninstall", target: target.root, targetKind: target.kind, dryRun: true };
+  const action = args.purge ? "purge" : "uninstall";
+  if (args.dryRun) return { action, target: target.root, targetKind: target.kind, dryRun: true };
 
   const statePath = path.join(target.stateDir, "install-state.json");
-  if (!fs.existsSync(statePath)) throw new Error("Missing install state; refusing to remove unowned managed block");
+  if (!fs.existsSync(statePath)) {
+    const content = fs.existsSync(target.agentsMd) ? fs.readFileSync(target.agentsMd, "utf8") : "";
+    if (hasAnyManagedBlockMarker(content)) throw new Error("Missing install state; refusing to remove unowned managed block");
+    cleanupUninstallState(target, args.purge);
+    return { action, target: target.root, targetKind: target.kind, status: "ok", alreadyRemoved: true };
+  }
   const state = readJson(statePath);
-  const agChecksum = state.schemaVersion === 1 ? state.checksums?.after : state.checksums?.["AGENTS.md"]?.after;
 
   const agentsMd = target.agentsMd;
   if (fs.existsSync(agentsMd)) {
     const content = fs.readFileSync(agentsMd, "utf8");
-    const startCount = content.split(managedStart).length - 1;
-    const endCount = content.split(managedEnd).length - 1;
-    if (startCount !== 1 || endCount !== 1) throw new Error("Malformed Dreamy managed block markers");
-    if (sha256(content) !== agChecksum) throw new Error("AGENTS.md checksum drift; refusing uninstall");
-    fs.writeFileSync(agentsMd, removeBlock(content, managedStart, managedEnd), "utf8");
+    const expectedBlockHash = stateManagedBlockHash(state);
+    if (expectedBlockHash) {
+      if (hashManagedBlock(content) !== expectedBlockHash && !args.force) throw new Error("Dreamy managed block checksum drift; refusing uninstall");
+    } else {
+      const expected = legacyWholeFileHash(state);
+      if (expected && sha256(content) !== expected && !args.force) throw new Error("AGENTS.md checksum drift; refusing uninstall");
+      validateManagedBlock(content);
+    }
+    fs.writeFileSync(agentsMd, removeManagedBlock(content), "utf8");
   }
 
   for (const file of state.agents ?? state.agentFiles ?? []) {
@@ -283,7 +436,9 @@ function uninstallProject(args) {
     if (fs.existsSync(dir)) fs.rmSync(dir, { recursive: true, force: true });
   }
 
-  return { action: "uninstall", target: target.root, targetKind: target.kind, status: "ok" };
+  cleanupUninstallState(target, args.purge);
+
+  return { action, target: target.root, targetKind: target.kind, status: "ok" };
 }
 
 function updateProject(args) {
@@ -303,9 +458,19 @@ function updateProject(args) {
   const currentSkills = state.skills ?? state.skillDirs ?? [];
   const agentsMd = target.agentsMd;
   const content = fs.existsSync(agentsMd) ? fs.readFileSync(agentsMd, "utf8") : "";
-  const expected = state.schemaVersion === 1 ? state.checksums?.after : state.checksums?.["AGENTS.md"]?.after;
-  if (expected && sha256(content) !== expected && !args.force) throw new Error("AGENTS.md checksum drift; rerun with --force only after reviewing user changes");
+  const expectedBlockHash = stateManagedBlockHash(state);
+  if (expectedBlockHash) {
+    if (hashManagedBlock(content) !== expectedBlockHash && !args.force) throw new Error("Dreamy managed block checksum drift; rerun with --force only after reviewing managed block changes");
+  } else {
+    const expected = legacyWholeFileHash(state);
+    if (expected && sha256(content) !== expected && !args.force) throw new Error("AGENTS.md checksum drift; rerun with --force only after reviewing user changes");
+    validateManagedBlock(content);
+  }
   if (args.backup && fs.existsSync(agentsMd)) fs.copyFileSync(agentsMd, `${agentsMd}.dreamy-backup`);
+
+  const lineEnding = detectLineEnding(content || renderManagedBlock(state.lineEnding ?? "lf"));
+  const nextAgents = replaceManagedBlock(content, renderManagedBlock(lineEnding));
+  fs.writeFileSync(agentsMd, nextAgents, "utf8");
 
   for (const file of currentAgents) if (!desired.agents.some((entry) => entry.destination === file) && fs.existsSync(file)) fs.rmSync(file, { force: true });
   for (const dir of currentSkills) if (!desired.skills.some((entry) => entry.destination === dir) && fs.existsSync(dir)) fs.rmSync(dir, { recursive: true, force: true });
@@ -317,7 +482,7 @@ function updateProject(args) {
   }
   const beforeHash = state.schemaVersion === 1 ? state.checksums?.before ?? "" : state.checksums?.["AGENTS.md"]?.before ?? "";
   const afterHash = fs.existsSync(agentsMd) ? sha256File(agentsMd) : "";
-  writeManagedState(target, preset, profile, desired, beforeHash, afterHash);
+  writeManagedState(target, preset, profile, desired, beforeHash, afterHash, hashManagedBlock(nextAgents), lineEnding);
   return { action: "update", target: target.root, targetKind: target.kind, status: "ok", fromVersion: state.toolkitVersion, preset };
 }
 
@@ -489,22 +654,61 @@ async function main() {
     else formatInstallOutput(res);
   } else if (cmd === "uninstall" || cmd === "purge") {
     if (cmd === "purge" && args.target === ".") args.target = "global";
+    args.purge = cmd === "purge";
     const res = uninstallProject(args);
     if (wantsJson) console.log(JSON.stringify(res));
     else formatUninstallOutput(res);
   } else if (cmd === "doctor") {
     await validateArtifacts();
     const target = resolveTarget(args.target);
+    const toolkit = readJson(path.join(root, "toolkit.json"));
+    const pkg = readJson(path.join(root, "package.json"));
     const profile = target.kind === "global" ? { schemaVersion: 1, engine: { name: "global" }, preset: args.preset, packages: [] } : detectProject(target.root);
     const checks = [];
     const add = (id, severity, message) => checks.push({ id, severity, message });
     add("node", "INFO", `Node ${process.version}`);
+    add("version-agreement", toolkit.version === pkg.version ? "INFO" : "ERROR", `toolkit=${toolkit.version} package=${pkg.version}`);
     add("codex-home", fs.existsSync(codexHome()) ? "INFO" : "WARN", codexHome());
     add("user-skills", fs.existsSync(path.join(agentsHome(), "skills")) ? "INFO" : "WARN", path.join(agentsHome(), "skills"));
     add("project-agents", fs.existsSync(target.agentsDir) ? "INFO" : "WARN", target.agentsDir);
     add("project-skills", fs.existsSync(target.skillsDir) ? "INFO" : "WARN", target.skillsDir);
+    try {
+      const modules = resolveModules(args.preset);
+      add("preset-closure", "INFO", `${args.preset}: ${modules.join(", ")}`);
+      const desired = desiredInstall(target, args.preset, profile);
+      const skillBasenames = desired.skills.map((entry) => path.basename(entry.destination));
+      const duplicateSkills = skillBasenames.filter((name, index) => skillBasenames.indexOf(name) !== index);
+      add("skill-destinations", duplicateSkills.length ? "ERROR" : "INFO", duplicateSkills.length ? `duplicate skill destinations: ${[...new Set(duplicateSkills)].join(", ")}` : `${skillBasenames.length} unique skill destinations`);
+    } catch (error) {
+      add("preset-closure", "ERROR", error.message);
+    }
+    const statePath = path.join(target.stateDir, "install-state.json");
+    if (fs.existsSync(statePath)) {
+      try {
+        const state = readJson(statePath);
+        add("install-state", state.schemaVersion === 2 ? "INFO" : "WARN", `schemaVersion=${state.schemaVersion}`);
+        if (fs.existsSync(target.agentsMd)) {
+          const content = fs.readFileSync(target.agentsMd, "utf8");
+          const expectedBlockHash = stateManagedBlockHash(state);
+          add("managed-block", expectedBlockHash && hashManagedBlock(content) === expectedBlockHash ? "INFO" : "ERROR", expectedBlockHash ? "AGENTS.md managed block ownership check" : "missing managed block hash");
+        } else {
+          add("managed-block", "ERROR", "AGENTS.md missing while install state exists");
+        }
+        const staleAgents = (state.agents ?? state.agentFiles ?? []).filter((file) => !fs.existsSync(file));
+        const staleSkills = (state.skills ?? state.skillDirs ?? []).filter((dir) => !fs.existsSync(dir));
+        add("managed-files", staleAgents.length || staleSkills.length ? "WARN" : "INFO", staleAgents.length || staleSkills.length ? `missing owned paths: ${staleAgents.length + staleSkills.length}` : "all recorded owned paths exist");
+      } catch (error) {
+        add("install-state", "ERROR", error.message);
+      }
+    } else {
+      const content = fs.existsSync(target.agentsMd) ? fs.readFileSync(target.agentsMd, "utf8") : "";
+      add("install-state", hasAnyManagedBlockMarker(content) ? "ERROR" : "WARN", hasAnyManagedBlockMarker(content) ? "managed AGENTS block exists without install state" : "not installed");
+    }
     if (target.kind === "project") {
       add("unity-manifest", fs.existsSync(path.join(target.root, "Packages", "manifest.json")) ? "INFO" : "WARN", "Packages/manifest.json");
+      add("unity-lock", fs.existsSync(path.join(target.root, "Packages", "packages-lock.json")) ? "INFO" : "WARN", "Packages/packages-lock.json");
+      const unityPath = process.env.DREAMY_UNITY_PATH || process.env.UNITY_PATH;
+      add("unity-executable", unityPath && fs.existsSync(unityPath) ? "INFO" : "WARN", unityPath || "Set DREAMY_UNITY_PATH or UNITY_PATH");
       for (const pkg of profile.dreamyPackages ?? []) {
         add(`dreamy-${pkg.name}`, pkg.compatibilityStatus === "drift" ? "WARN" : "INFO", `${pkg.declaredVersion ?? pkg.resolvedVersion ?? "unknown"} ${pkg.compatibilityStatus}`);
       }
@@ -529,13 +733,30 @@ async function main() {
         harness: { git: gitStatus, unity: "degraded" }
       },
       recommendations: checks.filter((check) => check.severity !== "INFO").map((check) => check.message),
+      fixApplied: args.fix ? [] : undefined,
       profile
     };
     if (wantsJson) console.log(JSON.stringify(docRes));
     else formatDoctorOutput(docRes);
   } else if (cmd === "list") {
     const kit = readJson(path.join(root, "toolkit.json"));
-    console.log(JSON.stringify({ presets: kit.presets, modules: kit.modules, rules: kit.rules, skills: kit.skills }));
+    if (args.resolved) {
+      const target = resolveTarget(args.target);
+      const profile = target.kind === "global"
+        ? { schemaVersion: 1, engine: { name: "global" }, preset: args.preset, packages: [] }
+        : { ...detectProject(target.root), preset: args.preset };
+      const desired = desiredInstall(target, args.preset, profile);
+      console.log(JSON.stringify({
+        preset: args.preset,
+        target: target.root,
+        targetKind: target.kind,
+        resolvedModules: desired.resolvedModules,
+        agents: desired.agents.map((entry) => path.basename(entry.destination)),
+        skills: desired.skills.map((entry) => path.basename(entry.destination))
+      }));
+    } else {
+      console.log(JSON.stringify({ presets: kit.presets, modules: kit.modules, rules: kit.rules, skills: kit.skills }));
+    }
   } else if (cmd === "eval") {
     if (args.runner !== "catalog") throw new Error("The eval command validates the catalog only. Use npm run benchmark for semantic runs.");
     const catalogPath = path.join(root, "evals", "catalog.json");
@@ -556,8 +777,8 @@ async function main() {
   install [--target PATH|global] [--preset NAME] [--dry-run] [--json]
   uninstall [--target PATH|global] [--dry-run] [--json]
   purge [--dry-run] [--json]
-  doctor [--target PATH] [--json]
-  list
+  doctor [--target PATH] [--json] [--fix]
+  list [--resolved] [--target PATH|global] [--preset NAME]
   eval [--runner catalog]
   benchmark (use npm run benchmark -- --manifest PATH --command PATH)
   update [--target PATH|global] [--preset NAME] [--dry-run] [--json]`);

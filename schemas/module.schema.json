@@ -8,6 +8,7 @@
     "id": { "type": "string", "minLength": 1 },
     "version": { "type": "string", "minLength": 1 },
     "dependencies": { "type": "array", "items": { "type": "string" } },
-    "content": { "type": "array", "items": { "type": "string" } }
+    "content": { "type": "array", "items": { "type": "string" } },
+    "agents": { "type": "array", "items": { "type": "string", "minLength": 1 } }
   }
 }

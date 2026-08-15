@@ -1,6 +1,7 @@
 ---
 name: dreamy-datasave
 description: Use Dreamy Datasave for versioned persistent player state, transactions, stable IDs, migrations, backup, and corruption recovery.
+requires.packages: ["com.dreamy.datasave"]
 ---
 
 # Dreamy Datasave

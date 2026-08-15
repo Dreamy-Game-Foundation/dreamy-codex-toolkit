@@ -1,6 +1,7 @@
 ---
 name: dreamy-editor-tools
 description: Use Dreamy Editor Tools only through verified public editor, dry-run, or harness contracts for scene, build, package, and data workflows.
+requires.packages: ["com.dreamy.editor-tools"]
 ---
 
 # Dreamy Editor Tools

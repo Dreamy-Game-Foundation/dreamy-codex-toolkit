@@ -1,6 +1,7 @@
 ---
 name: dreamy-dataconfig
 description: Use Dreamy DataConfig for typed, validated, stable, designer-authored static data while keeping player state elsewhere.
+requires.packages: ["com.dreamy.dataconfig"]
 ---
 
 # Dreamy Dataconfig

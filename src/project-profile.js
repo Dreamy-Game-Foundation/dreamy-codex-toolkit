@@ -17,7 +17,7 @@ function relative(root, file) {
 function walk(root, predicate, result = []) {
   if (!fs.existsSync(root)) return result;
   for (const entry of fs.readdirSync(root, { withFileTypes: true })) {
-    if (entry.name === "Library" || entry.name === "Temp" || entry.name === "Logs" || entry.name === "obj") continue;
+    if (["Library", "Temp", "Logs", "obj", "Build", "Builds", "UserSettings"].includes(entry.name)) continue;
     const full = path.join(root, entry.name);
     if (entry.isDirectory()) walk(full, predicate, result);
     else if (entry.isFile() && predicate(full)) result.push(full);
@@ -92,6 +92,32 @@ function capability(packages, names) {
   return { status: evidence.length ? "observed" : "not-observed", evidence };
 }
 
+function capabilityGraph(capabilities, dreamyPackages, renderPipeline) {
+  const records = [];
+  for (const [id, value] of Object.entries(capabilities)) {
+    records.push({
+      id,
+      state: value.status === "observed" ? "detected" : "unknown",
+      reasons: value.evidence ?? []
+    });
+  }
+  for (const pkg of dreamyPackages) {
+    records.push({
+      id: pkg.name.replace(/^com\.dreamy\./, "dreamy-"),
+      state: "detected",
+      reasons: [pkg.name]
+    });
+  }
+  if (renderPipeline.status === "observed") {
+    records.push({
+      id: renderPipeline.packages.includes("com.unity.render-pipelines.universal") ? "urp" : "render-pipeline",
+      state: "detected",
+      reasons: renderPipeline.packages.length ? renderPipeline.packages : ["ProjectSettings/GraphicsSettings.asset"]
+    });
+  }
+  return records.sort((a, b) => a.id.localeCompare(b.id));
+}
+
 export function inspectProject(projectRoot, options = {}) {
   const root = path.resolve(projectRoot);
   const required = {
@@ -156,36 +182,58 @@ export function inspectProject(projectRoot, options = {}) {
     .map(([name, file]) => [name, hashFile(file)]));
   const fatal = missingRequired.includes("manifest") || missingRequired.includes("projectVersion") || diagnostics.some((item) => item.startsWith("Invalid "));
   const incomplete = missingRequired.length > 0 || lockDrift.length > 0 || asmdefs.runtimeEditorViolations.length > 0;
+  const engine = { name: missingRequired.includes("projectVersion") ? "unknown" : "unity", version: unityVersion(required.projectVersion) };
+  const renderPipeline = {
+    status: renderPipelinePackages.length || activePipelineAssetConfigured ? "observed" : "not-observed",
+    packages: renderPipelinePackages,
+    activePipelineAssetConfigured
+  };
+  const capabilities = {
+    addressables: capability(packages, ["com.unity.addressables"]),
+    inputSystem: capability(packages, ["com.unity.inputsystem"]),
+    testFramework: capability(packages, ["com.unity.test-framework"]),
+    uiToolkit: capability(packages, ["com.unity.modules.uielements"]),
+    multiplayer: capability(packages, ["com.unity.netcode.gameobjects", "com.unity.entities"])
+  };
+  const dreamyPackages = packages.filter((pkg) => pkg.name.startsWith("com.dreamy."));
+  const violations = [
+    ...lockDrift.map((name) => ({ id: "package-lock-missing-dependency", severity: "warn", subject: name })),
+    ...asmdefs.runtimeEditorViolations.map((item) => ({ id: "runtime-editor-reference", severity: "error", subject: item.assembly, reference: item.reference })),
+    ...asmdefs.parseErrors.map((message) => ({ id: "asmdef-parse-error", severity: "error", subject: message }))
+  ].sort((a, b) => `${a.id}:${a.subject}`.localeCompare(`${b.id}:${b.subject}`));
 
   return {
     schemaVersion: 2,
     observedAt: new Date().toISOString(),
     projectRoot: root,
     status: fatal ? "invalid" : incomplete ? "incomplete" : "valid",
-    engine: { name: missingRequired.includes("projectVersion") ? "unknown" : "unity", version: unityVersion(required.projectVersion) },
+    engine,
+    unity: {
+      version: engine.version,
+      renderPipeline: renderPipeline.packages.includes("com.unity.render-pipelines.universal") ? "urp" : renderPipeline.packages.includes("com.unity.render-pipelines.high-definition") ? "hdrp" : activePipelineAssetConfigured ? "custom" : "unknown"
+    },
     preset: "dreamy-project",
     packages,
-    dreamyPackages: packages.filter((pkg) => pkg.name.startsWith("com.dreamy.")),
-    renderPipeline: {
-      status: renderPipelinePackages.length || activePipelineAssetConfigured ? "observed" : "not-observed",
-      packages: renderPipelinePackages,
-      activePipelineAssetConfigured
-    },
+    dreamyPackages,
+    renderPipeline,
     asmdefs: {
       count: asmdefs.records.length,
       assemblies: asmdefs.records,
       runtimeEditorViolations: asmdefs.runtimeEditorViolations
     },
     buildScenes: buildScenes(optional.editorBuildSettings),
-    capabilities: {
-      addressables: capability(packages, ["com.unity.addressables"]),
-      inputSystem: capability(packages, ["com.unity.inputsystem"]),
-      testFramework: capability(packages, ["com.unity.test-framework"]),
-      uiToolkit: capability(packages, ["com.unity.modules.uielements"]),
-      multiplayer: capability(packages, ["com.unity.netcode.gameobjects", "com.unity.entities"])
+    capabilities,
+    capabilityGraph: capabilityGraph(capabilities, dreamyPackages, renderPipeline),
+    violations,
+    confidence: {
+      manifest: fs.existsSync(required.manifest) ? "detected" : "unknown",
+      packagesLock: fs.existsSync(required.lock) ? "detected" : "unknown",
+      unityVersion: engine.version ? "detected" : "unknown",
+      asmdefs: asmdefs.parseErrors.length ? "partial" : "detected"
     },
     requiredSources: Object.fromEntries(Object.entries(required).map(([name, file]) => [name, fs.existsSync(file)])),
     sourceHashes,
-    diagnostics
+    inputHashes: sourceHashes,
+    diagnostics: diagnostics.sort()
   };
 }

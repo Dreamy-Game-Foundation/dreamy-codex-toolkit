@@ -1,6 +1,7 @@
 ---
 name: dreamy-assets
 description: Use Dreamy Assets and Addressables-style loading with explicit owner, cache, in-flight dedupe, cancellation, failure, prefab instantiation, and release policy.
+requires.packages: ["com.dreamy.assets"]
 ---
 
 # Dreamy Assets

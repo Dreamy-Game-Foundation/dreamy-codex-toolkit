@@ -5,6 +5,10 @@
   "dependencies": [
     "foundation"
   ],
+  "agents": [
+    "dreamy-unity-developer",
+    "dreamy-unity-editor"
+  ],
   "content": [
     "skills/unity-ui",
     "skills/unity-input-system",

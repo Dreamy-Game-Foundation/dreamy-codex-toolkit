@@ -42,7 +42,14 @@ test("harness git-status emits machine-readable evidence", () => {
   assert.equal(evidence.status, "pass");
   assert.equal(evidence.exitCode, 0);
   assert.ok(evidence.observedAt);
+  assert.ok(evidence.startedAt);
+  assert.ok(evidence.completedAt);
+  assert.ok(Number.isInteger(evidence.durationMs));
+  assert.equal(evidence.projectPath, root);
+  assert.equal(evidence.platform, process.platform);
   assert.ok(Array.isArray(evidence.diagnostics));
+  assert.ok(Array.isArray(evidence.errors));
+  assert.ok(Array.isArray(evidence.warnings));
 });
 
 test("Unity-dependent harness operations degrade without fake success", () => {
@@ -60,6 +67,13 @@ test("project inspection passes only complete Unity source fixtures", () => {
   const valid = run(["project-inspect", unityFixture()]);
   assert.equal(valid.status, "pass");
   assert.equal(valid.profile.engine.version, "6000.0.1f1");
+  assert.equal(valid.profile.unity.version, "6000.0.1f1");
+  assert.ok(Array.isArray(valid.profile.capabilityGraph));
+  assert.ok(valid.profile.capabilityGraph.some((item) => item.id === "testFramework" && item.state === "detected"));
+  assert.deepEqual(valid.profile.violations, []);
+  assert.equal(valid.unityVersion, "6000.0.1f1");
+  assert.match(valid.manifestHash, /^[0-9a-f]{64}$/);
+  assert.match(valid.packagesLockHash, /^[0-9a-f]{64}$/);
   assert.equal(valid.profile.capabilities.testFramework.status, "observed");
 
   const incomplete = run(["project-inspect", unityFixture({ lock: false })], 2);

@@ -1,6 +1,7 @@
 ---
 name: dreamy-ui
 description: Use Dreamy UI panel, popup, overlay, navigation, back handling, cache, transition, tab, safe-area, and presenter boundaries correctly.
+requires.packages: ["com.dreamy.ui"]
 ---
 
 # Dreamy Ui

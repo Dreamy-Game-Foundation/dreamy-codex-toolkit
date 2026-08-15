@@ -3,6 +3,15 @@
   "id": "foundation",
   "version": "0.1.0-alpha.1",
   "dependencies": [],
+  "agents": [
+    "dreamy-project-analyst",
+    "dreamy-plan",
+    "dreamy-architect",
+    "dreamy-debugger",
+    "dreamy-tester",
+    "dreamy-code-reviewer",
+    "dreamy-docs-manager"
+  ],
   "content": [
     "rules/core",
     "rules/csharp",

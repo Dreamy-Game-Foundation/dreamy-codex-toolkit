@@ -4,7 +4,9 @@
   "policy": {
     "identity": "verifiedCommit",
     "claimRule": "A current API claim must cite a package record with status observed or drift and a verified commit.",
-    "releaseGate": "Any tag/package/lock mismatch is P0 until resolved or explicitly unsupported."
+    "releaseGate": "Any tag/package/lock mismatch is P0 until resolved or explicitly unsupported.",
+    "stableReleaseAllowedStatuses": ["observed", "tested"],
+    "stableReleaseBlockerStatuses": ["drift", "known-drift", "unsupported"]
   },
   "packages": {
     "com.dreamy.core": {

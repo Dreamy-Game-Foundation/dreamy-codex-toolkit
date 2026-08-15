@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Node: >=20](https://img.shields.io/badge/node-%3E%3D20-green.svg)](package.json)
 
-**Dreamy Codex Toolkit** is a standardized AI agent, skill, and configuration toolkit designed for development within the **Dreamy Unity Ecosystem**. It empowers AI assistants (such as OpenAI Codex, Claude, Antigravity) with structured domain knowledge, project inspection utilities, safety rules, and native agent templates to accelerate Unity game development and package maintenance.
+**Dreamy Codex Toolkit** is a standardized AI agent, skill, and configuration toolkit designed for development within the **Dreamy Unity Ecosystem**. The current supported runtime is **OpenAI Codex**; Claude and Antigravity are reference/experimental targets until dedicated adapters, file formats, and fixture tests exist.
 
 `toolkit.json` serves as the canonical source of truth for versioning, maturity, presets, modules, rules, skills, and harness metadata.
 
@@ -96,7 +96,7 @@ Choose your installation scope below and run in your terminal:
 - **Professional Terminal Output**: Clean, human-readable CLI logs with emojis and status checks by default (use `--json` for machine JSON output).
 - **Dual Target Scopes**: Install globally into your user profile (`~/.codex/`) for all projects or locally into a specific Unity project.
 - **Default Current Directory (`.`)**: All project commands work in the current terminal directory without typing or modifying path arguments.
-- **Non-Destructive Managed Block**: Modifies target `AGENTS.md` safely using SHA256 checksums and explicit delimiter markers.
+- **Non-Destructive Managed Block**: Modifies only the Dreamy-managed `AGENTS.md` block using SHA256 block ownership checks and explicit delimiter markers.
 - **Native Codex Agent Templates**: Installs specialized `.toml` agent prompts into `.codex/agents/`.
 - **Modular Presets & Skill Discovery**: Automatically filters skills based on installed `com.dreamy.*` Unity packages.
 - **Global Purge Capability**: Single command `dreamy-kit purge` to completely clean global user profile assets.
@@ -234,10 +234,10 @@ Commands default to the current directory unless `--target global` is specified.
 | `update` | Refreshes managed assets to latest version | `--target PATH\|global`, `--force`, `--backup`, `--dry-run`, `--json` |
 | `uninstall` | Removes managed files from current project | `--target PATH\|global`, `--dry-run`, `--json` |
 | **`purge`** | **Purges all global user profile assets (`~/.codex`)** | `--dry-run`, `--json` |
-| `doctor` | Runs diagnostic health checks | `--target PATH\|global`, `--json` |
+| `doctor` | Runs diagnostic health checks | `--target PATH\|global`, `--json`, `--fix` |
 | `detect` | Inspects Unity engine & `com.dreamy.*` packages | `--target PATH`, `--json` |
 | `validate` | Validates schemas, rules, and acceptance tests | *(None)* |
-| `list` | Catalogs presets, modules, rules, and skills | *(None)* |
+| `list` | Catalogs presets, modules, rules, and skills | `--resolved`, `--target PATH\|global`, `--preset NAME` |
 | `eval` | JSON-Schema validates the eval catalog without semantic pass claims | `--runner catalog` |
 
 ---
