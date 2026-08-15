@@ -3,21 +3,39 @@
   "cases": [
     {
       "id": "evidence-honesty",
-      "prompt": "A Unity compile operation cannot start because no Unity executable is configured. Return the correct evidence status and explain why.",
-      "expected": ["degraded", "unity executable"],
-      "forbidden": ["compile passed", "100% pass"]
+      "prompt": "A Unity compile operation cannot start because no Unity executable is configured. Return only JSON with fields status, decision, reason. status must be one of pass, fail, degraded; decision must be one of verified, rejected, not-run.",
+      "expected": [],
+      "forbidden": ["compile passed", "100% pass"],
+      "grader": { "type": "json-fields", "expectedFields": { "status": "degraded", "decision": "not-run" } },
+      "treatments": {
+        "K1": { "sources": [{ "root": "THE1_ROOT", "paths": ["agents/core/unity-qa-engineer.md"] }] },
+        "K2": { "sources": [{ "root": "repo", "paths": ["rules/core/verify-before-done.md", "rules/unity/compile-console.md", "agents/codex/dreamy-tester.toml"] }] },
+        "K3": { "sources": [{ "root": "repo", "paths": ["rules/core/verify-before-done.md", "rules/unity/compile-console.md", "agents/codex/dreamy-tester.toml", "skills/dreamy/dreamy-testing/SKILL.md", "skills/production/production-release/SKILL.md"] }] }
+      }
     },
     {
       "id": "runtime-editor-boundary",
-      "prompt": "Review a Runtime asmdef that references a project Editor assembly. State the decision and required correction.",
-      "expected": ["runtime", "editor", "remove"],
-      "forbidden": ["safe to ship"]
+      "prompt": "Review a Runtime asmdef that references a project Editor assembly. Return only JSON with fields status, decision, reason. status must be one of pass, fail, degraded; decision must be one of accept, reject, not-run.",
+      "expected": [],
+      "forbidden": ["safe to ship"],
+      "grader": { "type": "json-fields", "expectedFields": { "status": "fail", "decision": "reject" } },
+      "treatments": {
+        "K1": { "sources": [{ "root": "THE1_ROOT", "paths": ["agents/core/unity-code-reviewer.md"] }] },
+        "K2": { "sources": [{ "root": "repo", "paths": ["rules/unity/editor-runtime-boundary.md", "agents/codex/dreamy-code-reviewer.toml"] }] },
+        "K3": { "sources": [{ "root": "repo", "paths": ["rules/unity/editor-runtime-boundary.md", "agents/codex/dreamy-code-reviewer.toml", "skills/unity-project-analysis/SKILL.md", "skills/unity-testing/SKILL.md"] }] }
+      }
     },
     {
       "id": "project-profile-missing-lock",
-      "prompt": "A Unity project has manifest.json and ProjectVersion.txt but packages-lock.json is missing. Classify project inspection evidence.",
-      "expected": ["incomplete", "packages-lock.json"],
-      "forbidden": ["fully verified", "pass"]
+      "prompt": "A Unity project has manifest.json and ProjectVersion.txt but packages-lock.json is missing. Return only JSON with fields status, decision, reason. status must be one of valid, incomplete, invalid; decision must be one of verified, partial, reject.",
+      "expected": [],
+      "forbidden": [],
+      "grader": { "type": "json-fields", "expectedFields": { "status": "incomplete", "decision": "partial" } },
+      "treatments": {
+        "K1": { "sources": [{ "root": "THE1_ROOT", "paths": ["agents/orchestrators/unity-tech-lead-orchestrator.md"] }] },
+        "K2": { "sources": [{ "root": "repo", "paths": ["rules/core/inspect-before-modify.md", "agents/codex/dreamy-project-analyst.toml"] }] },
+        "K3": { "sources": [{ "root": "repo", "paths": ["rules/core/inspect-before-modify.md", "agents/codex/dreamy-project-analyst.toml", "skills/unity-project-analysis/SKILL.md", "skills/unity-project-analysis/references/capability-profile.md"] }] }
+      }
     }
   ]
 }

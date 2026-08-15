@@ -9,10 +9,10 @@ import { createSchemaValidator, validateWithSchema } from "../src/schema-validat
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 function parseArgs(argv) {
-  const result = { manifest: "benchmarks/manifests/pilot.json", command: null, output: null, treatment: null, publishRelease: false };
+  const result = { manifest: "benchmarks/manifests/pilot.json", command: null, output: null, treatment: null, case: null, publishRelease: false };
   for (let index = 0; index < argv.length; index += 1) {
     const name = argv[index];
-    if (["--manifest", "--command", "--output", "--treatment"].includes(name)) result[name.slice(2)] = argv[++index];
+    if (["--manifest", "--command", "--output", "--treatment", "--case"].includes(name)) result[name.slice(2)] = argv[++index];
     else if (name === "--publish-release") result.publishRelease = true;
     else throw new Error(`Unknown argument: ${name}`);
   }
@@ -72,9 +72,39 @@ function renderArgs(args, values) {
 
 function grade(output, benchmarkCase) {
   const normalized = output.toLocaleLowerCase("en-US");
-  const missingExpected = (benchmarkCase.expected ?? []).filter((item) => !normalized.includes(item.toLocaleLowerCase("en-US")));
   const observedForbidden = (benchmarkCase.forbidden ?? []).filter((item) => normalized.includes(item.toLocaleLowerCase("en-US")));
+  if (benchmarkCase.grader?.type === "json-fields") {
+    let parsed = null;
+    try {
+      parsed = JSON.parse(output.trim().replace(/^```json\s*/i, "").replace(/\s*```$/, ""));
+    } catch {
+      return { pass: false, parseError: "Output is not valid JSON", missingExpected: Object.keys(benchmarkCase.grader.expectedFields ?? {}), observedForbidden };
+    }
+    const fieldMismatches = Object.entries(benchmarkCase.grader.expectedFields ?? {})
+      .filter(([key, expected]) => parsed[key] !== expected)
+      .map(([key, expected]) => ({ field: key, expected, actual: parsed[key] ?? null }));
+    return { pass: fieldMismatches.length === 0 && observedForbidden.length === 0, fieldMismatches, observedForbidden, parsed };
+  }
+  const missingExpected = (benchmarkCase.expected ?? []).filter((item) => !normalized.includes(item.toLocaleLowerCase("en-US")));
   return { pass: missingExpected.length === 0 && observedForbidden.length === 0, missingExpected, observedForbidden };
+}
+
+function codexUsage(eventsFile) {
+  if (!fs.existsSync(eventsFile)) return null;
+  const usage = { inputTokens: 0, cachedInputTokens: 0, outputTokens: 0, reasoningOutputTokens: 0 };
+  for (const line of fs.readFileSync(eventsFile, "utf8").split(/\r?\n/).filter(Boolean)) {
+    try {
+      const event = JSON.parse(line);
+      if (event.type !== "turn.completed" || !event.usage) continue;
+      usage.inputTokens += event.usage.input_tokens ?? 0;
+      usage.cachedInputTokens += event.usage.cached_input_tokens ?? 0;
+      usage.outputTokens += event.usage.output_tokens ?? 0;
+      usage.reasoningOutputTokens += event.usage.reasoning_output_tokens ?? 0;
+    } catch {
+      // Non-JSON adapter diagnostics remain available in the trace artifact.
+    }
+  }
+  return usage;
 }
 
 function gitProvenance() {
@@ -95,14 +125,17 @@ export function runBenchmark(options) {
   const runDir = path.resolve(options.output ?? path.join(root, "benchmarks", "runs", runId));
   fs.mkdirSync(runDir, { recursive: true });
   const caseFiles = manifest.caseFiles ?? [];
-  const cases = caseFiles.flatMap((file) => readJson(path.resolve(path.dirname(manifestPath), file)).cases ?? []);
+  const cases = caseFiles
+    .flatMap((file) => readJson(path.resolve(path.dirname(manifestPath), file)).cases ?? [])
+    .filter((benchmarkCase) => !options.case || benchmarkCase.id === options.case);
   const command = options.command ?? manifest.adapter?.executable ?? null;
   const commandArgs = manifest.adapter?.args ?? ["{promptFile}", "{outputFile}"];
   const results = [];
 
   for (const treatment of manifest.treatments.filter((item) => !options.treatment || item.id === options.treatment)) {
-    const source = treatmentSources(treatment, manifest.maxSourceBytes ?? 1_000_000);
     for (const benchmarkCase of cases) {
+      const caseTreatment = benchmarkCase.treatments?.[treatment.id] ?? {};
+      const source = treatmentSources({ ...treatment, sources: caseTreatment.sources ?? treatment.sources }, manifest.maxSourceBytes ?? 1_000_000);
       const repetitions = benchmarkCase.repetitions ?? manifest.repetitions ?? 1;
       for (let repetition = 1; repetition <= repetitions; repetition += 1) {
         const attemptDir = path.join(runDir, treatment.id, benchmarkCase.id, String(repetition));
@@ -115,22 +148,43 @@ export function runBenchmark(options) {
           results.push({ treatment: treatment.id, caseId: benchmarkCase.id, repetition, status: "not-run", reason: !command ? "No benchmark command configured" : source.reason, sourceProvenance: source.provenance });
           continue;
         }
-        const args = renderArgs(commandArgs, { repoRoot: root, promptFile, outputFile, attemptDir, treatment: treatment.id, caseId: benchmarkCase.id });
+        const args = renderArgs(commandArgs, {
+          repoRoot: root,
+          promptFile,
+          outputFile,
+          attemptDir,
+          treatment: treatment.id,
+          caseId: benchmarkCase.id,
+          model: manifest.model ?? "unspecified",
+          reasoning: manifest.reasoning ?? "unspecified"
+        });
+        const executionStartedAt = Date.now();
         const execution = spawnSync(command, args, { cwd: attemptDir, encoding: "utf8", windowsHide: true, timeout: manifest.timeoutMs ?? 300_000 });
+        const durationMs = Date.now() - executionStartedAt;
         if (!fs.existsSync(outputFile) && execution.stdout) fs.writeFileSync(outputFile, execution.stdout, "utf8");
         const output = fs.existsSync(outputFile) ? fs.readFileSync(outputFile, "utf8") : "";
+        const eventsFile = path.join(attemptDir, "codex-events.jsonl");
+        const adapterStatusFile = path.join(attemptDir, "adapter-status.json");
+        const adapterStatus = fs.existsSync(adapterStatusFile) ? readJson(adapterStatusFile) : null;
         const grading = grade(output, benchmarkCase);
         const executionOk = execution.status === 0 && !execution.error;
         results.push({
           treatment: treatment.id,
           caseId: benchmarkCase.id,
           repetition,
-          status: executionOk && grading.pass ? "pass" : "fail",
+          status: adapterStatus?.status === "not-run" ? "not-run" : executionOk && grading.pass ? "pass" : "fail",
+          reason: adapterStatus?.reason ?? null,
           command: [command, ...args],
           exitCode: execution.status,
           executionError: execution.error?.message ?? null,
           outputPath: path.relative(runDir, outputFile).replaceAll("\\", "/"),
           outputHash: output ? hash(output) : null,
+          eventsPath: fs.existsSync(eventsFile) ? path.relative(runDir, eventsFile).replaceAll("\\", "/") : null,
+          eventsHash: fs.existsSync(eventsFile) ? hash(fs.readFileSync(eventsFile)) : null,
+          adapterStatusPath: fs.existsSync(adapterStatusFile) ? path.relative(runDir, adapterStatusFile).replaceAll("\\", "/") : null,
+          adapterStatusHash: fs.existsSync(adapterStatusFile) ? hash(fs.readFileSync(adapterStatusFile)) : null,
+          durationMs,
+          usage: codexUsage(eventsFile),
           grading,
           sourceProvenance: source.provenance
         });

@@ -40,3 +40,15 @@ test("benchmark runner reports not-run when no adapter command exists", () => {
   assert.equal(report.summary.notRun, 1);
   assert.equal(report.summary.passed, 0);
 });
+
+test("benchmark runner preserves adapter-declared not-run evidence", () => {
+  const temp = fixture();
+  fs.writeFileSync(path.join(temp, "cases.json"), JSON.stringify({
+    cases: [{ id: "isolation", prompt: "ADAPTER_NOT_RUN", expected: [], forbidden: [] }]
+  }), "utf8");
+  const { report } = runBenchmark({ manifest: path.join(temp, "manifest.json"), output: path.join(temp, "run-not-run") });
+  assert.equal(report.status, "degraded");
+  assert.deepEqual(report.summary, { attempted: 0, passed: 0, failed: 0, notRun: 1 });
+  assert.equal(report.treatments[0].reason, "Synthetic adapter isolation failure");
+  assert.match(report.treatments[0].adapterStatusHash, /^[0-9a-f]{64}$/);
+});

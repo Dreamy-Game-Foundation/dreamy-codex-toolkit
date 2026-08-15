@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "name": "dreamy-codex-quality-pilot",
+  "purpose": "quality",
+  "releaseEligible": false,
+  "model": "gpt-5.6-sol",
+  "reasoning": "medium",
+  "repetitions": 1,
+  "timeoutMs": 360000,
+  "maxSourceBytes": 200000,
+  "adapter": {
+    "executable": "node",
+    "args": ["{repoRoot}/benchmarks/adapters/codex-exec.mjs", "{promptFile}", "{outputFile}", "{model}", "{reasoning}"]
+  },
+  "caseFiles": ["../cases/pilot.json"],
+  "treatments": [
+    { "id": "K0", "description": "No toolkit sources", "sources": [] },
+    { "id": "K1", "description": "Case-matched The1 agent", "sources": [] },
+    { "id": "K2", "description": "Case-matched Dreamy rules and agents", "sources": [] },
+    { "id": "K3", "description": "K2 plus case-matched Dreamy skills", "sources": [] }
+  ]
+}
