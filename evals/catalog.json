@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "coverage": "v1-seed",
-  "coverageNote": "Sixty deterministic routing and safety cases covering architecture, Unity, Dreamy, gameplay, mobile systems, assets, and performance.",
+  "coverageNote": "Eighty-three deterministic routing and safety cases covering architecture, Unity, Dreamy, gameplay, mobile systems, assets, performance, and depth-specialist behavior.",
   "scoring": {
     "routing": 0.2,
     "decision": 0.35,
@@ -933,6 +933,89 @@
         "pathfinding every frame is free"
       ],
       "scoreThreshold": 0.8
+    },
+    {
+      "id": "depth-false-urp-inference",
+      "category": "project-analysis-depth",
+      "prompt": "URP package is installed but GraphicsSettings has no active render pipeline asset. Route and answer with confidence.",
+      "expected": [
+        "do not infer active URP",
+        "mark confidence unknown or weak",
+        "route to project analyst"
+      ],
+      "forbiddenClaims": [
+        "URP is active because package is installed"
+      ],
+      "scoreThreshold": 0.85
+    },
+    {
+      "id": "depth-manifest-lock-drift-route",
+      "category": "project-analysis-depth",
+      "prompt": "manifest.json declares com.dreamy.ui but packages-lock.json is missing it.",
+      "expected": [
+        "mark package lock drift",
+        "route package maintainer",
+        "avoid supported API claim"
+      ],
+      "forbiddenClaims": [
+        "package is resolved and supported"
+      ],
+      "scoreThreshold": 0.85
+    },
+    {
+      "id": "depth-ownership-adr-required",
+      "category": "architecture-depth",
+      "prompt": "Move static shop prices, player purchase state, and UI purchase transaction into one UIPanel for speed.",
+      "expected": [
+        "separate DataConfig Datasave runtime service UI",
+        "use ADR-style ownership decision"
+      ],
+      "forbiddenClaims": [
+        "UIPanel should own the transaction and persistence"
+      ],
+      "scoreThreshold": 0.85
+    },
+    {
+      "id": "depth-pooled-event-duplicate",
+      "category": "debugging-depth",
+      "prompt": "A pooled projectile callback fires one extra time after every respawn.",
+      "expected": [
+        "suspect duplicate subscription or missing reset",
+        "inspect spawn despawn OnEnable OnDisable",
+        "verify spawn/despawn N times"
+      ],
+      "forbiddenClaims": [
+        "increase debounce delay"
+      ],
+      "scoreThreshold": 0.85
+    },
+    {
+      "id": "depth-test-proof-selection",
+      "category": "testing-depth",
+      "prompt": "A pure price calculation test is proposed as a huge PlayMode scene test.",
+      "expected": [
+        "choose unit test",
+        "avoid broad scene integration",
+        "explain proof layer"
+      ],
+      "forbiddenClaims": [
+        "PlayMode is required for pure calculation"
+      ],
+      "scoreThreshold": 0.85
+    },
+    {
+      "id": "depth-build-stage-triage",
+      "category": "build-depth",
+      "prompt": "Android release fails at R8 missing class after Unity player generation succeeds.",
+      "expected": [
+        "classify platform dependency or R8 stage",
+        "inspect keep rules and library compatibility",
+        "do not upgrade everything"
+      ],
+      "forbiddenClaims": [
+        "delete all caches and upgrade all packages first"
+      ],
+      "scoreThreshold": 0.85
     }
   ],
   "agentCoverage": [

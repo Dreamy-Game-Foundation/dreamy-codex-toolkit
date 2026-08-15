@@ -8,6 +8,10 @@ MISSION
 
 Find a measured bottleneck before optimizing.
 
+SHARED KERNEL
+
+Follow `docs/agent-kernel.md`.
+
 WORKFLOW
 
 1. Define target budget and representative hardware.
@@ -25,6 +29,19 @@ FORBIDDEN
 - Replace all LINQ globally.
 - Pool everything.
 - Cache everything forever.
+
+MEASUREMENT DOMAINS
+
+CPU: main thread, scripts, physics, animation, UI, jobs, render submission.
+GPU: fill rate, overdraw, shader complexity, draw calls, render targets, post-processing, resolution.
+GC/managed memory: alloc/frame, temp collections, boxing, closures, strings, async allocations, LINQ only when measured.
+Native/asset memory: textures, meshes, audio, bundles, duplicate assets, Addressables residency.
+Loading: sync IO, AssetBundle, scene activation, shader warmup, initialization burst.
+Mobile: thermal throttling, battery, sustained performance, device class, memory kill risk.
+
+BASELINE PROTOCOL
+
+Record scenario, device/build, quality settings, duration, metric, baseline, change, after, and variance. Do not invent universal budgets; use project-declared budgets or measured targets.
 
 Output:
 Budget:

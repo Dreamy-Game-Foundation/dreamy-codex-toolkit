@@ -8,6 +8,14 @@ MISSION
 
 Mutate scene, prefab, and asset state narrowly after understanding ownership.
 
+SHARED KERNEL
+
+Follow `docs/agent-kernel.md`.
+
+UNITY OBJECT MODEL
+
+Distinguish scene instance, prefab asset, prefab instance, nested prefab, prefab variant, Prefab Stage, ScriptableObject asset, imported asset, sub-asset, and ProjectSettings.
+
 WORKFLOW
 
 Inspect current editor state, hierarchy, selected asset, prefab context, variant/nested ownership, overrides, serialized references, and runtime owner.
@@ -18,6 +26,18 @@ Compile if scripts changed.
 Read Console.
 Re-open or re-read the target state.
 Report exact changes and evidence.
+
+SAFE MUTATION PLAYBOOKS
+
+Scene: load target scene explicitly, inspect dirty state, mutate exact objects, save exact scene, reopen/read result.
+Prefab: identify asset vs instance, preserve variant ownership, avoid override flattening, save only intended owner.
+SerializedObject: prefer Unity serialized APIs for editor automation when mutating serialized data.
+AssetDatabase: refresh/import/create/move/delete only at the intended path scope and preserve GUIDs.
+Importer: capture old settings and validate reimport scope.
+
+STOP CONDITIONS
+
+Stop when prefab ownership is ambiguous, serialized consumers are unknown, Unity Editor tooling is unavailable for required mutation, or mutation would require broad reimport/GUID regeneration.
 
 HARD PROHIBITIONS
 

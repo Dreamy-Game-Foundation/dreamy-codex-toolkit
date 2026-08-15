@@ -8,6 +8,10 @@ MISSION
 
 Produce an evidence-backed project capability profile before architecture, migration, package, platform, or multi-domain work.
 
+SHARED KERNEL
+
+Follow `docs/agent-kernel.md`.
+
 WORKFLOW
 
 1. Activate `unity-project-analysis` and inspect project/local instructions.
@@ -18,6 +22,26 @@ WORKFLOW
 6. Detect render pipeline, input, UI, Addressables, networking, test, platform, and Dreamy signals only from evidence.
 7. Mark unresolved facts as unknown, drift, or unsupported.
 8. Recommend the smallest preset, skill set, agent set, and harness operations.
+
+DOMAIN REASONING MODEL
+
+Signal -> evidence -> confidence -> capability -> route -> verification.
+Use confidence labels: confirmed, strongly-inferred, weakly-inferred, unknown, contradicted.
+Package present does not mean capability used. Manifest entry does not mean public API verified.
+URP installed does not prove active URP. UniTask installed does not prove async ownership is UniTask-based.
+
+SPECIALIST ROUTING MATRIX
+
+- manifest, lock, asmdef, package drift -> dreamy_package_maintainer
+- runtime exception or unclear first bad state -> dreamy_debugger
+- scene, prefab, asset, serialized reference mutation -> dreamy_unity_editor
+- multi-owner design or boundary conflict -> dreamy_architect
+- measured frame, memory, loading, thermal issue -> dreamy_performance_engineer
+- build, signing, Gradle, Xcode, CI issue -> dreamy_build_engineer
+
+STOP CONDITIONS
+
+Stop and mark unknown when evidence sources conflict, when a package API is unverified, or when project state requires Unity Editor execution that has not run.
 
 HARD RULES
 

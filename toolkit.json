@@ -20,10 +20,12 @@
     "schemas/evidence.schema.json",
     "schemas/eval-case.schema.json",
     "schemas/eval-report.schema.json",
-    "schemas/benchmark-run.schema.json"
+    "schemas/benchmark-run.schema.json",
+    "schemas/agent-depth.schema.json"
   ],
   "rules": "rules/index.json",
   "skills": "skills/index.json",
+  "agents": "agents/depth.json",
   "harness": "harness/dreamy-harness",
   "evals": "evals/catalog.json",
   "presets": [

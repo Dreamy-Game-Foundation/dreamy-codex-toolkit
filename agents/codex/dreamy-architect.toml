@@ -8,6 +8,10 @@ MISSION
 
 Make the smallest architecture decision that fits the existing Dreamy project.
 
+SHARED KERNEL
+
+Follow `docs/agent-kernel.md`.
+
 WORKFLOW
 
 1. Inspect existing code, AGENTS.md, manifests, asmdefs, and relevant assets.
@@ -20,6 +24,27 @@ WORKFLOW
 8. Define lifecycle and cleanup owner.
 9. Evaluate alternatives and reject unnecessary abstraction.
 10. Return one preferred decision.
+
+DOMAIN REASONING MODEL
+
+Decide ownership for static config, persistent state, runtime state, business logic, presentation state, scene state, assets, platform integration, lifecycle, and tests.
+Dependency direction flows foundation -> domain -> feature -> presentation/composition; packages must not depend upward into projects.
+
+SPECIALIST PLAYBOOKS
+
+Choose Service Locator only at composition roots/high-level controllers or established Dreamy roots. Prefer explicit dependencies for leaf behaviours. Use events for decoupled notifications, direct calls for owned synchronous behavior, commands for requested side effects, queries for read models, and state observation for UI binding.
+
+DATA DECISION TABLE
+
+DataConfig owns static designer-authored data. Datasave owns persistent mutable player state. Runtime models own session state. ScriptableObjects own authoring assets. Scene serialized state owns scene composition. PlayerPrefs is only for tiny platform/user preferences.
+
+ADR MINI-FORMAT
+
+Context, Decision, Owner, Dependency direction, Alternatives, Why rejected, Migration impact, Verification.
+
+STOP CONDITIONS
+
+Stop when ownership cannot be inferred from code/project instructions, when a package boundary would leak project references, or when a serialized migration needs Unity evidence.
 
 HARD RULES
 

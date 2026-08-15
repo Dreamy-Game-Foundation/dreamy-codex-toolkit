@@ -39,6 +39,10 @@ function assertUnique(values, label) {
   }
 }
 
+function depthRank(depth) {
+  return Number(String(depth).slice(1));
+}
+
 export async function validate() {
   const toolkit = await readJson("toolkit.json");
   const schemas = createSchemaValidator(path.join(root, "schemas"));
@@ -194,11 +198,41 @@ export async function validate() {
   assert(skillsIndex.schemaVersion === 1, "skills index schemaVersion must be 1");
   assert(Array.isArray(skillsIndex.skills) && skillsIndex.skills.length > 0, "skills index must include skills");
   assertUnique(skillsIndex.skills.map((skill) => skill.name), "skill name");
+  const skillNames = new Set(skillsIndex.skills.map((skill) => skill.name));
   const indexedSkillFiles = new Set(skillsIndex.skills.map((skill) => skill.file));
   assertUnique([...indexedSkillFiles].map((file) => path.basename(path.dirname(file))), "skill destination basename");
   const actualSkillFiles = walkFiles("skills", (file) => file.endsWith("SKILL.md"));
   for (const file of actualSkillFiles) assert(indexedSkillFiles.has(file), `skill file missing from index: ${file}`);
   for (const file of indexedSkillFiles) assert(actualSkillFiles.includes(file), `indexed skill file does not exist: ${file}`);
+
+  const agents = await readJson(toolkit.agents);
+  validateWithSchema(schemas, "https://dreamy.tools/codex/schemas/agent-depth.schema.json", agents, toolkit.agents);
+  assertUnique(agents.agents.map((agent) => agent.name), "agent name");
+  const agentNames = new Set(agents.agents.map((agent) => agent.name));
+  const actualAgentNames = walkFiles("agents/codex", (file) => file.endsWith(".toml"))
+    .map((file) => fs.readFileSync(path.join(root, file), "utf8").match(/^name\s*=\s*"([^"]+)"/m)?.[1])
+    .filter(Boolean);
+  for (const name of actualAgentNames) assert(agentNames.has(name), `agent missing from depth registry: ${name}`);
+  for (const agent of agents.agents) {
+    assert(actualAgentNames.includes(agent.name), `depth registry references missing agent: ${agent.name}`);
+    assert(depthRank(agent.depth) >= 4, `${agent.name} must be D4+`);
+    for (const skill of agent.primarySkills) assert(skillNames.has(skill), `${agent.name} references unknown primary skill: ${skill}`);
+    for (const handoff of agent.handoffTo) assert(agentNames.has(handoff), `${agent.name} references unknown handoff agent: ${handoff}`);
+  }
+  for (const skill of skillsIndex.skills) {
+    assert(["D0", "D1", "D2", "D3", "D4", "D5"].includes(skill.depth), `${skill.name} missing valid depth`);
+    assert(skill.maturity, `${skill.name} missing maturity`);
+    assert(Array.isArray(skill.owners) && skill.owners.length > 0, `${skill.name} missing owners`);
+    assert(Array.isArray(skill.requiresEvidence), `${skill.name} missing requiresEvidence`);
+    assert(Number.isInteger(skill.references) && skill.references >= 0, `${skill.name} references must be a non-negative integer`);
+    assert(Array.isArray(skill.evalCases), `${skill.name} missing evalCases`);
+    for (const owner of skill.owners) assert(agentNames.has(owner), `${skill.name} references unknown owner agent: ${owner}`);
+    if (skill.priority === "P0" || skill.category === "dreamy") {
+      assert(depthRank(skill.depth) >= 4, `${skill.name} must be D4+`);
+    } else {
+      assert(depthRank(skill.depth) >= 3, `${skill.name} must be D3+`);
+    }
+  }
 
   const evalCatalog = await readJson(toolkit.evals);
   for (const entry of evalCatalog.cases ?? []) {

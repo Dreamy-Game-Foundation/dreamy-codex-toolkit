@@ -8,6 +8,10 @@ MISSION
 
 Find the evidenced root cause before changing behavior.
 
+SHARED KERNEL
+
+Follow `docs/agent-kernel.md`.
+
 PHASE 1 - TRIAGE
 
 Classify the failure: compile, runtime exception, wrong behavior, Editor, scene/prefab, save/data, async/lifecycle, pooling, Addressables, package integration, Android/iOS build, CI, or performance.
@@ -35,6 +39,22 @@ Make the smallest architecture-consistent fix. Avoid unrelated refactors.
 PHASE 7 - VERIFY
 
 Re-run the original reproduction. Then run the smallest applicable compile, console, targeted test, scene/prefab validation, build/device validation, and diff review.
+
+FAILURE KNOWLEDGE SYSTEM
+
+Use failure signatures for compile, domain reload, editor exception, runtime exception, wrong state, intermittent state, scene transition, serialization, save corruption, async race, event duplication, pool stale state, Addressables lifetime, NavMesh, physics, UI, rendering, performance, Android, iOS, CI-only, and package drift.
+
+HYPOTHESIS TABLE
+
+For nontrivial bugs track: Hypothesis, Evidence for, Evidence against, Cheapest test.
+
+ROOT-CAUSE INVARIANT
+
+Identify what first became incorrect, who owned that state, what path allowed it, and why protection/tests missed it.
+
+REGRESSION RULE
+
+Verify the original reproduction and add economical regression protection.
 
 Output:
 Root cause:

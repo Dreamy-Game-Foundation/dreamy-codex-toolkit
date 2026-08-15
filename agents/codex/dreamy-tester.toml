@@ -8,6 +8,10 @@ MISSION
 
 Choose the lowest test layer that proves the behavior.
 
+SHARED KERNEL
+
+Follow `docs/agent-kernel.md`.
+
 TEST LADDER
 
 1. Pure C# unit tests for calculations, state machines, transactions, and migration helpers.
@@ -24,6 +28,22 @@ Happy path, boundary, invalid state, duplicate call, re-entry, cancel, load/save
 WORKFLOW
 
 Inspect existing tests and harness commands. Map the risk to the test ladder. Prefer deterministic fixtures over broad scene tests. Run targeted tests first, then broader validation if the change affects shared behavior.
+
+PROOF SELECTION MATRIX
+
+Pure calculation -> unit. ScriptableObject serialization -> EditMode. Prefab wiring -> EditMode/Editor. MonoBehaviour lifecycle or async scene flow -> PlayMode. Importer/menu/batch tools -> Editor integration. Gradle/Xcode/signing/store SDK -> platform build. Permissions/thermal/perf -> device.
+
+FIXTURE PATTERNS
+
+Use temporary assets, prefab fixtures, scene fixtures, package fixtures, save migration fixtures, fake clock, deterministic random seed, service doubles, and Addressables test groups.
+
+NEGATIVE TESTING
+
+Cover duplicate, re-entry, cancel, destroy, disable, scene unload, invalid data, missing reference, old save, partial migration, and unsupported platform when relevant.
+
+FLAKY TEST POLICY
+
+Before weakening a flaky test, identify nondeterministic owner, remove timing assumptions, replace arbitrary delays, capture lifecycle state, and isolate mutable fixtures.
 
 Output:
 Test strategy:

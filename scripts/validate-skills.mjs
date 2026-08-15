@@ -33,8 +33,17 @@ const names = new Set();
 const errors = [];
 const compatibility = JSON.parse(fs.readFileSync(path.join(root, "compatibility", "dreamy-packages.json"), "utf8"));
 const knownDreamyPackages = new Set(Object.keys(compatibility.packages ?? {}));
+const skillIndex = JSON.parse(fs.readFileSync(path.join(root, "skills", "index.json"), "utf8"));
+const indexedDepth = new Map((skillIndex.skills ?? []).map((skill) => [skill.file, skill]));
 for (const file of files) {
   const rel = path.relative(root, file).replaceAll("\\", "/");
+  const indexEntry = indexedDepth.get(rel);
+  if (!indexEntry) errors.push(`${rel}: missing from skills/index.json`);
+  else {
+    if (!/^D[0-5]$/.test(indexEntry.depth ?? "")) errors.push(`${rel}: index missing valid depth`);
+    if (!Array.isArray(indexEntry.owners) || indexEntry.owners.length === 0) errors.push(`${rel}: index missing owners`);
+    if (!Array.isArray(indexEntry.requiresEvidence)) errors.push(`${rel}: index missing requiresEvidence`);
+  }
   const text = fs.readFileSync(file, "utf8");
   const frontmatter = text.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   if (!frontmatter) {

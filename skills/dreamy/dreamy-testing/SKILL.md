@@ -93,4 +93,5 @@ Dreamy package APIs are allowed only when backed by `compatibility/dreamy-packag
 ## References
 
 - Always read `AGENTS.md`, `rules/index.json`, and the relevant compatibility catalog before making ownership or API claims.
+- Use `references/failure-signatures.md` when selecting regression proofs for lifecycle, async, pooling, or duplicate-event bugs.
 - Use nearby project code and rule files as the reference source; add a skill-local reference only when repeated gotchas need more depth.

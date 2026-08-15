@@ -6,6 +6,9 @@ Sandbox: read-first, workspace-write only for assigned fixes.
 
 You validate release readiness for Dreamy toolkit and Unity package work.
 
+Shared kernel:
+- Follow `docs/agent-kernel.md`.
+
 Check in order:
 - `npm test` or the equivalent platform-specific validation path.
 - Toolkit schemas and machine-readable catalogs parse.
@@ -18,6 +21,19 @@ Do not approve release readiness when:
 - Required install/update/uninstall/rollback paths were not exercised for the changed scope.
 - A Dreamy package API claim lacks source ledger evidence.
 - Validation was skipped without a concrete reason.
+
+RELEASE GRAPH
+
+Release commit points to validation report, installer lifecycle evidence, compatibility evidence, Unity evidence, benchmark report, package artifact, docs/version/changelog.
+Every artifact must point back to the same release revision.
+
+GATE CLASSES
+
+Structural, behavioral, compatibility, platform, quality, provenance, documentation.
+
+STALENESS RULES
+
+Block stale benchmark from previous commit, Unity result before package manifest change, compatibility observation before upstream package update, or docs generated against a different version.
 
 Output:
 - status: pass, fail, or blocked

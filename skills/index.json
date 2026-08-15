@@ -5,481 +5,1534 @@
       "name": "android-build-release",
       "category": "platform",
       "priority": "P1",
-      "file": "skills/platform/android-build-release/SKILL.md"
+      "file": "skills/platform/android-build-release/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_build_engineer",
+        "dreamy_release_validator"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "platform-build-log"
+      ],
+      "references": 1,
+      "evalCases": [
+        "depth-build-stage-triage"
+      ]
     },
     {
       "name": "combat",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills/gameplay/combat/SKILL.md"
+      "file": "skills/gameplay/combat/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "dreamy-architecture",
       "category": "dreamy",
       "priority": "P0",
-      "file": "skills/dreamy/dreamy-architecture/SKILL.md"
+      "file": "skills/dreamy/dreamy-architecture/SKILL.md",
+      "depth": "D4",
+      "maturity": "specialist",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_architect",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "compatibility-record"
+      ],
+      "references": 2,
+      "evalCases": [
+        "depth-ownership-adr-required"
+      ]
     },
     {
       "name": "dreamy-assets",
       "category": "dreamy",
       "priority": "P0",
-      "file": "skills/dreamy/dreamy-assets/SKILL.md"
+      "file": "skills/dreamy/dreamy-assets/SKILL.md",
+      "depth": "D4",
+      "maturity": "specialist",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_architect",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "compatibility-record"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "dreamy-audio",
       "category": "dreamy",
       "priority": "P0",
-      "file": "skills/dreamy/dreamy-audio/SKILL.md"
+      "file": "skills/dreamy/dreamy-audio/SKILL.md",
+      "depth": "D4",
+      "maturity": "specialist",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_architect",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "compatibility-record"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "dreamy-base",
       "category": "dreamy",
       "priority": "P0",
-      "file": "skills/dreamy/dreamy-base/SKILL.md"
+      "file": "skills/dreamy/dreamy-base/SKILL.md",
+      "depth": "D4",
+      "maturity": "specialist",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_architect",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "compatibility-record"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "dreamy-core",
       "category": "dreamy",
       "priority": "P0",
-      "file": "skills/dreamy/dreamy-core/SKILL.md"
+      "file": "skills/dreamy/dreamy-core/SKILL.md",
+      "depth": "D4",
+      "maturity": "specialist",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_architect",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "compatibility-record"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "dreamy-dataconfig",
       "category": "dreamy",
       "priority": "P0",
-      "file": "skills/dreamy/dreamy-dataconfig/SKILL.md"
+      "file": "skills/dreamy/dreamy-dataconfig/SKILL.md",
+      "depth": "D4",
+      "maturity": "specialist",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_architect",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "compatibility-record"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "dreamy-datasave",
       "category": "dreamy",
       "priority": "P0",
-      "file": "skills/dreamy/dreamy-datasave/SKILL.md"
+      "file": "skills/dreamy/dreamy-datasave/SKILL.md",
+      "depth": "D4",
+      "maturity": "specialist",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_architect",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "compatibility-record"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "dreamy-editor-tools",
       "category": "dreamy",
       "priority": "P0",
-      "file": "skills/dreamy/dreamy-editor-tools/SKILL.md"
+      "file": "skills/dreamy/dreamy-editor-tools/SKILL.md",
+      "depth": "D4",
+      "maturity": "specialist",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_architect",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "compatibility-record"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "dreamy-feature",
       "category": "dreamy",
       "priority": "P0",
-      "file": "skills/dreamy/dreamy-feature/SKILL.md"
+      "file": "skills/dreamy/dreamy-feature/SKILL.md",
+      "depth": "D4",
+      "maturity": "specialist",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_architect",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "compatibility-record"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "dreamy-feedback",
       "category": "dreamy",
       "priority": "P0",
-      "file": "skills/dreamy/dreamy-feedback/SKILL.md"
+      "file": "skills/dreamy/dreamy-feedback/SKILL.md",
+      "depth": "D4",
+      "maturity": "specialist",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_architect",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "compatibility-record"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "dreamy-localization",
       "category": "dreamy",
       "priority": "P0",
-      "file": "skills/dreamy/dreamy-localization/SKILL.md"
+      "file": "skills/dreamy/dreamy-localization/SKILL.md",
+      "depth": "D4",
+      "maturity": "specialist",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_architect",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "compatibility-record"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "dreamy-mobile",
       "category": "dreamy",
       "priority": "P0",
-      "file": "skills/dreamy/dreamy-mobile/SKILL.md"
+      "file": "skills/dreamy/dreamy-mobile/SKILL.md",
+      "depth": "D4",
+      "maturity": "specialist",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_architect",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "compatibility-record"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "dreamy-package-maintainer",
       "category": "dreamy",
       "priority": "P0",
-      "file": "skills/dreamy/dreamy-package-maintainer/SKILL.md"
+      "file": "skills/dreamy/dreamy-package-maintainer/SKILL.md",
+      "depth": "D4",
+      "maturity": "specialist",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_architect",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "compatibility-record"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "dreamy-template",
       "category": "dreamy",
       "priority": "P0",
-      "file": "skills/dreamy/dreamy-template/SKILL.md"
+      "file": "skills/dreamy/dreamy-template/SKILL.md",
+      "depth": "D4",
+      "maturity": "specialist",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_architect",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "compatibility-record"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "dreamy-testing",
       "category": "dreamy",
       "priority": "P0",
-      "file": "skills/dreamy/dreamy-testing/SKILL.md"
+      "file": "skills/dreamy/dreamy-testing/SKILL.md",
+      "depth": "D4",
+      "maturity": "specialist",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_architect",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "compatibility-record"
+      ],
+      "references": 1,
+      "evalCases": [
+        "depth-pooled-event-duplicate"
+      ]
     },
     {
       "name": "dreamy-ui",
       "category": "dreamy",
       "priority": "P0",
-      "file": "skills/dreamy/dreamy-ui/SKILL.md"
+      "file": "skills/dreamy/dreamy-ui/SKILL.md",
+      "depth": "D4",
+      "maturity": "specialist",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_architect",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "compatibility-record"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "enemy-ai",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills/gameplay/enemy-ai/SKILL.md"
+      "file": "skills/gameplay/enemy-ai/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "game-state",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills/gameplay/game-state/SKILL.md"
+      "file": "skills/gameplay/game-state/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "gameplay-economy-currency-reward",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills/gameplay/gameplay-economy-currency-reward/SKILL.md"
+      "file": "skills/gameplay/gameplay-economy-currency-reward/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "gameplay-loop",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills/gameplay/gameplay-loop/SKILL.md"
+      "file": "skills/gameplay/gameplay-loop/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "gameplay-pooling",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills/gameplay/gameplay-pooling/SKILL.md"
+      "file": "skills/gameplay/gameplay-pooling/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "health-damage",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills/gameplay/health-damage/SKILL.md"
+      "file": "skills/gameplay/health-damage/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "interaction",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills/gameplay/interaction/SKILL.md"
+      "file": "skills/gameplay/interaction/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "inventory",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills/gameplay/inventory/SKILL.md"
+      "file": "skills/gameplay/inventory/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "ios-build-release",
       "category": "platform",
       "priority": "P1",
-      "file": "skills/platform/ios-build-release/SKILL.md"
+      "file": "skills/platform/ios-build-release/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_build_engineer",
+        "dreamy_release_validator"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "platform-build-log"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "level-system",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills/gameplay/level-system/SKILL.md"
+      "file": "skills/gameplay/level-system/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "mobile-production",
       "category": "platform",
       "priority": "P1",
-      "file": "skills/platform/mobile-production/SKILL.md"
+      "file": "skills/platform/mobile-production/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_build_engineer",
+        "dreamy_release_validator"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "platform-build-log"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "movement",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills/gameplay/movement/SKILL.md"
+      "file": "skills/gameplay/movement/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "player-controller",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills/gameplay/player-controller/SKILL.md"
+      "file": "skills/gameplay/player-controller/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "production-code-review",
       "category": "production",
       "priority": "P1",
-      "file": "skills/production/production-code-review/SKILL.md"
+      "file": "skills/production/production-code-review/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_release_validator",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "release-artifacts",
+        "validation-report"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "production-release",
       "category": "production",
       "priority": "P1",
-      "file": "skills/production/production-release/SKILL.md"
+      "file": "skills/production/production-release/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_release_validator",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "release-artifacts",
+        "validation-report"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "progression",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills/gameplay/progression/SKILL.md"
+      "file": "skills/gameplay/progression/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "projectile",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills/gameplay/projectile/SKILL.md"
+      "file": "skills/gameplay/projectile/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "ragdoll",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills/gameplay/ragdoll/SKILL.md"
+      "file": "skills/gameplay/ragdoll/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "spawn-wave",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills/gameplay/spawn-wave/SKILL.md"
+      "file": "skills/gameplay/spawn-wave/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "store-release-readiness",
       "category": "platform",
       "priority": "P1",
-      "file": "skills/platform/store-release-readiness/SKILL.md"
+      "file": "skills/platform/store-release-readiness/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_build_engineer",
+        "dreamy_release_validator"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "platform-build-log"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "system-ads",
       "category": "systems",
       "priority": "P1",
-      "file": "skills/systems/system-ads/SKILL.md"
+      "file": "skills/systems/system-ads/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_architect"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "system-analytics",
       "category": "systems",
       "priority": "P1",
-      "file": "skills/systems/system-analytics/SKILL.md"
+      "file": "skills/systems/system-analytics/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_architect"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "system-battle-pass",
       "category": "systems",
       "priority": "P1",
-      "file": "skills/systems/system-battle-pass/SKILL.md"
+      "file": "skills/systems/system-battle-pass/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_architect"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "system-daily-reward",
       "category": "systems",
       "priority": "P1",
-      "file": "skills/systems/system-daily-reward/SKILL.md"
+      "file": "skills/systems/system-daily-reward/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_architect"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "system-gacha",
       "category": "systems",
       "priority": "P1",
-      "file": "skills/systems/system-gacha/SKILL.md"
+      "file": "skills/systems/system-gacha/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_architect"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "system-iap",
       "category": "systems",
       "priority": "P1",
-      "file": "skills/systems/system-iap/SKILL.md"
+      "file": "skills/systems/system-iap/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_architect"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "system-remote-config",
       "category": "systems",
       "priority": "P1",
-      "file": "skills/systems/system-remote-config/SKILL.md"
+      "file": "skills/systems/system-remote-config/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_architect"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "system-scene-loading",
       "category": "systems",
       "priority": "P1",
-      "file": "skills/systems/system-scene-loading/SKILL.md"
+      "file": "skills/systems/system-scene-loading/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_architect"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "system-services-events",
       "category": "systems",
       "priority": "P1",
-      "file": "skills/systems/system-services-events/SKILL.md"
+      "file": "skills/systems/system-services-events/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_architect"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "system-settings",
       "category": "systems",
       "priority": "P1",
-      "file": "skills/systems/system-settings/SKILL.md"
+      "file": "skills/systems/system-settings/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_architect"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "system-shop",
       "category": "systems",
       "priority": "P1",
-      "file": "skills/systems/system-shop/SKILL.md"
+      "file": "skills/systems/system-shop/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_architect"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "thirdparty-addressables",
       "category": "thirdparty",
       "priority": "P1",
-      "file": "skills/third-party/thirdparty-addressables/SKILL.md"
+      "file": "skills/third-party/thirdparty-addressables/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_project_analyst"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "thirdparty-dotween",
       "category": "thirdparty",
       "priority": "P1",
-      "file": "skills/third-party/thirdparty-dotween/SKILL.md"
+      "file": "skills/third-party/thirdparty-dotween/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_project_analyst"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "thirdparty-newtonsoft",
       "category": "thirdparty",
       "priority": "P1",
-      "file": "skills/third-party/thirdparty-newtonsoft/SKILL.md"
+      "file": "skills/third-party/thirdparty-newtonsoft/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_project_analyst"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "thirdparty-unitask",
       "category": "thirdparty",
       "priority": "P1",
-      "file": "skills/third-party/thirdparty-unitask/SKILL.md"
+      "file": "skills/third-party/thirdparty-unitask/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_project_analyst"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "tutorial",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills/gameplay/tutorial/SKILL.md"
+      "file": "skills/gameplay/tutorial/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "unity-addressables",
       "category": "unity",
       "priority": "P1",
-      "file": "skills/unity-addressables/SKILL.md"
+      "file": "skills/unity-addressables/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "asmdefs"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "unity-animation",
       "category": "unity",
       "priority": "P1",
-      "file": "skills/unity-animation/SKILL.md"
+      "file": "skills/unity-animation/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "asmdefs"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "unity-async",
       "category": "unity",
       "priority": "P1",
-      "file": "skills/unity-async/SKILL.md"
+      "file": "skills/unity-async/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "asmdefs"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "unity-camera",
       "category": "unity",
       "priority": "P1",
-      "file": "skills/unity-camera/SKILL.md"
+      "file": "skills/unity-camera/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "asmdefs"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "unity-cinemachine",
       "category": "unity",
       "priority": "P1",
-      "file": "skills/unity-cinemachine/SKILL.md"
+      "file": "skills/unity-cinemachine/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "asmdefs"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "unity-editor-tooling",
       "category": "unity",
       "priority": "P1",
-      "file": "skills/unity-editor-tooling/SKILL.md"
+      "file": "skills/unity-editor-tooling/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "asmdefs"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "unity-foundations",
       "category": "unity",
       "priority": "P1",
-      "file": "skills/unity-foundations/SKILL.md"
+      "file": "skills/unity-foundations/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "asmdefs"
+      ],
+      "references": 1,
+      "evalCases": []
     },
     {
       "name": "unity-input-system",
       "category": "unity",
       "priority": "P1",
-      "file": "skills/unity-input-system/SKILL.md"
+      "file": "skills/unity-input-system/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "asmdefs"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "unity-material",
       "category": "unity",
       "priority": "P1",
-      "file": "skills/unity-material/SKILL.md"
+      "file": "skills/unity-material/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "asmdefs"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "unity-memory",
       "category": "unity",
       "priority": "P1",
-      "file": "skills/unity-memory/SKILL.md"
+      "file": "skills/unity-memory/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "asmdefs"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "unity-navigation",
       "category": "unity",
       "priority": "P1",
-      "file": "skills/unity-navigation/SKILL.md"
+      "file": "skills/unity-navigation/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "asmdefs"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "unity-particles",
       "category": "unity",
       "priority": "P1",
-      "file": "skills/unity-particles/SKILL.md"
+      "file": "skills/unity-particles/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "asmdefs"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "unity-physics",
       "category": "unity",
       "priority": "P1",
-      "file": "skills/unity-physics/SKILL.md"
+      "file": "skills/unity-physics/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "asmdefs"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "unity-physics2d",
       "category": "unity",
       "priority": "P1",
-      "file": "skills/unity-physics2d/SKILL.md"
+      "file": "skills/unity-physics2d/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "asmdefs"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "unity-project-analysis",
       "category": "unity",
       "priority": "P0",
-      "file": "skills/unity-project-analysis/SKILL.md"
+      "file": "skills/unity-project-analysis/SKILL.md",
+      "depth": "D4",
+      "maturity": "specialist",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "asmdefs"
+      ],
+      "references": 0,
+      "evalCases": [
+        "depth-false-urp-inference",
+        "depth-manifest-lock-drift-route"
+      ]
     },
     {
       "name": "unity-profiling",
       "category": "unity",
       "priority": "P1",
-      "file": "skills/unity-profiling/SKILL.md"
+      "file": "skills/unity-profiling/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "asmdefs"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "unity-rendering",
       "category": "unity",
       "priority": "P1",
-      "file": "skills/unity-rendering/SKILL.md"
+      "file": "skills/unity-rendering/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "asmdefs"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "unity-scene-prefab",
       "category": "unity",
       "priority": "P1",
-      "file": "skills/unity-scene-prefab/SKILL.md"
+      "file": "skills/unity-scene-prefab/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "asmdefs"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "unity-serialization",
       "category": "unity",
       "priority": "P1",
-      "file": "skills/unity-serialization/SKILL.md"
+      "file": "skills/unity-serialization/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "asmdefs"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "unity-shader",
       "category": "unity",
       "priority": "P1",
-      "file": "skills/unity-shader/SKILL.md"
+      "file": "skills/unity-shader/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "asmdefs"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "unity-testing",
       "category": "unity",
       "priority": "P1",
-      "file": "skills/unity-testing/SKILL.md"
+      "file": "skills/unity-testing/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "asmdefs"
+      ],
+      "references": 1,
+      "evalCases": [
+        "depth-test-proof-selection"
+      ]
     },
     {
       "name": "unity-ui",
       "category": "unity",
       "priority": "P1",
-      "file": "skills/unity-ui/SKILL.md"
+      "file": "skills/unity-ui/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "asmdefs"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "unity-urp",
       "category": "unity",
       "priority": "P1",
-      "file": "skills/unity-urp/SKILL.md"
+      "file": "skills/unity-urp/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "asmdefs"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "unity-vfx",
       "category": "unity",
       "priority": "P1",
-      "file": "skills/unity-vfx/SKILL.md"
+      "file": "skills/unity-vfx/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "asmdefs"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "upgrade",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills/gameplay/upgrade/SKILL.md"
+      "file": "skills/gameplay/upgrade/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     },
     {
       "name": "weapon",
       "category": "gameplay",
       "priority": "P1",
-      "file": "skills/gameplay/weapon/SKILL.md"
+      "file": "skills/gameplay/weapon/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest"
+      ],
+      "references": 0,
+      "evalCases": []
     }
   ]
 }

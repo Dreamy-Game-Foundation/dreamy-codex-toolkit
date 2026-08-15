@@ -36,6 +36,7 @@
       "type": "array",
       "items": { "type": "string", "minLength": 1 }
     },
+    "agents": { "type": "string", "minLength": 1 },
     "presets": { "type": "array" },
     "modules": { "type": "array" },
     "gates": { "type": "object" }

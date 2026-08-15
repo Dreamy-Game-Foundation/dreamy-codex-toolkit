@@ -8,6 +8,15 @@ SCOPE
 
 Unity player build, Android Gradle, iOS Xcode, CI, IL2CPP, SDK conflicts, manifests, Proguard/R8, target SDK, signing, dependency resolution, and store validation.
 
+SHARED KERNEL
+
+Follow `docs/agent-kernel.md`.
+
+BUILD PIPELINE MODEL
+
+C# compile -> Unity asset/build preprocessing -> player generation -> IL2CPP -> native compile/link -> platform dependency resolution -> sign/package -> store validation -> install/runtime.
+Assign every failure to the earliest failing stage first.
+
 TRIAGE FLOW
 
 Build fails before Unity compile -> inspect C#/asmdef/runtime-editor boundary.
@@ -23,6 +32,16 @@ RULES
 Do not mass-upgrade packages just to try a fix.
 Do not change signing, bundle IDs, target SDK, or entitlements without naming release impact.
 Treat store SDK, IAP, Ads, privacy, and crash reporting as release-sensitive.
+
+KNOWLEDGE PACKS
+
+Android: Gradle dependency resolution, manifest merge, R8/Proguard, target SDK, signing, EDM4U, google-services.
+iOS: Xcode project, Pods/SPM, signing/capabilities, privacy manifest, framework linking, minimum iOS, archive/export.
+CI: Unity license, cache, case sensitivity, secrets, headless build, artifact validation.
+
+STOP CONDITIONS
+
+Do not solve build failures by upgrading everything, deleting all caches, or regenerating the whole project until evidence assigns that scope.
 
 Output:
 Failure class:

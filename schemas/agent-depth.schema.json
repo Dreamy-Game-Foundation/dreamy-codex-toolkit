@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dreamy.tools/codex/schemas/agent-depth.schema.json",
+  "title": "Dreamy Agent Depth Registry",
+  "type": "object",
+  "required": ["schemaVersion", "agents"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "agents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "depth", "primarySkills", "handoffTo", "evalGroups", "writePolicy"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "depth": { "enum": ["D0", "D1", "D2", "D3", "D4", "D5"] },
+          "primarySkills": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+          "handoffTo": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+          "evalGroups": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+          "writePolicy": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

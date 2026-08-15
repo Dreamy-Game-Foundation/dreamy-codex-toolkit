@@ -12,7 +12,7 @@ for file in \
   $(jq -r '.schemas[]' toolkit.json) \
   $(jq -r '.modules[]' toolkit.json) \
   $(jq -r '.presets[]' toolkit.json) \
-  $(jq -r '.rules, .skills, .evals, .compatibility.dreamyPackages, .compatibility.unity, .compatibility.thirdParty, .sourceLedger' toolkit.json)
+  $(jq -r '.rules, .skills, .agents, .evals, .compatibility.dreamyPackages, .compatibility.unity, .compatibility.thirdParty, .sourceLedger' toolkit.json)
 do
   test -f "$file"
   jq -e . "$file" >/dev/null
@@ -46,12 +46,18 @@ done < <(find rules -type f -name '*.md' | sort)
 
 json '.schemaVersion == 1 and (.skills | length) > 0' skills/index.json
 json '.skills | (map(.name) | unique | length) == length' skills/index.json
+json '.skills | all(.depth | test("^D[0-5]$"))' skills/index.json
+json '.skills | all((.owners | type == "array") and (.owners | length > 0) and (.requiresEvidence | type == "array"))' skills/index.json
 while IFS= read -r skill_file; do
   test -f "$skill_file"
 done < <(jq -r '.skills[].file' skills/index.json)
 while IFS= read -r skill_file; do
   jq -e --arg file "$skill_file" '.skills[].file | select(. == $file)' skills/index.json >/dev/null
 done < <(find skills -type f -name 'SKILL.md' | sort)
+
+json '.schemaVersion == 1 and (.agents | length) > 0' agents/depth.json
+json '.agents | (map(.name) | unique | length) == length' agents/depth.json
+json '.agents | all(.depth == "D4" or .depth == "D5")' agents/depth.json
 
 json '.id == "foundation" and (.content | index("rules/core")) and (.content | index("rules/csharp")) and (.content | index("rules/unity"))' modules/foundation/module.json
 json '.id == "core" and (.modules | index("foundation"))' presets/core.json

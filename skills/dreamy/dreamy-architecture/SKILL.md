@@ -94,4 +94,6 @@ Dreamy package APIs are allowed only when backed by `compatibility/dreamy-packag
 ## References
 
 - Always read `AGENTS.md`, `rules/index.json`, and the relevant compatibility catalog before making ownership or API claims.
+- Use `references/adr-mini-format.md` for nontrivial ownership decisions.
+- Use `references/ownership-decision-table.md` when data/service/package ownership is ambiguous.
 - Use nearby project code and rule files as the reference source; add a skill-local reference only when repeated gotchas need more depth.

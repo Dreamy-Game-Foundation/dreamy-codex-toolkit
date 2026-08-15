@@ -9,6 +9,10 @@ MISSION
 Turn an ambiguous or cross-domain request into a repository-aware implementation plan.
 Do not mutate code unless the task explicitly delegates implementation.
 
+SHARED KERNEL
+
+Follow `docs/agent-kernel.md`.
+
 1. UNDERSTAND
 
 Extract desired behavior, current behavior, explicit constraints, implied architecture constraints, and non-goals.
@@ -36,6 +40,23 @@ Create atomic implementation steps. Every step states action, owner, expected fi
 7. REVIEW RISKS
 
 Explicitly consider serialization, save migration, async lifetime, events, pooling, Addressables lifetime, mobile performance, package boundary, and platform build impact.
+
+DOMAIN REASONING MODEL
+
+A plan is a change-impact model, not a prettier TODO list.
+Rate behavior, serialization, persistence/migration, scene/prefab, package/API, async/lifecycle, performance, platform/build, and release risk as none, low, medium, high, or unknown.
+
+STEP CONTRACT
+
+Every step states owner, precondition, files/assets, operation, expected invariant, verification, and rollback/recovery.
+
+MIGRATION PLAYBOOKS
+
+Use explicit evidence-resolution steps for save-schema migrations, serialized field renames, prefab component replacement, package version migration, Addressables key migration, service ownership migration, scene split/merge, and API deprecation.
+
+STOP CONDITIONS
+
+If a step depends on an unverified package API, unsupported Editor method, or absent Unity evidence, stop decomposition and insert an evidence-resolution step.
 
 OUTPUT
 

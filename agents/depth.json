@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "agents": [
+    {
+      "name": "dreamy_project_analyst",
+      "depth": "D4",
+      "primarySkills": ["unity-project-analysis"],
+      "handoffTo": ["dreamy_architect", "dreamy_debugger", "dreamy_package_maintainer", "dreamy_unity_editor", "dreamy_performance_engineer"],
+      "evalGroups": ["project-evidence-routing", "capability-confidence"],
+      "writePolicy": "read-only"
+    },
+    {
+      "name": "dreamy_plan",
+      "depth": "D4",
+      "primarySkills": ["dreamy-architecture", "dreamy-feature", "unity-project-analysis"],
+      "handoffTo": ["dreamy_architect", "dreamy_unity_developer", "dreamy_tester"],
+      "evalGroups": ["impact-planning", "migration-planning"],
+      "writePolicy": "planning-only"
+    },
+    {
+      "name": "dreamy_architect",
+      "depth": "D4",
+      "primarySkills": ["dreamy-architecture", "dreamy-feature", "dreamy-core"],
+      "handoffTo": ["dreamy_unity_developer", "dreamy_package_maintainer", "dreamy_code_reviewer"],
+      "evalGroups": ["ownership", "dependency-direction", "data-boundary"],
+      "writePolicy": "architecture-docs-only"
+    },
+    {
+      "name": "dreamy_unity_developer",
+      "depth": "D4",
+      "primarySkills": ["dreamy-feature", "unity-foundations", "unity-serialization", "unity-async", "unity-ui"],
+      "handoffTo": ["dreamy_unity_editor", "dreamy_architect", "dreamy_debugger", "dreamy_tester"],
+      "evalGroups": ["unity-implementation", "lifecycle", "integration"],
+      "writePolicy": "assigned-implementation"
+    },
+    {
+      "name": "dreamy_unity_editor",
+      "depth": "D4",
+      "primarySkills": ["unity-scene-prefab", "unity-editor-tooling", "unity-serialization"],
+      "handoffTo": ["dreamy_unity_developer", "dreamy_tester", "dreamy_code_reviewer"],
+      "evalGroups": ["scene-prefab-mutation", "asset-guid-safety"],
+      "writePolicy": "assigned-editor-state-mutation"
+    },
+    {
+      "name": "dreamy_debugger",
+      "depth": "D4",
+      "primarySkills": ["unity-project-analysis", "unity-async", "unity-testing", "dreamy-testing"],
+      "handoffTo": ["dreamy_unity_developer", "dreamy_tester", "dreamy_performance_engineer", "dreamy_build_engineer"],
+      "evalGroups": ["root-cause", "failure-signature"],
+      "writePolicy": "assigned-fix-only"
+    },
+    {
+      "name": "dreamy_tester",
+      "depth": "D4",
+      "primarySkills": ["unity-testing", "dreamy-testing"],
+      "handoffTo": ["dreamy_unity_developer", "dreamy_release_validator"],
+      "evalGroups": ["proof-selection", "fixture-design"],
+      "writePolicy": "assigned-tests-only"
+    },
+    {
+      "name": "dreamy_code_reviewer",
+      "depth": "D4",
+      "primarySkills": ["production-code-review", "dreamy-architecture", "unity-serialization", "unity-testing"],
+      "handoffTo": ["dreamy_debugger", "dreamy_architect", "dreamy_tester"],
+      "evalGroups": ["review-findings", "test-review"],
+      "writePolicy": "read-only"
+    },
+    {
+      "name": "dreamy_performance_engineer",
+      "depth": "D4",
+      "primarySkills": ["unity-profiling", "unity-memory", "mobile-production"],
+      "handoffTo": ["dreamy_unity_developer", "dreamy_build_engineer"],
+      "evalGroups": ["measured-performance", "mobile-budget"],
+      "writePolicy": "assigned-performance-fix-only"
+    },
+    {
+      "name": "dreamy_build_engineer",
+      "depth": "D4",
+      "primarySkills": ["android-build-release", "ios-build-release", "store-release-readiness", "mobile-production"],
+      "handoffTo": ["dreamy_release_validator", "dreamy_package_maintainer"],
+      "evalGroups": ["build-stage-triage", "store-readiness"],
+      "writePolicy": "assigned-build-fix-only"
+    },
+    {
+      "name": "dreamy_package_maintainer",
+      "depth": "D4",
+      "primarySkills": ["dreamy-package-maintainer", "dreamy-architecture", "unity-editor-tooling"],
+      "handoffTo": ["dreamy_release_validator", "dreamy_docs_manager"],
+      "evalGroups": ["package-compatibility", "asmdef-manifest-drift"],
+      "writePolicy": "assigned-package-maintenance"
+    },
+    {
+      "name": "dreamy_release_validator",
+      "depth": "D4",
+      "primarySkills": ["production-release", "store-release-readiness", "dreamy-testing"],
+      "handoffTo": ["dreamy_tester", "dreamy_package_maintainer", "dreamy_docs_manager"],
+      "evalGroups": ["release-evidence", "staleness"],
+      "writePolicy": "assigned-release-evidence-only"
+    },
+    {
+      "name": "dreamy_docs_manager",
+      "depth": "D4",
+      "primarySkills": ["dreamy-base", "dreamy-architecture", "production-release"],
+      "handoffTo": ["dreamy_package_maintainer", "dreamy_release_validator"],
+      "evalGroups": ["documentation-truth", "command-doc-drift"],
+      "writePolicy": "docs-only"
+    },
+    {
+      "name": "dreamy_skill_author",
+      "depth": "D4",
+      "primarySkills": ["dreamy-feature", "dreamy-architecture"],
+      "handoffTo": ["dreamy_docs_manager", "dreamy_code_reviewer"],
+      "evalGroups": ["skill-depth", "activation-boundary"],
+      "writePolicy": "assigned-skill-files-only"
+    }
+  ]
+}

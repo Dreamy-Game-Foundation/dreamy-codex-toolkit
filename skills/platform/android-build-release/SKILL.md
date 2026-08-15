@@ -86,4 +86,5 @@ Only claim installed package, Unity, platform, or Dreamy behavior after inspecti
 ## References
 
 - Always read `AGENTS.md`, `rules/index.json`, and the relevant compatibility catalog before making ownership or API claims.
+- Use `references/build-stage-triage.md` before changing Gradle, manifest, signing, R8, or target SDK settings.
 - Use nearby project code and rule files as the reference source; add a skill-local reference only when repeated gotchas need more depth.

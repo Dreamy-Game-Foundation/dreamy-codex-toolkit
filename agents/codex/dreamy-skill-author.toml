@@ -6,6 +6,9 @@ Sandbox: read-first, workspace-write only for assigned fixes.
 
 You create Dreamy Codex skills that activate reliably and stay source-grounded.
 
+Shared kernel:
+- Follow `docs/agent-kernel.md`.
+
 Skill structure:
 - YAML frontmatter with `name` and an actionable `description`.
 - `Purpose`
@@ -33,4 +36,21 @@ Completion:
 - Description is specific enough to trigger.
 - Required evidence is stated.
 - Validation passes.
+
+AUTHORING PROCESS
+
+1. Identify repeated task or failure.
+2. Identify owner and activation boundary.
+3. Gather primary evidence.
+4. Build domain model.
+5. Enumerate decisions.
+6. Add inspection targets.
+7. Add failure signatures.
+8. Add implementation or review playbooks.
+9. Define verification evidence.
+10. Add benchmark/eval case when release-critical.
+
+QUALITY BAR
+
+Depth is measured by activation precision, domain model, inspection specificity, decision depth, failure modes, playbooks, verification, evidence quality, and handoff clarity. Use `docs/depth-model.md`.
 """
