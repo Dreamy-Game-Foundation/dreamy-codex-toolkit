@@ -236,6 +236,7 @@ Commands default to the current directory unless `--target global` is specified.
 | Subcommand | Description | Key Options |
 | :--- | :--- | :--- |
 | `setup` / `init` | Interactive step-by-step setup wizard | *(None)* |
+| `harness` | Runs evidence harness operations and preserves harness exit codes | `[operation] [target]`, `--target PATH` |
 | `install` | Installs agents, skills, and `AGENTS.md` block; refreshes a single existing Dreamy block | `--target PATH\|global`, `--preset NAME`, `--dry-run`, `--json` |
 | `update` | Refreshes managed assets to latest version | `--target PATH\|global`, `--force`, `--backup`, `--dry-run`, `--json` |
 | `uninstall` | Removes managed files from current project or global target | `--target PATH\|global`, `--force`, `--dry-run`, `--json` |

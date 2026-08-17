@@ -9,8 +9,12 @@ import { inspectProject } from "../src/project-profile.js";
 import { createSchemaValidator, validateWithSchema } from "../src/schema-validation.js";
 
 const toolkitRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const op = process.argv[2] ?? "help";
-const target = path.resolve(process.argv[3] ?? ".");
+const rawArgs = process.argv.slice(2);
+const fullOutput = rawArgs.includes("--full") || process.env.DREAMY_HARNESS_FULL === "1";
+const compactOutput = !fullOutput;
+const positional = rawArgs.filter((arg) => !arg.startsWith("--"));
+const op = positional[0] ?? "help";
+const target = path.resolve(positional[1] ?? ".");
 const schemas = createSchemaValidator(path.join(toolkitRoot, "schemas"));
 const startedMs = Date.now();
 const startedAt = new Date(startedMs).toISOString();
@@ -23,6 +27,32 @@ function artifact(file, kind) {
   return { path: file, kind, sha256: sha256File(file) };
 }
 
+function firstLines(items, limit = 8) {
+  return items.filter(Boolean).slice(0, limit);
+}
+
+function profileHash(profile) {
+  return crypto.createHash("sha256").update(JSON.stringify(profile.sourceHashes ?? {})).digest("hex");
+}
+
+function manifestHash(profile) {
+  return profile.sourceHashes?.manifest ?? profile.sourceHashes?.["Packages/manifest.json"] ?? null;
+}
+
+function packagesLockHash(profile) {
+  return profile.sourceHashes?.lock ?? profile.sourceHashes?.["Packages/packages-lock.json"] ?? null;
+}
+
+function compactEvidence(evidence) {
+  if (!compactOutput) return evidence;
+  const {
+    profile,
+    capabilityGraph,
+    ...rest
+  } = evidence;
+  return rest;
+}
+
 function json(value, code = 0) {
   const completedMs = Date.now();
   const completedAt = new Date(completedMs).toISOString();
@@ -30,6 +60,9 @@ function json(value, code = 0) {
   const evidence = {
     schemaVersion: 1,
     adapter: "dreamy-harness",
+    operation: op,
+    status: "pass",
+    summary: "Operation completed",
     observedAt,
     timestamp: observedAt,
     startedAt,
@@ -49,8 +82,11 @@ function json(value, code = 0) {
     ...value,
     exitCode: code
   };
+  if (evidence.status === "degraded" && !evidence.degradedReason) {
+    evidence.degradedReason = evidence.summary;
+  }
   validateWithSchema(schemas, "https://dreamy.tools/codex/schemas/evidence.schema.json", evidence, `${op} evidence`);
-  console.log(JSON.stringify(evidence, null, 2));
+  console.log(JSON.stringify(compactEvidence(evidence)));
   process.exitCode = code;
 }
 
@@ -66,17 +102,64 @@ function projectProfile() {
   return inspectProject(target, { compatibilityFile: path.join(toolkitRoot, "compatibility", "dreamy-packages.json") });
 }
 
+function significantErrors(lines) {
+  return lines
+    .filter((line) => /\berror\b|compilation failed|aborting batchmode/i.test(line))
+    .filter((line) => !/\b0 errors?\b|no errors?|error-free/i.test(line))
+    .slice(0, 20);
+}
+
+function significantWarnings(lines) {
+  return lines
+    .filter((line) => /\bwarning\b/i.test(line))
+    .filter((line) => !/\b0 warnings?\b|no warnings?/i.test(line))
+    .slice(0, 20);
+}
+
+function infrastructureReason(result, log) {
+  if (result.error?.code === "ETIMEDOUT") return `Unity timed out after ${process.env.DREAMY_UNITY_TIMEOUT_MS ?? 300_000} ms`;
+  if (result.error) return result.error.message;
+  if (/\[Licensing::[^\]]+\].*(failed|unavailable|error)|Access token is unavailable|No valid Unity Editor license/i.test(log)) {
+    return "Unity licensing is unavailable; the project outcome was not observed";
+  }
+  return null;
+}
+
+function asmdefGraphViolations(graph) {
+  const assemblies = graph.assemblies ?? [];
+  const editorNames = new Set();
+  const editorGuids = new Set();
+  for (const assembly of assemblies) {
+    const isEditor = (assembly.includePlatforms ?? []).includes("Editor") || /\.Editor$/.test(assembly.name ?? "");
+    if (!isEditor) continue;
+    if (assembly.name) editorNames.add(assembly.name);
+    if (assembly.guid) editorGuids.add(assembly.guid);
+  }
+  return assemblies
+    .filter((assembly) => !(assembly.includePlatforms ?? []).includes("Editor") && !/\.Editor$/.test(assembly.name ?? ""))
+    .flatMap((assembly) => (assembly.references ?? [])
+      .filter((reference) => reference === "UnityEditor" || editorNames.has(reference) || (reference.startsWith("GUID:") && editorGuids.has(reference.slice(5))))
+      .map((reference) => ({ assembly: assembly.name ?? "unknown", reference })));
+}
+
 function unityOperation(operation) {
   const unity = process.env.DREAMY_UNITY_PATH || process.env.UNITY_PATH;
   if (!unity || !fs.existsSync(unity)) {
-    json({ operation, target, status: "degraded", degradedReason: "Set DREAMY_UNITY_PATH to a Unity Editor executable", diagnostics: [] }, 2);
+    json({
+      operation,
+      target,
+      status: "degraded",
+      summary: "Unity executable is not configured",
+      degradedReason: "Set DREAMY_UNITY_PATH to a Unity Editor executable",
+      diagnostics: ["Set DREAMY_UNITY_PATH to a Unity Editor executable"]
+    }, 2);
     return;
   }
   const profile = projectProfile();
-  const manifestHash = profile.sourceHashes?.["Packages/manifest.json"] ?? null;
-  const packagesLockHash = profile.sourceHashes?.["Packages/packages-lock.json"] ?? null;
+  const manifest = manifestHash(profile);
+  const lock = packagesLockHash(profile);
   if (profile.status === "invalid") {
-    json({ operation, target, status: "fail", unityVersion: profile.engine?.version ?? null, unityExecutable: unity, manifestHash, packagesLockHash, diagnostics: profile.diagnostics, profile }, 1);
+    json({ operation, target, status: "fail", summary: "Unity project profile is invalid", unityVersion: profile.engine?.version ?? null, unityExecutable: unity, manifestHash: manifest, packagesLockHash: lock, diagnostics: profile.diagnostics, profileHash: profileHash(profile), profile }, 1);
     return;
   }
   const outputDir = fs.mkdtempSync(path.join(os.tmpdir(), "dreamy-harness-"));
@@ -92,7 +175,7 @@ function unityOperation(operation) {
   if (operation === "build-android" || operation === "build-ios") {
     const method = process.env.DREAMY_UNITY_BUILD_METHOD;
     if (!method) {
-      json({ operation, target, status: "degraded", unityVersion: profile.engine?.version ?? null, unityExecutable: unity, manifestHash, packagesLockHash, degradedReason: "Set DREAMY_UNITY_BUILD_METHOD to a verified static Unity build method", diagnostics: [] }, 2);
+      json({ operation, target, status: "degraded", summary: "Unity build method is not configured", unityVersion: profile.engine?.version ?? null, unityExecutable: unity, manifestHash: manifest, packagesLockHash: lock, degradedReason: "Set DREAMY_UNITY_BUILD_METHOD to a verified static Unity build method", diagnostics: ["Set DREAMY_UNITY_BUILD_METHOD to a verified static Unity build method"], profileHash: profileHash(profile) }, 2);
       return;
     }
     args.push("-buildTarget", operation === "build-android" ? "Android" : "iOS", "-executeMethod", method);
@@ -101,17 +184,14 @@ function unityOperation(operation) {
   const log = fs.existsSync(logFile) ? fs.readFileSync(logFile, "utf8") : `${result.stdout ?? ""}\n${result.stderr ?? ""}`;
   if (!fs.existsSync(logFile)) fs.writeFileSync(logFile, log, "utf8");
   const lines = log.split(/\r?\n/);
-  const errors = lines.filter((line) => /\berror\b|compilation failed/i.test(line)).slice(0, 100);
-  const warnings = lines.filter((line) => /\bwarning\b/i.test(line)).slice(0, 100);
-  const exceptions = lines.filter((line) => /\bexception\b/i.test(line)).slice(0, 100);
+  const errors = significantErrors(lines);
+  const warnings = significantWarnings(lines);
+  const exceptions = firstLines(lines.filter((line) => /\bexception\b/i.test(line)), 20);
   const artifacts = [artifact(logFile, "unity-log")];
   if (resultFile && fs.existsSync(resultFile)) artifacts.push(artifact(resultFile, "unity-test-results"));
-  const infrastructureFailure = Boolean(result.error) || /\[Licensing::[^\]]+\].*(failed|unavailable|error)|Access token is unavailable/i.test(log);
-  if (infrastructureFailure) {
-    const degradedReason = result.error?.code === "ETIMEDOUT"
-      ? `Unity timed out after ${process.env.DREAMY_UNITY_TIMEOUT_MS ?? 300_000} ms`
-      : result.error?.message ?? "Unity licensing is unavailable; the project outcome was not observed";
-    json({ operation, target, status: "degraded", unityVersion: profile.engine?.version ?? null, unityExecutable: unity, manifestHash, packagesLockHash, degradedReason, diagnostics: [degradedReason], errors, warnings, exceptions, artifacts, profileHash: crypto.createHash("sha256").update(JSON.stringify(profile.sourceHashes)).digest("hex") }, 2);
+  const degradedReason = infrastructureReason(result, log);
+  if (degradedReason) {
+    json({ operation, target, status: "degraded", summary: degradedReason, unityVersion: profile.engine?.version ?? null, unityExecutable: unity, manifestHash: manifest, packagesLockHash: lock, degradedReason, diagnostics: [degradedReason], errors, warnings, exceptions, artifacts, profileHash: profileHash(profile) }, 2);
     return;
   }
   const testResultPassed = !resultFile || (fs.existsSync(resultFile) && /<test-run\b[^>]*\bfailed="0"/i.test(fs.readFileSync(resultFile, "utf8")));
@@ -119,26 +199,46 @@ function unityOperation(operation) {
   const failureDiagnostic = resultFile && !testResultPassed
       ? "Unity test result is missing or contains failures"
       : `Unity exited ${result.status ?? "without an exit code"}`;
-  json({ operation, target, status: passed ? "pass" : "fail", unityVersion: profile.engine?.version ?? null, unityExecutable: unity, manifestHash, packagesLockHash, diagnostics: passed ? ["Unity batchmode completed without observed errors"] : [failureDiagnostic], errors, warnings, exceptions, artifacts, profileHash: crypto.createHash("sha256").update(JSON.stringify(profile.sourceHashes)).digest("hex") }, passed ? 0 : 1);
+  json({
+    operation,
+    target,
+    status: passed ? "pass" : "fail",
+    summary: passed ? `${operation} completed without observed errors` : failureDiagnostic,
+    unityVersion: profile.engine?.version ?? null,
+    unityExecutable: unity,
+    manifestHash: manifest,
+    packagesLockHash: lock,
+    diagnostics: passed ? [`${operation} completed without observed errors`] : [failureDiagnostic],
+    errors,
+    warnings,
+    exceptions,
+    artifacts,
+    profileHash: profileHash(profile)
+  }, passed ? 0 : 1);
 }
 
 if (op === "git-status") {
   const result = git(["status", "--short"]);
   const passed = result.status === 0;
+  const dirtyPaths = result.stdout.trim().split("\n").filter(Boolean);
   json({
     operation: op,
     target,
     status: passed ? "pass" : "fail",
-    diagnostics: passed ? result.stdout.trim().split("\n").filter(Boolean) : [result.stderr || "git status failed"]
+    summary: passed ? `${dirtyPaths.length} dirty paths` : "git status failed",
+    diagnostics: passed ? dirtyPaths : [result.stderr || "git status failed"],
+    git: { available: passed, dirtyPaths }
   }, passed ? 0 : 1);
 } else if (op === "git-diff") {
   const result = git(["diff", "--stat"]);
   const passed = result.status === 0;
+  const summary = result.stdout.trim();
   json({
     operation: op,
     target,
     status: passed ? "pass" : "fail",
-    diagnostics: passed ? [result.stdout.trim()].filter(Boolean) : [result.stderr || "git diff failed"]
+    summary: passed ? summary || "No diff" : "git diff failed",
+    diagnostics: passed ? [summary].filter(Boolean) : [result.stderr || "git diff failed"]
   }, passed ? 0 : 1);
 } else if (["compile", "console", "test-editmode", "test-playmode"].includes(op)) {
   unityOperation(op);
@@ -150,28 +250,41 @@ if (op === "git-status") {
     operation: op,
     target,
     status: profile.status === "valid" ? "pass" : profile.status === "incomplete" ? "degraded" : "fail",
+    summary: profile.status === "valid" ? `Unity project ${profile.engine?.version ?? "unknown"} profile is valid` : `Unity project profile is ${profile.status}`,
     unityVersion: profile.engine?.version ?? null,
-    manifestHash: profile.sourceHashes?.["Packages/manifest.json"] ?? null,
-    packagesLockHash: profile.sourceHashes?.["Packages/packages-lock.json"] ?? null,
+    manifestHash: manifestHash(profile),
+    packagesLockHash: packagesLockHash(profile),
     degradedReason: profile.status === "incomplete" ? "Project sources are incomplete; see diagnostics" : undefined,
     diagnostics: profile.diagnostics,
+    profileHash: profileHash(profile),
     profile
   }, code);
 } else if (op === "asmdef") {
-  const fixture = process.argv[3] ? path.resolve(process.argv[3]) : target;
+  const fixture = positional[1] ? path.resolve(positional[1]) : target;
   if (!fs.existsSync(fixture)) {
-    json({ operation: op, target: fixture, status: "fail", diagnostics: ["asmdef target does not exist"] }, 1);
+    json({ operation: op, target: fixture, status: "fail", summary: "asmdef target does not exist", diagnostics: ["asmdef target does not exist"] }, 1);
   } else if (fs.statSync(fixture).isDirectory()) {
     const profile = inspectProject(fixture, { compatibilityFile: path.join(toolkitRoot, "compatibility", "dreamy-packages.json") });
     const unsafe = profile.asmdefs.runtimeEditorViolations.length > 0;
-    json({ operation: op, target: fixture, projectPath: fixture, status: unsafe ? "fail" : "pass", unityVersion: profile.engine?.version ?? null, manifestHash: profile.sourceHashes?.["Packages/manifest.json"] ?? null, packagesLockHash: profile.sourceHashes?.["Packages/packages-lock.json"] ?? null, diagnostics: unsafe ? profile.diagnostics : [`Parsed ${profile.asmdefs.count} asmdef files`], profile }, unsafe ? 1 : 0);
+    json({ operation: op, target: fixture, projectPath: fixture, status: unsafe ? "fail" : "pass", summary: unsafe ? "Runtime asmdef references Editor assemblies" : `Parsed ${profile.asmdefs.count} asmdef files`, unityVersion: profile.engine?.version ?? null, manifestHash: manifestHash(profile), packagesLockHash: packagesLockHash(profile), diagnostics: unsafe ? profile.diagnostics : [`Parsed ${profile.asmdefs.count} asmdef files`], profileHash: profileHash(profile), profile }, unsafe ? 1 : 0);
   } else {
   let data;
   try { data = JSON.parse(fs.readFileSync(fixture, "utf8")); } catch (error) {
-    json({ operation: op, target: fixture, status: "fail", diagnostics: [`Invalid asmdef JSON: ${error.message}`] }, 1);
+    json({ operation: op, target: fixture, status: "fail", summary: "Invalid asmdef JSON", diagnostics: [`Invalid asmdef JSON: ${error.message}`] }, 1);
     data = null;
   }
   if (data) {
+  if (Array.isArray(data.assemblies)) {
+    const violations = asmdefGraphViolations(data);
+    json({
+      operation: op,
+      target: fixture,
+      status: violations.length ? "fail" : "pass",
+      summary: violations.length ? "Runtime asmdef graph references Editor assemblies" : `Parsed ${data.assemblies.length} asmdef graph entries`,
+      diagnostics: violations.length ? violations.map((item) => `Runtime assembly ${item.assembly} references Editor assembly ${item.reference}`) : [`Parsed ${data.assemblies.length} asmdef graph entries`],
+      errors: violations.map((item) => `Runtime assembly ${item.assembly} references Editor assembly ${item.reference}`)
+    }, violations.length ? 1 : 0);
+  } else {
   const unsafeReferences = (data.references ?? []).filter((reference) => reference === "UnityEditor" || /\.Editor$/.test(reference));
   const runtime = !(data.includePlatforms ?? []).includes("Editor") && !fixture.replaceAll("\\", "/").includes("/Editor/");
   const unsafe = runtime && unsafeReferences.length > 0;
@@ -179,8 +292,10 @@ if (op === "git-status") {
     operation: op,
     target: fixture,
     status: unsafe ? "fail" : "pass",
+    summary: unsafe ? "Runtime asmdef references Editor assemblies" : "Parsed asmdef JSON",
     diagnostics: unsafe ? [`Runtime asmdef references Editor assemblies: ${unsafeReferences.join(", ")}`] : ["Parsed asmdef JSON; no direct Runtime-to-Editor reference found"]
   }, unsafe ? 1 : 0);
+  }
   }
   }
 } else if (op === "package-check" || op === "validate-package") {
@@ -190,23 +305,27 @@ if (op === "git-status") {
     operation: op,
     target,
     status: profile.status === "valid" ? "pass" : profile.status === "incomplete" ? "degraded" : "fail",
+    summary: profile.status === "valid" ? "Package/project sources are complete" : `Package/project sources are ${profile.status}`,
     unityVersion: profile.engine?.version ?? null,
-    manifestHash: profile.sourceHashes?.["Packages/manifest.json"] ?? null,
-    packagesLockHash: profile.sourceHashes?.["Packages/packages-lock.json"] ?? null,
+    manifestHash: manifestHash(profile),
+    packagesLockHash: packagesLockHash(profile),
     degradedReason: profile.status === "incomplete" ? "Package lock or other project sources are incomplete" : undefined,
     diagnostics: profile.diagnostics,
+    profileHash: profileHash(profile),
     profile
   }, code);
 } else if (op === "validate-addressables") {
   const profile = projectProfile();
   const observed = profile.capabilities.addressables.status === "observed";
-  json({ operation: op, target, status: "degraded", degradedReason: observed ? "Addressables package observed; Unity content validation still requires an Editor bridge" : "Addressables package was not observed", diagnostics: profile.diagnostics, profile }, 2);
+  const degradedReason = observed ? "Addressables package observed; Unity content validation still requires an Editor bridge" : "Addressables package was not observed";
+  json({ operation: op, target, status: "degraded", summary: degradedReason, degradedReason, diagnostics: profile.diagnostics, profileHash: profileHash(profile), profile }, 2);
 } else if (op === "build-android" || op === "build-ios") {
   unityOperation(op);
 } else {
   json({
     operation: "help",
     status: "pass",
+    summary: "Listed available harness operations",
     operations: ["git-status", "git-diff", "compile", "console", "test-editmode", "test-playmode", "project-inspect", "asmdef", "package-check", "validate-project", "validate-package", "validate-addressables", "build-android", "build-ios"]
   });
 }

@@ -50,7 +50,7 @@ STOP CONDITIONS
 
 Stop on wrong project session, ambiguous prefab ownership, dirty scene outside task scope, missing serialized-reference evidence, destructive/broad reimport, GUID regeneration, or unavailable MCP when task requires live Editor state.
 
-VERIFICATION CONTRACT
+OUTPUT / VERIFICATION CONTRACT
 
 Report target, before snapshot, mutation, saved assets, Console/test result, after snapshot, diff/evidence paths, degraded gates, and residual risk.
 """

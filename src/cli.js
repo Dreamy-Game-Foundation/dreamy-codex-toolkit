@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import crypto from "node:crypto";
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -18,7 +18,7 @@ const configEnd = "# DREAMY-CODEX agents:end";
 
 function parseArgs(argv) {
   const [cmd = "setup", ...rest] = argv;
-  const args = { target: ".", preset: "dreamy-project", dryRun: false, force: false, backup: false, runner: "catalog", json: false };
+  const args = { target: ".", preset: "dreamy-project", dryRun: false, force: false, backup: false, runner: "catalog", json: false, harnessArgs: [] };
   for (let i = 0; i < rest.length; i += 1) {
     const arg = rest[i];
     if (arg === "--target" || arg === "--preset" || arg === "--runner") {
@@ -35,6 +35,8 @@ function parseArgs(argv) {
       args.fix = true;
     } else if (arg === "--json") {
       args.json = true;
+    } else if (cmd === "harness") {
+      args.harnessArgs.push(arg);
     } else {
       throw new Error(`Unknown argument: ${arg}`);
     }
@@ -120,7 +122,13 @@ function validateManagedBlock(text) {
 function replaceManagedBlock(text, newBlock) {
   const block = findManagedBlock(text);
   const lineEnding = detectLineEnding(text);
-  return `${text.slice(0, block.start)}${normalizeLineEndings(newBlock, lineEnding)}${text.slice(block.end)}`;
+  const normalizedBlock = normalizeLineEndings(newBlock, lineEnding);
+  const value = lineEndingValue(lineEnding);
+  let after = text.slice(block.end);
+  if (normalizedBlock.endsWith(value) && after.startsWith(value)) {
+    after = after.slice(value.length);
+  }
+  return `${text.slice(0, block.start)}${normalizedBlock}${after}`;
 }
 
 function removeManagedBlock(text) {
@@ -254,6 +262,37 @@ function resolveTarget(target) {
 
 function detectProject(target) {
   return inspectProject(target, { compatibilityFile: path.join(root, "compatibility", "dreamy-packages.json") });
+}
+
+function harnessCapability() {
+  const harnessPath = path.join(root, "harness", "dreamy-harness");
+  const unityPath = process.env.DREAMY_UNITY_PATH || process.env.UNITY_PATH || null;
+  let git = "unavailable";
+  try {
+    execFileSync("git", ["--version"], { encoding: "utf8" });
+    git = "ok";
+  } catch {
+    git = "unavailable";
+  }
+  return {
+    path: harnessPath,
+    available: fs.existsSync(harnessPath),
+    git,
+    unity: unityPath && fs.existsSync(unityPath) ? "configured" : "degraded",
+    unityExecutable: unityPath
+  };
+}
+
+function runHarnessCommand(args) {
+  const harnessArgs = [...args.harnessArgs];
+  if (harnessArgs.length === 0) harnessArgs.push("help");
+  if (harnessArgs.length === 1) harnessArgs.push(args.target);
+  const result = spawnSync(process.execPath, [path.join(root, "harness", "dreamy-harness"), ...harnessArgs], {
+    cwd: root,
+    stdio: "inherit"
+  });
+  if (result.error) throw result.error;
+  process.exitCode = result.status ?? 1;
 }
 
 function copyDir(source, destination) {
@@ -440,7 +479,7 @@ function installProject(args) {
     copyDir(entry.source, entry.destination);
   }
 
-  writeManagedState(target, args.preset, profile, desired, beforeHash, afterHash, sha256(managedBlock), lineEnding);
+  writeManagedState(target, args.preset, profile, desired, beforeHash, afterHash, hashManagedBlock(nextAgents), lineEnding);
 
   return { action: "install", target: target.root, targetKind: target.kind, preset: args.preset, status: "ok", adoptedExistingBlock: adoptingExistingBlock };
 }
@@ -752,6 +791,8 @@ async function main() {
   } else if (cmd === "validate") {
     await validateArtifacts();
     console.log("validate: OK");
+  } else if (cmd === "harness") {
+    runHarnessCommand(args);
   } else if (cmd === "detect") {
     const target = resolveTarget(args.target);
     const profile = profileForTarget(target, args.preset);
@@ -822,13 +863,9 @@ async function main() {
         add(`dreamy-${pkg.name}`, pkg.compatibilityStatus === "drift" ? "WARN" : "INFO", `${pkg.declaredVersion ?? pkg.resolvedVersion ?? "unknown"} ${pkg.compatibilityStatus}`);
       }
     }
-    let gitStatus = "unavailable";
-    try {
-      execFileSync("git", ["--version"], { encoding: "utf8" });
-      gitStatus = "ok";
-    } catch {
-      gitStatus = "unavailable";
-    }
+    const harness = harnessCapability();
+    add("harness", harness.available ? "INFO" : "ERROR", harness.path);
+    add("harness-unity", harness.unity === "configured" ? "INFO" : "WARN", harness.unityExecutable || "Set DREAMY_UNITY_PATH or UNITY_PATH");
     const status = checks.some((check) => check.severity === "ERROR") ? "error" : checks.some((check) => check.severity === "WARN") ? "warn" : "ok";
     const docRes = {
       status,
@@ -840,7 +877,7 @@ async function main() {
         projectSkills: target.skillsDir,
         projectAgents: target.agentsDir,
         unity: profile.engine.name === "unity",
-        harness: { git: gitStatus, unity: "degraded" }
+        harness: { git: harness.git, unity: harness.unity, path: harness.path, unityExecutable: harness.unityExecutable }
       },
       recommendations: checks.filter((check) => check.severity !== "INFO").map((check) => check.message),
       fixApplied: args.fix ? [] : undefined,
@@ -881,6 +918,7 @@ async function main() {
     console.log(`dreamy-kit commands:
   setup / init
   validate
+  harness [operation] [target]
   detect [--target PATH] [--json]
   install [--target PATH|global] [--preset NAME] [--dry-run] [--json]
   uninstall [--target PATH|global] [--dry-run] [--json]
