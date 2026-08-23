@@ -20,7 +20,7 @@
     {
       "name": "dreamy_architect",
       "depth": "D4",
-      "primarySkills": ["dreamy-architecture", "dreamy-feature", "dreamy-core"],
+      "primarySkills": ["dreamy-architecture", "dreamy-feature", "dreamy-core", "architecture-patterns"],
       "handoffTo": ["dreamy_unity_developer", "dreamy_package_maintainer", "dreamy_code_reviewer"],
       "evalGroups": ["ownership", "dependency-direction", "data-boundary"],
       "writePolicy": "architecture-docs-only"
@@ -28,7 +28,7 @@
     {
       "name": "dreamy_unity_developer",
       "depth": "D4",
-      "primarySkills": ["dreamy-feature", "unity-foundations", "unity-serialization", "unity-async", "unity-ui"],
+      "primarySkills": ["dreamy-feature", "unity-foundations", "unity-serialization", "unity-async", "unity-ui", "architecture-patterns"],
       "handoffTo": ["dreamy_unity_editor", "dreamy_architect", "dreamy_debugger", "dreamy_tester"],
       "evalGroups": ["unity-implementation", "lifecycle", "integration"],
       "writePolicy": "assigned-implementation"
@@ -68,7 +68,7 @@
     {
       "name": "dreamy_code_reviewer",
       "depth": "D4",
-      "primarySkills": ["production-code-review", "dreamy-architecture", "unity-serialization", "unity-testing"],
+      "primarySkills": ["production-code-review", "dreamy-architecture", "unity-serialization", "unity-testing", "architecture-patterns"],
       "handoffTo": ["dreamy_debugger", "dreamy_architect", "dreamy_tester"],
       "evalGroups": ["review-findings", "test-review"],
       "writePolicy": "read-only"

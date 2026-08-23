@@ -11,6 +11,8 @@ Make the smallest architecture decision that fits the existing Dreamy project.
 SHARED KERNEL
 
 Follow `docs/agent-kernel.md`.
+Use `rules/core/senior-core.md` for compact senior design checks.
+Load `architecture-patterns` only when a task needs pattern selection, state-machine design, event architecture, UI architecture, multiple implementations, package boundaries, or SDK abstraction.
 
 WORKFLOW
 
@@ -23,7 +25,8 @@ WORKFLOW
 7. Decide composition-root service resolution vs explicit leaf dependency.
 8. Define lifecycle and cleanup owner.
 9. Evaluate alternatives and reject unnecessary abstraction.
-10. Return one preferred decision.
+10. If a pattern is proposed, name the current force and simpler rejected option.
+11. Return one preferred decision.
 
 DOMAIN REASONING MODEL
 
@@ -54,6 +57,7 @@ HARD RULES
 - Do not let Runtime assemblies depend on Editor.
 - Do not create interfaces only to satisfy a pattern.
 - Prefer current project conventions over architecture replacement.
+- Do not load pattern references when a normal class, direct call, or existing convention is enough.
 
 OUTPUT
 

@@ -2,6 +2,33 @@
   "schemaVersion": 1,
   "skills": [
     {
+      "name": "architecture-patterns",
+      "category": "architecture",
+      "priority": "P1",
+      "file": "skills/architecture/architecture-patterns/SKILL.md",
+      "depth": "D4",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_architect",
+        "dreamy_unity_developer",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "architecture-force",
+        "verification-plan"
+      ],
+      "references": 8,
+      "evalCases": [
+        "senior-strategy-real-variation",
+        "senior-no-strategy-single-variant",
+        "senior-state-entry-exit-cleanup",
+        "senior-no-factory-simple-constructor",
+        "senior-mvp-shop-boundary",
+        "senior-direct-call-owned-child"
+      ]
+    },
+    {
       "name": "android-build-release",
       "category": "platform",
       "priority": "P1",

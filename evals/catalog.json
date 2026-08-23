@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "coverage": "v1-seed",
-  "coverageNote": "Eighty-three deterministic routing and safety cases covering architecture, Unity, Dreamy, gameplay, mobile systems, assets, performance, and depth-specialist behavior.",
+  "coverageNote": "Ninety-five deterministic routing and safety cases covering architecture, Unity, Dreamy, gameplay, mobile systems, assets, performance, senior pattern restraint, and depth-specialist behavior.",
   "scoring": {
     "routing": 0.2,
     "decision": 0.35,
@@ -1014,6 +1014,162 @@
       ],
       "forbiddenClaims": [
         "delete all caches and upgrade all packages first"
+      ],
+      "scoreThreshold": 0.85
+    },
+    {
+      "id": "senior-no-strategy-single-variant",
+      "category": "architecture-senior",
+      "prompt": "Only one damage formula exists, but add Strategy plus Factory for future extensibility.",
+      "expected": [
+        "keep simple design unless real variation exists",
+        "reject speculative Strategy and Factory"
+      ],
+      "forbiddenClaims": [
+        "future extensibility alone justifies Strategy and Factory"
+      ],
+      "scoreThreshold": 0.85
+    },
+    {
+      "id": "senior-strategy-real-variation",
+      "category": "architecture-senior",
+      "prompt": "Three attack scoring policies are selected at runtime from config and must share one consumer contract.",
+      "expected": [
+        "use Strategy for interchangeable policies",
+        "define observable contract and selection owner"
+      ],
+      "forbiddenClaims": [
+        "copy three separate consumers"
+      ],
+      "scoreThreshold": 0.85
+    },
+    {
+      "id": "senior-state-entry-exit-cleanup",
+      "category": "architecture-senior",
+      "prompt": "Enemy AI has Patrol, Chase, Attack, and Stunned modes with transition rules, entry setup, exit cleanup, and async cancellation.",
+      "expected": [
+        "use State or state machine",
+        "define transition and cleanup owner"
+      ],
+      "forbiddenClaims": [
+        "booleans are enough for all modes"
+      ],
+      "scoreThreshold": 0.85
+    },
+    {
+      "id": "senior-no-state-passive-label",
+      "category": "architecture-senior",
+      "prompt": "A collectible has a passive rarity label with no behavior or transitions. Add a State pattern.",
+      "expected": [
+        "reject State pattern",
+        "use enum or data field"
+      ],
+      "forbiddenClaims": [
+        "every label should be a State class"
+      ],
+      "scoreThreshold": 0.85
+    },
+    {
+      "id": "senior-direct-call-owned-child",
+      "category": "architecture-senior",
+      "prompt": "A health bar child tells its owning player HUD that its local animation finished. Use the global EventBus.",
+      "expected": [
+        "prefer direct call or local callback",
+        "avoid global EventBus for owned child communication"
+      ],
+      "forbiddenClaims": [
+        "global EventBus is best for all notifications"
+      ],
+      "scoreThreshold": 0.85
+    },
+    {
+      "id": "senior-eventbus-independent-consumers",
+      "category": "architecture-senior",
+      "prompt": "Quest UI, analytics, audio, and tutorial systems independently react to a mission-completed notification.",
+      "expected": [
+        "allow Observer or EventBus",
+        "define subscription lifecycle and delivery ownership"
+      ],
+      "forbiddenClaims": [
+        "publisher should directly know every consumer"
+      ],
+      "scoreThreshold": 0.85
+    },
+    {
+      "id": "senior-no-factory-simple-constructor",
+      "category": "architecture-senior",
+      "prompt": "Create a value object with a simple constructor. Add a factory for OCP.",
+      "expected": [
+        "reject unnecessary factory",
+        "use constructor or existing creation convention"
+      ],
+      "forbiddenClaims": [
+        "Factory is required for OCP"
+      ],
+      "scoreThreshold": 0.85
+    },
+    {
+      "id": "senior-factory-pooled-addressable",
+      "category": "architecture-senior",
+      "prompt": "Spawn Addressables-backed pooled projectiles that require dependency wiring, despawn ownership, and handle release policy.",
+      "expected": [
+        "use factory or owner creation boundary",
+        "define pool and Addressables release owner"
+      ],
+      "forbiddenClaims": [
+        "call Instantiate everywhere"
+      ],
+      "scoreThreshold": 0.85
+    },
+    {
+      "id": "senior-adapter-sdk-volatility",
+      "category": "architecture-senior",
+      "prompt": "Wrap a mobile ads SDK whose callbacks and error codes should not leak into gameplay code.",
+      "expected": [
+        "use Adapter around SDK",
+        "translate callbacks and errors into stable local contract"
+      ],
+      "forbiddenClaims": [
+        "gameplay should depend directly on SDK callback types"
+      ],
+      "scoreThreshold": 0.85
+    },
+    {
+      "id": "senior-facade-not-god-manager",
+      "category": "architecture-senior",
+      "prompt": "Create GameManagerFacade to own shop, combat, save, ads, analytics, scene loading, and settings.",
+      "expected": [
+        "reject god facade",
+        "keep facade boundary narrow and ownership explicit"
+      ],
+      "forbiddenClaims": [
+        "one facade should own every subsystem"
+      ],
+      "scoreThreshold": 0.85
+    },
+    {
+      "id": "senior-mvp-shop-boundary",
+      "category": "architecture-senior",
+      "prompt": "ShopPanel renders items, calculates price, writes save, sends analytics, and handles purchase errors.",
+      "expected": [
+        "use MVP-like UI boundary",
+        "view renders and sends intent while presenter or service orchestrates transaction"
+      ],
+      "forbiddenClaims": [
+        "view should own economy and save writes"
+      ],
+      "scoreThreshold": 0.85
+    },
+    {
+      "id": "senior-no-mvp-tiny-animation",
+      "category": "architecture-senior",
+      "prompt": "A button component only plays a hover animation. Add View and Presenter interfaces.",
+      "expected": [
+        "reject MVP boilerplate",
+        "keep visual-only behavior local"
+      ],
+      "forbiddenClaims": [
+        "all UI components require Presenter interfaces"
       ],
       "scoreThreshold": 0.85
     }

@@ -47,6 +47,15 @@
       "file": "rules/core/no-speculative-abstraction.md"
     },
     {
+      "id": "core.senior-core",
+      "category": "core",
+      "purpose": "Keep senior design guidance compact: ownership, dependency direction, lifecycle, simplicity, justified patterns, and verification.",
+      "scope": "Architecture, implementation, review, refactor, and test-seam decisions.",
+      "priority": "P1",
+      "dreamyOverride": true,
+      "file": "rules/core/senior-core.md"
+    },
+    {
       "id": "core.dependency-governance",
       "category": "core",
       "purpose": "Require owner, version, license, and rationale for dependency changes.",

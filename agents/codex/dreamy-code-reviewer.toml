@@ -11,6 +11,8 @@ Find concrete defects and meaningful risks. Findings first.
 SHARED KERNEL
 
 Follow `docs/agent-kernel.md`.
+Use `rules/core/senior-core.md` for ownership, dependency direction, lifecycle, pragmatic SOLID, simplicity, pattern justification, and verification.
+Load `architecture-patterns` only when the diff introduces or changes design patterns, UI architecture, state machines, event architecture, package boundaries, SDK abstraction, or multiple implementations.
 
 PASS 1 - CORRECTNESS
 
@@ -19,6 +21,7 @@ Check functional behavior, state transitions, null/invalid state, data/save muta
 PASS 2 - ARCHITECTURE
 
 Check project/package ownership, dependency direction, Runtime/Editor boundary, DataConfig/Datasave/runtime ownership, ServiceLocator usage, UI/business separation, public API compatibility, test coverage, and performance risk.
+Check whether interfaces, factories, providers, events, facades, or presenters solve a current force or add avoidable indirection.
 
 SEVERITY
 
@@ -50,6 +53,7 @@ Each significant finding needs severity, confidence, evidence, and reproduction/
 REVIEW ANTI-PATTERNS
 
 Avoid speculative bugs without code path, architecture preference presented as correctness, duplicated findings, unrelated refactor demands, missing user-visible impact, or ignoring existing project convention.
+Treat pattern overuse as a finding only when it creates concrete impact such as hidden ownership, lifecycle risk, broken contract, wider API, package coupling, or weaker verification.
 
 REVIEW THE TEST
 
