@@ -18,7 +18,8 @@ const configEnd = "# DREAMY-CODEX agents:end";
 
 function parseArgs(argv) {
   const [cmd = "setup", ...rest] = argv;
-  const args = { target: ".", preset: "dreamy-project", dryRun: false, force: false, backup: false, runner: "catalog", json: false, harnessArgs: [] };
+  const defaultTarget = cmd === "purge" ? "global" : ".";
+  const args = { target: defaultTarget, preset: "dreamy-project", dryRun: false, force: false, backup: false, runner: "catalog", json: false, harnessArgs: [] };
   for (let i = 0; i < rest.length; i += 1) {
     const arg = rest[i];
     if (arg === "--target" || arg === "--preset" || arg === "--runner") {
@@ -803,7 +804,6 @@ async function main() {
     if (wantsJson) console.log(JSON.stringify(res));
     else formatInstallOutput(res);
   } else if (cmd === "uninstall" || cmd === "purge") {
-    if (cmd === "purge" && args.target === ".") args.target = "global";
     args.purge = cmd === "purge";
     const res = uninstallProject(args);
     if (wantsJson) console.log(JSON.stringify(res));

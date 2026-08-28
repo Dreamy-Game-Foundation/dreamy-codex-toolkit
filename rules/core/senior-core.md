@@ -12,6 +12,8 @@ Apply KISS, YAGNI, and pragmatic DRY: do not duplicate business knowledge, but a
 
 Prefer composition when behaviors vary independently. Use inheritance only when the subtype is genuinely substitutable under the same observable contract.
 
+Prefer small cohesive files for distinct owners, behaviours, data models, presenters, validators, or editor/runtime boundaries. Keep closely coupled code together, but do not merge unrelated responsibilities into one large file only for convenience.
+
 Introduce a pattern only after naming the concrete force, the simpler option, why that option is insufficient, the complexity added, and the verification path.
 
 Verify behavior with compile, tests, project inspection, build evidence, or diff review before claiming the design is supported, tested, or complete.

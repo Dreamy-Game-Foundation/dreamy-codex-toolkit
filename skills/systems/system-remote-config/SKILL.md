@@ -27,13 +27,14 @@ LocalDefaults -> Fetch -> Validate/Parse -> Cache -> Activate -> ConsumerService
 
 ## Required Inspection
 
-- Project `AGENTS.md`, local instructions, nearby code owners, tests, and recent diffs.
+- Project `AGENTS.md` when present, local instructions, nearby code owners, tests, and recent diffs.
 - Unity projects: `Packages/manifest.json`, `Packages/packages-lock.json`, asmdefs, scenes/prefabs/assets relevant to this domain.
 - Compatibility catalogs before Dreamy, Unity-package, or third-party API claims.
 - Existing runtime owner, persistence owner, UI/presenter owner, asset owner, and lifecycle cleanup path.
 
 ## Decision Tree
 
+- Use Remote Config only for values that need server-side tuning, segmentation, rollout, or operations ownership; static authored data without those needs can stay in ScriptableObject/DataConfig.
 - Cold start uses safe local defaults.
 - Invalid remote data does not corrupt runtime.
 - Activation timing explicit.
@@ -85,5 +86,5 @@ Only claim installed package, Unity, platform, or Dreamy behavior after inspecti
 
 ## References
 
-- Always read `AGENTS.md`, `rules/index.json`, and the relevant compatibility catalog before making ownership or API claims.
+- Read project `AGENTS.md` and `rules/index.json` when present; for global installs, use the packaged skill/rule context and relevant compatibility catalog before making ownership or API claims.
 - Use nearby project code and rule files as the reference source; add a skill-local reference only when repeated gotchas need more depth.

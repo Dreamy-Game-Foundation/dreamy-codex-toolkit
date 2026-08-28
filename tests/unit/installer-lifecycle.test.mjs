@@ -143,6 +143,23 @@ test("purge removes Dreamy state but preserves unrelated Codex and Agents files"
   assert.equal(repeated.alreadyRemoved, true);
 });
 
+test("purge defaults to global target from any working directory", () => {
+  const codexHome = fs.mkdtempSync(path.join(os.tmpdir(), "dreamy-codex-purge-default-"));
+  const agentsHome = fs.mkdtempSync(path.join(os.tmpdir(), "dreamy-agents-purge-default-"));
+  const project = fs.mkdtempSync(path.join(os.tmpdir(), "dreamy-random-project-"));
+  const env = { DREAMY_CODEX_HOME: codexHome, DREAMY_AGENTS_HOME: agentsHome };
+
+  JSON.parse(run(["install", "--target", "global", "--preset", "dreamy-project"], root, env));
+  const purge = JSON.parse(run(["purge"], project, env));
+
+  assert.equal(purge.action, "purge");
+  assert.equal(purge.targetKind, "global");
+  assert.equal(purge.status, "ok");
+  assert.equal(fs.existsSync(path.join(codexHome, ".dreamy-codex")), false);
+  assert.equal(fs.existsSync(path.join(project, "AGENTS.md")), false);
+  assert.equal(fs.existsSync(path.join(project, "toolkit.json")), false);
+});
+
 test("purge recovers malformed global markers and removes known managed artifacts", () => {
   const codexHome = fs.mkdtempSync(path.join(os.tmpdir(), "dreamy-codex-broken-purge-"));
   const agentsHome = fs.mkdtempSync(path.join(os.tmpdir(), "dreamy-agents-broken-purge-"));

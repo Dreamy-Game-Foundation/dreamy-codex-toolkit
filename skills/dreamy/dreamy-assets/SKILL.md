@@ -28,7 +28,7 @@ Asset request -> owner -> in-flight lookup -> load/progress -> cache/instantiate
 
 ## Required Inspection
 
-- Project `AGENTS.md`, local instructions, nearby code owners, tests, and recent diffs.
+- Project `AGENTS.md` when present, local instructions, nearby code owners, tests, and recent diffs.
 - Unity projects: `Packages/manifest.json`, `Packages/packages-lock.json`, asmdefs, scenes/prefabs/assets relevant to this domain.
 - Compatibility catalogs before Dreamy, Unity-package, or third-party API claims.
 - Existing runtime owner, persistence owner, UI/presenter owner, asset owner, and lifecycle cleanup path.
@@ -95,6 +95,6 @@ Dreamy package APIs are allowed only when backed by `compatibility/dreamy-packag
 
 ## References
 
-- Always read `AGENTS.md`, `rules/index.json`, and the relevant compatibility catalog before making ownership or API claims.
+- Read project `AGENTS.md` and `rules/index.json` when present; for global installs, use the packaged skill/rule context and relevant compatibility catalog before making ownership or API claims.
 - Read `references/load-ownership.md` when the task touches this skill's deeper load ownership behavior.
 - Read `references/addressables-policy.md` when the task touches this skill's deeper addressables policy behavior.

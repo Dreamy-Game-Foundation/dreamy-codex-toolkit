@@ -27,7 +27,7 @@ Request -> existing owner scan -> dependency graph -> data/service/UI/asset owne
 
 ## Required Inspection
 
-- Project `AGENTS.md`, local instructions, nearby code owners, tests, and recent diffs.
+- Project `AGENTS.md` when present, local instructions, nearby code owners, tests, and recent diffs.
 - Unity projects: `Packages/manifest.json`, `Packages/packages-lock.json`, asmdefs, scenes/prefabs/assets relevant to this domain.
 - Compatibility catalogs before Dreamy, Unity-package, or third-party API claims.
 - Existing runtime owner, persistence owner, UI/presenter owner, asset owner, and lifecycle cleanup path.
@@ -37,8 +37,10 @@ Request -> existing owner scan -> dependency graph -> data/service/UI/asset owne
 - If behavior is project-specific, keep it in project code.
 - If behavior is reusable across games, consider a package only after dependency direction is clean.
 - If state is static design data, route it to DataConfig.
+- If static authored data does not need Remote Config rollout, segmentation, live tuning, or operations ownership, a ScriptableObject asset is acceptable.
 - If state is persistent player-owned data, route it to Datasave.
 - If a leaf object needs a service, pass it from a root instead of resolving globally.
+- Prefer small cohesive files for separate owners, behaviours, data models, presenters, validators, and editor/runtime boundaries; keep tightly coupled code together, but avoid catch-all files.
 - If the owner is unclear, stop at a plan/architecture decision before mutating code.
 
 ## Workflow
@@ -93,7 +95,7 @@ Dreamy package APIs are allowed only when backed by `compatibility/dreamy-packag
 
 ## References
 
-- Always read `AGENTS.md`, `rules/index.json`, and the relevant compatibility catalog before making ownership or API claims.
+- Read project `AGENTS.md` and `rules/index.json` when present; for global installs, use the packaged skill/rule context and relevant compatibility catalog before making ownership or API claims.
 - Use `references/adr-mini-format.md` for nontrivial ownership decisions.
 - Use `references/ownership-decision-table.md` when data/service/package ownership is ambiguous.
 - Use nearby project code and rule files as the reference source; add a skill-local reference only when repeated gotchas need more depth.

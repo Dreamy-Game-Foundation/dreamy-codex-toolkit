@@ -29,7 +29,7 @@ Tool availability is not permission. The owner, target scope, dirty state, seria
 
 ## Required Inspection
 
-- Local `AGENTS.md`, `Packages/manifest.json`, `Packages/packages-lock.json`, and relevant asmdefs.
+- Local `AGENTS.md` when present, `Packages/manifest.json`, `Packages/packages-lock.json`, and relevant asmdefs.
 - Connected MCP/editor tool list, target Unity project path, Editor version, open scene, dirty state, prefab stage, and selected asset.
 - Target object path/GUID, components, overrides, serialized references, and likely consumers.
 - Console baseline before mutation.
@@ -60,6 +60,7 @@ Tool availability is not permission. The owner, target scope, dirty state, seria
 - Prefer Unity/editor-supported mutation over YAML edits.
 - Use filesystem edits only for source files or when Unity state is not involved.
 - MCP evidence supplements, but does not replace, project compatibility and harness evidence.
+- When MCP/editor automation creates a UI prefab, add the project's SafeArea component or safe-area container for full-screen, panel, popup, overlay, HUD, and mobile-facing prefabs unless an owning parent already provides safe-area padding.
 
 ## Anti-patterns
 

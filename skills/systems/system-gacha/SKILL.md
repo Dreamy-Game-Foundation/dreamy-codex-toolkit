@@ -27,7 +27,7 @@ PoolDefinition -> Weight/Rarity -> RollRequest -> CostTransaction -> Pity/Guaran
 
 ## Required Inspection
 
-- Project `AGENTS.md`, local instructions, nearby code owners, tests, and recent diffs.
+- Project `AGENTS.md` when present, local instructions, nearby code owners, tests, and recent diffs.
 - Unity projects: `Packages/manifest.json`, `Packages/packages-lock.json`, asmdefs, scenes/prefabs/assets relevant to this domain.
 - Compatibility catalogs before Dreamy, Unity-package, or third-party API claims.
 - Existing runtime owner, persistence owner, UI/presenter owner, asset owner, and lifecycle cleanup path.
@@ -85,5 +85,5 @@ Only claim installed package, Unity, platform, or Dreamy behavior after inspecti
 
 ## References
 
-- Always read `AGENTS.md`, `rules/index.json`, and the relevant compatibility catalog before making ownership or API claims.
+- Read project `AGENTS.md` and `rules/index.json` when present; for global installs, use the packaged skill/rule context and relevant compatibility catalog before making ownership or API claims.
 - Read `references/roll-integrity.md` when the task touches this skill's deeper roll integrity behavior.

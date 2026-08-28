@@ -28,7 +28,7 @@ Schema owner -> stable IDs -> authoring source -> validation -> runtime read-onl
 
 ## Required Inspection
 
-- Project `AGENTS.md`, local instructions, nearby code owners, tests, and recent diffs.
+- Project `AGENTS.md` when present, local instructions, nearby code owners, tests, and recent diffs.
 - Unity projects: `Packages/manifest.json`, `Packages/packages-lock.json`, asmdefs, scenes/prefabs/assets relevant to this domain.
 - Compatibility catalogs before Dreamy, Unity-package, or third-party API claims.
 - Existing runtime owner, persistence owner, UI/presenter owner, asset owner, and lifecycle cleanup path.
@@ -36,6 +36,7 @@ Schema owner -> stable IDs -> authoring source -> validation -> runtime read-onl
 ## Decision Tree
 
 - Designer-tuned static data goes to DataConfig.
+- If static authored data does not need Remote Config rollout, segmentation, live tuning, or operations ownership, a ScriptableObject asset can be the simpler source.
 - Player-owned mutable values go to Datasave.
 - Current HP, cooldown, target, panel tab, and match score stay runtime-owned.
 - Missing config must fail clearly or use an explicit fallback at service boundary.
@@ -94,6 +95,6 @@ Dreamy package APIs are allowed only when backed by `compatibility/dreamy-packag
 
 ## References
 
-- Always read `AGENTS.md`, `rules/index.json`, and the relevant compatibility catalog before making ownership or API claims.
+- Read project `AGENTS.md` and `rules/index.json` when present; for global installs, use the packaged skill/rule context and relevant compatibility catalog before making ownership or API claims.
 - Read `references/schema-validation.md` when the task touches this skill's deeper schema validation behavior.
 - Read `references/key-stability.md` when the task touches this skill's deeper key stability behavior.

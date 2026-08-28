@@ -28,7 +28,7 @@ Screen/popup/overlay -> panel lifecycle -> bind state -> render -> collect inten
 
 ## Required Inspection
 
-- Project `AGENTS.md`, local instructions, nearby code owners, tests, and recent diffs.
+- Project `AGENTS.md` when present, local instructions, nearby code owners, tests, and recent diffs.
 - Unity projects: `Packages/manifest.json`, `Packages/packages-lock.json`, asmdefs, scenes/prefabs/assets relevant to this domain.
 - Compatibility catalogs before Dreamy, Unity-package, or third-party API claims.
 - Existing runtime owner, persistence owner, UI/presenter owner, asset owner, and lifecycle cleanup path.
@@ -63,6 +63,7 @@ Screen/popup/overlay -> panel lifecycle -> bind state -> render -> collect inten
 - Bind/unbind symmetrically.
 - Back handling lives at UI manager/root/presenter level.
 - Use safe-area and target aspect checks for mobile screens.
+- MCP/editor-created UI prefabs include the project's SafeArea component or safe-area container for full-screen, panel, popup, overlay, HUD, and mobile-facing prefabs unless an owning parent already provides it.
 
 ## Anti-patterns
 
@@ -96,6 +97,6 @@ Dreamy package APIs are allowed only when backed by `compatibility/dreamy-packag
 
 ## References
 
-- Always read `AGENTS.md`, `rules/index.json`, and the relevant compatibility catalog before making ownership or API claims.
+- Read project `AGENTS.md` and `rules/index.json` when present; for global installs, use the packaged skill/rule context and relevant compatibility catalog before making ownership or API claims.
 - Read `references/panel-lifecycle.md` when the task touches this skill's deeper panel lifecycle behavior.
 - Read `references/presenter-boundary.md` when the task touches this skill's deeper presenter boundary behavior.

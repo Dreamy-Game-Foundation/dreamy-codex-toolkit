@@ -27,7 +27,7 @@ Canvas -> Layout -> Binding -> Input/Raycast -> StateRender -> Transition -> Cle
 
 ## Required Inspection
 
-- Project `AGENTS.md`, local instructions, nearby code owners, tests, and recent diffs.
+- Project `AGENTS.md` when present, local instructions, nearby code owners, tests, and recent diffs.
 - Unity projects: `Packages/manifest.json`, `Packages/packages-lock.json`, asmdefs, scenes/prefabs/assets relevant to this domain.
 - Compatibility catalogs before Dreamy, Unity-package, or third-party API claims.
 - Existing runtime owner, persistence owner, UI/presenter owner, asset owner, and lifecycle cleanup path.
@@ -36,7 +36,7 @@ Canvas -> Layout -> Binding -> Input/Raycast -> StateRender -> Transition -> Cle
 
 - Disable decorative raycasts.
 - Avoid layout rebuild storms.
-- Safe-area/aspect checks for mobile.
+- Add safe-area/aspect handling for mobile-facing UI prefabs; MCP/editor-created full-screen, panel, popup, overlay, or HUD prefabs should include the project's SafeArea component/container unless a parent already owns it.
 - If the owner is unclear, stop at a plan/architecture decision before mutating code.
 
 ## Workflow
@@ -85,5 +85,5 @@ Only claim installed package, Unity, platform, or Dreamy behavior after inspecti
 
 ## References
 
-- Always read `AGENTS.md`, `rules/index.json`, and the relevant compatibility catalog before making ownership or API claims.
+- Read project `AGENTS.md` and `rules/index.json` when present; for global installs, use the packaged skill/rule context and relevant compatibility catalog before making ownership or API claims.
 - Use nearby project code and rule files as the reference source; add a skill-local reference only when repeated gotchas need more depth.

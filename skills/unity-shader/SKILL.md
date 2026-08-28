@@ -27,7 +27,7 @@ ShaderSource -> Keywords/Variants -> MaterialUsage -> BuildStripPolicy -> Runtim
 
 ## Required Inspection
 
-- Project AGENTS.md, render pipeline assets, quality settings, scenes, prefabs, materials, shaders, and relevant asmdefs.
+- Project AGENTS.md when present, render pipeline assets, quality settings, scenes, prefabs, materials, shaders, and relevant asmdefs.
 - Packages/manifest.json and Packages/packages-lock.json for render pipeline, Cinemachine, or navigation packages.
 - Existing profiling evidence before claiming an optimization.
 

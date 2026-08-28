@@ -1,7 +1,7 @@
 <!-- DREAMY-CODEX:START schema=1 -->
 ## Dreamy Codex Toolkit
 
-Use `toolkit.json` as the canonical version, status, maturity, module, preset, skill, and harness source.
+Use `toolkit.json` as the canonical version, status, maturity, module, preset, skill, and harness source when this repository contains it. For global installs in other projects, do not require a project-local `toolkit.json`; use the installed Dreamy skills/rules and inspect project files only when they exist.
 
 Safety gates:
 

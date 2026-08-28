@@ -27,7 +27,7 @@ Owner -> CancellationToken -> UniTask/WhenAll -> ExceptionObservation -> Continu
 
 ## Required Inspection
 
-- Project `AGENTS.md`, local instructions, nearby code owners, tests, and recent diffs.
+- Project `AGENTS.md` when present, local instructions, nearby code owners, tests, and recent diffs.
 - Unity projects: `Packages/manifest.json`, `Packages/packages-lock.json`, asmdefs, scenes/prefabs/assets relevant to this domain.
 - Compatibility catalogs before Dreamy, Unity-package, or third-party API claims.
 - Existing runtime owner, persistence owner, UI/presenter owner, asset owner, and lifecycle cleanup path.
@@ -91,7 +91,7 @@ Only claim third-party APIs or version behavior when the package is present in `
 
 ## References
 
-- Always read `AGENTS.md`, `rules/index.json`, and the relevant compatibility catalog before making ownership or API claims.
+- Read project `AGENTS.md` and `rules/index.json` when present; for global installs, use the packaged skill/rule context and relevant compatibility catalog before making ownership or API claims.
 - Read `references/cancellation.md` when the task touches this skill's deeper cancellation behavior.
 - Read `references/fire-and-forget.md` when the task touches this skill's deeper fire and forget behavior.
 - Read `references/player-loop.md` when the task touches this skill's deeper player loop behavior.
