@@ -1,6 +1,6 @@
 {
   "name": "dreamy-codex-toolkit",
-  "version": "0.1.0-alpha.2",
+  "version": "0.1.0-alpha.3",
   "private": false,
   "type": "module",
   "description": "Codex toolkit for Dreamy Unity projects and packages.",

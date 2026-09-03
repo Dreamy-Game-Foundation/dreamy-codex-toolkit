@@ -2,7 +2,7 @@
   "$schema": "./schemas/toolkit.schema.json",
   "schemaVersion": 1,
   "name": "dreamy-codex-toolkit",
-  "version": "0.1.0-alpha.2",
+  "version": "0.1.0-alpha.3",
   "phase": "alpha hardening baseline",
   "status": "alpha",
   "sourceLedger": "docs/research/source-ledger.json",

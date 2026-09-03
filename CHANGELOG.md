@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.0-alpha.3
+
+- Bumped the toolkit package version and synchronized package metadata for the next updateable release.
+
 ## 0.1.0-alpha.2
 
 - Repaired native Codex skill paths for project and user installs.

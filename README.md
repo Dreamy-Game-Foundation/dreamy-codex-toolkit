@@ -1,6 +1,6 @@
 # Dreamy Codex Toolkit
 
-[![Version](https://img.shields.io/badge/version-0.1.0--alpha.2-blue.svg)](toolkit.json)
+[![Version](https://img.shields.io/badge/version-0.1.0--alpha.3-blue.svg)](toolkit.json)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Node: >=20](https://img.shields.io/badge/node-%3E%3D20-green.svg)](package.json)
 
