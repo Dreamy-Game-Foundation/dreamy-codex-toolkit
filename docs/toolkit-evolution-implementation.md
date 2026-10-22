@@ -12,7 +12,7 @@ This tracks implementation of the [ECC / Superpowers / OmO plan](plans/DREAMY_TO
 | P0.4 | Preserve 4-leg matrix, fail-fast off, pack before release, upload evidence | Live GitHub 4/4 jobs green on Linux/Windows × Node 20/22; source-bound tarball evidence |
 | P0.5 | Separate spawn, exit, empty output and JSON diagnostics | EPERM/empty/degraded fixtures |
 | P1.1 | Context inventory for selected/managed installation; bytes distinct from tokens | CLI report, tokens=null when unmeasured |
-| P1.2 | Compact authoring profile + budget validation; two compact pilots | Entry bytes reduced; semantic retention needs A/B |
+| P1.2 | Compact authoring profile + budget validation; two compact pilots | Four authorized model batches passed eight probes per variant; broader A/B still pending |
 | P1.3 | Bootstrap renders actual installed agent names | Existing lifecycle tests; no default preset migration |
 | P2.1 | Native event decoder, profile policy, version/unknown-trust doctor | Adapter fixtures and read-only native discovery/trust probe; operational is deliberately not established |
 | P2.2 | One process/explicit handlers, output/input budgets, no model calls | Native protocol/controls tests, no-op process profiling |
@@ -50,7 +50,7 @@ Compact entrypoint byte changes from the baseline commit:
 | unity-foundations | 4,345 | 2,250 | 48.2% |
 | unity-testing | 4,233 | 2,212 | 47.7% |
 
-These are source byte reductions, not observed token or task-success improvements.
+These percentages measure source bytes. A separate authorized model pilot below measured total input tokens; neither measurement establishes general task-success improvement.
 
 ## Observed external checks
 
@@ -65,7 +65,15 @@ The [first pushed GitHub run](https://github.com/Dreamy-Game-Foundation/dreamy-c
 
 Codex app-server 0.163.0 discovered all four minimal-profile definitions in the local consumer fixture and reported `enabled=true`, `trustStatus=untrusted` for each. A separate /tmp project was correctly excluded because its project config layer was untrusted. This establishes native discovery and diagnostics, not event delivery. `hooks probe` can reproduce this check without model calls; `hooks smoke --native` waits for trust review before starting its SessionStart-only smoke.
 
-A four-call source-entry retention pilot is implemented with a pinned baseline and the configured runtime/model. Its preview passes. Execution is pending explicit payload/destination authorization after automatic approval review rejected sending skill text to the model service. No model trial or quality result is fabricated.
+The user explicitly authorized the four-call source-entry retention pilot after the initial automatic approval rejection. It ran through Codex 0.163.0 with model `gpt-6.1-sol`, reasoning `low`, using the pinned baseline and current compact entries. All four batches passed: each variant answered the same eight unique decision probes correctly (16 observed answers total), with zero tool calls. The [retained measured report](evidence/skill-retention-pilot-20261022.json) contains actual decisions, source hashes, runtime token counters and raw-artifact hashes; raw runtime traces remain local.
+
+| Skill | Baseline input tokens | Compact input tokens | Difference |
+|---|---:|---:|---:|
+| unity-foundations | 11,374 | 10,858 | 516 |
+| unity-testing | 11,365 | 10,859 | 506 |
+| Combined | 22,739 | 21,717 | 1,022 (4.49%) |
+
+The four batches consumed 44,456 input and 242 output tokens (44,698 total); cache/reasoning-output counters were zero. These runtime input totals include inherited context, so the ~48% entry-byte reduction corresponds to ~4.5% measured input reduction in this small pilot. Fixed-choice probes, one batch per variant and no no-skill control cannot establish causal skill value, general coding quality or native-hook gains. No extra model trials or skill promotions were performed.
 
 ## Deliberate contract choices
 

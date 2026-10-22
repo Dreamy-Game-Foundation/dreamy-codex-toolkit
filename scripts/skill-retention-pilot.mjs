@@ -151,7 +151,7 @@ if (!args.includes("--execute")) {
       cwd: workspace,
       includeLayers: false,
     });
-    report.model = config.config.model;
+    report.model = option("--model", config.config.model);
     report.reasoning = config.config.model_reasoning_effort;
     const skills = await server.request("skills/list", {
       cwds: [workspace],
@@ -169,6 +169,7 @@ if (!args.includes("--execute")) {
     for (const trial of specification) {
       const thread = await server.request("thread/start", {
         cwd: workspace,
+        model: report.model,
         ephemeral: true,
         sandbox: "read-only",
         approvalPolicy: "never",
