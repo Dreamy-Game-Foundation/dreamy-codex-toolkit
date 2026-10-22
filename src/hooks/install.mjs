@@ -20,20 +20,31 @@ function paths(root) {
     policy: inside(root, ".dreamy-codex/hook-policy.json"),
   };
 }
-function treeHash(root) {
+const runtimeSources = [
+  "hooks",
+  "src/hooks",
+  "src/knowledge",
+  "src/lib",
+  "src/verification-plan.mjs",
+];
+function treeHash(root, sources = [""]) {
   const parts = [];
   function walk(dir) {
     for (const f of fs.readdirSync(dir).sort()) {
       const full = inside(root, path.relative(root, path.join(dir, f)));
-      if (fs.statSync(full).isDirectory()) walk(full);
-      else
-        parts.push([
-          path.relative(root, full).replaceAll("\\", "/"),
-          hash(fs.readFileSync(full)),
-        ]);
+      visit(full);
     }
   }
-  walk(root);
+  function visit(full) {
+    if (fs.statSync(full).isDirectory()) walk(full);
+    else
+      parts.push([
+        path.relative(root, full).replaceAll("\\", "/"),
+        hash(fs.readFileSync(full)),
+      ]);
+  }
+  for (const relative of sources) visit(inside(root, relative));
+  parts.sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0));
   return hash(JSON.stringify(parts));
 }
 function quotePosix(s) {
@@ -44,7 +55,7 @@ function quoteWindows(s) {
     throw Error("Unsupported character in Windows hook command path");
   return `"${s}"`;
 }
-function nativeCommand(root, p) {
+function nativeCommand(root, p, revision, policyRevision) {
   const q = process.platform === "win32" ? quoteWindows : quotePosix;
   return [
     process.execPath,
@@ -53,6 +64,10 @@ function nativeCommand(root, p) {
     root,
     "--policy",
     p.policy,
+    "--runtime-revision",
+    revision,
+    "--policy-revision",
+    policyRevision,
   ]
     .map(q)
     .join(" ");
@@ -112,7 +127,8 @@ export function configureHooks(
   if (fs.existsSync(p.journal))
     throw Error("Interrupted hook transaction; run hooks recover first");
   const next = subtractOwned(config, old),
-    entries = {};
+    entries = {},
+    revision = profile === "off" ? null : treeHash(toolkitRoot, runtimeSources);
   if (profile !== "off")
     for (const [event, ids] of Object.entries(events)) {
       if (
@@ -125,7 +141,12 @@ export function configureHooks(
         hooks: [
           {
             type: "command",
-            command: nativeCommand(root, p),
+            command: nativeCommand(
+              root,
+              p,
+              revision,
+              hash(JSON.stringify(policy)),
+            ),
             timeout: event === "Interrupt" ? 1 : 5,
             ...(["SessionStart"].includes(event)
               ? { additionalContextLimit: 200 }
@@ -175,16 +196,16 @@ export function configureHooks(
       // Stage before switching the native definition; user hooks are untouched.
       const stage = inside(root, `.dreamy-codex/hooks-stage-${process.pid}`);
       fs.rmSync(stage, { recursive: true, force: true });
-      for (const relative of [
-        "src/hooks",
-        "src/knowledge",
-        "src/lib",
-        "src/verification-plan.mjs",
-        "hooks",
-      ]) {
+      for (const relative of runtimeSources) {
         const dest = inside(stage, relative);
         fs.mkdirSync(path.dirname(dest), { recursive: true });
         fs.cpSync(path.join(toolkitRoot, relative), dest, { recursive: true });
+      }
+      if (treeHash(stage) !== revision) {
+        fs.rmSync(stage, { recursive: true, force: true });
+        throw Error(
+          "Hook runtime source changed while staging; retry configuration",
+        );
       }
       atomicJson(p.journal, {
         schemaVersion: 1,

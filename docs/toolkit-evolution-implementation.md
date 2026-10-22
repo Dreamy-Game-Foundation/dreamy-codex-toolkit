@@ -9,7 +9,7 @@ This tracks implementation of the [ECC / Superpowers / OmO plan](plans/DREAMY_TO
 | P0.1 | Explicit sorted test files, no shell glob; preserves child exit status | Portable process tests; Linux Node 20/22/24 |
 | P0.2 | npm JavaScript entrypoint through current Node; isolated tarball install | Actual pack smoke, including paths with spaces |
 | P0.3 | Schema/version/source/run/tarball freshness and packed CLI checks | Stale/modified/missing report tests; alpha release gate |
-| P0.4 | Preserve 4-leg matrix, fail-fast off, pack before release, upload evidence | YAML parsed; live GitHub/Windows run remains pending |
+| P0.4 | Preserve 4-leg matrix, fail-fast off, pack before release, upload evidence | Live GitHub 4/4 jobs green on Linux/Windows × Node 20/22; source-bound tarball evidence |
 | P0.5 | Separate spawn, exit, empty output and JSON diagnostics | EPERM/empty/degraded fixtures |
 | P1.1 | Context inventory for selected/managed installation; bytes distinct from tokens | CLI report, tokens=null when unmeasured |
 | P1.2 | Compact authoring profile + budget validation; two compact pilots | Entry bytes reduced; semantic retention needs A/B |
@@ -35,11 +35,11 @@ This tracks implementation of the [ECC / Superpowers / OmO plan](plans/DREAMY_TO
 
 ## Local checks
 
-The latest full suite contains **60 tests: 59 pass, 1 Windows-only skip on Linux**. Validation covers 83 indexed skills and the registered schemas. Linux Node 20.20.2 and 22.23.3 binaries were downloaded to /tmp from nodejs.org and checked against their release SHA-256 manifests; Node 24.19.0 was already installed. Final matrix and package logs are produced under `/tmp/dreamy-evolution-evidence/`.
+The latest full suite contains **61 tests: 60 pass, 1 Windows-only skip on Linux**. Validation covers 83 indexed skills and the registered schemas. Linux Node 20.20.2 and 22.23.3 binaries were downloaded to /tmp from nodejs.org and checked against their release SHA-256 manifests; Node 24.19.0 was already installed. Final matrix and package logs are produced under `/tmp/dreamy-evolution-evidence/`.
 
 Package smoke creates the actual tarball, installs it in an isolated prefix with a space-containing path and invokes the installed CLI. It verifies structural validation, context inventory and installed hook fixture; report generation checks that source did not change during packing. Alpha release checking preserves existing Unity/compatibility/semantic production blockers.
 
-The final-source no-op cold-process profile (30 Linux/Node 24 trials) observed p50 ~31 ms / p95 ~37 ms, zero visible bytes and zero model calls. `scripts/hook-profile.mjs` reruns the measurement on current source; it is process/adapter latency, not native event-delivery evidence.
+The local no-op cold-process profile (30 Linux/Node 24 trials) observed p50 ~30 ms / p95 ~37 ms, zero visible bytes and zero model calls. `scripts/hook-profile.mjs` reruns the measurement on current source; it is process/adapter latency, not native event-delivery evidence.
 
 `npm run benchmark:selftest` passed 3/3 synthetic plumbing trials. The development evolution cohort reported 180 not-run trials, 0 attempted, because no isolated native/model adapter was configured. It intentionally made no model calls and supplies no quality or token-savings claim. `trial-context.json` tells a configured external adapter which treatment/case/model labels it must implement; runtime/model/native-event receipts are required before counting native trials.
 
@@ -52,21 +52,35 @@ Compact entrypoint byte changes from the baseline commit:
 
 These are source byte reductions, not observed token or task-success improvements.
 
+## Observed external checks
+
+The [first pushed GitHub run](https://github.com/Dreamy-Game-Foundation/dreamy-codex-toolkit/actions/runs/39730155583) passed all four jobs at commit `265f4b480424d96c44ac0ec010ad3669754ab7df`: Ubuntu/Windows × Node 20.20.2/22.23.3. Test, installed hook fixture, deterministic eval, compatibility, actual tarball install and alpha release gate all passed. The [retained evidence summary](evidence/toolkit-evolution-ci-20261022.json) records each source/run/tarball hash. That initial run contained 60 tests; the additional runtime/policy trust-revision regression brings the current local suite to 61. Every later source commit must pass its own matrix.
+
+| Runner | Node | Hook process p50 | p95 | Visible bytes / model calls |
+|---|---|---:|---:|---|
+| Ubuntu | 20 | 29.6 ms | 31.5 ms | 0 / 0 |
+| Ubuntu | 22 | 45.3 ms | 47.6 ms | 0 / 0 |
+| Windows | 20 | 88.2 ms | 94.2 ms | 0 / 0 |
+| Windows | 22 | 89.5 ms | 118.8 ms | 0 / 0 |
+
+Codex app-server 0.163.0 discovered all four minimal-profile definitions in the local consumer fixture and reported `enabled=true`, `trustStatus=untrusted` for each. A separate /tmp project was correctly excluded because its project config layer was untrusted. This establishes native discovery and diagnostics, not event delivery. `hooks probe` can reproduce this check without model calls; `hooks smoke --native` waits for trust review before starting its SessionStart-only smoke.
+
+A four-call source-entry retention pilot is implemented with a pinned baseline and the configured runtime/model. Its preview passes. Execution is pending explicit payload/destination authorization after automatic approval review rejected sending skill text to the model service. No model trial or quality result is fabricated.
+
 ## Deliberate contract choices
 
 - Hook ownership uses its own version-1 sidecar. Existing installer v1/v2 compatibility remains; a v3 installer migration was unnecessary for isolated opt-in hooks.
 - Evolution commands target a project. Global policy/trust/skill writes and cross-project knowledge promotion remain disabled.
 - No embedding service, resident observer, auto model routing, agent swarm, self-push or self-publish was introduced.
 - Candidate promotion copies only reviewed SKILL.md to a new project directory. Toolkit-wide promotion remains a normal source/catalog/module change. Reports validate actual artifact hashes but still need a reviewer to assess behavioral truth.
-- Native receipts generated by explicit fixture invocation cannot establish that Codex delivered an event. Doctor therefore does not infer operational=true from such files.
+- Native receipts generated by explicit fixture invocation cannot establish that Codex delivered an event. Doctor therefore does not infer operational=true from such files. Runtime and policy revision hashes are included in native command definitions, so managed updates require exact-definition review again. They are review markers, not a claim that mutable local scripts are cryptographically attested by Codex.
 - Presets keep their existing meaning. No lean-selection default was enabled without a measured discovery/task-quality comparison.
 
 ## External acceptance still required
 
-1. **Live GitHub/Windows matrix:** source changes have not been committed/pushed by this task. Run the CI workflow at the resulting commit; Linux evidence does not substitute for Windows/PowerShell.
-2. **Native trust and delivery:** review the concrete hook definition using Codex `/hooks` in the target runtime. No trust-bypass flag or trusted-hash edit was used. The current workspace `.codex/` directory is read-only; the task did not alter its permissions or install active hooks there. `hooks configure --target ... --dry-run` makes a reviewable proposal for a writable consumer.
-3. **Semantic A/B and skill promotion:** configure the isolated adapter, select the intended model/budget and inspect real trial artifacts. No candidate was promoted on synthetic test evidence.
-4. **Unity/build/device checks:** no Unity C#/asset changes were made by this initiative. Existing production blockers and tested-matrix gaps remain visible.
-5. **Opt-in rollout observation:** one week across real workspaces cannot be replaced by a same-session unit run.
+1. **Native trust and delivery:** review the concrete hook definition using Codex `/hooks` in the target runtime. No trust-bypass flag or trusted-hash edit was used. The current workspace `.codex/` directory is read-only; the task did not alter its permissions or install active hooks there. The reviewable local fixture is `.dreamy/native-consumer`; open Codex there, review its four definitions with `/hooks`, then run `hooks probe` and `hooks smoke --native` against that target. Additional tool/compact/interrupt/Stop acceptance remains a real-session task.
+2. **Semantic A/B and skill promotion:** configure the isolated adapter, select the intended model/budget and inspect real trial artifacts. No candidate was promoted on synthetic test evidence.
+3. **Unity/build/device checks:** no Unity C#/asset changes were made by this initiative. Existing production blockers and tested-matrix gaps remain visible.
+4. **Opt-in rollout observation:** one week across real workspaces cannot be replaced by a same-session unit run. Start only after native trust and critical semantic gates pass; retain daily context/latency/failure receipts, review stale lessons and rollback any regression before broadening profiles.
 
 The implementation is reviewable and locally tested; the whole multi-week initiative must not be marked operationally or semantically complete until these gates have real evidence. See [operating guide](toolkit-evolution.md) for commands and rollback.

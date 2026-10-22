@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "kind": "observed-github-ci",
+  "observedDate": "2026-10-22",
+  "runId": 39730155583,
+  "sourceCommit": "265f4b480424d96c44ac0ec010ad3669754ab7df",
+  "url": "https://github.com/Dreamy-Game-Foundation/dreamy-codex-toolkit/actions/runs/39730155583",
+  "conclusion": "success",
+  "scope": "First pushed implementation; subsequent source revisions require their own CI run",
+  "jobs": [
+    {
+      "artifact": "evidence-ubuntu-latest-20",
+      "platform": "linux",
+      "nodeVersion": "v20.20.2",
+      "runId": "39730155583-1-ubuntu-latest-20",
+      "sourceFingerprint": "e54994989bc418c7a55593c1c6d95e1d2e4118c6ef3f9913260f83b0822ab528",
+      "tarballSha256": "041b7fc7d138336e1449c4a0e6e2faabc2ade7bd313f0c563ce686808ac54e7c",
+      "packedCliChecks": {
+        "validate": "pass",
+        "context": "pass",
+        "hookFixture": "pass"
+      },
+      "packStatus": "ok",
+      "hookProfile": {
+        "samples": 30,
+        "p50Ms": 29.553168000000028,
+        "p95Ms": 31.529402,
+        "visibleBytes": 0,
+        "modelCalls": 0
+      }
+    },
+    {
+      "artifact": "evidence-ubuntu-latest-22",
+      "platform": "linux",
+      "nodeVersion": "v22.23.3",
+      "runId": "39730155583-1-ubuntu-latest-22",
+      "sourceFingerprint": "e54994989bc418c7a55593c1c6d95e1d2e4118c6ef3f9913260f83b0822ab528",
+      "tarballSha256": "041b7fc7d138336e1449c4a0e6e2faabc2ade7bd313f0c563ce686808ac54e7c",
+      "packedCliChecks": {
+        "validate": "pass",
+        "context": "pass",
+        "hookFixture": "pass"
+      },
+      "packStatus": "ok",
+      "hookProfile": {
+        "samples": 30,
+        "p50Ms": 45.28290799999991,
+        "p95Ms": 47.6494100000001,
+        "visibleBytes": 0,
+        "modelCalls": 0
+      }
+    },
+    {
+      "artifact": "evidence-windows-latest-20",
+      "platform": "win32",
+      "nodeVersion": "v20.20.2",
+      "runId": "39730155583-1-windows-latest-20",
+      "sourceFingerprint": "54407a1d8283681f18cf35875b2f374da186f1eff5576d402587013150a3839a",
+      "tarballSha256": "f974b59d85c8aa75f86bcc061cc1c85172196aecc43353584d96c45f72f1ec69",
+      "packedCliChecks": {
+        "validate": "pass",
+        "context": "pass",
+        "hookFixture": "pass"
+      },
+      "packStatus": "ok",
+      "hookProfile": {
+        "samples": 30,
+        "p50Ms": 88.1871000000001,
+        "p95Ms": 94.22409999999999,
+        "visibleBytes": 0,
+        "modelCalls": 0
+      }
+    },
+    {
+      "artifact": "evidence-windows-latest-22",
+      "platform": "win32",
+      "nodeVersion": "v22.23.3",
+      "runId": "39730155583-1-windows-latest-22",
+      "sourceFingerprint": "54407a1d8283681f18cf35875b2f374da186f1eff5576d402587013150a3839a",
+      "tarballSha256": "f974b59d85c8aa75f86bcc061cc1c85172196aecc43353584d96c45f72f1ec69",
+      "packedCliChecks": {
+        "validate": "pass",
+        "context": "pass",
+        "hookFixture": "pass"
+      },
+      "packStatus": "ok",
+      "hookProfile": {
+        "samples": 30,
+        "p50Ms": 89.51710000000003,
+        "p95Ms": 118.83590000000004,
+        "visibleBytes": 0,
+        "modelCalls": 0
+      }
+    }
+  ],
+  "limitations": [
+    "Process latency is not native event-delivery latency",
+    "Source fingerprints bind checkout bytes; Windows and Linux line endings can differ",
+    "No model quality, token savings or Unity runtime claim"
+  ]
+}

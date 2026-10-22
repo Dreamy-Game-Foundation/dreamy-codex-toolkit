@@ -361,6 +361,41 @@ test("installed fixture smoke is not native lifecycle proof", () => {
   assert.equal(r.status, "pass");
   assert.equal(r.nativeLifecycle.status, "not-run");
 });
+test("runtime and policy changes alter native definitions so exact trust requires review", (t) => {
+  const source = workspace(t),
+    root = workspace(t);
+  for (const rel of [
+    "hooks",
+    "src/hooks",
+    "src/knowledge",
+    "src/lib",
+    "src/verification-plan.mjs",
+  ]) {
+    fs.mkdirSync(path.dirname(path.join(source, rel)), { recursive: true });
+    fs.cpSync(path.join(toolkit, rel), path.join(source, rel), {
+      recursive: true,
+    });
+  }
+  const config = path.join(root, ".codex/hooks.json");
+  const command = () => readJson(config).hooks.SessionStart[0].hooks[0].command;
+  configureHooks(source, root);
+  const first = command();
+  configureHooks(source, root);
+  assert.equal(command(), first);
+  fs.appendFileSync(
+    path.join(source, "src/hooks/handlers/session-context.mjs"),
+    "\n// updated fixture runtime\n",
+  );
+  configureHooks(source, root);
+  const second = command();
+  assert.notEqual(second, first);
+  configureHooks(source, root, { maxOutputBytes: 500 });
+  assert.notEqual(command(), second);
+  assert.equal(
+    readJson(path.join(root, ".dreamy-codex/hook-policy.json")).maxOutputBytes,
+    500,
+  );
+});
 test("verification does not claim toolkit checks verify unrelated source", (t) => {
   const root = workspace(t);
   const r = runVerification(toolkit, root, {
