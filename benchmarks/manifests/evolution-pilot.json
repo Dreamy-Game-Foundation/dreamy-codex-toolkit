@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "name": "evolution-native-development-pilot",
+  "purpose": "development",
+  "releaseEligible": false,
+  "model": "adapter-declared-required",
+  "reasoning": "adapter-declared-required",
+  "repetitions": 3,
+  "timeoutMs": 180000,
+  "adapter": {
+    "executable": "node",
+    "args": [
+      "{repoRoot}/benchmarks/adapters/evolution-exec.mjs",
+      "{promptFile}",
+      "{outputFile}"
+    ]
+  },
+  "caseFiles": [
+    "../cases/evolution-pilot.json"
+  ],
+  "treatments": [
+    {
+      "id": "B0",
+      "description": "Development decision probes; native execution capabilities must be declared by external adapter. Never release proof.",
+      "sources": [
+        {
+          "root": "DREAMY_BASELINE_ROOT",
+          "paths": [
+            "templates/AGENTS.managed.md"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "B1",
+      "description": "Development decision probes; native execution capabilities must be declared by external adapter. Never release proof.",
+      "sources": [
+        {
+          "root": "repo",
+          "paths": [
+            "docs/toolkit-ci-triage.md"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "B2",
+      "description": "Development decision probes; native execution capabilities must be declared by external adapter. Never release proof.",
+      "sources": [
+        {
+          "root": "repo",
+          "paths": [
+            "hooks/profiles.json",
+            "docs/toolkit-evolution.md"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "B3",
+      "description": "Development decision probes; native execution capabilities must be declared by external adapter. Never release proof.",
+      "sources": [
+        {
+          "root": "repo",
+          "paths": [
+            "docs/toolkit-evolution.md"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "B4",
+      "description": "Development decision probes; native execution capabilities must be declared by external adapter. Never release proof.",
+      "sources": [
+        {
+          "root": "DREAMY_CANDIDATE_ROOT",
+          "paths": [
+            "SKILL.md"
+          ]
+        }
+      ]
+    }
+  ]
+}

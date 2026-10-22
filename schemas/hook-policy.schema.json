@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dreamy.tools/codex/schemas/hook-policy.schema.json",
+  "title": "Dreamy Hook Policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "profile"],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "profile": {
+      "enum": ["off", "minimal", "standard", "strict"]
+    },
+    "disabled": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "root": {
+      "type": "string"
+    },
+    "recordReceipts": {
+      "type": "boolean"
+    },
+    "maxInputBytes": { "type": "integer", "minimum": 1024, "maximum": 65536 },
+    "maxOutputBytes": { "type": "integer", "minimum": 64, "maximum": 1000 },
+    "deadlineMs": { "type": "integer", "minimum": 1, "maximum": 250 },
+    "taskContextBytes": { "type": "integer", "minimum": 0, "maximum": 2000 }
+  }
+}

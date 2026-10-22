@@ -1,3 +1,4 @@
+import { artifactDirectory } from "./lib/source-fingerprint.mjs";
 import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
@@ -34,7 +35,7 @@ export function collectCompatibilityIssues(dreamy = readJson("compatibility/drea
 }
 
 export function readCompatibilityEvidence() {
-  const evidencePath = path.join(root, "release", "compatibility-evidence.json");
+  const evidencePath = path.join(artifactDirectory(root), "compatibility-evidence.json");
   if (!fs.existsSync(evidencePath)) return null;
   return JSON.parse(fs.readFileSync(evidencePath, "utf8"));
 }

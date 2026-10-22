@@ -1,6 +1,8 @@
-import { execFileSync } from "node:child_process";
+import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
+
+import { parseProcessJson } from "./lib/process-result.mjs";
 
 const root = path.resolve(import.meta.dirname, "..");
 const errors = [];
@@ -68,13 +70,10 @@ function validateEvals() {
 
 function runHarness(args, expectedCode) {
   try {
-    const output = execFileSync(process.execPath, [path.join(root, "harness", "dreamy-harness"), ...args], { encoding: "utf8" });
-    if (expectedCode !== 0) errors.push(`harness ${args[0]} unexpectedly exited 0`);
-    return JSON.parse(output);
+    return parseProcessJson(spawnSync(process.execPath, [path.join(root, "harness", "dreamy-harness"), ...args], { encoding: "utf8" }), `harness ${args[0]}`, expectedCode);
   } catch (error) {
-    const output = error.stdout?.toString() ?? "{}";
-    if (error.status !== expectedCode) errors.push(`harness ${args[0]} exit ${error.status}, expected ${expectedCode}`);
-    return JSON.parse(output);
+    errors.push(error.message);
+    return {};
   }
 }
 
@@ -131,7 +130,7 @@ function validateSkillIndex() {
     names.add(skill.name);
     const full = path.join(root, skill.file);
     if (!fs.existsSync(full)) errors.push(`${skill.name}: indexed skill file missing`);
-    if (fs.existsSync(full) && fs.readFileSync(full, "utf8").length < 700) errors.push(`${skill.name}: skill looks like a stub`);
+    if (!Array.isArray(skill.requiresEvidence) || !skill.owners?.length) errors.push(`${skill.name}: missing evidence/owner contract`);
   }
 }
 

@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dreamy.tools/codex/schemas/skill-candidate.schema.json",
+  "title": "Dreamy Skill Candidate",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "id",
+    "lessonId",
+    "status",
+    "scope",
+    "contentHash",
+    "revisions"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{2,63}$"
+    },
+    "lessonId": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "candidate",
+        "promoted",
+        "rejected"
+      ]
+    },
+    "scope": {
+      "const": "project"
+    },
+    "contentHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "revisions": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2
+    }
+  }
+}

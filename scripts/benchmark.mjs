@@ -89,22 +89,24 @@ function grade(output, benchmarkCase) {
   return { pass: missingExpected.length === 0 && observedForbidden.length === 0, missingExpected, observedForbidden };
 }
 
-function codexUsage(eventsFile) {
+export function codexUsage(eventsFile) {
   if (!fs.existsSync(eventsFile)) return null;
-  const usage = { inputTokens: 0, cachedInputTokens: 0, outputTokens: 0, reasoningOutputTokens: 0 };
+  let count = 0;
+  const usage = { inputTokens: 0, cachedInputTokens: 0, outputTokens: 0, reasoningOutputTokens: null, measurement: "measured-runtime", accounting: "per-turn-completed" };
   for (const line of fs.readFileSync(eventsFile, "utf8").split(/\r?\n/).filter(Boolean)) {
     try {
       const event = JSON.parse(line);
-      if (event.type !== "turn.completed" || !event.usage) continue;
+      if (event.type !== "turn.completed" || !event.usage || !Number.isFinite(event.usage.input_tokens) || !Number.isFinite(event.usage.output_tokens)) continue;
+      count++;
       usage.inputTokens += event.usage.input_tokens ?? 0;
       usage.cachedInputTokens += event.usage.cached_input_tokens ?? 0;
       usage.outputTokens += event.usage.output_tokens ?? 0;
-      usage.reasoningOutputTokens += event.usage.reasoning_output_tokens ?? 0;
+      if (Number.isFinite(event.usage.reasoning_output_tokens)) usage.reasoningOutputTokens = (usage.reasoningOutputTokens ?? 0) + event.usage.reasoning_output_tokens;
     } catch {
       // Non-JSON adapter diagnostics remain available in the trace artifact.
     }
   }
-  return usage;
+  return count ? usage : null;
 }
 
 function gitProvenance() {
@@ -135,17 +137,21 @@ export function runBenchmark(options) {
   const results = [];
 
   for (const treatment of manifest.treatments.filter((item) => !options.treatment || item.id === options.treatment)) {
+    if (!/^[a-zA-Z0-9][a-zA-Z0-9_.-]{0,95}$/.test(treatment.id)) throw new Error("Invalid treatment ID");
     for (const benchmarkCase of cases) {
+      if (!/^[a-zA-Z0-9][a-zA-Z0-9_.-]{0,95}$/.test(benchmarkCase.id)) throw new Error("Invalid case ID");
       const caseTreatment = benchmarkCase.treatments?.[treatment.id] ?? {};
       const source = treatmentSources({ ...treatment, sources: caseTreatment.sources ?? treatment.sources }, manifest.maxSourceBytes ?? 1_000_000);
       const repetitions = benchmarkCase.repetitions ?? manifest.repetitions ?? 1;
       for (let repetition = 1; repetition <= repetitions; repetition += 1) {
         const attemptDir = path.join(runDir, treatment.id, benchmarkCase.id, String(repetition));
+        if (fs.existsSync(attemptDir) && fs.readdirSync(attemptDir).length) throw new Error("Attempt directory already contains evidence; choose a new output directory");
         fs.mkdirSync(attemptDir, { recursive: true });
         const promptFile = path.join(attemptDir, "prompt.md");
         const outputFile = path.join(attemptDir, "output.md");
         const prompt = [benchmarkCase.prompt, source.sections.length ? `Treatment sources:\n${source.sections.join("\n\n")}` : ""].filter(Boolean).join("\n\n");
         fs.writeFileSync(promptFile, prompt, "utf8");
+        fs.writeFileSync(path.join(attemptDir, "trial-context.json"), JSON.stringify({ schemaVersion: 1, treatment: treatment.id, caseId: benchmarkCase.id, repetition, purpose: manifest.purpose ?? "development", model: manifest.model ?? "unspecified", reasoning: manifest.reasoning ?? "unspecified", manifestHash: hash(manifestText) }, null, 2) + "\n");
         if (!command || source.status !== "ready") {
           results.push({ treatment: treatment.id, caseId: benchmarkCase.id, group: benchmarkCase.group ?? null, criticalSafety: Boolean(benchmarkCase.criticalSafety), repetition, status: "not-run", reason: !command ? "No benchmark command configured" : source.reason, sourceProvenance: source.provenance });
           continue;
@@ -189,6 +195,7 @@ export function runBenchmark(options) {
           adapterStatusHash: fs.existsSync(adapterStatusFile) ? hash(fs.readFileSync(adapterStatusFile)) : null,
           durationMs,
           usage: codexUsage(eventsFile),
+          context: { promptBytes: Buffer.byteLength(prompt), sourceBytes: source.sections.reduce((n, v) => n + Buffer.byteLength(v), 0) },
           grading,
           sourceProvenance: source.provenance
         });

@@ -1,32 +1,56 @@
 name: CI
-
 on:
   push:
   pull_request:
-
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 jobs:
   validate:
+    timeout-minutes: 20
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
         node: [20, 22]
     runs-on: ${{ matrix.os }}
+    env:
+      DREAMY_ARTIFACTS_DIR: ${{ github.workspace }}/artifacts
+      DREAMY_RUN_ID: ${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.os }}-${{ matrix.node }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
+          cache: npm
       - name: Install dependencies
         run: npm ci
       - name: Validate
         run: npm run validate
       - name: Test
-        run: npm test
+        run: npm run test:node
+      - name: Hook fixture and process latency
+        run: |
+          npm run hooks:smoke
+          node scripts/hook-profile.mjs
       - name: Deterministic eval
         run: npm run eval:deterministic
       - name: Compatibility gate
         run: npm run compatibility:refresh
-      - name: Release gate
-        run: npm run release:check
       - name: npm pack smoke
         run: npm run pack:smoke
+      - name: Release gate
+        run: npm run release:check
+      - name: Evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidence-${{ matrix.os }}-${{ matrix.node }}
+          path: artifacts/
+          retention-days: 7
+      - name: Summary
+        if: always()
+        shell: bash
+        run: echo 'OS=${{ matrix.os }} Node=${{ matrix.node }} Result=${{ job.status }} Run=${{ env.DREAMY_RUN_ID }}. See evidence artifact and failed step logs.' >> "$GITHUB_STEP_SUMMARY"

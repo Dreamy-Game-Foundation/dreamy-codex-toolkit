@@ -12,16 +12,24 @@
     "thirdParty": "compatibility/third-party.json"
   },
   "schemas": [
-    "schemas/toolkit.schema.json",
-    "schemas/module.schema.json",
-    "schemas/preset.schema.json",
-    "schemas/project-profile.schema.json",
-    "schemas/install-state.schema.json",
-    "schemas/evidence.schema.json",
+    "schemas/agent-depth.schema.json",
+    "schemas/benchmark-run.schema.json",
+    "schemas/context-budget.schema.json",
     "schemas/eval-case.schema.json",
     "schemas/eval-report.schema.json",
-    "schemas/benchmark-run.schema.json",
-    "schemas/agent-depth.schema.json"
+    "schemas/evidence.schema.json",
+    "schemas/hook-observation.schema.json",
+    "schemas/hook-policy.schema.json",
+    "schemas/install-state.schema.json",
+    "schemas/lesson.schema.json",
+    "schemas/module.schema.json",
+    "schemas/pack-report.schema.json",
+    "schemas/preset.schema.json",
+    "schemas/project-profile.schema.json",
+    "schemas/skill-candidate.schema.json",
+    "schemas/task-checkpoint.schema.json",
+    "schemas/toolkit.schema.json",
+    "schemas/verification-receipt.schema.json"
   ],
   "rules": "rules/index.json",
   "skills": "skills/index.json",
@@ -74,5 +82,13 @@
     "agents": "alpha.2-native-schema",
     "doctor": "alpha.2-diagnostics",
     "compatibility": "alpha.2-drift-report"
+  },
+  "evolution": {
+    "hooks": "hooks/catalog.json",
+    "profiles": "hooks/profiles.json",
+    "documentation": "docs/toolkit-evolution.md",
+    "status": "experimental-local",
+    "nativeRuntimeVerification": "not-established",
+    "semanticQuality": "not-established"
   }
 }

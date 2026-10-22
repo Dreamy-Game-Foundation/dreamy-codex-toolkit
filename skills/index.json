@@ -1178,7 +1178,8 @@
         "asmdefs"
       ],
       "references": 1,
-      "evalCases": []
+      "evalCases": [],
+      "authoringProfile": "compact-workflow"
     },
     {
       "name": "unity-input-system",
@@ -1484,7 +1485,8 @@
       "references": 1,
       "evalCases": [
         "depth-test-proof-selection"
-      ]
+      ],
+      "authoringProfile": "compact-workflow"
     },
     {
       "name": "unity-ui",
@@ -1513,8 +1515,18 @@
       "file": "skills/unity-ui-reskin/SKILL.md",
       "depth": "D3",
       "maturity": "practitioner",
-      "owners": ["dreamy_unity_developer", "dreamy_mcp_operator", "dreamy_code_reviewer"],
-      "requiresEvidence": ["project-code", "manifest", "editor-state", "visual-preview", "binding-inspection"],
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_mcp_operator",
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "editor-state",
+        "visual-preview",
+        "binding-inspection"
+      ],
       "references": 3,
       "evalCases": []
     },

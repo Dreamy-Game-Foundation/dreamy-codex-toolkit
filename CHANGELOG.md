@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Fixed portable unit-test discovery and npm packaging invocation for the Linux/Windows CI matrix.
+- Bound package release evidence to version, source fingerprint, run identity and tarball hash; reordered CI gates and uploaded run artifacts.
+- Added opt-in project hook profiles, ownership-preserving installation/recovery, quiet local handlers and bounded verification continuation.
+- Added project-scoped lessons, fresh verification receipts, lexical recall/deduplication and gated project skill candidates; no background model calls.
+- Added context inventory/budget validation, compact authoring pilots and a development evolution benchmark cohort. Native lifecycle and semantic improvements remain unestablished pending external gates.
+
 - Added `unity-ui-reskin` for reference-driven uGUI prefab restyling, adaptive anchors, TMP outline presets and evidence-based visual verification.
 - Included the skill in `unity-core` and added routing from Unity UI and Dreamy UI.
 

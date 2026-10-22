@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dreamy.tools/codex/schemas/pack-report.schema.json",
+  "type": "object",
+  "required": [
+    "toolkitVersion",
+    "packageVersion",
+    "platform",
+    "nodeVersion",
+    "tarball",
+    "schemaVersion",
+    "status",
+    "sourceCommit",
+    "runId",
+    "sourceFingerprint",
+    "tarballSha256",
+    "startedAt",
+    "completedAt",
+    "packedCliChecks"
+  ],
+  "properties": {
+    "toolkitVersion": {
+      "type": "string",
+      "minLength": 1
+    },
+    "packageVersion": {
+      "type": "string",
+      "minLength": 1
+    },
+    "platform": {
+      "type": "string",
+      "minLength": 1
+    },
+    "nodeVersion": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tarball": {
+      "type": "string",
+      "minLength": 1
+    },
+    "schemaVersion": {
+      "const": 1
+    },
+    "status": {
+      "const": "ok"
+    },
+    "sourceCommit": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "runId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sourceFingerprint": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "tarballSha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "startedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "completedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "packedCliChecks": {
+      "type": "object",
+      "required": [
+        "validate",
+        "context",
+        "hookFixture"
+      ],
+      "properties": {
+        "validate": {
+          "const": "pass"
+        },
+        "context": {
+          "const": "pass"
+        },
+        "hookFixture": {
+          "const": "pass"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "title": "Dreamy Fresh Package Report"
+}

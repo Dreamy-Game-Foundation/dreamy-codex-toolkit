@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "runtime": "codex",
+  "verifiedNativeSurfaces": [],
+  "handlers": [
+    {
+      "id": "session-context",
+      "callsModel": false
+    },
+    {
+      "id": "tool-observation",
+      "callsModel": false
+    },
+    {
+      "id": "checkpoint",
+      "callsModel": false
+    },
+    {
+      "id": "verify-stop",
+      "callsModel": false
+    },
+    {
+      "id": "serialized-risk",
+      "callsModel": false
+    }
+  ]
+}

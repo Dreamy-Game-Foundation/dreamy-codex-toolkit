@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dreamy.tools/codex/schemas/verification-receipt.schema.json",
+  "title": "Dreamy Verification Receipt",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "id",
+    "taskId",
+    "commandId",
+    "sourceFingerprint",
+    "status",
+    "files",
+    "exitCode",
+    "inputsUnchanged",
+    "platform",
+    "logHash",
+    "nodeVersion",
+    "verificationFingerprint"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "id": {
+      "type": "string"
+    },
+    "taskId": {
+      "type": "string"
+    },
+    "commandId": {
+      "enum": [
+        "validate",
+        "unit",
+        "pack",
+        "unity"
+      ]
+    },
+    "sourceFingerprint": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "status": {
+      "enum": [
+        "pass",
+        "fail",
+        "degraded",
+        "not-run",
+        "stale"
+      ]
+    },
+    "files": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "exitCode": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "inputsUnchanged": {
+      "type": "boolean"
+    },
+    "platform": {
+      "type": "string"
+    },
+    "logHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "nodeVersion": {
+      "type": "string"
+    },
+    "verificationFingerprint": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}
