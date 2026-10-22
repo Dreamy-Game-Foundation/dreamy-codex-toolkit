@@ -797,7 +797,7 @@ function formatDetectOutput(profile) {
 }
 
 async function main() {
-  if (["context", "hooks", "lessons", "skills", "task"].includes(process.argv[2])) return evolutionCommand(root, process.argv.slice(2));
+  if (["context", "hooks", "lessons", "skills", "task", "rollout"].includes(process.argv[2])) return evolutionCommand(root, process.argv.slice(2));
   const { cmd, args } = parseArgs(process.argv.slice(2));
   const wantsJson = Boolean(args.json);
   if (cmd === "setup" || cmd === "init") {
@@ -930,8 +930,9 @@ async function main() {
     else formatUpdateOutput(res);
   } else {
     console.log(`dreamy-kit commands:
-  context report | hooks configure/doctor/smoke | lessons list/record/verify/recall/forget/prune/export
-  task checkpoint/verify | skills propose/promote (see docs/toolkit-evolution.md)
+  context report | hooks configure/doctor/probe/smoke | lessons list/record/verify/recall/forget/prune/export
+  task checkpoint/verify | skills draft/propose/prepare-evaluation/revise/promote | rollout snapshot
+    (see docs/toolkit-evolution.md and docs/toolkit-evolution-handoff.vi.md)
   setup / init
   validate
   harness [operation] [target]

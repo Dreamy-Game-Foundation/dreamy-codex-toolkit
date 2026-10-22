@@ -34,8 +34,15 @@ import {
   hooksDoctor,
 } from "../../src/hooks/install.mjs";
 import { dispatch } from "../../src/hooks/dispatcher.mjs";
-import { proposeSkill, promoteSkill } from "../../src/skill-evolution.mjs";
+import {
+  proposeSkill,
+  promoteSkill,
+  draftSkill,
+  prepareSkillEvaluation,
+  promotedSkillSnapshot,
+} from "../../src/skill-evolution.mjs";
 import { fixtureSmoke } from "../../scripts/hook-smoke.mjs";
+import { rolloutSnapshot } from "../../src/rollout-snapshot.mjs";
 import { resolvePolicy } from "../../src/hooks/policy.mjs";
 import { probeNativeHooks } from "../../src/hooks/native-probe.mjs";
 const toolkit = fileURLToPath(new URL("../../", import.meta.url));
@@ -771,4 +778,163 @@ test("checker or added test inputs invalidate a receipt even if requested source
     "changed checker input",
   );
   assert.equal(evidenceFor(root, receipt.taskId, receipt.files).length, 0);
+});
+
+test("drafts use fresh verified lessons, remain undiscovered and require concrete evaluation cases", (t) => {
+  const root = workspace(t),
+    { l, receipt } = seed(root);
+  assert.throws(
+    () => draftSkill(root, l.id, { name: "project-ci-proof" }),
+    /Fresh verified/,
+  );
+  verifyLesson(root, l.id, receipt.id);
+  const draft = draftSkill(root, l.id, { name: "project-ci-proof" });
+  assert.equal(draft.modelCalls, 0);
+  assert.equal(draft.discovered, false);
+  assert.equal(
+    fs.existsSync(path.join(root, ".agents/skills/project-ci-proof")),
+    false,
+  );
+  const skill = fs.readFileSync(
+    path.join(
+      root,
+      ".dreamy/knowledge/skill-candidates/project-ci-proof/SKILL.md",
+    ),
+    "utf8",
+  );
+  assert.ok(Buffer.byteLength(skill) <= 5000);
+  assert.match(skill, /platform executable/);
+  assert.equal(skill.includes("secret123"), false);
+  const input = path.join(root, "behavior-cases.json"),
+    cases = [];
+  for (const [kind, count] of Object.entries(draft.requiredCases))
+    for (let i = 0; i < count; i++)
+      cases.push({
+        id: `${kind}-${i}`,
+        kind,
+        prompt: "Concrete fixture prompt; not a real model quality result.",
+        expectedBehavior: "Fixture expectation",
+      });
+  atomicJson(input, { cases });
+  const prepared = prepareSkillEvaluation(root, draft.id, input);
+  assert.equal(prepared.cases, 5);
+  assert.equal(prepared.modelCalls, 0);
+  assert.throws(
+    () => promoteSkill(root, draft.id, { reportFile: prepared.path }),
+    /behavioral report/,
+  );
+  atomicJson(input, { cases: cases.slice(0, 4) });
+  assert.throws(
+    () => prepareSkillEvaluation(root, draft.id, input),
+    /Missing conflict/,
+  );
+  const manifest = path.join(
+    root,
+    ".dreamy/knowledge/skill-candidates/project-ci-proof/candidate.json",
+  );
+  atomicJson(manifest, { ...readJson(manifest), requiredCases: {} });
+  assert.throws(
+    () => promoteSkill(root, draft.id, { reportFile: prepared.path }),
+    /required case policy/,
+  );
+});
+test("lesson preview does not consume recall and package-bound eligibility follows the inspected lock", (t) => {
+  const root = workspace(t),
+    { l, receipt } = seed(root);
+  verifyLesson(root, l.id, receipt.id);
+  const lessonFile = recordPath(root, "lessons", l.id);
+  atomicJson(lessonFile, {
+    ...readJson(lessonFile),
+    applicability: { packages: { "com.example.fixture": "1.0" } },
+  });
+  atomicJson(path.join(root, "Packages/packages-lock.json"), {
+    dependencies: { "com.example.fixture": { version: "1.0" } },
+  });
+  assert.equal(eligible(root, readJson(lessonFile)), true);
+  const options = { session: "preview-only", preview: true };
+  assert.equal(recall(root, "npm executable ENOENT", options).items.length, 1);
+  assert.equal(recall(root, "npm executable ENOENT", options).items.length, 1);
+  assert.equal(
+    recall(root, "npm executable ENOENT", { session: "preview-only" }).items
+      .length,
+    1,
+  );
+  assert.equal(
+    recall(root, "npm executable ENOENT", { session: "preview-only" }).items
+      .length,
+    0,
+  );
+  atomicJson(path.join(root, "Packages/packages-lock.json"), {
+    dependencies: { "com.example.fixture": { version: "2.0" } },
+  });
+  assert.equal(eligible(root, readJson(lessonFile)), false);
+});
+test("explicit promotion retains report provenance and rejects altered artifacts on reuse", (t) => {
+  const root = workspace(t),
+    { l, receipt } = seed(root);
+  verifyLesson(root, l.id, receipt.id);
+  const draft = draftSkill(root, l.id, { name: "promotion-proof-fixture" });
+  const cases = [];
+  for (const [kind, count] of Object.entries(draft.requiredCases))
+    for (let i = 0; i < count; i++) {
+      const rel = `fixture-evaluations/${kind}-${i}.json`,
+        file = path.join(root, ".dreamy", rel);
+      atomicJson(file, {
+        result: "Synthetic fixture for file lifecycle, not semantic evidence",
+      });
+      cases.push({
+        id: `${kind}-${i}`,
+        kind,
+        status: "pass",
+        artifactPath: rel,
+        artifactHash: hash(fs.readFileSync(file)),
+      });
+    }
+  const reportFile = path.join(root, "fixture-report.json");
+  atomicJson(reportFile, {
+    kind: "skill-behavior-evaluation",
+    status: "pass",
+    measurement: "observed-agent-behavior",
+    criticalFailures: 0,
+    candidateHash: draft.contentHash,
+    cases,
+  });
+  promoteSkill(root, draft.id, { reportFile });
+  assert.equal(
+    promotedSkillSnapshot(root, draft.id).contentHash,
+    draft.contentHash,
+  );
+  fs.writeFileSync(
+    path.join(root, ".dreamy", cases[0].artifactPath),
+    "changed",
+  );
+  assert.throws(() => promotedSkillSnapshot(root, draft.id), /artifact/);
+});
+test("rollout counts distinct UTC observation days per runtime/policy without inventing acceptance", async (t) => {
+  const root = workspace(t),
+    probe = async () => ({
+      trust: "requires-native-review",
+      probeStatus: "observed",
+      errors: [],
+      reason: "Fixture only",
+    });
+  const day = Date.UTC(2026, 9, 22);
+  const first = await rolloutSnapshot(root, { now: day, probe });
+  const again = await rolloutSnapshot(root, { now: day + 1000, probe });
+  const next = await rolloutSnapshot(root, { now: day + 86400000, probe });
+  assert.equal(first.modelCalls, 0);
+  assert.equal(again.observedUtcDays, 1);
+  assert.equal(next.observedUtcDays, 2);
+  assert.equal(next.operationalAcceptance, "not-established");
+  atomicJson(path.join(root, ".dreamy-codex/hook-policy.json"), {
+    schemaVersion: 1,
+    profile: "minimal",
+  });
+  const changed = await rolloutSnapshot(root, {
+    now: day + 2 * 86400000,
+    probe,
+  });
+  assert.equal(changed.observedUtcDays, 1);
+  assert.notEqual(changed.cohortHash, first.cohortHash);
+  assert.equal(fs.existsSync(first.artifact), true);
 });

@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dreamy.tools/codex/schemas/native-benchmark-authorization.schema.json",
+  "title": "Native decision benchmark authorization plan",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "kind",
+    "approved",
+    "projectRoot",
+    "model",
+    "reasoning",
+    "maxModelTurns",
+    "trials"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "kind": { "const": "native-benchmark-authorization" },
+    "approved": { "type": "boolean" },
+    "projectRoot": { "type": "string", "minLength": 1 },
+    "model": { "type": "string", "pattern": "^[a-zA-Z0-9_.-]+$" },
+    "reasoning": { "type": "string", "pattern": "^[a-zA-Z0-9_-]+$" },
+    "maxModelTurns": { "type": "integer", "minimum": 1, "maximum": 4 },
+    "candidateId": { "type": ["string", "null"] },
+    "trials": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "required": [
+          "treatment",
+          "caseId",
+          "repetition",
+          "manifestHash",
+          "promptHash",
+          "contextHash",
+          "additionsHash"
+        ],
+        "properties": {
+          "treatment": { "enum": ["B0", "B1", "B2", "B3", "B4"] },
+          "caseId": { "type": "string", "minLength": 1 },
+          "repetition": { "type": "integer", "minimum": 1 },
+          "manifestHash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "promptHash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "contextHash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "additionsHash": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+        }
+      }
+    }
+  }
+}

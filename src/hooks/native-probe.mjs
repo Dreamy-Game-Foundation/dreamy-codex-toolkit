@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { CodexAppServer } from "../lib/codex-app-server.mjs";
+import { waitForHook } from "../lib/native-events.mjs";
 import { hooksDoctor } from "./install.mjs";
 import { readJson, inside } from "../lib/local-data.mjs";
 
@@ -58,6 +59,18 @@ export async function probeNativeHooks(root, { client } = {}) {
         trustStatus,
         currentHash,
       })),
+      foreignTrustedHooks: entry.hooks
+        .filter(
+          (h) =>
+            !owned.includes(h) &&
+            h.enabled &&
+            ["trusted", "managed"].includes(h.trustStatus),
+        )
+        .map(({ eventName, source, sourcePath }) => ({
+          eventName,
+          source,
+          sourcePath,
+        })),
       errors: [...doctor.errors, ...(entry.errors || []).map((e) => e.message)],
       warnings: entry.warnings || [],
       projectLayerWarnings: projectLayers
@@ -86,14 +99,20 @@ export async function probeNativeHooks(root, { client } = {}) {
 // SessionStart is the only lifecycle this smoke can exercise without a model turn.
 export async function smokeNativeHooks(root) {
   const discovery = await probeNativeHooks(root);
-  if (discovery.trust !== "trusted" || discovery.errors.length)
+  if (
+    discovery.trust !== "trusted" ||
+    discovery.errors.length ||
+    discovery.foreignTrustedHooks?.length
+  )
     return {
       schemaVersion: 1,
       kind: "native-hook-smoke",
       status: "not-run",
       discovery,
       modelCalls: 0,
-      reason: discovery.reason,
+      reason: discovery.foreignTrustedHooks?.length
+        ? "Other enabled trusted hooks could affect this smoke; review the foreignTrustedHooks list before testing in an isolated consumer"
+        : discovery.reason,
     };
   const server = new CodexAppServer({ cwd: root });
   try {
@@ -104,17 +123,11 @@ export async function smokeNativeHooks(root) {
       sandbox: "read-only",
       approvalPolicy: "never",
     });
-    // Notifications may follow the thread/start response; no model turn is requested.
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    const runs = server.notifications
-      .filter(
-        (v) =>
-          v.method === "hook/completed" &&
-          v.params?.threadId === started.thread.id &&
-          path.resolve(v.params.run.sourcePath) ===
-            path.join(fs.realpathSync(root), ".codex/hooks.json"),
-      )
-      .map((v) => v.params.run);
+    const runs = await waitForHook(
+      server,
+      started.thread.id,
+      path.join(fs.realpathSync(root), ".codex/hooks.json"),
+    );
     const session = runs.find((v) => v.eventName === "sessionStart");
     return {
       schemaVersion: 1,

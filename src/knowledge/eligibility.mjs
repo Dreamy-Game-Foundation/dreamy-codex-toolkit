@@ -12,7 +12,7 @@ import { fingerprint, evidenceFor } from "../verification-plan.mjs";
 export function eligible(
   root,
   lesson,
-  { platform = process.platform, packages = {}, exclude = [] } = {},
+  { platform = process.platform, packages, exclude = [] } = {},
 ) {
   if (
     lesson.schemaVersion !== 1 ||
@@ -32,6 +32,17 @@ export function eligible(
     !lesson.applicability.platforms.includes(platform)
   )
     return false;
+  if (!packages) {
+    const lock = readJson(inside(root, "Packages/packages-lock.json"), {
+      dependencies: {},
+    });
+    packages = Object.fromEntries(
+      Object.entries(lock.dependencies || {}).map(([id, value]) => [
+        id,
+        value.version,
+      ]),
+    );
+  }
   for (const [pkg, version] of Object.entries(
     lesson.applicability?.packages || {},
   ))

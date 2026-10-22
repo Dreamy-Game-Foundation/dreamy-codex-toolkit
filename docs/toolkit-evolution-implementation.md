@@ -26,22 +26,22 @@ This tracks implementation of the [ECC / Superpowers / OmO plan](plans/DREAMY_TO
 | P4.1 | Fixed verification IDs, change-to-check mapping, source fingerprints, stored logs | Unavailable consumer check is not-run; Unity delegates to existing harness |
 | P4.2 | One Stop continuation per task/fingerprint, retained across compaction | Interrupt, active flag, repeat and compact fixtures |
 | P4.3 | Narrow strict apply_patch .meta deletion guard, native deny shape | Explicit coverage only; ordinary Unity/diff guards still apply |
-| P5.1 | Candidate outside discovery, canonical-name/installed trigger duplicate checks | Candidate/tamper/namespace tests |
-| P5.2 | Positive/negative/conflict evidence gate, artifact hashes, <=2 revisions, explicit project promotion | Synthetic gate tests; actual behavioral promotion remains pending |
+| P5.1 | Zero-model draft from verified lesson, candidate outside discovery, canonical-name/installed trigger duplicate checks | Candidate/tamper/namespace tests |
+| P5.2 | Positive/negative/conflict evidence gate, artifact hashes, <=2 revisions, explicit project promotion | Draft-to-plan and retained-report/artifact lifecycle fixtures; actual behavioral promotion remains pending |
 | P5.3 | CI triage reference attached to existing debugger; compact foundations/testing pilots | Reused existing owners rather than adding overlapping skills |
-| P6.1 | Development B0–B4 adapter contract, 12 cases × 3 repetitions, usage provenance | Selftest passes; model/native cohort not-run without configured adapter |
+| P6.1 | Development B0–B4 adapter contract, 12 cases × 3 repetitions, usage provenance | Built-in decision adapter + schema-validated plan, 1–4-turn/replay cap and actual-event gate; live cohort remains pending |
 | P6.2 | Opt-in profiles, rollback, user documentation and unreleased changelog | Multi-workspace rollout and release promotion not performed |
-| P6.3 | Explicit lesson prune/review, source ledger and context checks for maintenance | Weekly observation is a future operational activity, not a completed test |
+| P6.3 | Explicit lesson prune/review, daily zero-model rollout snapshots, source ledger and context checks | Weekly observation is a future operational activity, not a completed test |
 
 ## Local checks
 
-The latest full suite contains **61 tests: 60 pass, 1 Windows-only skip on Linux**. Validation covers 83 indexed skills and the registered schemas. Linux Node 20.20.2 and 22.23.3 binaries were downloaded to /tmp from nodejs.org and checked against their release SHA-256 manifests; Node 24.19.0 was already installed. Final matrix and package logs are produced under `/tmp/dreamy-evolution-evidence/`.
+The latest full suite contains **72 tests: 71 pass, 1 Windows-only skip on Linux**. Validation covers 83 indexed skills and the registered schemas. Linux Node 20.20.2 and 22.23.3 binaries were downloaded to /tmp from nodejs.org and checked against their release SHA-256 manifests; Node 24.19.0 was already installed. Final matrix and package logs are produced under `/tmp/dreamy-evolution-evidence/`.
 
 Package smoke creates the actual tarball, installs it in an isolated prefix with a space-containing path and invokes the installed CLI. It verifies structural validation, context inventory and installed hook fixture; report generation checks that source did not change during packing. Alpha release checking preserves existing Unity/compatibility/semantic production blockers.
 
 The local no-op cold-process profile (30 Linux/Node 24 trials) observed p50 ~30 ms / p95 ~37 ms, zero visible bytes and zero model calls. `scripts/hook-profile.mjs` reruns the measurement on current source; it is process/adapter latency, not native event-delivery evidence.
 
-`npm run benchmark:selftest` passed 3/3 synthetic plumbing trials. The development evolution cohort reported 180 not-run trials, 0 attempted, because no isolated native/model adapter was configured. It intentionally made no model calls and supplies no quality or token-savings claim. `trial-context.json` tells a configured external adapter which treatment/case/model labels it must implement; runtime/model/native-event receipts are required before counting native trials.
+`npm run benchmark:selftest` passed 3/3 synthetic plumbing trials. The development evolution cohort reported 180 not-run trials, 0 attempted, because no isolated native/model adapter was configured at that time. It intentionally made no model calls and supplies no quality or token-savings claim. `trial-context.json` tells a configured external adapter which treatment/case/model labels it must implement; runtime/model/native-event receipts are required before counting native trials. A built-in development decision adapter is now implemented and fixture-tested; `prepare-native-benchmark.mjs` produces a reviewed payload plan and the new native-smoke manifest narrows the first feasibility batch to two turns. No additional model turn has been authorized or executed by this follow-up.
 
 Compact entrypoint byte changes from the baseline commit:
 
@@ -54,7 +54,7 @@ These percentages measure source bytes. A separate authorized model pilot below 
 
 ## Observed external checks
 
-The [first pushed GitHub run](https://github.com/Dreamy-Game-Foundation/dreamy-codex-toolkit/actions/runs/39730155583) passed all four jobs at commit `265f4b480424d96c44ac0ec010ad3669754ab7df`: Ubuntu/Windows × Node 20.20.2/22.23.3. Test, installed hook fixture, deterministic eval, compatibility, actual tarball install and alpha release gate all passed. The [retained evidence summary](evidence/toolkit-evolution-ci-20261022.json) records each source/run/tarball hash. That initial run contained 60 tests; the additional runtime/policy trust-revision regression brings the current local suite to 61. Every later source commit must pass its own matrix.
+The [first pushed GitHub run](https://github.com/Dreamy-Game-Foundation/dreamy-codex-toolkit/actions/runs/39730155583) passed all four jobs at commit `265f4b480424d96c44ac0ec010ad3669754ab7df`: Ubuntu/Windows × Node 20.20.2/22.23.3. Test, installed hook fixture, deterministic eval, compatibility, actual tarball install and alpha release gate all passed. The [retained evidence summary](evidence/toolkit-evolution-ci-20261022.json) records each source/run/tarball hash. That initial run contained 60 tests; the later runtime/policy trust-revision regression brought that suite to 61; the follow-up adapter, draft and rollout changes now bring the local suite to 72. Every later source commit must pass its own matrix.
 
 | Runner | Node | Hook process p50 | p95 | Visible bytes / model calls |
 |---|---|---:|---:|---|
@@ -87,8 +87,18 @@ The four batches consumed 44,456 input and 242 output tokens (44,698 total); cac
 ## External acceptance still required
 
 1. **Native trust and delivery:** review the concrete hook definition using Codex `/hooks` in the target runtime. No trust-bypass flag or trusted-hash edit was used. The current workspace `.codex/` directory is read-only; the task did not alter its permissions or install active hooks there. The reviewable local fixture is `.dreamy/native-consumer`; open Codex there, review its four definitions with `/hooks`, then run `hooks probe` and `hooks smoke --native` against that target. Additional tool/compact/interrupt/Stop acceptance remains a real-session task.
-2. **Semantic A/B and skill promotion:** configure the isolated adapter, select the intended model/budget and inspect real trial artifacts. No candidate was promoted on synthetic test evidence.
+2. **Semantic A/B and skill promotion:** review the exact built-in decision-adapter plan/model/budget, then authorize a new bounded run after native trust. The four earlier retention calls are already consumed. The broader B0–B4/coding/routing cohort and actual candidate behavioral promotion remain pending; no candidate was promoted on synthetic test evidence.
 3. **Unity/build/device checks:** no Unity C#/asset changes were made by this initiative. Existing production blockers and tested-matrix gaps remain visible.
 4. **Opt-in rollout observation:** one week across real workspaces cannot be replaced by a same-session unit run. Start only after native trust and critical semantic gates pass; retain daily context/latency/failure receipts, review stale lessons and rollback any regression before broadening profiles.
 
 The implementation is reviewable and locally tested; the whole multi-week initiative must not be marked operationally or semantically complete until these gates have real evidence. See [operating guide](toolkit-evolution.md) for commands and rollback.
+
+## Owner handoff and follow-up implementation
+
+See [the Vietnamese handoff](toolkit-evolution-handoff.vi.md) for native /hooks review, expected probe/smoke outputs, a prepared two-turn decision batch, Editor readiness, candidate evaluation and daily observations. The new adapter is context-filtered and decision-only: B4 supplies reviewed text and does not prove automatic skill discovery/routing. Candidate drafts and evaluation preparation make zero model calls. Promotion retains the report and revalidates its artifacts on B4 reuse. Preview recall does not consume session dedupe, and package-bound eligibility now reads the inspected lock when no explicit package context was supplied.
+
+A read-only consumer project inspection was also performed through the existing harness; its static profile passed and the private artifact is under `.dreamy/consumer-readiness/`. The observed Editor status was stale and indicated Play Mode/transition. No refresh, compile, tests, build or project mutation was performed; this is not a Unity tested-matrix entry.
+
+The new native adapter session setup was exercised with Codex 0.163.0 using initialize/config/read/skills/list/thread/start and hooks disabled. The configured model matched `gpt-6.1-sol`; no turn/start request was sent (zero model turns). This is control-plane evidence only. A concrete two-turn B1/B2 plan is prepared locally under `.dreamy/benchmarks/native-smoke-review/` with approved=false, and the updated consumer hook definitions still require native review.
+
+The CI failure reproduction was rerun against the original source, followed by passing current validate/unit/pack receipts. The resulting verified-local lesson was recalled within its payload budget and used to draft `project-ci-recovery` outside discovery. The skill-authoring structural validator passed; two positive, two negative and one current-user conflict cases were prepared locally. This exercises the real failure-to-draft workflow with zero model calls. It does not establish behavioral skill quality or authorize promotion; a reusable CI workflow should continue to patch the existing debugger owner.

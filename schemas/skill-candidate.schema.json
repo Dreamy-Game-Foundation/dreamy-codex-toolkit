@@ -10,7 +10,8 @@
     "status",
     "scope",
     "contentHash",
-    "revisions"
+    "revisions",
+    "requiredCases"
   ],
   "properties": {
     "schemaVersion": {
@@ -24,11 +25,7 @@
       "type": "string"
     },
     "status": {
-      "enum": [
-        "candidate",
-        "promoted",
-        "rejected"
-      ]
+      "enum": ["candidate", "promoted", "rejected"]
     },
     "scope": {
       "const": "project"
@@ -41,6 +38,9 @@
       "type": "integer",
       "minimum": 0,
       "maximum": 2
+    },
+    "requiredCases": {
+      "const": { "positive": 2, "negative": 2, "conflict": 1 }
     }
   }
 }

@@ -1,21 +1,22 @@
 import fs from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
-// Delegate only to an explicitly supplied adapter. Never choose a model or enable trust bypass here.
+// The built-in decision adapter is off unless an exact reviewed authorization plan enables it.
 const [promptFile, outputFile] = process.argv.slice(2);
 const executable = process.env.DREAMY_EVOLUTION_EXECUTABLE;
 if (!promptFile || !outputFile) throw Error("prompt/output paths required");
 const statusFile = path.join(path.dirname(outputFile), "adapter-status.json");
 if (!executable) {
-  fs.writeFileSync(
-    statusFile,
-    JSON.stringify({
-      status: "not-run",
-      reason:
-        "DREAMY_EVOLUTION_EXECUTABLE is unset; native runtime A/B requires a configured isolated adapter",
-    }),
+  const { runNativeDecisionTrial } = await import(
+    "../../src/benchmark-native.mjs"
   );
-  process.exitCode = 2;
+  const result = await runNativeDecisionTrial({
+    promptFile,
+    outputFile,
+    contextFile: path.join(path.dirname(outputFile), "trial-context.json"),
+  });
+  process.exitCode =
+    result.status === "complete" ? 0 : result.status === "not-run" ? 2 : 1;
 } else {
   const contextFile = path.join(path.dirname(outputFile), "trial-context.json");
   const result = spawnSync(executable, [promptFile, outputFile, contextFile], {

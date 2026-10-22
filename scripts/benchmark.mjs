@@ -14,6 +14,7 @@ function parseArgs(argv) {
     const name = argv[index];
     if (["--manifest", "--command", "--output", "--treatment", "--case"].includes(name)) result[name.slice(2)] = argv[++index];
     else if (name === "--publish-release") result.publishRelease = true;
+    else if (name === "--prepare") result.prepare = true;
     else throw new Error(`Unknown argument: ${name}`);
   }
   return result;
@@ -132,7 +133,7 @@ export function runBenchmark(options) {
   const cases = caseFiles
     .flatMap((file) => readJson(path.resolve(path.dirname(manifestPath), file)).cases ?? [])
     .filter((benchmarkCase) => !options.case || benchmarkCase.id === options.case);
-  const command = options.command ?? manifest.adapter?.executable ?? null;
+  const command = options.prepare ? null : options.command ?? manifest.adapter?.executable ?? null;
   const commandArgs = manifest.adapter?.args ?? ["{promptFile}", "{outputFile}"];
   const results = [];
 
@@ -151,9 +152,9 @@ export function runBenchmark(options) {
         const outputFile = path.join(attemptDir, "output.md");
         const prompt = [benchmarkCase.prompt, source.sections.length ? `Treatment sources:\n${source.sections.join("\n\n")}` : ""].filter(Boolean).join("\n\n");
         fs.writeFileSync(promptFile, prompt, "utf8");
-        fs.writeFileSync(path.join(attemptDir, "trial-context.json"), JSON.stringify({ schemaVersion: 1, treatment: treatment.id, caseId: benchmarkCase.id, repetition, purpose: manifest.purpose ?? "development", model: manifest.model ?? "unspecified", reasoning: manifest.reasoning ?? "unspecified", manifestHash: hash(manifestText) }, null, 2) + "\n");
+        fs.writeFileSync(path.join(attemptDir, "trial-context.json"), JSON.stringify({ schemaVersion: 1, treatment: treatment.id, caseId: benchmarkCase.id, repetition, query: benchmarkCase.prompt, purpose: manifest.purpose ?? "development", model: manifest.model ?? "unspecified", reasoning: manifest.reasoning ?? "unspecified", manifestHash: hash(manifestText) }, null, 2) + "\n");
         if (!command || source.status !== "ready") {
-          results.push({ treatment: treatment.id, caseId: benchmarkCase.id, group: benchmarkCase.group ?? null, criticalSafety: Boolean(benchmarkCase.criticalSafety), repetition, status: "not-run", reason: !command ? "No benchmark command configured" : source.reason, sourceProvenance: source.provenance });
+          results.push({ treatment: treatment.id, caseId: benchmarkCase.id, group: benchmarkCase.group ?? null, criticalSafety: Boolean(benchmarkCase.criticalSafety), repetition, status: "not-run", reason: source.status !== "ready" ? source.reason : options.prepare ? "Preparation only; no adapter executed" : "No benchmark command configured", sourceProvenance: source.provenance });
           continue;
         }
         const args = renderArgs(commandArgs, {

@@ -13,12 +13,19 @@ import {
 import { verifyLesson } from "./knowledge/eligibility.mjs";
 import { recall } from "./knowledge/recall.mjs";
 import { writeCheckpoint, runVerification } from "./verification-plan.mjs";
-import { proposeSkill, promoteSkill, reviseSkill } from "./skill-evolution.mjs";
+import {
+  proposeSkill,
+  promoteSkill,
+  reviseSkill,
+  draftSkill,
+  prepareSkillEvaluation,
+} from "./skill-evolution.mjs";
 import {
   createSchemaValidator,
   validateWithSchema,
 } from "./schema-validation.js";
 import { readJson } from "./lib/local-data.mjs";
+import { rolloutSnapshot } from "./rollout-snapshot.mjs";
 export async function evolutionCommand(toolkitRoot, argv) {
   const [group, action, ...rest] = argv,
     options = {},
@@ -88,7 +95,9 @@ export async function evolutionCommand(toolkitRoot, argv) {
     return value;
   };
   let result;
-  if (group === "context" && action === "report") {
+  if (group === "rollout" && action === "snapshot") {
+    result = await rolloutSnapshot(root);
+  } else if (group === "context" && action === "report") {
     const state = readJson(path.join(root, ".dreamy-codex/install-state.json"));
     result = contextInventory(toolkitRoot, {
       preset: options.preset || state?.preset || "dreamy-project",
@@ -153,7 +162,11 @@ export async function evolutionCommand(toolkitRoot, argv) {
     });
     if (result.status !== "pass")
       process.exitCode = result.status === "fail" ? 1 : 2;
-  } else if (group === "skills" && action === "propose")
+  } else if (group === "skills" && action === "draft")
+    result = draftSkill(root, pos[0], { name: options.name });
+  else if (group === "skills" && action === "prepare-evaluation")
+    result = prepareSkillEvaluation(root, pos[0], options.input);
+  else if (group === "skills" && action === "propose")
     result = proposeSkill(root, pos[0], {
       name: options.name,
       input: options.input,

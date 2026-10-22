@@ -1,6 +1,6 @@
 # Toolkit evolution: local hooks, evidence and lessons
 
-These capabilities are experimental. They use local Node scripts and do not invoke an LLM, change model settings, start agents or create goals. Native Codex trust/delivery, Windows execution and semantic improvements require their own evidence. Fixture tests cannot establish those claims.
+These capabilities are experimental. Hooks, lessons, skill drafts, preparation and rollout snapshots run locally without model calls. Decision benchmarks require an explicitly reviewed model/payload plan and a separate execution flag; they never change global model/account settings. Native delivery and semantic improvements require their own evidence. See the [Vietnamese owner handoff](toolkit-evolution-handoff.vi.md) for the concrete steps still requiring user action.
 
 ## Context and work modes
 
@@ -8,7 +8,7 @@ These capabilities are experimental. They use local Node scripts and do not invo
 
 Use quick mode for small reversible changes, standard for bounded bug/features and deep for migrations/serialized/release risk. These are workflow choices, not permission or model switches. Select a primary skill, then read only references needed for the next decision.
 
-The compact authoring pilots are unity-foundations and unity-testing. Their reduced entrypoint bytes are observable; any semantic quality/token benefit remains unestablished until behavioral comparison.
+The compact authoring pilots are unity-foundations and unity-testing. Their byte reductions and the small authorized source-entry pilot are measured in the implementation report. Broader coding-quality and native-hook gains remain unestablished.
 
 ## Hooks
 
@@ -108,23 +108,29 @@ Use `lessons recall --query "npm platform executable ENOENT" --session my-sessio
 
 ## Skill evolution
 
-Search existing skill ownership first. Update a narrow reference when that is enough. Prepare candidate SKILL.md with a specific description, matching name, Verification and at most 5,000 bytes. Then:
+Search existing skill ownership first. Update a narrow reference when that is enough. Use `skills draft` to generate a project candidate from a fresh verified lesson without calling a model, or provide a reviewed SKILL.md with a specific description, matching name, Verification and at most 5,000 bytes. Then:
 
 ```bash
-node src/cli.js skills propose portable-npm-invocation --name ci-platform --input candidate.md
+node src/cli.js skills draft portable-npm-invocation --name ci-platform
+node src/cli.js skills prepare-evaluation ci-platform --input behavior-cases.json
+# Alternatively: skills propose portable-npm-invocation --name ci-platform --input candidate.md
 node src/cli.js skills promote ci-platform --report evaluation.json --dry-run
 ```
 
-Candidates live outside discovery in `.dreamy/knowledge/skill-candidates/`. Promotion requires a fresh verified lesson, unchanged candidate content and explicit behavioral evaluation for that hash: two positive, two near-miss negative and one conflict case, zero critical failures. Each case has a unique ID and an artifactPath relative to `.dreamy/`, whose actual bytes must match artifactHash. The report kind is skill-behavior-evaluation, measurement is observed-agent-behavior, status is pass. Structural/keyword checks cannot substitute for this report. The toolkit validates provenance and evidence availability; a human/agent reviewer still assesses whether the observed behavior meets the rubric.
+Drafts are generated from the verified trigger, action, exclusions and receipt; they are not behavioral improvements by themselves. Evaluation input has a cases array of unique id/kind/prompt/expectedBehavior records, with at least two positive, two negative and one conflict case. `prepare-evaluation` creates a candidate-hash-bound plan without execution or pass claims. Candidates live outside discovery in `.dreamy/knowledge/skill-candidates/`. Promotion requires a fresh verified lesson, unchanged candidate content and explicit behavioral evaluation for that hash: two positive, two near-miss negative and one conflict case, zero critical failures. Each case has a unique ID and an artifactPath relative to `.dreamy/`, whose actual bytes must match artifactHash. The report kind is skill-behavior-evaluation, measurement is observed-agent-behavior, status is pass. Structural/keyword checks cannot substitute for this report. The toolkit validates provenance and evidence availability; a human/agent reviewer still assesses whether the observed behavior meets the rubric.
 
-Promotion writes a new project skill under `.agents/skills/` and refuses overwrite. It does not auto-edit toolkit catalogs, global skills or policies. Shared toolkit promotion is a normal reviewed source change with catalog/module/eval updates. No background generation loop is enabled; use `skills revise <id> --input candidate.md` for at most two candidate revision attempts in a task budget. To roll back a promoted project skill, inspect and remove its exact user-owned directory; preserve candidate/evaluation history.
+Promotion retains its reviewed report in the candidate directory so B4 can recheck provenance/artifact hashes and lesson freshness. Promotion writes a new project skill under `.agents/skills/` and refuses overwrite. It does not auto-edit toolkit catalogs, global skills or policies. Shared toolkit promotion is a normal reviewed source change with catalog/module/eval updates. No background generation loop is enabled; use `skills revise <id> --input candidate.md` for at most two candidate revision attempts in a task budget. To roll back a promoted project skill, inspect and remove its exact user-owned directory; preserve candidate/evaluation history.
 
 ## CI and benchmark
 
 CI keeps Linux/Windows × Node 20/22 and disables fail-fast. It validates once, discovers tests without shell globs, creates current-run eval/compatibility reports, packs/installs/validates the tarball, then checks fresh evidence. `DREAMY_ARTIFACTS_DIR` and `DREAMY_RUN_ID` isolate artifact output; defaults support local release/ workflows. A stale tracked report is never adequate packaging proof.
 
-`npm run benchmark:selftest` proves runner plumbing only. `benchmarks/manifests/evolution-pilot.json` defines a 12-case, three-repetition development cohort. Native B0–B4 trials require an explicitly configured external adapter with declared runtime capabilities. The existing Codex text adapter disables hooks and must not be used to claim hook/lesson runtime gains. Missing adapter reports not-run rather than synthetic quality success.
+`npm run benchmark:selftest` proves runner plumbing only. `benchmarks/manifests/evolution-pilot.json` defines a 12-case, three-repetition development cohort. The built-in native decision adapter supports development B0–B4: B0/B1 disable hooks, B2 adds reviewed minimal hooks, B3 adds previewed eligible lesson data, and B4 adds reviewed promoted skill text. It is a decision-only, ephemeral-thread/context-filtered adapter using the existing account, not full filesystem isolation or a release-quality coding cohort. Other enabled trusted hooks are refused. The optional DREAMY_EVOLUTION_EXECUTABLE still delegates to a custom adapter. The existing Codex text adapter disables hooks and must not be used to claim hook/lesson runtime gains. Execution defaults off. Use `scripts/prepare-native-benchmark.mjs` to generate exact prompt/addition snapshots and a schema-validated `approved:false` plan, with at most four model turns. Execution additionally requires `DREAMY_EVOLUTION_EXECUTE=1` and `DREAMY_EVOLUTION_PLAN=<reviewed plan>`. The ledger prevents replay and is consumed before turn/start, including failed attempts. Payload/context/lesson/skill/hook drift blocks the trial. Native members in a plan must pass trust/readiness before any baseline turn; completed SessionStart notifications are required before a native model turn. Usage absent from runtime remains unavailable. These controls do not establish user authorization just because a local flag says approved; review the real payload/destination first.
 
 `node scripts/skill-retention-pilot.mjs` previews a four-call source-entry retention pilot without invoking a model. After authorizing its payload/destination, add `--execute --model MODEL_ID --output /empty/evidence/directory` to compare the two compact skill entries with pinned originals using the explicitly selected model (or the configured model when `--model` is omitted). It records actual answers, runtime usage when supplied, source hashes and unexpected tool calls. These bounded decision probes do not replace the native B0–B4 cohort or establish general coding quality. The adapter uses ephemeral read-only workspaces, disables hooks/plugins/apps, rejects interactive RPC requests and does not copy credentials or rewrite home environment variables.
 
 The Windows/Linux Node matrix and the authorized source-entry pilot have observed results in the [implementation evidence](toolkit-evolution-implementation.md). Native runtime trust/delivery, the broader B0–B4 semantic cohort and one-week opt-in rollout remain external acceptance gates. See [CI triage](toolkit-ci-triage.md) and [full plan](plans/DREAMY_TOOLKIT_ECC_SUPERPOWERS_OMO_EVOLUTION_PLAN.md).
+
+## Rollout observations
+
+`node src/cli.js rollout snapshot --target /path/to/project --json` records a zero-model local observation under `.dreamy/rollout/`. It reports native trust/diagnostics and currently eligible lesson counts. Observation days are distinct UTC dates grouped by runtime/policy hash; changing that cohort resets the count. These snapshots cannot prove real task success, full native event coverage or a completed week of use. Keep daily task/latency/failure evidence and review before broadening deployment.

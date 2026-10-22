@@ -23,6 +23,7 @@
     "schemas/install-state.schema.json",
     "schemas/lesson.schema.json",
     "schemas/module.schema.json",
+    "schemas/native-benchmark-authorization.schema.json",
     "schemas/pack-report.schema.json",
     "schemas/preset.schema.json",
     "schemas/project-profile.schema.json",

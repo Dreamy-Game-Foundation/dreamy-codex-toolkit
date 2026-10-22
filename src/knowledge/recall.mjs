@@ -19,7 +19,13 @@ const terms = (s) =>
 export function recall(
   root,
   query,
-  { session = "explicit", epoch = "initial", maxBytes = 1000, ...context } = {},
+  {
+    session = "explicit",
+    epoch = "initial",
+    maxBytes = 1000,
+    preview = false,
+    ...context
+  } = {},
 ) {
   if (Buffer.byteLength(query) > 4096) throw Error("Query exceeds 4096 bytes");
   if (!context.packages) {
@@ -35,7 +41,7 @@ export function recall(
     `recall/${sessionKey(session + ":" + epoch)}.json`,
   );
   return withLock(`${file}.lock`, () => {
-    const ledger = readJson(file, {}),
+    const ledger = preview ? {} : readJson(file, {}),
       q = terms(query);
     const ranked = listRecords(root, "lessons")
       .filter((l) => eligible(root, l, context))
@@ -76,7 +82,7 @@ export function recall(
       ledger[l.id] = digest;
       if (items.length === 2) break;
     }
-    if (items.length) atomicJson(file, ledger);
+    if (items.length && !preview) atomicJson(file, ledger);
     const report = { items, bytes: 0, tokens: null, measurement: "bytes-only" };
     report.bytes = Buffer.byteLength(JSON.stringify(report)) + 1;
     report.bytes = Buffer.byteLength(JSON.stringify(report)) + 1;
