@@ -1,0 +1,184 @@
+{
+  "schemaVersion": 1,
+  "kind": "observed-native-decision-smoke-pair",
+  "runId": "2026-10-22T08-58-55-068Z-f8a577b7",
+  "startedAt": "2026-10-22T08:58:55.068Z",
+  "finishedAt": "2026-10-22T08:59:11.716Z",
+  "sourceCommit": "165a0bfcf8ee1ae049fcb0e92fc1636a97e0d834",
+  "toolkitDirty": true,
+  "dirtyStateNote": "Pre-existing untracked .research directory was preserved; this is development evidence, not a clean release cohort.",
+  "runtime": "codex_vscode/0.163.0 (Ubuntu 26.4.0; x86_64) dumb (dreamy_toolkit; 1)",
+  "model": "gpt-6.1-sol",
+  "reasoning": "low",
+  "purpose": "development",
+  "releaseEligible": false,
+  "authorization": {
+    "source": "explicit-user-message",
+    "instruction": "Cho phép native smoke hai lượt theo plan đã chuẩn bị",
+    "planHash": "f3087ddb3319ee7d15777a07ae4107e9c1f806ea222b8a7ab7a8aa0a4453782e",
+    "maximumModelTurns": 2,
+    "consumedModelTurns": 2,
+    "ledgerUsed": [
+      "B1/quick-docs/1",
+      "B2/quick-docs/1"
+    ],
+    "additionalModelTurns": 0
+  },
+  "manifestHash": "f8a577b75dea9f16463ae371a0ae2ddfbe833e8205ad71be29ac2e428c3f984a",
+  "originalCase": {
+    "id": "quick-docs",
+    "group": "production",
+    "criticalSafety": false,
+    "prompt": "Fix a broken documentation link with no API claim. Choose mode quick/standard/deep and whether to start a background observer. Return only JSON with mode and decision.",
+    "expected": [],
+    "forbidden": [],
+    "grader": {
+      "type": "json-fields",
+      "expectedFields": {
+        "mode": "quick",
+        "decision": "none"
+      }
+    }
+  },
+  "sourceCaseFileHash": "7c2adf8095b0df3b4d2b6693ecbf250b8bdffb67a6c5ee41674ac798fdd4d581",
+  "reportHash": "45144e2227ca0e31169e846ec4d2489110eb76d757baee1a74b2338a8f96da55",
+  "harnessHashes": {
+    "src/benchmark-native.mjs": "cd9f1cc39df0b023b84009ca8ddb5e2bc71355b70f260fdba728138a4aa92028",
+    "src/hooks/native-probe.mjs": "091f8261a730efd4acef43afa6c705a4586a034672abe03256d6df8621ff99f3",
+    "src/lib/native-events.mjs": "c75fc67b82e95e76299a1174bead4b26b20086630a96990a09308df6c3415dd9",
+    "src/lib/codex-app-server.mjs": "26213409ad51ee3161f5946ba2c373270cac7c858e8e520d30017ad757318f71",
+    "scripts/benchmark.mjs": "ec762870f3eb6496cb251b0b679a849968ce5aa7c003f31dcf56b14d1645e338",
+    "benchmarks/adapters/evolution-exec.mjs": "8a5d9cf15c7f37ed6250e2d8e494a54407309869ee8acb059657100e7df2f33f"
+  },
+  "summary": {
+    "runtimeCompleted": 2,
+    "originalGrading": {
+      "attempted": 2,
+      "passed": 0,
+      "failed": 2,
+      "notRun": 0
+    },
+    "nativeSessionStart": "observed-completed",
+    "nativeSessionStartDurationMs": 37,
+    "inputTokens": 13836,
+    "outputTokens": 79,
+    "totalTokens": 13915,
+    "cachedInputTokens": 0,
+    "unexpectedTools": 0,
+    "observedB2MinusB1InputTokens": 0,
+    "operational": false
+  },
+  "trials": [
+    {
+      "treatment": "B1",
+      "runtimeStatus": "complete",
+      "gradingStatus": "fail",
+      "answer": {
+        "mode": "quick",
+        "decision": "Do not start a background observer; make the focused documentation-link fix and run the smallest relevant link validation."
+      },
+      "grading": {
+        "pass": false,
+        "fieldMismatches": [
+          {
+            "field": "decision",
+            "expected": "none",
+            "actual": "Do not start a background observer; make the focused documentation-link fix and run the smallest relevant link validation."
+          }
+        ],
+        "observedForbidden": [],
+        "parsed": {
+          "mode": "quick",
+          "decision": "Do not start a background observer; make the focused documentation-link fix and run the smallest relevant link validation."
+        }
+      },
+      "durationMs": 9888,
+      "usage": {
+        "totalTokens": 6957,
+        "inputTokens": 6918,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 39,
+        "reasoningOutputTokens": 0
+      },
+      "nativeEvents": [],
+      "trust": "hooks-disabled",
+      "modelTurns": 1,
+      "unexpectedTools": 0,
+      "promptHash": "8c2f3f9f35ce03b1ede06cf12487c6536afd6163a11dc671f15d10f2133bda09",
+      "payloadHash": "8c2f3f9f35ce03b1ede06cf12487c6536afd6163a11dc671f15d10f2133bda09",
+      "additionsHash": "668ac0e929650f1b3f502e0dc7d34379e7c13293b24b60d677346de50ff92663",
+      "artifactHashes": {
+        "runtime-receipt.json": "6197be1c070e9333fb438d36f306a2e374991bee84131ffbf19d94fe2c35c42c",
+        "codex-events.jsonl": "99874644b0e5dbd7e18e7ff1ed5c26d5322504253bf2a3254e6c8880e5c86932",
+        "output.md": "c913644eb108457d58c19ebd728595b83a923dc4fda08b5f572b47e9fed14110",
+        "prompt.md": "8c2f3f9f35ce03b1ede06cf12487c6536afd6163a11dc671f15d10f2133bda09",
+        "trial-context.json": "ac33a62c71af3b7a9f4b8646424f8a4d645d817db09bd7256acf11cebc3545f8"
+      }
+    },
+    {
+      "treatment": "B2",
+      "runtimeStatus": "complete",
+      "gradingStatus": "fail",
+      "answer": {
+        "mode": "quick",
+        "decision": "Do not start a background observer; make the focused documentation-link correction and validate the link without making API claims."
+      },
+      "grading": {
+        "pass": false,
+        "fieldMismatches": [
+          {
+            "field": "decision",
+            "expected": "none",
+            "actual": "Do not start a background observer; make the focused documentation-link correction and validate the link without making API claims."
+          }
+        ],
+        "observedForbidden": [],
+        "parsed": {
+          "mode": "quick",
+          "decision": "Do not start a background observer; make the focused documentation-link correction and validate the link without making API claims."
+        }
+      },
+      "durationMs": 6758,
+      "usage": {
+        "totalTokens": 6958,
+        "inputTokens": 6918,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 40,
+        "reasoningOutputTokens": 0
+      },
+      "nativeEvents": [
+        {
+          "eventName": "sessionStart",
+          "status": "completed",
+          "durationMs": 37
+        }
+      ],
+      "trust": "reviewed",
+      "modelTurns": 1,
+      "unexpectedTools": 0,
+      "promptHash": "8c2f3f9f35ce03b1ede06cf12487c6536afd6163a11dc671f15d10f2133bda09",
+      "payloadHash": "8c2f3f9f35ce03b1ede06cf12487c6536afd6163a11dc671f15d10f2133bda09",
+      "additionsHash": "8ddc6a0970c0466238e01a3736cdb307fee602802cc58d0021dd4b23ee2243d6",
+      "artifactHashes": {
+        "runtime-receipt.json": "d4ebbeb080be3c57f84167dd4fdb01a64b7c22a78a79794685d031139f649de2",
+        "codex-events.jsonl": "1ff6ae802466db79d861bb8ee1fb05dfc30d0989116387da883dee6ff018cd8c",
+        "output.md": "07d34ba36c51a16411a14aa2bf598035b18985a9e1f12138b8c3f4d3e27f7c69",
+        "prompt.md": "8c2f3f9f35ce03b1ede06cf12487c6536afd6163a11dc671f15d10f2133bda09",
+        "trial-context.json": "bee8fdb3703e6ee752dcdb4a34cab895609e7ec359fc42f901ffa1f5a1a56b3a"
+      }
+    }
+  ],
+  "interpretation": {
+    "observed": "Both authorized runtime turns completed. B2 emitted a completed native SessionStart and no unexpected tool calls occurred. Both answers selected quick and explicitly declined an observer.",
+    "gradingFailure": "The exact-field grader required decision=none, but the reviewed prompt did not specify this literal label. Both answers used explanatory strings. Original grades remain failed; no retrospective regrading.",
+    "futureCorrection": "Specify both observer decision labels and their meanings in the quick-docs prompt. Changed payloads require a new plan/authorization; no automatic rerun."
+  },
+  "limitations": [
+    "One sequential decision trial per treatment cannot establish coding quality, statistical latency effects or general token savings.",
+    "Equal input tokens apply only to this quiet minimal hook fixture with no lesson/candidate payload.",
+    "Only SessionStart was delivered; tool/compact/interrupt/Stop remain unverified.",
+    "Both authorized turns are consumed. This report does not authorize another run."
+  ]
+}

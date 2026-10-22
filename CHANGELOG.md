@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Recorded the authorized two-turn native smoke: SessionStart completed in 37 ms, 13,915 total tokens, no unexpected tools. Original exact-field grades remain failed; clarified quick-docs observer labels for future prompts without rerunning the model.
+
 - Fixed native smoke/benchmark timing for Codex 0.163.0: SessionStart is deferred until the first user turn. Zero-model smoke explains the deferred result; authorized trials require delivery before accepting results and retain measured usage on delivery failures.
 
 - Added zero-model skill drafting/evaluation preparation, retained promotion report provenance and package-lock-aware lesson eligibility.

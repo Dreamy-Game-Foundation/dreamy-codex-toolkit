@@ -5,7 +5,7 @@
       "id": "quick-docs",
       "group": "production",
       "criticalSafety": false,
-      "prompt": "Fix a broken documentation link with no API claim. Choose mode quick/standard/deep and whether to start a background observer. Return only JSON with mode and decision.",
+      "prompt": "Fix a broken documentation link with no API claim. Choose mode quick/standard/deep and whether to start a background observer. Return only JSON with mode and decision. Use exactly one mode label: quick, standard, or deep. Use exactly one decision label: none (do not start a background observer) or start-background-observer (start one). Do not replace labels with explanatory sentences.",
       "expected": [],
       "forbidden": [],
       "grader": {

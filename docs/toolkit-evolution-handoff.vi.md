@@ -1,10 +1,10 @@
 # Các bước cần chủ dự án thực hiện
 
-Code, kiểm tra tự động và chuẩn bị dữ liệu do agent xử lý. Các bước dưới đây cần quyết định hoặc thao tác của bạn. Bộ hook/lesson/draft không gọi model; quyền chạy bốn lượt retention trước đó đã được dùng đủ, không áp dụng cho benchmark mới.
+Code, kiểm tra tự động và chuẩn bị dữ liệu do agent xử lý. Các bước dưới đây cần quyết định hoặc thao tác của bạn. Bộ hook/lesson/draft không gọi model. Bốn lượt retention và hai lượt native smoke được duyệt riêng đã dùng đủ; các đợt model tiếp theo cần plan và quyền mới.
 
 ## 1. Duyệt hook native — cần làm trước
 
-Cập nhật ngày 22/10/2026: fixture đã được bạn duyệt đủ bốn hook, probe báo `trusted`, `complete`, không có lỗi hoặc hook ngoài. Không cần duyệt lại cùng định nghĩa. Các lệnh dưới đây dành cho cài mới hoặc khi định nghĩa thay đổi.
+Cập nhật ngày 22/10/2026: fixture đã được bạn duyệt đủ bốn hook, probe báo `trusted`, `complete`, không có lỗi hoặc hook ngoài. Đợt native được duyệt sau đó đã ghi nhận SessionStart completed trong 37 ms. Không cần duyệt lại cùng định nghĩa. Các lệnh dưới đây dành cho cài mới hoặc khi định nghĩa thay đổi.
 
 Mở terminal ở thư mục repo `dreamy-codex-toolkit`. Nếu terminal chưa tìm thấy Node, dùng Node đang cài trên máy này:
 
@@ -49,7 +49,13 @@ Kết quả mong đợi:
 
 Bạn có thể trả lời **“đã duyệt hooks”** để agent kiểm tra tiếp. Nếu vẫn lỗi, gửi JSON của hai lệnh trên; không cần gửi auth/config tài khoản. Khi runtime/policy thay đổi qua configure/update, Codex cần review lại định nghĩa mới.
 
-## 2. Duyệt một đợt benchmark mới — tùy chọn sau bước 1
+## 2. Kết quả native smoke và các đợt bổ sung
+
+**Đợt đầu đã chạy đủ 2/2 lượt**, model `gpt-6.1-sol`, reasoning `low`. B1 tắt hook; B2 đã nhận SessionStart completed, 37 ms. Cả hai không có tool call ngoài ý muốn. Tổng dùng 13.836 input + 79 output = **13.915 token**; mỗi lượt có 6.918 input token.
+
+Grader giữ nguyên kết quả **0 pass / 2 fail**: cả hai chọn mode quick và nói rõ không chạy observer, nhưng trả lời bằng câu đầy đủ thay vì chuỗi `none`. Prompt cũ chưa quy định nhãn này; prompt đã được làm rõ cho các đợt tương lai. Không sửa điểm cũ hoặc chạy lại model. Xem [bằng chứng được lưu](evidence/native-smoke-pair-20261022.json).
+
+Plan cũ ở `.dreamy/benchmarks/native-smoke-review/` đã hết budget; kết quả ở `.dreamy/benchmarks/native-smoke-run-01/`. Không chạy lại lệnh cũ, đổi cờ hoặc xóa ledger. SessionStart đã có bằng chứng thực tế; chưa cần tiêu thêm token chỉ để chạy lại cùng smoke. Nếu cần đợt khác, tạo output mới, review payload mới và duyệt budget riêng. Các lệnh dưới đây mô tả cách chuẩn bị/thực thi một đợt, không cấp quyền chạy thêm.
 
 Đợt đầu được thu nhỏ còn **hai model turn**: cùng task `quick-docs`, B1 tắt hooks và B2 bật minimal hooks. Đây là phép thử khả năng chạy và đo overhead, chưa phải benchmark chất lượng lập trình hoặc đủ repetitions để kết luận thống kê.
 
@@ -62,29 +68,29 @@ node scripts/prepare-native-benchmark.mjs \
   --project .dreamy/native-consumer \
   --model gpt-6.1-sol \
   --max-turns 2 \
-  --output .dreamy/benchmarks/native-smoke-review
+  --output .dreamy/benchmarks/native-smoke-review-next
 ```
 
 Mỗi lần chuẩn bị cần một output directory mới. Nếu thư mục ví dụ đã tồn tại, đọc bản đã tạo hoặc chọn tên mới, thay vì xóa bằng chứng cũ.
 
 Bạn xem:
 
-- `.dreamy/benchmarks/native-smoke-review/authorization-plan.json`: model, project, số turn, danh sách trial; mặc định `approved: false`.
+- `.dreamy/benchmarks/native-smoke-review-next/authorization-plan.json`: model, project, số turn, danh sách trial; mặc định `approved: false`.
 - `B1/quick-docs/1/prompt.md` và `B2/quick-docs/1/prompt.md`: đúng nội dung sẽ gửi.
 - Hai file `reviewed-additions.json`: snapshot bổ sung. B1/B2 không gửi lesson hoặc skill candidate; B2 có hash cấu hình/runtime hook để kiểm tra drift.
 
-Đích gửi là model `gpt-6.1-sol` qua tài khoản Codex hiện tại, reasoning `low`. Bạn có thể trả lời **“Cho phép native smoke hai lượt theo plan đã chuẩn bị”**. Agent sẽ dùng đúng plan đó, đánh dấu duyệt và thực thi. Nếu không muốn tiêu token, để nguyên `approved: false`; probe và chuẩn bị payload vẫn dùng được, nhưng chưa thể xác nhận SessionStart trên Codex 0.163.0.
+Đích gửi của đợt ví dụ là model `gpt-6.1-sol` qua tài khoản Codex hiện tại, reasoning `low`. Chỉ đánh dấu approved và thực thi sau khi bạn review và cho phép đúng plan mới. Câu chấp thuận cho hai lượt đã chạy không áp dụng lại. Nếu không muốn tiêu token, để nguyên `approved: false`; probe và chuẩn bị payload vẫn dùng được.
 
 Để tự chạy sau khi đã review và đặt `approved: true` cho đúng plan:
 
 ```bash
 DREAMY_EVOLUTION_EXECUTABLE='' \
 DREAMY_EVOLUTION_EXECUTE=1 \
-DREAMY_EVOLUTION_PLAN="$PWD/.dreamy/benchmarks/native-smoke-review/authorization-plan.json" \
+DREAMY_EVOLUTION_PLAN="$PWD/.dreamy/benchmarks/native-smoke-review-next/authorization-plan.json" \
 npm run benchmark -- \
   --manifest benchmarks/manifests/native-smoke.json \
   --case quick-docs \
-  --output .dreamy/benchmarks/native-smoke-run-01
+  --output .dreamy/benchmarks/native-smoke-run-next
 ```
 
 Giới hạn 2 turn không phải trần cứng token hoặc tiền. Runtime vẫn có context cố định. Ledger ghi nhận lượt đã thử trước khi gửi; lỗi sau đó vẫn tiêu hao lượt. Không xóa ledger để retry: xem nguyên nhân và duyệt một đợt mới khi cần. Payload/context/lesson/skill/hook snapshot thay đổi sẽ làm plan cũ bị từ chối.
@@ -105,6 +111,8 @@ Trước khi chạy nghiệm thu Editor:
 Sau đó agent có thể đọc Console, chọn test hẹp và ghi receipt thực tế. Không tự cập nhật package hoặc nâng trạng thái compatibility chỉ dựa vào việc package tồn tại. Các registry còn drift cần đối chiếu đúng source commit và kiểm chứng API/test trước khi đánh dấu hỗ trợ.
 
 ## 4. Skill tự học và rollout
+
+Lỗi hợp đồng đầu ra của đợt native vừa chạy đã được ghi thành lesson `benchmark-output-label-contract`, trạng thái candidate. Prompt mới chưa được đánh giá bằng model nên lesson này chưa verified và không được dùng để tự promote skill.
 
 Candidate thực tế đã được chuẩn bị ở `.dreamy/knowledge/skill-candidates/project-ci-recovery/SKILL.md`, từ lesson `ci-portable-npm-invocation`. Agent đã tái hiện lỗi `npm.cmd ENOENT`, chạy validate/unit/pack thành công, tạo draft và kiểm tra cấu trúc skill. Năm case cụ thể nằm ở `.dreamy/knowledge/project-ci-recovery-cases.json`; evaluation plan đã có trong thư mục candidate. Chưa chạy đánh giá hành vi hoặc promote. Đây là bản nháp để review; khi đưa vào toolkit dùng chung, ưu tiên cập nhật owner CI/debugger hiện có.
 
