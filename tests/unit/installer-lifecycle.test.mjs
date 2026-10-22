@@ -58,6 +58,7 @@ test("global target installs into user Codex home", () => {
   assert.ok(fs.existsSync(path.join(codexHome, "agents", "dreamy-unity-developer.toml")));
   assert.ok(fs.existsSync(path.join(agentsHome, "skills", "dreamy-feature", "SKILL.md")));
   assert.ok(fs.existsSync(path.join(agentsHome, "skills", "dreamy-core", "SKILL.md")));
+  assert.ok(fs.existsSync(path.join(agentsHome, "skills", "unity-ui-reskin", "references", "tmp-materials.md")));
   assert.equal(fs.existsSync(path.join(codexHome, "config.toml")), false);
 
   const uninstall = JSON.parse(run(["uninstall", "--target", "global"], root, env));
@@ -115,6 +116,7 @@ test("list --resolved shows deterministic preset graph", () => {
   assert.ok(resolved.agents.includes("dreamy-unity-developer.toml"));
   assert.equal(resolved.agents.includes("dreamy-release-validator.toml"), false);
   assert.ok(resolved.skills.includes("unity-ui"));
+  assert.ok(resolved.skills.includes("unity-ui-reskin"));
 });
 
 test("purge removes Dreamy state but preserves unrelated Codex and Agents files", () => {

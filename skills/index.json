@@ -1507,6 +1507,18 @@
       "evalCases": []
     },
     {
+      "name": "unity-ui-reskin",
+      "category": "unity",
+      "priority": "P1",
+      "file": "skills/unity-ui-reskin/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": ["dreamy_unity_developer", "dreamy_mcp_operator", "dreamy_code_reviewer"],
+      "requiresEvidence": ["project-code", "manifest", "editor-state", "visual-preview", "binding-inspection"],
+      "references": 3,
+      "evalCases": []
+    },
+    {
       "name": "unity-urp",
       "category": "unity",
       "priority": "P1",

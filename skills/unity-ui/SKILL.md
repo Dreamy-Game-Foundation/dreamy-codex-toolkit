@@ -85,5 +85,7 @@ Only claim installed package, Unity, platform, or Dreamy behavior after inspecti
 
 ## References
 
+- For screenshot-driven prefab restyling, sprite/font replacement and visual layout verification, use `unity-ui-reskin` when installed; keep this skill's general UI ownership rules.
+
 - Read project `AGENTS.md` and `rules/index.json` when present; for global installs, use the packaged skill/rule context and relevant compatibility catalog before making ownership or API claims.
 - Use nearby project code and rule files as the reference source; add a skill-local reference only when repeated gotchas need more depth.

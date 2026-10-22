@@ -1,0 +1,4 @@
+interface:
+  display_name: "Unity UI Reskin"
+  short_description: "Reskin Unity prefabs from visual references"
+  default_prompt: "Use $unity-ui-reskin to restyle this UI prefab while preserving its bindings and adaptive layout."

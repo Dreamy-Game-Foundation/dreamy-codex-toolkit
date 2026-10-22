@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Added `unity-ui-reskin` for reference-driven uGUI prefab restyling, adaptive anchors, TMP outline presets and evidence-based visual verification.
+- Included the skill in `unity-core` and added routing from Unity UI and Dreamy UI.
+
 ## 0.1.0-alpha.3
 
 - Bumped the toolkit package version and synchronized package metadata for the next updateable release.

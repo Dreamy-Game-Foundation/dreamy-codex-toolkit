@@ -97,6 +97,8 @@ Dreamy package APIs are allowed only when backed by `compatibility/dreamy-packag
 
 ## References
 
+- For screenshot-driven panel reskins or font/outline replacement, use `unity-ui-reskin` when installed; retain Dreamy lifecycle, presenter and navigation ownership here.
+
 - Read project `AGENTS.md` and `rules/index.json` when present; for global installs, use the packaged skill/rule context and relevant compatibility catalog before making ownership or API claims.
 - Read `references/panel-lifecycle.md` when the task touches this skill's deeper panel lifecycle behavior.
 - Read `references/presenter-boundary.md` when the task touches this skill's deeper presenter boundary behavior.
