@@ -44,7 +44,10 @@ import {
 import { fixtureSmoke } from "../../scripts/hook-smoke.mjs";
 import { rolloutSnapshot } from "../../src/rollout-snapshot.mjs";
 import { resolvePolicy } from "../../src/hooks/policy.mjs";
-import { probeNativeHooks } from "../../src/hooks/native-probe.mjs";
+import {
+  probeNativeHooks,
+  smokeNativeHooks,
+} from "../../src/hooks/native-probe.mjs";
 const toolkit = fileURLToPath(new URL("../../", import.meta.url));
 function workspace(t) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "dreamy evolution "));
@@ -331,6 +334,55 @@ test("native probe reports runtime trust and discovery without claiming event de
     "unavailable",
   );
   assert.equal(closed, 4);
+});
+test("zero-model smoke reports deferred SessionStart without requesting a turn or renewed trust", async (t) => {
+  const root = fs.realpathSync(workspace(t));
+  for (const status of [null, "completed", "failed"]) {
+    const requests = [];
+    let closed = false;
+    const server = {
+      notifications: [],
+      initialize: async () => ({}),
+      request: async (method, params) => {
+        requests.push(method);
+        assert.equal(method, "thread/start");
+        assert.equal(params.sessionStartSource, "startup");
+        if (status)
+          server.notifications.push({
+            method: "hook/completed",
+            params: {
+              threadId: "smoke",
+              run: {
+                eventName: "sessionStart",
+                sourcePath: path.join(root, ".codex/hooks.json"),
+                status,
+              },
+            },
+          });
+        return { thread: { id: "smoke" } };
+      },
+      close: () => {
+        closed = true;
+      },
+    };
+    const result = await smokeNativeHooks(root, {
+      probe: async () => ({ trust: "trusted", errors: [], foreignTrustedHooks: [] }),
+      clientFactory: () => server,
+      hookTimeoutMs: 0,
+    });
+    assert.equal(
+      result.status,
+      status === "completed" ? "pass" : status ? "fail" : "not-run",
+    );
+    assert.equal(result.modelCalls, 0);
+    assert.equal(result.operational, false);
+    assert.deepEqual(requests, ["thread/start"]);
+    assert.equal(closed, true);
+    if (!status) {
+      assert.match(result.reason, /defers.*first user turn/);
+      assert.match(result.nextAction, /no additional trust review/);
+    }
+  }
 });
 test("hook lifecycle preserves user hooks and refuses drift; user data survives uninstall", (t) => {
   const root = workspace(t),

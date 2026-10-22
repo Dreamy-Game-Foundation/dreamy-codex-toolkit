@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "kind": "native-sessionstart-lifecycle-diagnosis",
+  "observedAt": "2026-10-22T08:05:24.112420+00:00",
+  "runtimeVersion": "0.163.0",
+  "surface": "app-server",
+  "modelCalls": 0,
+  "observed": {
+    "fixture": ".dreamy/native-consumer",
+    "trustedOwnedHooks": 4,
+    "foreignTrustedHooks": 0,
+    "probeErrors": [],
+    "threadOnlyChecks": [
+      {
+        "ephemeral": true,
+        "sessionStartSource": "omitted",
+        "waitMs": 6000,
+        "sessionStartNotifications": 0
+      },
+      {
+        "ephemeral": true,
+        "sessionStartSource": "startup",
+        "waitMs": 6000,
+        "sessionStartNotifications": 0
+      },
+      {
+        "ephemeral": false,
+        "sessionStartSource": "startup",
+        "waitMs": 12000,
+        "sessionStartNotifications": 0
+      }
+    ],
+    "turnStartRequests": 0,
+    "nativeDelivery": "not-established"
+  },
+  "sourceExplanation": {
+    "repository": "https://github.com/openai/codex",
+    "tag": "rust-v0.163.0",
+    "commit": "83086188ae0614bd882818ff1aa23f3194962012",
+    "finding": "run_turn drains pending SessionStart hooks; creating a thread alone does not drain them on this version.",
+    "sources": [
+      {
+        "path": "codex-rs/core/src/hook_runtime.rs",
+        "sha256": "90a53b9fdee731457a81979796b405967312c402236221c16683db7246e5dbfe",
+        "url": "https://github.com/openai/codex/blob/83086188ae0614bd882818ff1aa23f3194962012/codex-rs/core/src/hook_runtime.rs"
+      },
+      {
+        "path": "codex-rs/core/src/session/turn.rs",
+        "sha256": "394b2246903a312c0cd76c370d06afe7f0673dddde792105a9779a7657dc9e70",
+        "url": "https://github.com/openai/codex/blob/83086188ae0614bd882818ff1aa23f3194962012/codex-rs/core/src/session/turn.rs"
+      },
+      {
+        "path": "codex-rs/core/src/tasks/regular.rs",
+        "sha256": "8ebf86919b855232c8939851193a29157e2cbca2c0ac85fc1f6330327333ca09",
+        "url": "https://github.com/openai/codex/blob/83086188ae0614bd882818ff1aa23f3194962012/codex-rs/core/src/tasks/regular.rs"
+      }
+    ]
+  },
+  "correction": {
+    "zeroModelSmoke": "Report not-run with deferred first-turn explanation; never force a model turn.",
+    "authorizedAdapter": "Check native trust before execution; require observed completed SessionStart before accepting the explicitly authorized turn result. Missing/failed delivery rejects the result; budget remains consumed and measured usage is retained.",
+    "trustDefinitionsChanged": false
+  },
+  "remaining": [
+    "No new model call was authorized or executed.",
+    "Actual first-turn delivery and coding quality remain unestablished.",
+    "Tool/compact/interrupt/Stop events require separate real lifecycle evidence."
+  ]
+}

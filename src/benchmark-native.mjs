@@ -258,6 +258,7 @@ export async function startDecisionSession(server, project, model) {
     cwd: project,
     model: model,
     ephemeral: true,
+    sessionStartSource: "startup",
     sandbox: "read-only",
     approvalPolicy: "never",
     baseInstructions:
@@ -338,23 +339,6 @@ export async function runNativeDecisionTrial({
       plan.model,
     );
     const threadId = thread.thread.id;
-    const nativeRuns = hooksRequired
-      ? await waitForHook(
-          server,
-          threadId,
-          path.join(project, ".codex/hooks.json"),
-          hookTimeoutMs,
-        )
-      : [];
-    if (
-      hooksRequired &&
-      !nativeRuns.some(
-        (r) => r.eventName === "sessionStart" && r.status === "completed",
-      )
-    )
-      throw Error(
-        "No completed native SessionStart was observed; model turn not started",
-      );
     const extra = [];
     if (additions.lessons.length)
       extra.push(
@@ -384,15 +368,7 @@ export async function runNativeDecisionTrial({
       plan.reasoning,
       timeoutMs,
     );
-    const runs = [
-      ...nativeRuns,
-      ...result.events
-        .filter((v) => v.method === "hook/completed")
-        .map((v) => v.params.run),
-    ];
-    if (runs.some((r) => r.status !== "completed"))
-      throw Error("Native hook failed during the decision turn");
-    fs.writeFileSync(outputFile, result.text + "\n");
+    // Keep measured usage even when native delivery later rejects this attempted turn.
     const trace = result.usage
       ? [
           {
@@ -411,6 +387,28 @@ export async function runNativeDecisionTrial({
       trace.map((v) => JSON.stringify(v)).join("\n") +
         (trace.length ? "\n" : ""),
     );
+    // Codex 0.163.0 drains pending SessionStart hooks inside the first turn, not thread/start.
+    // Trust is checked before execution; delivery is required before accepting its result.
+    const runs = hooksRequired
+      ? await waitForHook(
+          server,
+          threadId,
+          path.join(project, ".codex/hooks.json"),
+          hookTimeoutMs,
+        )
+      : [];
+    if (
+      hooksRequired &&
+      !runs.some(
+        (r) => r.eventName === "sessionStart" && r.status === "completed",
+      )
+    )
+      throw Error(
+        "No completed native SessionStart was observed during the authorized turn; result rejected and attempted turn remains consumed",
+      );
+    if (runs.some((r) => r.status !== "completed"))
+      throw Error("Native hook failed during the decision turn");
+    fs.writeFileSync(outputFile, result.text + "\n");
     const receipt = {
       schemaVersion: 1,
       kind: "observed-native-decision-trial",

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Fixed native smoke/benchmark timing for Codex 0.163.0: SessionStart is deferred until the first user turn. Zero-model smoke explains the deferred result; authorized trials require delivery before accepting results and retain measured usage on delivery failures.
+
 - Added zero-model skill drafting/evaluation preparation, retained promotion report provenance and package-lock-aware lesson eligibility.
 - Added a bounded built-in native decision adapter, exact payload authorization plans, replay protection, a two-turn smoke manifest and daily rollout snapshots.
 - Added a Vietnamese owner handoff for native trust, benchmark authorization, Unity readiness and rollout; no additional model calls are enabled by default.

@@ -4,6 +4,8 @@ Code, kiểm tra tự động và chuẩn bị dữ liệu do agent xử lý. C�
 
 ## 1. Duyệt hook native — cần làm trước
 
+Cập nhật ngày 22/10/2026: fixture đã được bạn duyệt đủ bốn hook, probe báo `trusted`, `complete`, không có lỗi hoặc hook ngoài. Không cần duyệt lại cùng định nghĩa. Các lệnh dưới đây dành cho cài mới hoặc khi định nghĩa thay đổi.
+
 Mở terminal ở thư mục repo `dreamy-codex-toolkit`. Nếu terminal chưa tìm thấy Node, dùng Node đang cài trên máy này:
 
 ```bash
@@ -41,8 +43,9 @@ node src/cli.js hooks smoke --target .dreamy/native-consumer --native --json
 Kết quả mong đợi:
 
 - Probe: `trust: trusted`, `discovery: complete`, `errors: []`.
-- Smoke: `status: pass`, `events.SessionStart: completed`, `modelCalls: 0`.
-- `operational: false` vẫn đúng: phép thử này mới chứng minh SessionStart. Tool/Stop/compact/interrupt cần phiên sử dụng thực tế riêng.
+- Trên Codex 0.163.0, smoke không gọi model nên có thể báo `status: not-run`, `events.SessionStart: not-observed`, `modelCalls: 0`, exit code 2: runtime chờ lượt người dùng đầu tiên mới xử lý SessionStart. Đây không phải lỗi trust và không cần duyệt lại hook.
+- Nếu runtime phát event ngay khi mở thread, smoke chỉ báo pass khi thực sự nhận SessionStart completed.
+- `operational: false` vẫn đúng: chưa có bằng chứng đủ các lifecycle. Tool/Stop/compact/interrupt cần phiên sử dụng thực tế riêng.
 
 Bạn có thể trả lời **“đã duyệt hooks”** để agent kiểm tra tiếp. Nếu vẫn lỗi, gửi JSON của hai lệnh trên; không cần gửi auth/config tài khoản. Khi runtime/policy thay đổi qua configure/update, Codex cần review lại định nghĩa mới.
 
@@ -70,7 +73,7 @@ Bạn xem:
 - `B1/quick-docs/1/prompt.md` và `B2/quick-docs/1/prompt.md`: đúng nội dung sẽ gửi.
 - Hai file `reviewed-additions.json`: snapshot bổ sung. B1/B2 không gửi lesson hoặc skill candidate; B2 có hash cấu hình/runtime hook để kiểm tra drift.
 
-Đích gửi là model `gpt-6.1-sol` qua tài khoản Codex hiện tại, reasoning `low`. Bạn có thể trả lời **“Cho phép native smoke hai lượt theo plan đã chuẩn bị”**. Agent sẽ dùng đúng plan đó, đánh dấu duyệt và thực thi. Nếu không muốn tiêu token, để nguyên `approved: false`; chuẩn bị payload và native SessionStart smoke vẫn dùng được.
+Đích gửi là model `gpt-6.1-sol` qua tài khoản Codex hiện tại, reasoning `low`. Bạn có thể trả lời **“Cho phép native smoke hai lượt theo plan đã chuẩn bị”**. Agent sẽ dùng đúng plan đó, đánh dấu duyệt và thực thi. Nếu không muốn tiêu token, để nguyên `approved: false`; probe và chuẩn bị payload vẫn dùng được, nhưng chưa thể xác nhận SessionStart trên Codex 0.163.0.
 
 Để tự chạy sau khi đã review và đặt `approved: true` cho đúng plan:
 
@@ -86,7 +89,7 @@ npm run benchmark -- \
 
 Giới hạn 2 turn không phải trần cứng token hoặc tiền. Runtime vẫn có context cố định. Ledger ghi nhận lượt đã thử trước khi gửi; lỗi sau đó vẫn tiêu hao lượt. Không xóa ledger để retry: xem nguyên nhân và duyệt một đợt mới khi cần. Payload/context/lesson/skill/hook snapshot thay đổi sẽ làm plan cũ bị từ chối.
 
-Receipt ghi actual runtime/model, usage khi có, các native event thật và hash payload. B3 thêm recall từ lesson còn hiệu lực; B4 yêu cầu candidate đã được promote với report/artifact còn nguyên. B4 hiện đưa nội dung skill đã review vào context, chưa kiểm tra discovery/routing tự động.
+Adapter kiểm tra trust trước khi chạy; SessionStart phải completed trong lượt đã được duyệt thì kết quả B2 trở lên mới được chấp nhận. Nếu không nhận event hoặc hook failed, trial fail và lượt đã thử vẫn được tính vào budget. Receipt ghi actual runtime/model, usage khi có, các native event thật và hash payload. B3 thêm recall từ lesson còn hiệu lực; B4 yêu cầu candidate đã được promote với report/artifact còn nguyên. B4 hiện đưa nội dung skill đã review vào context, chưa kiểm tra discovery/routing tự động.
 
 ## 3. Nghiệm thu Unity — chuẩn bị Editor khi muốn tiếp tục
 

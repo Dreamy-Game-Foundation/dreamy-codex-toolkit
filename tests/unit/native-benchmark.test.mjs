@@ -69,7 +69,28 @@ function fixture(t, treatment = "B0") {
     execute: "1",
   };
 }
-function runtime(root, { native = false, tool = false, usage = true } = {}) {
+function runtime(
+  root,
+  {
+    native = false,
+    nativeAtStart = false,
+    hookStatus = "completed",
+    tool = false,
+    usage = true,
+  } = {},
+) {
+  const hookEvent = () => ({
+    method: "hook/completed",
+    params: {
+      threadId: "thread",
+      run: {
+        sourcePath: path.join(root, ".codex/hooks.json"),
+        eventName: "sessionStart",
+        status: hookStatus,
+        durationMs: 1,
+      },
+    },
+  });
   const server = {
     notifications: [],
     methods: [],
@@ -89,19 +110,7 @@ function runtime(root, { native = false, tool = false, usage = true } = {}) {
           ],
         };
       if (method === "thread/start") {
-        if (native)
-          this.notifications.push({
-            method: "hook/completed",
-            params: {
-              threadId: "thread",
-              run: {
-                sourcePath: path.join(root, ".codex/hooks.json"),
-                eventName: "sessionStart",
-                status: "completed",
-                durationMs: 1,
-              },
-            },
-          });
+        if (native && nativeAtStart) this.notifications.push(hookEvent());
         return { model: "fixture-model", thread: { id: "thread" } };
       }
       if (method === "turn/start") {
@@ -110,6 +119,7 @@ function runtime(root, { native = false, tool = false, usage = true } = {}) {
             this.notifications.push(event);
             this.onNotification?.(event);
           };
+          if (native && !nativeAtStart) emit(hookEvent());
           if (tool)
             emit({
               method: "item/started",
@@ -230,7 +240,7 @@ test("B0 executes an ephemeral controlled turn and preserves measured usage", as
   assert.equal(replay.status, "not-run");
   assert.match(replay.reason, /exhausted|already/);
 });
-test("B2 requires native delivery and refuses trust or foreign-hook failures before model", async (t) => {
+test("B2 gates trust before execution and requires SessionStart from the authorized first turn", async (t) => {
   const f = fixture(t, "B2");
   let created = false;
   const untrusted = await runNativeDecisionTrial({
@@ -262,18 +272,46 @@ test("B2 requires native delivery and refuses trust or foreign-hook failures bef
     clientFactory: () => server,
     hookTimeoutMs: 1,
   });
-  assert.equal(noDelivery.status, "not-run");
+  assert.equal(noDelivery.status, "fail");
+  assert.equal(noDelivery.modelTurns, 1);
+  assert.match(noDelivery.reason, /authorized turn.*consumed/);
+  assert.equal(
+    JSON.parse(fs.readFileSync(path.join(f.root, "codex-events.jsonl"), "utf8"))
+      .type,
+    "turn.completed",
+  );
   assert.equal(
     server.methods.some((v) => v.method === "turn/start"),
-    false,
+    true,
   );
-  const delivered = await runNativeDecisionTrial({
+  assert.equal(fs.existsSync(f.outputFile), false);
+  const replay = await runNativeDecisionTrial({
     ...f,
     probe: ready,
     clientFactory: () => runtime(f.root, { native: true }),
   });
-  assert.equal(delivered.status, "complete");
-  assert.equal(delivered.receipt.nativeEvents[0].eventName, "sessionStart");
+  assert.equal(replay.status, "not-run");
+  assert.match(replay.reason, /already attempted/);
+  for (const nativeAtStart of [false, true]) {
+    const accepted = fixture(t, "B2");
+    const delivered = await runNativeDecisionTrial({
+      ...accepted,
+      probe: ready,
+      clientFactory: () => runtime(accepted.root, { native: true, nativeAtStart }),
+    });
+    assert.equal(delivered.status, "complete");
+    assert.equal(delivered.receipt.nativeEvents.length, 1);
+    assert.equal(delivered.receipt.nativeEvents[0].eventName, "sessionStart");
+  }
+  const failed = fixture(t, "B2");
+  const rejected = await runNativeDecisionTrial({
+    ...failed,
+    probe: ready,
+    clientFactory: () => runtime(failed.root, { native: true, hookStatus: "failed" }),
+  });
+  assert.equal(rejected.status, "fail");
+  assert.equal(rejected.modelTurns, 1);
+  assert.equal(fs.existsSync(failed.outputFile), false);
 });
 test("a blocked native member prevents wasting a baseline turn in the same plan", async (t) => {
   const f = fixture(t);

@@ -96,9 +96,12 @@ export async function probeNativeHooks(root, { client } = {}) {
   }
 }
 
-// SessionStart is the only lifecycle this smoke can exercise without a model turn.
-export async function smokeNativeHooks(root) {
-  const discovery = await probeNativeHooks(root);
+// Some runtimes defer SessionStart until the first user turn. Never start a turn to force this zero-model smoke.
+export async function smokeNativeHooks(
+  root,
+  { probe = probeNativeHooks, clientFactory, hookTimeoutMs = 5000 } = {},
+) {
+  const discovery = await probe(root);
   if (
     discovery.trust !== "trusted" ||
     discovery.errors.length ||
@@ -114,12 +117,15 @@ export async function smokeNativeHooks(root) {
         ? "Other enabled trusted hooks could affect this smoke; review the foreignTrustedHooks list before testing in an isolated consumer"
         : discovery.reason,
     };
-  const server = new CodexAppServer({ cwd: root });
+  const server = clientFactory
+    ? clientFactory({ cwd: root })
+    : new CodexAppServer({ cwd: root });
   try {
     await server.initialize();
     const started = await server.request("thread/start", {
       cwd: fs.realpathSync(root),
       ephemeral: true,
+      sessionStartSource: "startup",
       sandbox: "read-only",
       approvalPolicy: "never",
     });
@@ -127,20 +133,29 @@ export async function smokeNativeHooks(root) {
       server,
       started.thread.id,
       path.join(fs.realpathSync(root), ".codex/hooks.json"),
+      hookTimeoutMs,
     );
     const session = runs.find((v) => v.eventName === "sessionStart");
     return {
       schemaVersion: 1,
       kind: "native-hook-smoke",
-      status: session?.status === "completed" ? "pass" : "not-run",
+      status:
+        session?.status === "completed" ? "pass" : session ? "fail" : "not-run",
       runtime: discovery.runtimeUserAgent,
       threadId: started.thread.id,
       modelCalls: 0,
       operational: false,
       events: { SessionStart: session?.status || "not-observed" },
       runs,
-      reason:
-        "This smoke proves only observed SessionStart delivery; tool/compact/interrupt/Stop require separate real lifecycle trials",
+      reason: session
+        ? "Only the observed SessionStart is evidence; other lifecycle events need separate trials"
+        : "No SessionStart was observed from thread/start. Codex 0.163.0 defers it until the first user turn; this zero-model smoke does not start a turn",
+      nextAction:
+        session?.status === "completed"
+          ? "Verify other lifecycle events in separately authorized trials"
+          : session
+            ? "Inspect the failed native run before retrying"
+            : "Definitions are trusted. Review and authorize a bounded first-turn trial to verify native delivery; no additional trust review is required unless definitions change",
     };
   } catch (error) {
     return {
