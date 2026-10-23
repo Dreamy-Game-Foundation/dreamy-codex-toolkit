@@ -10,6 +10,9 @@
 
 Current readiness and next steps:
 
+- [Tổng hợp tính năng, bản sửa và trạng thái đã nghiệm thu](docs/toolkit-evolution-implementation.md#feature-and-fix-inventory--23-october-2026)
+- [Báo cáo lab và kết quả native hooks](docs/toolkit-acceptance-lab-report.vi.md)
+- [Prompt test sẵn và kết quả mong đợi](docs/toolkit-evolution-test-prompts.vi.md)
 - [Local hooks, project lessons and skill evolution](docs/toolkit-evolution.md)
 - [Evolution implementation and acceptance status](docs/toolkit-evolution-implementation.md)
 - [Các bước chủ dự án cần thực hiện](docs/toolkit-evolution-handoff.vi.md)
@@ -104,6 +107,15 @@ Choose your installation scope below and run in your terminal:
 - **Native Codex Agent Templates**: Installs specialized `.toml` agent prompts into `.codex/agents/`.
 - **Modular Presets & Skill Discovery**: Automatically filters skills based on installed `com.dreamy.*` Unity packages.
 - **Global Purge Capability**: Single command `dreamy-kit purge` to completely clean global user profile assets.
+- **Opt-in Project Hooks**: Off/minimal/standard/strict profiles, native trust/discovery diagnostics, ownership-preserving installation and transaction recovery. Minimal SessionStart, Interrupt and PreCompact were observed in an Extension session.
+- **Native Bash Failure Observations**: Optional Codex 0.163.0 adapter correlates bounded transcript metadata when native output omits exit status. Native retest recorded one sanitized failure; the adapter remains off by default.
+- **Task Checkpoints and Verification**: Session-bound checkpoints, source fingerprints, cancellation, fixed verification commands and receipts; standard Stop allows at most one continuation per task/source.
+- **Evidence-backed Local Learning**: Scoped lessons require matching failure and fresh successful verification; bounded lexical recall filters stale evidence and deduplicates per session.
+- **Gated Skill Drafting**: Generate candidates locally without model calls, prepare positive/negative/conflict cases and require reviewed behavioral evidence before explicit project promotion.
+- **Context Budgets**: Inventory actual installed skills, measure bytes without inventing token counts, and use compact skill entries/references on demand.
+- **Portable CI and Acceptance Lab**: Explicit test discovery, portable npm invocation, source-bound pack/release evidence, Linux/Windows × Node 20/22 checks and a reproducible isolated consumer lab.
+
+These features remain **alpha/experimental**. Native standard/strict enforcement, automatic checkpoint injection/replay, broad skill quality, Unity Editor/build/device checks and multi-day rollout remain separate acceptance gates. Installing skills globally does not install project hooks. See the [complete feature/fix inventory](docs/toolkit-evolution-implementation.md#feature-and-fix-inventory--23-october-2026).
 
 ---
 
@@ -250,6 +262,17 @@ Commands default to the current directory unless `--target global` is specified.
 | `validate` | Validates schemas, rules, and acceptance tests | *(None)* |
 | `list` | Catalogs presets, modules, rules, and skills | `--resolved`, `--target PATH\|global`, `--preset NAME` |
 | `eval` | JSON-Schema validates the eval catalog without semantic pass claims | `--runner catalog` |
+| `context report` | Inventories preset or actual managed skills; reports bytes, tokens null when unmeasured | `--target PATH`, `--preset NAME`, `--json` |
+| `hooks configure` | Installs/updates/removes opt-in owned project hooks | `--target PATH`, `--profile off\|minimal\|standard\|strict`, `--input policy.json`, `--record-receipts`, `--disabled ID`, `--dry-run` |
+| `hooks doctor` / `probe` / `smoke` | Local checks, native discovery/trust and fixture or native SessionStart smoke | `--target PATH`, `--native` (smoke), `--json` |
+| `hooks recover` | Recovers an interrupted owned hook transaction | `--target PATH`, `--json` |
+| `task checkpoint` | Writes a checkpoint via validated JSON input; not a top-level `checkpoint` command | `--session NATIVE_ID`, `--input task.json`, `--target PATH` |
+| `task verify` | Runs a fixed validate/unit/pack/unity check and stores receipt/log hashes | `--command ID`, `--input task.json`, `--target PATH` |
+| `lessons list/show/record/verify/recall/forget/prune/export` | Manages scoped observations, verified local lessons and bounded recall | See [operating guide](docs/toolkit-evolution.md#project-lessons) for action-specific options |
+| `skills draft/propose/prepare-evaluation/revise/promote` | Creates candidates, prepares cases and explicitly promotes evaluated skills | See [operating guide](docs/toolkit-evolution.md#skill-evolution); `--dry-run` only for promote |
+| `rollout snapshot` | Records runtime/policy cohort and distinct UTC observation days without model calls | `--target PATH`, `--json` |
+
+Evolution commands target a project, not `--target global`. Native trust review is separate from configuration. Benchmark execution uses the scripts and explicit authorization described in the [operating guide](docs/toolkit-evolution.md#ci-and-benchmark).
 
 ---
 

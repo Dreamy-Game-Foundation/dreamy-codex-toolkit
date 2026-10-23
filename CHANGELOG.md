@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Documented the complete feature/fix inventory, project upgrade path, CLI action groups, current native evidence and remaining alpha gates across README and operating/handoff/implementation guides.
+- Merged PR #1 as alpha source at `076e60a`; candidate push/PR passed eight CI jobs and merged main passed four jobs. No new stable release, npm publication or toolkit version bump.
+
 - Added an isolated acceptance lab with retained CLI/runner evidence and observed Extension SessionStart, Interrupt and PreCompact trials.
 - Added an optional Codex 0.163.0 transcript metadata adapter for missing native Bash exit status, bounded correlation checks and privacy diagnostics; native PostToolUse retest recorded one sanitized failure observation. Default response-only behavior is preserved.
 

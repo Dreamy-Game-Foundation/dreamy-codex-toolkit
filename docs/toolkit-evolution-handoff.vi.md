@@ -1,5 +1,20 @@
 # Các bước cần chủ dự án thực hiện
 
+## Trạng thái hiện tại — 23/10/2026
+
+Đã merge [PR #1](https://github.com/Dreamy-Game-Foundation/dreamy-codex-toolkit/pull/1) vào main ở `076e60a`, vẫn là `0.1.0-alpha.3`/experimental; không phải phát hành npm hoặc stable mới. CI candidate 8/8 và CI main 4/4 job đạt trên Linux/Windows × Node 20/22. Xem [toàn bộ tính năng/fix](toolkit-evolution-implementation.md#feature-and-fix-inventory--23-october-2026).
+
+Lab riêng đã nghiệm thu SessionStart, Interrupt, PreCompact. PostToolUse ban đầu không ghi lỗi vì Codex 0.163.0 gửi stdout thiếu exit code; adapter opt-in mới đã native retest đạt bằng CLI queue vào thread gốc Extension: đúng một lệnh lỗi, observation 2→3, không lưu raw command/marker. Agent đã review/trust các định nghĩa lab mới qua UI native; không cần bạn làm lại những bài đã đạt. Các phần hướng dẫn ngày 22 bên dưới dành cho cài mới hoặc tra cứu lịch sử, không phải yêu cầu lặp lại benchmark đã hết budget.
+
+Muốn dùng ở project khác:
+
+1. Cập nhật executable CLI nếu đang dùng bản global cũ; `dreamy-kit update` cập nhật managed assets từ chính executable đang gọi, không tự tải phiên bản CLI mới. Cùng nhãn alpha.3 chưa đủ chứng minh cùng source. Có thể dùng entrypoint tuyệt đối của checkout mới để tránh nhầm.
+2. Chạy `update --target /path/to/project --dry-run`, review rồi `update --target /path/to/project --backup`. Kiểm tra `doctor` và managed diff. Planet Bunker chưa được cập nhật bởi lab này.
+3. Bật minimal hooks theo [operating guide](toolkit-evolution.md#hooks), review đúng project/command trong native `/hooks`. Native Bash status adapter chỉ bật bằng policy opt-in cho 0.163.0; mặc định response-only. Global skill install không cài hook project.
+4. Dùng [prompt test](toolkit-evolution-test-prompts.vi.md) theo đúng profile/session. Khi đổi runtime hoặc policy cần review định nghĩa mới; không sửa hash hoặc dùng bypass để tính pass.
+
+Còn lại: replay tự inject context, live standard/strict, đánh giá semantic trước promote skill, Unity compile/Console/tests/build/device và rollout nhiều ngày. Không gọi thêm benchmark chỉ để lặp kết quả đã đạt. Hooks/draft/snapshot chạy local không gọi model; chat/benchmark bình thường vẫn tiêu token. Xem [báo cáo hiện tại](toolkit-acceptance-lab-report.vi.md) cho phạm vi và bằng chứng.
+
 Code, kiểm tra tự động và chuẩn bị dữ liệu do agent xử lý. Các bước dưới đây cần quyết định hoặc thao tác của bạn. Bộ hook/lesson/draft không gọi model. Bốn lượt retention và hai lượt native smoke được duyệt riêng đã dùng đủ; các đợt model tiếp theo cần plan và quyền mới.
 
 Để test các tính năng mới trong Extension, dùng [bộ prompt và kết quả mong đợi](toolkit-evolution-test-prompts.vi.md). Bộ này tách native delivery khỏi fixture/CLI workflow, kèm các điều kiện session ID và profile cần thiết.
@@ -141,4 +156,4 @@ node src/cli.js rollout snapshot --target /path/to/project --json
 
 Snapshot lưu vào `.dreamy/rollout/`: trust/config status, lỗi phát hiện và số lesson còn hiệu lực. Nhiều lần trong một ngày UTC vẫn chỉ tính một ngày quan sát. Runtime/policy thay đổi tạo cohort mới. Snapshot không tự chứng nhận đã sử dụng thật một tuần; cần kèm kết quả task, latency, lỗi và các lần rollback thực tế. Sau workspace đầu tiên ổn định, chọn thêm consumer để kiểm tra phạm vi dùng chung.
 
-PR vẫn ở trạng thái draft cho đến khi review/phạm vi merge được quyết định. Các gate stable/production được theo dõi riêng; không cần giả lập rằng chúng đã đạt để dùng bản alpha opt-in.
+PR #1 đã merge ở phạm vi alpha sau review và CI xanh; không còn bước bỏ draft/merge cho PR đó. Các gate stable/production được theo dõi riêng; không cần giả lập rằng chúng đã đạt để dùng bản alpha opt-in.

@@ -2,6 +2,20 @@
 
 These capabilities are experimental. Hooks, lessons, skill drafts, preparation and rollout snapshots run locally without model calls. Decision benchmarks require an explicitly reviewed model/payload plan and a separate execution flag; they never change global model/account settings. Native delivery and semantic improvements require their own evidence. See the [Vietnamese owner handoff](toolkit-evolution-handoff.vi.md) for the concrete steps still requiring user action.
 
+Current implementation merged through PR #1 on 23 October 2026, still version `0.1.0-alpha.3`. See the [feature/fix inventory](toolkit-evolution-implementation.md#feature-and-fix-inventory--23-october-2026) and [native acceptance report](toolkit-acceptance-lab-report.vi.md). Source merge does not publish a new CLI automatically; use an updated checkout/executable before updating managed project assets.
+
+## Upgrade and compatibility
+
+From the current toolkit checkout:
+
+```bash
+node src/cli.js update --target /path/to/project --dry-run
+node src/cli.js update --target /path/to/project --backup
+node src/cli.js doctor --target /path/to/project --json
+```
+
+Run these only against a project you intend to update; inspect existing changes/ownership first. `update` applies the source bundled with that CLI; it does not download or self-update the executable. For existing hooks it refreshes the managed runtime/policy after ownership checks, so native definitions may require review again. Do not use `--force` to hide drift. `task checkpoint` is a two-word subcommand, not top-level `checkpoint`; use an absolute checkout entrypoint if the PATH executable is older despite the same alpha version label.
+
 ## Context and work modes
 
 `node src/cli.js context report --preset core --json` inventories the selected preset. `--target <project>` reports the actual managed skill installation when install state exists. A preset-only report is an upper bound, not the consumer's installed selection. Token usage is null unless an adapter measures it; bytes are not tokens.
@@ -83,6 +97,8 @@ For actual hook use, the session ID must be the native session's ID. Supported c
 
 Checkpoints do not store transcripts or reasoning. Interrupt marks an active checkpoint cancelled. Stop never resumes cancelled, complete or externally blocked tasks; a second stop for the same task/source does not create another continuation.
 
+Storage is `.dreamy/checkpoints/<session-key>.json`, keyed by native `session_id`, not a separately assumed thread ID. A new chat with a new ID does not automatically load an old chat's checkpoint. Creating a new task in the same session replaces that session's checkpoint; preserve evidence bytes first when auditing a previous cancelled task. Same-session replay also requires an active unchanged checkpoint and actual runtime context delivery; reading a JSON file manually is not proof of injection.
+
 ## Project lessons
 
 Record an observation after the original failure is known:
@@ -143,7 +159,7 @@ CI keeps Linux/Windows × Node 20/22 and disables fail-fast. It validates once, 
 
 `node scripts/skill-retention-pilot.mjs` previews a four-call source-entry retention pilot without invoking a model. After authorizing its payload/destination, add `--execute --model MODEL_ID --output /empty/evidence/directory` to compare the two compact skill entries with pinned originals using the explicitly selected model (or the configured model when `--model` is omitted). It records actual answers, runtime usage when supplied, source hashes and unexpected tool calls. These bounded decision probes do not replace the native B0–B4 cohort or establish general coding quality. The adapter uses ephemeral read-only workspaces, disables hooks/plugins/apps, rejects interactive RPC requests and does not copy credentials or rewrite home environment variables.
 
-The Windows/Linux Node matrix and the authorized source-entry pilot have observed results in the [implementation evidence](toolkit-evolution-implementation.md). The local fixture has reviewed trust and an observed native SessionStart from the authorized two-turn pair. Both original exact-field grades remain failed because the old prompt omitted the observer label contract; see the retained evidence and future prompt correction. Other lifecycle delivery, the broader B0–B4 semantic cohort and one-week opt-in rollout remain acceptance gates. See [CI triage](toolkit-ci-triage.md) and [full plan](plans/DREAMY_TOOLKIT_ECC_SUPERPOWERS_OMO_EVOLUTION_PLAN.md).
+The Windows/Linux Node matrix and the authorized source-entry pilot have observed results in the [implementation evidence](toolkit-evolution-implementation.md). The local fixture has reviewed trust and an observed native SessionStart from the authorized two-turn pair. Both original exact-field grades remain failed because the old prompt omitted the observer label contract; see the retained evidence and future prompt correction. The later lab now observes Interrupt, PreCompact and native PostToolUse with the optional adapter; automatic replay and live standard/strict remain acceptance gates, alongside the broader B0–B4 semantic cohort, Unity checks and one-week rollout. See [CI triage](toolkit-ci-triage.md) and [full plan](plans/DREAMY_TOOLKIT_ECC_SUPERPOWERS_OMO_EVOLUTION_PLAN.md).
 
 ## Rollout observations
 

@@ -125,7 +125,7 @@ Kết luận: **native failure observation đạt trong phạm vi thử nghiệm
 
 ## Tái lập và bằng chứng
 
-Kiểm tra triển khai sau khi thêm lab: `npm test` có **74 test: 73 pass, 0 fail, 1 Windows-only skip** trên Linux. `npm run pack:smoke` đạt; CLI trong gói thực hiện validate, context và hook fixture thành công. `git diff --check` không có lỗi whitespace. Chưa chạy lại GitHub CI cho các thay đổi cục bộ của lượt này.
+Kiểm tra triển khai sau khi thêm lab: `npm test` có **74 test: 73 pass, 0 fail, 1 Windows-only skip** trên Linux. `npm run pack:smoke` đạt; CLI trong gói thực hiện validate, context và hook fixture thành công. `git diff --check` không có lỗi whitespace. Đó là kết quả trước native-adapter follow-up; xem cập nhật CI/merge bên dưới.
 
 ```bash
 node scripts/toolkit-acceptance-lab.mjs --native-probe
@@ -142,3 +142,7 @@ Lệnh đầu tạo run mới, không ghi đè lab cũ. Dùng Node >=20 và git 
 - [Prompt thử từng tính năng](toolkit-evolution-test-prompts.vi.md)
 
 Raw report, command, log và receipt ở thư mục run cục bộ: `report.json`, `REPORT.vi.md`, `artifacts/`. Chỉ evidence tóm tắt được theo dõi bằng git; không có auth/secret hoặc dữ liệu game được sao chép vào report.
+
+## Trạng thái merge — 23/10/2026
+
+PR #1 đã merge vào main ở `076e60aa45237b1560eaed171a98857aa77fb7a5`. Candidate `94cf1a2` đạt 8/8 job push/PR; [CI merged main](https://github.com/Dreamy-Game-Foundation/dreamy-codex-toolkit/actions/runs/39917929889) đạt 4/4 job Linux/Windows × Node 20/22. Local suite cuối có 78 test: 77 pass, 1 Windows-only skip. Toolkit vẫn alpha.3/experimental, chưa publish npm hoặc nâng stable. Tổng hợp tính năng/fix và các gate còn lại ở [implementation inventory](toolkit-evolution-implementation.md#feature-and-fix-inventory--23-october-2026).
