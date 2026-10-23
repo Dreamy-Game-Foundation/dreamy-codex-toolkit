@@ -28,6 +28,7 @@ export function resolvePolicy(input = {}) {
     "disabled",
     "root",
     "recordReceipts",
+    "toolStatusSource",
     ...Object.keys(limits),
   ]);
   for (const key of Object.keys(input))
@@ -48,6 +49,9 @@ export function resolvePolicy(input = {}) {
   )
     throw Error("Invalid recordReceipts");
   const profile = input.profile || "off";
+  const toolStatusSource = input.toolStatusSource ?? "response-only";
+  if (!["response-only", "codex-transcript-0.163"].includes(toolStatusSource))
+    throw Error("Invalid toolStatusSource");
   if (!Object.hasOwn(profiles, profile)) throw Error("Unknown hook profile");
   if (input.schemaVersion !== undefined && input.schemaVersion !== 1)
     throw Error("Unsupported hook policy version");
@@ -61,6 +65,7 @@ export function resolvePolicy(input = {}) {
     schemaVersion: 1,
     profile,
     disabled: input.disabled || [],
+    toolStatusSource,
     ...Object.fromEntries(
       Object.entries(limits).map(([key, [ceiling]]) => [
         key,

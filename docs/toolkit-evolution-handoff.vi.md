@@ -2,6 +2,8 @@
 
 Code, kiểm tra tự động và chuẩn bị dữ liệu do agent xử lý. Các bước dưới đây cần quyết định hoặc thao tác của bạn. Bộ hook/lesson/draft không gọi model. Bốn lượt retention và hai lượt native smoke được duyệt riêng đã dùng đủ; các đợt model tiếp theo cần plan và quyền mới.
 
+Để test các tính năng mới trong Extension, dùng [bộ prompt và kết quả mong đợi](toolkit-evolution-test-prompts.vi.md). Bộ này tách native delivery khỏi fixture/CLI workflow, kèm các điều kiện session ID và profile cần thiết.
+
 ## 1. Duyệt hook native — cần làm trước
 
 Cập nhật ngày 22/10/2026: fixture đã được bạn duyệt đủ bốn hook, probe báo `trusted`, `complete`, không có lỗi hoặc hook ngoài. Đợt native được duyệt sau đó đã ghi nhận SessionStart completed trong 37 ms. Không cần duyệt lại cùng định nghĩa. Các lệnh dưới đây dành cho cài mới hoặc khi định nghĩa thay đổi.
@@ -96,6 +98,10 @@ npm run benchmark -- \
 Giới hạn 2 turn không phải trần cứng token hoặc tiền. Runtime vẫn có context cố định. Ledger ghi nhận lượt đã thử trước khi gửi; lỗi sau đó vẫn tiêu hao lượt. Không xóa ledger để retry: xem nguyên nhân và duyệt một đợt mới khi cần. Payload/context/lesson/skill/hook snapshot thay đổi sẽ làm plan cũ bị từ chối.
 
 Adapter kiểm tra trust trước khi chạy; SessionStart phải completed trong lượt đã được duyệt thì kết quả B2 trở lên mới được chấp nhận. Nếu không nhận event hoặc hook failed, trial fail và lượt đã thử vẫn được tính vào budget. Receipt ghi actual runtime/model, usage khi có, các native event thật và hash payload. B3 thêm recall từ lesson còn hiệu lực; B4 yêu cầu candidate đã được promote với report/artifact còn nguyên. B4 hiện đưa nội dung skill đã review vào context, chưa kiểm tra discovery/routing tự động.
+
+## Lab riêng đã sẵn sàng
+
+Đã tạo consumer độc lập, chạy 18 kiểm tra đạt/0 lỗi/5 mục chưa chạy, không gọi model phụ. Xem [báo cáo lab và bước mở Extension](toolkit-acceptance-lab-report.vi.md). Các pass của runner fixture chưa chứng minh lifecycle Extension hoặc Unity compile; Planet Bunker không bị sửa.
 
 ## 3. Nghiệm thu Unity — chuẩn bị Editor khi muốn tiếp tục
 

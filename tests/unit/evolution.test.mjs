@@ -750,6 +750,39 @@ test("failure hook ties a known check to its active task without retaining comma
   assert.equal(JSON.stringify(records).includes("secret-data"), false);
 });
 
+test("native Bash stdout without status reports a coverage gap without inventing observations", (t) => {
+  const root = workspace(t);
+  const outputs = [
+    "ERR_ASSERTION TOOLKIT_FAKE_SECRET_123\n",
+    '{"exit_code":7,"output":"ERR_ASSERTION TOOLKIT_FAKE_SECRET_123"}',
+    "Process exited with code 7\nOutput:\nERR_ASSERTION TOOLKIT_FAKE_SECRET_123",
+    { exit_code: "7", output: "ERR_ASSERTION TOOLKIT_FAKE_SECRET_123" },
+    { exit_code: null, output: "ERR_ASSERTION TOOLKIT_FAKE_SECRET_123" },
+    [{ type: "text", text: '{"exit_code":7}' }],
+  ];
+  for (const tool_response of outputs) {
+    const result = dispatch({ cwd: root, session_id: "native-stdout", hook_event_name: "PostToolUse",
+      tool_name: "Bash", tool_response }, { root, policy: { profile: "minimal" } });
+    assert.equal(result.output, null);
+    assert.deepEqual(result.metrics.errors, []);
+    assert.equal(result.metrics.diagnostics[0].outcome, "missing-exit-code");
+    assert.equal(result.metrics.diagnostics[0].exitCode, null);
+    assert.equal(JSON.stringify(result.metrics).includes("TOOLKIT_FAKE_SECRET_123"), false);
+  }
+  assert.equal(listRecords(root, "observations").length, 0);
+  for (const [key, code, expected] of [["exit_code", 7, "failure-recorded"], ["exitCode", 2, "failure-recorded"], ["exit_code", 0, "success"]]) {
+    const result = dispatch({ cwd: root, session_id: "native-stdout", hook_event_name: "PostToolUse",
+      tool_name: "Bash", tool_use_id: `structured-${key}-${code}`,
+      tool_response: { [key]: code, output: "ERR_ASSERTION TOOLKIT_FAKE_SECRET_123" } },
+    { root, policy: { profile: "minimal" } });
+    assert.equal(result.metrics.diagnostics[0].outcome, expected);
+  }
+  const records = listRecords(root, "observations");
+  assert.equal(records.length, 2);
+  assert.ok(records.every(record => record.signature === "ERR_ASSERTION"));
+  assert.equal(JSON.stringify(records).includes("TOOLKIT_FAKE_SECRET_123"), false);
+});
+
 test("candidate revisions are bounded and canonical skill names cannot be shadowed", async (t) => {
   const { reviseSkill } = await import("../../src/skill-evolution.mjs");
   const root = workspace(t),

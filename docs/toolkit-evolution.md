@@ -23,9 +23,23 @@ node src/cli.js hooks smoke --target /path/to/project --native --json
 npm run hooks:smoke
 ```
 
-Minimal records bounded failed-tool observations and replays an existing active checkpoint. Standard adds one verification continuation per task/input fingerprint. Strict adds a narrow guard against direct apply_patch deletion of .meta files. Other tool paths and mutations require ordinary Unity/harness/diff verification; the hook is not a complete enforcement boundary.
+Minimal records bounded failed-tool observations when the response provides an integer `exit_code` or `exitCode`, and replays an existing active checkpoint. Codex 0.163.0 native Bash sends raw stdout without process status, so failure observation is unsupported on that response path even when delivery succeeds. With receipts enabled, updated runners report `metrics.diagnostics` with `missing-exit-code`, tool category and response kind; raw stdout/commands are not captured or parsed for status. Standard adds one verification continuation per task/input fingerprint. Strict adds a narrow guard against direct apply_patch deletion of .meta files. Other tool paths and mutations require ordinary Unity/harness/diff verification; the hook is not a complete enforcement boundary.
 
 Profiles are opt-in; off is the default. `--disabled verify-stop` disables an individual handler. `--record-receipts` records bounded delivery receipts for diagnosis; it is off by default. No raw prompt, command or transcript is retained. Known error classes are allowlisted from failed tool results. Ordinary events emit no model-visible text.
+
+For native Bash on **Codex 0.163.0**, an opt-in compatibility adapter can recover process status from the runtime's completed-command metadata. Set `toolStatusSource` in a policy input file:
+
+```json
+{"schemaVersion":1,"profile":"minimal","recordReceipts":true,"toolStatusSource":"codex-transcript-0.163"}
+```
+
+```bash
+node src/cli.js hooks configure --input policy.json --target /path/to/project --json
+```
+
+Review the changed definitions in native `/hooks` before testing. Default `response-only` never reads transcripts. Opt-in reads at most 64 KiB of the head and 128 KiB of the tail of the event's transcript under `$CODEX_HOME/sessions` (default `~/.codex/sessions`), into local memory only. The path must not contain symlinks. The adapter requires a matching session header, exact runtime version `0.163.0`, project cwd, turn ID, tool-call ID and a single typed completed `CommandExecution` record no older than five minutes. It rejects subagent contexts, incomplete/oversized metadata, missing/out-of-window results, ambiguous matches and unsupported formats/versions. It does not scan older history or parse stdout for exit status. Only status and an allowlisted signature reach the observation; receipt diagnostics identify the status source. Reading raw bounded windows can include chat/command text in memory, but none is copied to toolkit evidence or model context.
+
+The transcript format is an unstable implementation detail, so this compatibility adapter is version-specific and optional. Missing evidence remains `missing-exit-code`; it does not prove success. Fixture/replay checks are not native Extension acceptance. To disable the adapter, configure with `toolStatusSource: "response-only"` and review the changed definitions again. See [native test follow-up](toolkit-acceptance-lab-report.vi.md).
 
 Configure merges only owned matcher groups into `.codex/hooks.json` and stages a self-contained runner. Existing config values/entries are preserved. Hook ownership uses a separate version-1 `.dreamy-codex/hooks-state.json`; existing installer v1/v2 state remains compatible and does not need a speculative v3 migration. An interrupted update leaves a journal; `hooks recover --target ...` restores the previous configuration or finishes committed cleanup. Config drift after interruption requires manual reconciliation, rather than overwriting new user edits.
 

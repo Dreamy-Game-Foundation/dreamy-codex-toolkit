@@ -24,6 +24,9 @@
     "recordReceipts": {
       "type": "boolean"
     },
+    "toolStatusSource": {
+      "enum": ["response-only", "codex-transcript-0.163"]
+    },
     "maxInputBytes": { "type": "integer", "minimum": 1024, "maximum": 65536 },
     "maxOutputBytes": { "type": "integer", "minimum": 64, "maximum": 1000 },
     "deadlineMs": { "type": "integer", "minimum": 1, "maximum": 250 },

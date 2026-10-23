@@ -49,7 +49,8 @@ export function dispatch(
   return withLock(`${file}.lock`, () => {
     const state = readJson(file, { seen: {}, contextBytes: 0, epoch: 0 }),
       results = [],
-      errors = [];
+      errors = [],
+      diagnostics = [];
     if (event.hook_event_name === "PreCompact") {
       state.epoch++;
       state.contextBytes = 0;
@@ -63,7 +64,8 @@ export function dispatch(
         break;
       }
       try {
-        const r = registry[id]({ root, event, state });
+        const r = registry[id]({ root, event, state, policy });
+        if (r?.diagnostic) diagnostics.push(r.diagnostic);
         if (!r?.output) continue;
         if (r.dedupe && state.seen[r.dedupe]) continue;
         const context = r.contextBytes || 0;
@@ -93,6 +95,7 @@ export function dispatch(
           : 0,
         handlers: selected.length,
         errors,
+        ...(diagnostics.length ? { diagnostics } : {}),
       },
     };
   });

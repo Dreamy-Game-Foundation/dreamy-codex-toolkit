@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "kind": "extension-interrupt-followup",
+  "date": "2026-10-23",
+  "status": "observed-correlated",
+  "sessionId": "01a166c7-ff52-7131-82db-f6337be71daf",
+  "checkpoint": {
+    "schemaVersion": 1,
+    "taskId": "hook-interrupt-test",
+    "status": "cancelled",
+    "files": [
+      "AGENTS.md"
+    ],
+    "sourceFingerprint": "62b332ad546874103254581eb06f7393ca6fd4856b1492be5d4556d6020077d2",
+    "requiredCommands": [
+      "validate"
+    ],
+    "objective": "",
+    "nextAction": "Đang chờ kiểm tra Interrupt",
+    "updatedAt": "2026-10-23T03:59:29.069Z",
+    "lastLifecycleEvent": "Interrupt"
+  },
+  "receipt": {
+    "schemaVersion": 1,
+    "event": "Interrupt",
+    "sessionId": "01a166c7-ff52-7131-82db-f6337be71daf",
+    "observedAt": "2026-10-23T03:59:29.070Z",
+    "source": "native-or-explicit-invocation",
+    "metrics": {
+      "durationMs": 2.0821250000000013,
+      "contextBytes": 0,
+      "handlers": 1,
+      "errors": []
+    }
+  },
+  "artifacts": {
+    ".dreamy/acceptance-labs/2026-10-22T10-43-54.550Z-bcd966/project/.dreamy/checkpoints/856118834b0434fc9949e63c67349b2a.json": "0b614e8cacc40e05b248920c5663d574145351511dcf17b46fec803ea2ecf5f0",
+    ".dreamy/acceptance-labs/2026-10-22T10-43-54.550Z-bcd966/project/.dreamy/hook-receipts/ee04eb8a526dad4950a42b9c1fa2347c4b42ee075f9d4de2fe09d5f03666c429.json": "9f03cbc599e0828106a2e14ed6be892a8147d773b3fcc5e06f63d2774a6af686"
+  },
+  "verification": "Operator read both artifacts; checkpoint key matches sha256(native session ID) prefix. Same Extension session previously correlated with vscode runtime metadata. User reports Stop trial and no manual status mutation.",
+  "scope": "Interrupt delivered and active checkpoint transitioned to cancelled; no broader resume/compaction/Stop-policy acceptance",
+  "limitation": "Receipt source is native-or-explicit-invocation; attribution also depends on session correlation and reported procedure.",
+  "auxiliaryModelCalls": 0,
+  "operationalAcceptance": "not-established"
+}

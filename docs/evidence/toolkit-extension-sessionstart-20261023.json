@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "kind": "extension-sessionstart-followup",
+  "date": "2026-10-23",
+  "status": "observed-correlated",
+  "scope": "SessionStart delivery only; no checkpoint replay or other lifecycle acceptance",
+  "sessionId": "01a166c7-ff52-7131-82db-f6337be71daf",
+  "projectRoot": ".dreamy/acceptance-labs/2026-10-22T10-43-54.550Z-bcd966/project",
+  "runtimeMetadata": {
+    "source": "vscode",
+    "cliVersion": "0.163.0",
+    "sessionStartedAt": "2026-10-23T03:22:25.818Z",
+    "metadataRecordedAt": "2026-10-23T03:22:29.558Z",
+    "cwdMatches": true
+  },
+  "receipt": {
+    "schemaVersion": 1,
+    "event": "SessionStart",
+    "sessionId": "01a166c7-ff52-7131-82db-f6337be71daf",
+    "observedAt": "2026-10-23T03:22:30.073Z",
+    "source": "native-or-explicit-invocation",
+    "metrics": {
+      "durationMs": 1.1291200000000003,
+      "contextBytes": 0,
+      "handlers": 1,
+      "errors": []
+    }
+  },
+  "receiptPath": ".dreamy/acceptance-labs/2026-10-22T10-43-54.550Z-bcd966/project/.dreamy/hook-receipts/81d0fc38a7a8cafef21ba242b9c868bd4bac7aad11a3b779495c74ba7ca5b31a.json",
+  "receiptSha256": "2890ac896ba6cb216bea669e5f754555d7151b9b35e7d3f5677c5d079bcbafcf",
+  "configurationSha256": "7ba1422ac57ada711baf16af7e96a0702f401e712d9b0d03ea132ff3416a9600",
+  "metadataToReceiptMs": 515,
+  "verification": "Operator read receipt, selected session_meta fields and installed policy; raw conversation/auth not copied. User reports no explicit runner/dispatch/app-server invocation in that Extension session.",
+  "limitation": "Receipt source alone is ambiguous; attribution relies on matching vscode session metadata, project path, timestamps and user-reported trial procedure. No cryptographic provenance guarantee.",
+  "auxiliaryModelCallsByThisFollowup": 0,
+  "otherLifecycleEvents": "not-established",
+  "operationalAcceptance": "not-established"
+}

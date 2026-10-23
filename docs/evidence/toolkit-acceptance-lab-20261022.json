@@ -1,0 +1,388 @@
+{
+  "schemaVersion": 1,
+  "kind": "isolated-toolkit-acceptance-lab",
+  "startedAt": "2026-10-22T10:43:54.550Z",
+  "finishedAt": "2026-10-22T10:43:56.210Z",
+  "sourceCommit": "b5653e3e7ef33d4d935e5bee0e1ad4b67eba1d28",
+  "sourceDirty": true,
+  "harnessHash": "7034b8cb00ca30c492a9961b05fdafc992127d9f2cfa59cabea44fc9617b2d6d",
+  "sourceHashes": {
+    "src/cli.js": "c56e57a25e6aecf1c49c9d66524c6bd76afc4cc9f16188268490730e39effb86",
+    "src/evolution-cli.mjs": "5d2e7ebaa61f0eeb5bc7725b8ad2ca3172f5a4d09e6c76ae605723f5ac0f1b63",
+    "src/hooks/install.mjs": "20ffa180309a90ccafcc2a6d91dd81cc1962cfdc635b96cab929ba342d858052",
+    "src/hooks/runner.mjs": "08f9ed1597803af945fc7a1d0a731ea044f26eb820bec41a8952a713dc1df29a",
+    "src/hooks/dispatcher.mjs": "01fa644757f17580d89f8a8bfd3442ed592d06888752d94e83408ced6c3d5786",
+    "src/verification-plan.mjs": "48d34c8254409d6cd7bf3a8b14be40f2bad1ce900cc45cc3159b241b1bdb2f9f",
+    "src/knowledge/store.mjs": "bbf30a4151c4029b3450b5d9965054d7083ce8ec477c664740d547386156fd39",
+    "src/knowledge/eligibility.mjs": "42546ee0757048f89f02ea44299d4ba8441c56ba6e375748cc0a231821748a52",
+    "src/knowledge/recall.mjs": "d439ccfb26ab0ead138aec88a2b30f00a84644723c2ae5edb5a8da0c5b380306",
+    "src/skill-evolution.mjs": "203e8abd4e3251da25e4719b5c50570cad66384e80fefa87f8f11d05fa043ef7"
+  },
+  "projectRoot": ".dreamy/acceptance-labs/2026-10-22T10-43-54.550Z-bcd966/project",
+  "platform": "linux",
+  "node": "v24.19.0",
+  "modelCalls": 0,
+  "scope": "static Unity fixture + CLI + explicitly invoked installed runner; no real game mutation",
+  "status": "partial",
+  "summary": {
+    "pass": 18,
+    "fail": 0,
+    "not-run": 5
+  },
+  "operationalAcceptance": "not-established",
+  "native": {
+    "runtime": "codex",
+    "version": "codex-cli 0.163.0",
+    "surface": "app-server",
+    "profile": "minimal",
+    "trust": "not-discovered",
+    "operational": false,
+    "events": {
+      "SessionStart": "not-probed",
+      "PostToolUse": "not-probed",
+      "PreCompact": "not-probed",
+      "Interrupt": "not-probed"
+    },
+    "fallback": "explicit-cli",
+    "errors": [],
+    "reason": "Review the installed project and exact definitions in Codex /hooks, then rerun this probe",
+    "probeStatus": "observed",
+    "discovery": "incomplete",
+    "modelCalls": 0
+  },
+  "results": [
+    {
+      "id": "L01-legacy-update",
+      "category": "installer-cli",
+      "status": "pass",
+      "expected": "v1 metadata migrates without force or user-content loss",
+      "observed": {
+        "from": "0.0.0",
+        "to": "0.1.0-alpha.3",
+        "schema": 2,
+        "preset": "unity-minimal",
+        "skills": 18,
+        "agents": 10
+      },
+      "durationMs": 119
+    },
+    {
+      "id": "L02-context",
+      "category": "context-inventory",
+      "status": "pass",
+      "expected": "actual managed inventory reports bytes, not fabricated tokens",
+      "observed": {
+        "artifact": "artifacts/context.json",
+        "skills": 18,
+        "metadataBytes": 3818,
+        "bodyBytes": 75994,
+        "tokens": null,
+        "measurement": "bytes-only"
+      },
+      "durationMs": 53
+    },
+    {
+      "id": "L03-minimal-install",
+      "category": "installer-cli",
+      "status": "pass",
+      "expected": "minimal hooks merge without replacing the sentinel",
+      "observed": {
+        "profile": "minimal",
+        "userHookPreserved": true,
+        "nativeTrust": "not-granted"
+      },
+      "durationMs": 121
+    },
+    {
+      "id": "L04-session-replay",
+      "category": "installed-runner-explicit-event",
+      "status": "pass",
+      "expected": "same-session checkpoint injects once; another session does not",
+      "observed": {
+        "firstContextBytes": 115,
+        "repeatedOutput": null,
+        "otherSessionOutput": null,
+        "nativeDelivery": false
+      },
+      "durationMs": 118
+    },
+    {
+      "id": "L05-failure-observation",
+      "category": "real-shell-plus-explicit-event",
+      "status": "pass",
+      "expected": "real exit 7 yields a bounded observation; a success does not",
+      "observed": {
+        "observedShellExit": 7,
+        "signature": "ERR_ASSERTION",
+        "taskId": "lab-hook-task",
+        "nativePostToolUse": false
+      },
+      "durationMs": 100
+    },
+    {
+      "id": "L06-stale-checkpoint",
+      "category": "installed-runner-explicit-event",
+      "status": "pass",
+      "expected": "changed source does not replay",
+      "observed": {
+        "staleReplay": false
+      },
+      "durationMs": 39
+    },
+    {
+      "id": "L07-interrupt",
+      "category": "installed-runner-explicit-event",
+      "status": "pass",
+      "expected": "Interrupt cancels and prevents replay",
+      "observed": {
+        "status": "cancelled",
+        "lastLifecycleEvent": "Interrupt",
+        "nativeUserStop": false
+      },
+      "durationMs": 69
+    },
+    {
+      "id": "L08-precompact",
+      "category": "installed-runner-explicit-event",
+      "status": "pass",
+      "expected": "checkpoint persists and epoch increments",
+      "observed": {
+        "lastLifecycleEvent": "PreCompact",
+        "epoch": 1,
+        "nativeCompaction": false
+      },
+      "durationMs": 37
+    },
+    {
+      "id": "L09-stop-bound",
+      "category": "installed-runner-explicit-event",
+      "status": "pass",
+      "expected": "one continuation per task/source; compaction does not reset it",
+      "observed": {
+        "continuationOutputs": 1,
+        "resetByCompaction": false,
+        "nativeModelContinuation": false
+      },
+      "durationMs": 273
+    },
+    {
+      "id": "L10-strict-deny-shape",
+      "category": "installed-runner-explicit-event",
+      "status": "pass",
+      "expected": "direct .meta Delete File produces deny output",
+      "observed": {
+        "permissionDecision": "deny",
+        "actualPatchAttempted": false,
+        "nativeEnforcement": false
+      },
+      "durationMs": 92
+    },
+    {
+      "id": "L11-real-red-green",
+      "category": "fixed-harness-verification",
+      "status": "pass",
+      "expected": "missing lock fails inspection; restored lock produces a fresh successful receipt",
+      "observed": {
+        "redStatus": "degraded",
+        "redExit": 2,
+        "greenStatus": "pass",
+        "greenExit": 0,
+        "verification": "static project-inspect, not Unity Editor"
+      },
+      "durationMs": 186
+    },
+    {
+      "id": "L12-lesson-recall",
+      "category": "knowledge-workflow",
+      "status": "pass",
+      "expected": "fresh verified lesson recalls once, unrelated query stays silent",
+      "observed": {
+        "lessonStatus": "verified-local",
+        "recalledItems": 1,
+        "bytes": 398,
+        "tokens": null,
+        "repeatedItems": 0,
+        "unrelatedItems": 0,
+        "semanticGeneralization": "not-tested"
+      },
+      "durationMs": 14
+    },
+    {
+      "id": "L13-skill-draft-gate",
+      "category": "skill-workflow",
+      "status": "pass",
+      "expected": "draft stays outside discovery and a prepared plan cannot promote it",
+      "observed": {
+        "candidateId": "lab-lock-recovery-skill",
+        "modelCalls": 0,
+        "cases": 5,
+        "promoted": false,
+        "semanticEvaluation": "not-run"
+      },
+      "durationMs": 15
+    },
+    {
+      "id": "L14-source-and-log-freshness",
+      "category": "knowledge-workflow",
+      "status": "pass",
+      "expected": "source or stored-log changes invalidate the lesson",
+      "observed": {
+        "sourceMutationRejected": true,
+        "logMutationRejected": true,
+        "restoredEvidenceEligible": true
+      },
+      "durationMs": 10
+    },
+    {
+      "id": "L15-uninstall-preservation",
+      "category": "installer-cli",
+      "status": "pass",
+      "expected": "managed runtime is removed; user files and lesson/candidate survive",
+      "observed": {
+        "userSkillPreserved": true,
+        "userHookPreserved": true,
+        "knowledgePreserved": true,
+        "fixtureAssetUnchanged": true
+      },
+      "durationMs": 55
+    },
+    {
+      "id": "L16-restore-minimal",
+      "category": "installer-cli",
+      "status": "pass",
+      "expected": "leave an installed minimal project ready for manual client testing",
+      "observed": {
+        "profile": "minimal",
+        "recordReceipts": true,
+        "doctorStatus": "warn",
+        "nativeTrust": "requires-native-review"
+      },
+      "durationMs": 216
+    },
+    {
+      "id": "L17-native-discovery",
+      "category": "native-control-plane",
+      "status": "pass",
+      "expected": "report runtime discovery and trust without a model turn",
+      "observed": {
+        "probeStatus": "observed",
+        "trust": "not-discovered",
+        "discovery": "incomplete",
+        "errors": [],
+        "modelCalls": 0
+      },
+      "reason": "Review the installed project and exact definitions in Codex /hooks, then rerun this probe"
+    },
+    {
+      "id": "L18-rollout-observation",
+      "category": "rollout-workflow",
+      "status": "pass",
+      "expected": "same-day snapshots count one day and do not declare acceptance",
+      "observed": {
+        "observedUtcDays": 1,
+        "operationalAcceptance": "not-established",
+        "nativeProbe": "observed"
+      },
+      "durationMs": 7
+    },
+    {
+      "id": "N01-extension-lifecycle",
+      "category": "external-acceptance",
+      "status": "not-run",
+      "reason": "No Extension session was driven. All runner events above were explicit fixtures; native trust was not granted."
+    },
+    {
+      "id": "N02-live-stop-and-guard",
+      "category": "external-acceptance",
+      "status": "not-run",
+      "reason": "No real client Stop/compact/apply_patch lifecycle was executed."
+    },
+    {
+      "id": "N03-model-quality",
+      "category": "external-acceptance",
+      "status": "not-run",
+      "reason": "No auxiliary model turn is authorized for this lab. Routing and behavioral skill quality were not evaluated."
+    },
+    {
+      "id": "N04-unity-editor",
+      "category": "external-acceptance",
+      "status": "not-run",
+      "reason": "No Editor was started. Static fixture only; compile, Console and Unity tests remain not-run."
+    },
+    {
+      "id": "N05-week-rollout",
+      "category": "external-acceptance",
+      "status": "not-run",
+      "reason": "Same-session snapshots do not replace real multi-day task observation."
+    }
+  ],
+  "artifactHashes": {
+    "artifacts/cancelled-replay.command.json": "8b6a2ff6a43f58af6ac2adac3163ba114931131ee27b14859151401fcd239ccf",
+    "artifacts/cancelled-replay.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "artifacts/context.command.json": "705d801089c6e340cab11dc0740e5fd9d2ee0206cee92690b531de6239457ec9",
+    "artifacts/context.json": "b40782d3bc81cbaca890ee4f1be031003ff71489bd868e5242d3f6ce7ec4be43",
+    "artifacts/context.log": "21a4c3fd4474e0e30a2e2c89891de4548bd785eb96ef52a8bbecdd4e2da7f884",
+    "artifacts/failed-tool.command.json": "8b6a2ff6a43f58af6ac2adac3163ba114931131ee27b14859151401fcd239ccf",
+    "artifacts/failed-tool.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "artifacts/final-doctor.command.json": "6ec58b759544ecef8930d3a9b94af727ecbc3b311559e0ac0a88f5abd83a1d76",
+    "artifacts/final-doctor.log": "09e595c17c763965f1ac5ba9fd1679175051799dc97a50b705666d0582912736",
+    "artifacts/final-minimal.command.json": "8734d9240bf1b73932410be49f8fa4267924db71c1fe5586194de61efed5c717",
+    "artifacts/final-minimal.log": "1079acb7bf7500e4004e252519bef80fc17aa27242879df7a725a67565b138bb",
+    "artifacts/git-init.command.json": "e78e03cb48acb85f32e1f9a6aa4b5fc4df67b474b4010290b9fc993ad315dba7",
+    "artifacts/git-init.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "artifacts/green-inspection.receipt.json": "21e869cc16ed737b3eff5754614ab0bb77953085c9224870345ca079914a632a",
+    "artifacts/hooks-doctor.command.json": "4fbe7b9cc25b0e7beaa8b922429d2184b8359c9af319282cfd0c13df9b08b132",
+    "artifacts/hooks-doctor.log": "cca59bce29a1bd48eb800fda2ad1991204c767eb383b38a2bfdc422909544425",
+    "artifacts/interrupt.command.json": "8b6a2ff6a43f58af6ac2adac3163ba114931131ee27b14859151401fcd239ccf",
+    "artifacts/interrupt.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "artifacts/minimal.command.json": "8734d9240bf1b73932410be49f8fa4267924db71c1fe5586194de61efed5c717",
+    "artifacts/minimal.log": "1079acb7bf7500e4004e252519bef80fc17aa27242879df7a725a67565b138bb",
+    "artifacts/native-probe.json": "2a1de902a7971800ddee3fc20ce172e5ccb93d5646884973fb45f347227df221",
+    "artifacts/precompact.command.json": "8b6a2ff6a43f58af6ac2adac3163ba114931131ee27b14859151401fcd239ccf",
+    "artifacts/precompact.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "artifacts/red-inspection.receipt.json": "1888877b310092a69d63d40f4071486e37f14a380a0601f55ec1c990c0baf924",
+    "artifacts/reinstall.command.json": "465ee6b11611d7b06ac7028d5b3433a4291ee826f2f1ceb3238b2f62b35be71a",
+    "artifacts/reinstall.log": "0a0cfbebdbb4b07b2eb43fba0e0ffa3d49347927c560997ff79b0a80b29938a9",
+    "artifacts/session-first.command.json": "8b6a2ff6a43f58af6ac2adac3163ba114931131ee27b14859151401fcd239ccf",
+    "artifacts/session-first.log": "148083766f917986d1c74dd434f4c0f488fb06339d84cef3bc803fef80440c16",
+    "artifacts/session-other.command.json": "8b6a2ff6a43f58af6ac2adac3163ba114931131ee27b14859151401fcd239ccf",
+    "artifacts/session-other.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "artifacts/session-repeat.command.json": "8b6a2ff6a43f58af6ac2adac3163ba114931131ee27b14859151401fcd239ccf",
+    "artifacts/session-repeat.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "artifacts/session-stale.command.json": "8b6a2ff6a43f58af6ac2adac3163ba114931131ee27b14859151401fcd239ccf",
+    "artifacts/session-stale.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "artifacts/shell-real-failure.command.json": "afd3460fe185fc9aba114a23b5cfe404795756aa426b25ffb6ae94c7ceda0365",
+    "artifacts/shell-real-failure.log": "dfe5f07c5a1eb9ac18efb570566e0ec74031317b9917c36c96cfea1fe293bffb",
+    "artifacts/skill-cases.json": "859bb40e814ee8065cf9483b4def8c0c91292c53886e8c03ef3c87d4c31fbf83",
+    "artifacts/standard.command.json": "5b3dd2b210b12155da9492aa68c20404e931a011bdf26d53648aef47c6157bb5",
+    "artifacts/standard.log": "e934c203dc22062b7e07b8dd46ce1e15f5d3c02459da48cbe18a0ce29f362ec9",
+    "artifacts/stop-after-compact.command.json": "8b6a2ff6a43f58af6ac2adac3163ba114931131ee27b14859151401fcd239ccf",
+    "artifacts/stop-after-compact.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "artifacts/stop-already-active.command.json": "8b6a2ff6a43f58af6ac2adac3163ba114931131ee27b14859151401fcd239ccf",
+    "artifacts/stop-already-active.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "artifacts/stop-cancelled.command.json": "8b6a2ff6a43f58af6ac2adac3163ba114931131ee27b14859151401fcd239ccf",
+    "artifacts/stop-cancelled.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "artifacts/stop-compact.command.json": "8b6a2ff6a43f58af6ac2adac3163ba114931131ee27b14859151401fcd239ccf",
+    "artifacts/stop-compact.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "artifacts/stop-first.command.json": "8b6a2ff6a43f58af6ac2adac3163ba114931131ee27b14859151401fcd239ccf",
+    "artifacts/stop-first.log": "81792c2bd292e44d70a522a00c0f25819fb788eb14a1fd28901b7a3e8dc0783c",
+    "artifacts/stop-repeat.command.json": "8b6a2ff6a43f58af6ac2adac3163ba114931131ee27b14859151401fcd239ccf",
+    "artifacts/stop-repeat.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "artifacts/strict-deny.command.json": "8b6a2ff6a43f58af6ac2adac3163ba114931131ee27b14859151401fcd239ccf",
+    "artifacts/strict-deny.log": "d5481daf10106ebde14c9ae2b4f65caa23b7224cec0b19dbc087d6ba6766761e",
+    "artifacts/strict.command.json": "e6e7f9aba26cc950ff4001c3135b75bf777ed116f3aa72feae0bbef85903e2c8",
+    "artifacts/strict.log": "551f42532d6ea221f06edb46cc4118b6ffb56d4ee72c163a4a6969da870764b7",
+    "artifacts/successful-tool.command.json": "8b6a2ff6a43f58af6ac2adac3163ba114931131ee27b14859151401fcd239ccf",
+    "artifacts/successful-tool.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "artifacts/uninstall.command.json": "3cef1fd81b29db2ad0a8cc31c436827e909579fe5cbd9f9a9a9b42b500c05b3f",
+    "artifacts/uninstall.log": "4aae5f8bc5cfdf17626d5a0e4d1e9e8d1b874d1c93ad20291cbff59e22243fe2",
+    "artifacts/update-dry.command.json": "fec2cc8092582b5df43a0721d31bd43cf16eb836c302e4a190337266367cb376",
+    "artifacts/update-dry.log": "a1807eb6dfaa3a7c8d196c760760b8e7db42596189aeca1dd214d1b4ae863f9b",
+    "artifacts/update.command.json": "a4e1fad2cb4fa122ef4ed8e1960f8ef38c6f0b1fd207dd8cad46ee487e92f68a",
+    "artifacts/update.log": "5b90d7bce89cd0b6efd5e7d4372eb9494705f3b33b08ec23047b7c63d03f1792"
+  },
+  "rawReport": {
+    "path": ".dreamy/acceptance-labs/2026-10-22T10-43-54.550Z-bcd966/report.json",
+    "sha256": "d58447b5f6ce1d57566c3a84e5a30b0356b2f2c63a6759d9d26e80c4bd94ae34"
+  }
+}

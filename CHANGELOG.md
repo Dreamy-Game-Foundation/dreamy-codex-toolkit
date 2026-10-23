@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Added an isolated acceptance lab with retained CLI/runner evidence and observed Extension SessionStart, Interrupt and PreCompact trials.
+- Added an optional Codex 0.163.0 transcript metadata adapter for missing native Bash exit status, bounded correlation checks and privacy diagnostics; native PostToolUse retest recorded one sanitized failure observation. Default response-only behavior is preserved.
+
 - Recorded the authorized two-turn native smoke: SessionStart completed in 37 ms, 13,915 total tokens, no unexpected tools. Original exact-field grades remain failed; clarified quick-docs observer labels for future prompts without rerunning the model.
 
 - Fixed native smoke/benchmark timing for Codex 0.163.0: SessionStart is deferred until the first user turn. Zero-model smoke explains the deferred result; authorized trials require delivery before accepting results and retain measured usage on delivery failures.
