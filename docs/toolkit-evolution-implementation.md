@@ -1,6 +1,53 @@
-# Evolution implementation evidence — 22 October 2026
+# Evolution implementation evidence — updated 23 October 2026
 
 This tracks implementation of the [ECC / Superpowers / OmO plan](plans/DREAMY_TOOLKIT_ECC_SUPERPOWERS_OMO_EVOLUTION_PLAN.md). The product remains alpha. Source implementation, deterministic verification and external operational/semantic acceptance are separate states.
+
+## Feature and fix inventory — 23 October 2026
+
+Merged in [PR #1](https://github.com/Dreamy-Game-Foundation/dreamy-codex-toolkit/pull/1): candidate `94cf1a2e7646659548d52c4987117803f1aac1a7`, merge `076e60aa45237b1560eaed171a98857aa77fb7a5`. Version stays `0.1.0-alpha.3`: a source merge, not a new npm publication/tag or stable release. `toolkit.json` remains canonical. Historical sections below retain their original observations; this inventory is the current summary.
+
+| Area | Added behavior / fix | Entry point and limits |
+|---|---|---|
+| Portable tests | Sorted explicit file discovery handles Windows Node 20 and spaces; preserves child failure exit | `scripts/test-unit.mjs`; fixes literal glob failure |
+| Portable packaging | Invoke npm JavaScript entrypoint through current Node; real isolated tarball install | `scripts/pack-smoke.mjs`; fixes Linux spawning npm.cmd |
+| Process diagnostics | Separate spawn error, nonzero exit, empty output, invalid JSON and degraded result | `scripts/lib/process-result.mjs`; unavailable is not pass |
+| CI | Linux/Windows × Node 20/22, fail-fast off, bounded jobs, pack before release and uploaded evidence | Candidate push+PR 8/8 jobs and merged main 4/4 pass |
+| Release freshness | Bind schema/version/source commit/fingerprint/run ID/tarball hash; reject stale or modified artifacts | `src/release-evidence.js`; alpha release gate preserves production blockers |
+| Installer lifecycle | v1→v2 migration, delta update, CRLF and user-text preservation, managed ownership checks, backup/dry-run and uninstall | Fixture tests; user config/skills/knowledge preserved; hooks have their own sidecar |
+| Context inventory | Actual installed or selected-preset inventory, metadata/body bytes and tokens null when unmeasured | `context report`; inventory is not proof every body enters model context |
+| Compact skills | Compact authoring profile/budget validation and foundations/testing pilots using references on demand | ~48% source-byte reduction; four-call pilot input reduction 4.49%, not general coding quality |
+| Work routing | Quick/standard/deep by risk, actual installed agent names in bootstrap, reuse existing owners | No automatic model switch, observer daemon or mandatory agent fan-out |
+| Hook profiles | off default; minimal SessionStart/PostToolUse/PreCompact/Interrupt; standard adds Stop; strict adds direct .meta Delete File guard | Project opt-in; global skill install does not install native hooks |
+| Hook ownership/recovery | Merge owned groups, stage self-contained runtime, preserve user hooks, journal interrupted updates and recover | `hooks configure/recover`; refuse drift instead of overwriting user edits |
+| Trust/budgets | Runtime+policy revisions change native definitions; schema validates profile, disabled handlers and input/output/context/deadline caps | Configuration does not grant trust; changed definitions need native review |
+| Native diagnostics | Local doctor, zero-model native discovery/trust probe, bounded receipts and fixture/native SessionStart smoke | `hooks doctor/probe/smoke`; explicit runner receipts alone do not prove native delivery |
+| Deferred SessionStart fix | Codex 0.163.0 first-turn delivery handled correctly; thread-only smoke returns not-run | Native adapter requires trusted config before execution and completed event before accepting results |
+| Failure observations | Allowlisted error class, task/operation/event linkage; no raw prompt/command/tool output retained | Active checkpoint supplies task; otherwise unassigned; structured integer exit status required by default |
+| Native Bash status fix | Opt-in version-bound transcript metadata correlation for missing status; diagnostics expose source/kind/reason | `toolStatusSource: codex-transcript-0.163`; <=64 KiB head +128 KiB tail, matching session/turn/tool/cwd/version, five-minute freshness; never parse stdout as status |
+| Checkpoints | Validated CLI, native-session key, source fingerprint, replay dedupe and stale rejection | `task checkpoint`; different chat ID does not automatically recover older task |
+| Interrupt/PreCompact | Cancel task on Interrupt; preserve nextAction/lifecycle across compact | Native trials observed; archive bytes/hash preserved; not proof of automatic context injection |
+| Verification | Fixed validate/unit/pack/unity commands, task/source/log-bound receipts | `task verify`; Unity consumer routes to inspection/EditMode/compile; missing tools stay unavailable/degraded |
+| Standard/strict | One continuation per task/fingerprint, not reset by compact; no cancelled task resume; narrow native deny shape | Fixture-tested; real standard/strict enforcement remains unverified |
+| Knowledge store | Atomic scoped records, locks, traversal/symlink guards, retention protecting referenced failures, local export/forget/prune | `lessons list/show/record/forget/prune/export`; no cross-project sync |
+| Lesson eligibility | Require matching failure/task/check/platform plus fresh successful verification; source/log/package version changes invalidate | candidate→verified-local; no global truth or self-approved lesson |
+| Recall | Lexical top two /1,000-byte payload, exclusions, platform/package/project filters and session dedupe | Current user instructions prevail; no embeddings or background model calls |
+| Skill drafts | Generate from fresh verified lesson locally or propose reviewed text; candidates stay outside discovery | `skills draft/propose/revise`; bounded size/revisions and canonical-name/owner checks |
+| Evaluation/promotion | Prepare 2 positive +2 negative +1 conflict cases; require matching observed behavioral artifacts/hashes; retain provenance on reuse | `skills prepare-evaluation/promote`; plan/structure pass insufficient, explicit new project skill only, no actual learned skill promoted yet |
+| Decision benchmark | B0–B4 development contract, exact model/payload/context plan, execution flag, persisted attempt budget | Consume before turn; block replay/drift/exhaustion and unexpected tools; no old ledger reset |
+| Prompt contract fix | Explicit quick-docs observer decision labels for future runs | Original exact-field 0/2 failure retained; no rerun under exhausted approval |
+| Rollout | Zero-model snapshot by runtime/policy cohort and distinct UTC days, diagnostics and eligible lessons | `rollout snapshot`; same-day repeats do not prove a week of real use |
+| Isolated lab | Independent git consumer, legacy migration, copied runner, real static red/green, lesson/draft and uninstall/reinstall | `scripts/toolkit-acceptance-lab.mjs`; refuses existing output; no Planet Bunker data copied or changed |
+| UI reskin | Reference-driven uGUI restyling, adaptive anchors, TMP font/outline materials and nested ownership guidance | `unity-ui-reskin`, unity-core registration and UI routing; project results require Editor evidence |
+
+### Current verification and remaining gates
+
+Local Node 24: **78 tests, 77 pass / 0 fail / 1 Windows-only skip**; deterministic eval, compatibility, installed package smoke and alpha release gate pass. [Candidate push](https://github.com/Dreamy-Game-Foundation/dreamy-codex-toolkit/actions/runs/39917693970) and [candidate PR](https://github.com/Dreamy-Game-Foundation/dreamy-codex-toolkit/actions/runs/39917700940) pass all eight jobs. [Merged main](https://github.com/Dreamy-Game-Foundation/dreamy-codex-toolkit/actions/runs/39917929889) passes all four jobs.
+
+Native SessionStart, Interrupt and PreCompact were correlated with an Extension-originated session. The original PostToolUse failure remains recorded; the adapter retest passed with one exit-7 attempt, observation delta +1, activated by CLI queue into that thread. This is native runtime evidence, not a human UI-click retest or universal tool coverage. The ordinary queued turn made six measured runtime model requests; hooks themselves make none. The retention pilot and decision pair have their own separate retained usage/grades.
+
+Automatic checkpoint injection/replay, live standard/strict behavior, broader coding/skill semantic quality, Unity Editor/build/device and multi-day rollout remain **not established**. No stable/production upgrade follows from the merged opt-in alpha.
+
+Commands, policy settings, storage and rollback: [operating guide](toolkit-evolution.md). Vietnamese usage and trial steps: [handoff](toolkit-evolution-handoff.vi.md), [test prompts](toolkit-evolution-test-prompts.vi.md), [acceptance report](toolkit-acceptance-lab-report.vi.md). Evidence: `docs/evidence/toolkit-extension-*-20261023.json` and `toolkit-native-posttooluse-retest-20261023.json`; original fixture/model records remain unchanged.
 
 ## Implemented locally
 
@@ -18,7 +65,7 @@ This tracks implementation of the [ECC / Superpowers / OmO plan](plans/DREAMY_TO
 | P2.2 | One process/explicit handlers, output/input budgets, no model calls | Native protocol/controls tests, no-op process profiling |
 | P2.3 | Session checkpoint replay, failure classes, task-aware observations, interrupt cancellation | Handler tests; no raw prompt/command/transcript persisted |
 | P2.4 | Owned matcher-group merge, runtime staging, journal recovery, user-data isolation | Lifecycle, drift, CRLF byte restoration, recovery and uninstall tests |
-| P2.5 | Installed fixture smoke and cold-process latency harness | SessionStart observed in the authorized pair; other lifecycle events pending; process latency captured in CI |
+| P2.5 | Installed fixture smoke and cold-process latency harness | SessionStart, Interrupt, PreCompact and opt-in PostToolUse observed in separate native trials; Stop/strict remain pending; process latency captured in CI |
 | P3.1 | Atomic local records, write locks, bounded observation retention, export/forget | Traversal/symlink/retention/isolation tests |
 | P3.2 | Candidate -> verified-local only with matching task/command/platform/source/log proof | Stale, wrong-command/platform and tamper tests |
 | P3.3 | Lexical top-2 recall, total JSON payload cap, source/version filtering, session dedupe | Positive/near-miss/exclusion fixtures; not a broad semantic score |
@@ -35,7 +82,7 @@ This tracks implementation of the [ECC / Superpowers / OmO plan](plans/DREAMY_TO
 
 ## Local checks
 
-The latest full suite contains **73 tests: 72 pass, 1 Windows-only skip on Linux**. Validation covers 83 indexed skills and the registered schemas. Linux Node 20.20.2 and 22.23.3 binaries were downloaded to /tmp from nodejs.org and checked against their release SHA-256 manifests; Node 24.19.0 was already installed. Final matrix and package logs are produced under `/tmp/dreamy-evolution-evidence/`.
+Before the isolated-lab/status-adapter follow-up, the full suite contained **73 tests: 72 pass, 1 Windows-only skip on Linux**; the current inventory above records the expanded 78-test suite. Validation covers 83 indexed skills and the registered schemas. Linux Node 20.20.2 and 22.23.3 binaries were downloaded to /tmp from nodejs.org and checked against their release SHA-256 manifests; Node 24.19.0 was already installed. Final matrix and package logs are produced under `/tmp/dreamy-evolution-evidence/`.
 
 Package smoke creates the actual tarball, installs it in an isolated prefix with a space-containing path and invokes the installed CLI. It verifies structural validation, context inventory and installed hook fixture; report generation checks that source did not change during packing. Alpha release checking preserves existing Unity/compatibility/semantic production blockers.
 
@@ -86,7 +133,7 @@ The four batches consumed 44,456 input and 242 output tokens (44,698 total); cac
 
 ## External acceptance still required
 
-1. **Native trust and delivery:** the local consumer fixture now has all four definitions trusted with no foreign trusted hooks or errors. For other installations, review the concrete hook definition using Codex `/hooks` in the target runtime. No trust-bypass flag or trusted-hash edit was used. The current workspace `.codex/` directory is read-only; the task did not alter its permissions or install active hooks there. The reviewable local fixture is `.dreamy/native-consumer`; run `hooks probe` and `hooks smoke --native` against that target. Codex 0.163.0 defers SessionStart until the first user turn, so a zero-model thread-only smoke cannot prove delivery. The later authorized pair now proves SessionStart delivery on this fixture; remaining lifecycle events still need separate evidence. Do not repeat trust review on unchanged definitions. Additional tool/compact/interrupt/Stop acceptance remains a real-session task.
+1. **Native trust and delivery:** the local consumer fixture now has all four definitions trusted with no foreign trusted hooks or errors. For other installations, review the concrete hook definition using Codex `/hooks` in the target runtime. No trust-bypass flag or trusted-hash edit was used. The current workspace `.codex/` directory is read-only; the task did not alter its permissions or install active hooks there. The reviewable local fixture is `.dreamy/native-consumer`; run `hooks probe` and `hooks smoke --native` against that target. Codex 0.163.0 defers SessionStart until the first user turn, so a zero-model thread-only smoke cannot prove delivery. The later authorized pair now proves SessionStart delivery on this fixture; remaining lifecycle events still need separate evidence. Do not repeat trust review on unchanged definitions. The later acceptance lab now records Interrupt, PreCompact and opt-in PostToolUse delivery; automatic replay and live Stop/strict remain real-session acceptance tasks.
 2. **Semantic A/B and skill promotion:** the four retention calls and the separately authorized two-turn native pair are consumed. Any further run requires its own reviewed plan/model/budget. The first native pair completed runtime execution but retained failed exact-field grades; see the diagnosis below. The broader B0–B4/coding/routing cohort and actual candidate behavioral promotion remain pending; no candidate was promoted on synthetic test evidence.
 3. **Unity/build/device checks:** no Unity C#/asset changes were made by this initiative. Existing production blockers and tested-matrix gaps remain visible.
 4. **Opt-in rollout observation:** one week across real workspaces cannot be replaced by a same-session unit run. Start only after native trust and critical semantic gates pass; retain daily context/latency/failure receipts, review stale lessons and rollback any regression before broadening profiles.
@@ -120,6 +167,6 @@ The user explicitly authorized the prepared two-turn plan. It ran on source comm
 
 Total: **13,836 input + 79 output = 13,915 tokens**, no cached input or reasoning-output tokens. Input counts were equal for this quiet minimal fixture. One sequential pair cannot establish latency effects, general token savings or coding quality. Source was reported dirty because the pre-existing untracked `.research/` directory was preserved; this is development evidence, not a clean release cohort.
 
-Both answers selected `quick` and explicitly declined a background observer. The grader required the exact literal `decision: none`, which the reviewed prompt had not specified; the models returned explanatory decision strings. The [retained report](evidence/native-smoke-pair-20261022.json) preserves both original failures, actual answers, usage, native event, approval/ledger binding, source hashes and raw-artifact hashes. No scores were relaxed or rewritten. The quick-docs prompt now declares both observer decision labels for future batches; changed prompts need new authorization and were not executed. Other native lifecycle events, behavioral skill promotion, full coding/routing evaluation, Unity acceptance and real rollout observation remain pending.
+Both answers selected `quick` and explicitly declined a background observer. The grader required the exact literal `decision: none`, which the reviewed prompt had not specified; the models returned explanatory decision strings. The [retained report](evidence/native-smoke-pair-20261022.json) preserves both original failures, actual answers, usage, native event, approval/ledger binding, source hashes and raw-artifact hashes. No scores were relaxed or rewritten. The quick-docs prompt now declares both observer decision labels for future batches; changed prompts need new authorization and were not executed. At that batch, other lifecycle events remained pending. Later lab evidence above covers minimal lifecycle only; behavioral promotion, full coding/routing evaluation, Unity and rollout remain pending.
 
 A project-local observation and lesson `benchmark-output-label-contract` were recorded from this real grading failure. The lesson remains candidate: the revised prompt has not been model-evaluated, so this batch does not justify verified status or skill promotion.
