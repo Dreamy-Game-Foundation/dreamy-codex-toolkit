@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "name": "native-minimal-hook-decision-smoke",
+  "purpose": "development",
+  "releaseEligible": false,
+  "model": "authorization-plan-required",
+  "reasoning": "authorization-plan-required",
+  "repetitions": 1,
+  "timeoutMs": 90000,
+  "adapter": {
+    "executable": "node",
+    "args": [
+      "{repoRoot}/benchmarks/adapters/evolution-exec.mjs",
+      "{promptFile}",
+      "{outputFile}"
+    ]
+  },
+  "caseFiles": ["../cases/evolution-pilot.json"],
+  "treatments": [
+    {
+      "id": "B1",
+      "description": "Same reviewed text as B2, hooks disabled; decision-only feasibility smoke.",
+      "sources": [{ "root": "repo", "paths": ["docs/toolkit-ci-triage.md"] }]
+    },
+    {
+      "id": "B2",
+      "description": "Same reviewed text as B1 plus actual reviewed minimal hooks; requires native SessionStart delivery.",
+      "sources": [{ "root": "repo", "paths": ["docs/toolkit-ci-triage.md"] }]
+    }
+  ]
+}

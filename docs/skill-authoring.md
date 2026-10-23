@@ -1,40 +1,14 @@
 # Skill Authoring
 
-Dreamy Codex Toolkit skills must be operational, source-grounded, and small enough to route reliably.
+Use existing ownership and patch an appropriate skill before adding a new one. A recurring failure is evidence for a lesson; it only justifies a new skill when a distinct reusable workflow is missing.
 
-## Required Format
+Choose `authoringProfile` in skills/index.json:
 
-```markdown
----
-name:
-description:
----
+- `compact-workflow`: a focused procedure with Scope, Decisions, Verification and References. Target 300–800 tokens; deterministic entrypoint cap 5,000 bytes. Specific triggers and near-miss exclusions belong in its frontmatter/scope.
+- `domain-specialist` (existing default): domain/ownership model, required inspection, decision tree, workflow, invariants, anti-patterns, failures, verification, allowed claims and conditional references. Existing detailed headings remain validated for this profile.
 
-# Skill Name
+Size is a budget, not a quality score. Move conditional material to references with explicit reading triggers. Do not repeat shared instructions in every paragraph. A short skill is valid if it explains the non-obvious decisions and what proves success.
 
-## Purpose
-## When To Use
-## When Not To Use
-## Required Inspection
-## Decision Tree
-## Workflow
-## Architecture Rules
-## Common Failure Modes
-## Verification
-## Allowed Claims
-## References
-```
+Keep package API claims tied to compatibility/source evidence. Preserve user scope; project preferences are not global rules. Do not bake model choice, automatic delegation or external actions into skill activation.
 
-## Rules
-
-- Descriptions must name concrete triggers.
-- Include when-not-to-use boundaries so routing can reject near-misses.
-- Include a domain model for P0/P1 production skills.
-- Include a real decision tree, not generic "inspect then change" text.
-- Include anti-patterns and failure modes specific to the domain.
-- Dreamy API claims must be tied to `compatibility/dreamy-packages.json`.
-- Generic Unity knowledge belongs in generic Unity skills; Dreamy skills add package-specific routing and overrides.
-- References must say when to read them; do not make a reference graveyard.
-- Every P0/P1 skill should tell Codex what to inspect, decide, change, and verify.
-- If `name`, title, and description are hidden, the body should still reveal the domain.
-- Skill-local references live in `references/*.md` beside the skill and are validated for broken links.
+For behavior-changing candidates, prepare positive cases, near-miss negatives and a conflict case. Structural validation/keyword matches do not establish behavioral improvement. Use the existing benchmark runner, retain provenance and inspect actual artifacts. See [evolution workflow](toolkit-evolution.md) for candidates, promotion, bounded recall and rollback.

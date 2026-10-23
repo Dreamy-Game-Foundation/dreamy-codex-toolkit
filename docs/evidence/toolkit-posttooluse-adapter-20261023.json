@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "kind": "posttooluse-transcript-adapter-readiness",
+  "date": "2026-10-23",
+  "status": "implemented-awaiting-native-review-and-retest",
+  "policy": {
+    "schemaVersion": 1,
+    "profile": "minimal",
+    "disabled": [],
+    "toolStatusSource": "codex-transcript-0.163",
+    "maxInputBytes": 65536,
+    "maxOutputBytes": 1000,
+    "deadlineMs": 250,
+    "taskContextBytes": 2000,
+    "root": "/run/media/tutrinh/NewData/dreamy-codex-toolkit/.dreamy/acceptance-labs/2026-10-22T10-43-54.550Z-bcd966/project",
+    "recordReceipts": true
+  },
+  "sourceHashes": {
+    "src/hooks/codex-transcript-status.mjs": "84bbc7a79a10ef3f03390a6900ea43025b36f67762c9fff41e87eb03d0400268",
+    "src/hooks/handlers/tool-observation.mjs": "0f80ea8063066bb06f4c8d05f6aab11d2365cd03c91a5d48614ab0a8a5484be7",
+    "src/hooks/dispatcher.mjs": "c603514b7611f224825af307a02d85d9992056cc0dfc2be2a9d7234e95599f7f",
+    "src/hooks/policy.mjs": "e8b54a1eb1c2f056345de95302c9ade039fbde1a9f9fcf9c765bb04cda0852ac",
+    "schemas/hook-policy.schema.json": "4161560b938e693189ddc557eca48162a4fd1abcc3b7b61deb302716d2b4ff01",
+    "tests/unit/transcript-status.test.mjs": "464ac76edde8692ee08a1cde8c83b692f9d6bfa3edfb2351cc3effe79f9c42ce"
+  },
+  "labConfigSha256": "bf00dfc8cb36ae1aab339c8c5299875be8192e7c7f4a38929aca2753c10c0610",
+  "checkpointUnchanged": true,
+  "backupDirectory": ".dreamy/acceptance-labs/2026-10-22T10-43-54.550Z-bcd966/posttooluse-status-upgrade-20261023/before",
+  "nativeRetest": "not-run",
+  "operationalAcceptance": "not-established",
+  "boundedTranscriptRead": {
+    "headBytes": 65536,
+    "tailBytes": 131072,
+    "maxCommandAgeMs": 300000,
+    "requiredRuntimeVersion": "0.163.0",
+    "defaultEnabled": false,
+    "retainedRawContent": false
+  },
+  "verificationScope": [
+    "fixture status correlation and mismatches",
+    "fixture successful/failed/deduplicated observations",
+    "installed-runner fixture writes redacted receipt/observation",
+    "real last-command metadata recovered exit 0 at original timestamp read-only; no observation written"
+  ],
+  "auxiliaryModelCalls": 0,
+  "reviewRequired": "Changed native definitions need user review through Codex /hooks; no trusted hash was modified."
+}

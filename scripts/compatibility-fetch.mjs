@@ -1,3 +1,4 @@
+import { artifactDirectory } from "./lib/source-fingerprint.mjs";
 import fs from "node:fs";
 import path from "node:path";
 import { readJson, root, sha256File } from "./compatibility-lib.mjs";
@@ -6,6 +7,7 @@ const dreamy = readJson("compatibility/dreamy-packages.json");
 const thirdParty = readJson("compatibility/third-party.json");
 const evidence = {
   schemaVersion: 1,
+  runId: process.env.DREAMY_RUN_ID || null,
   evidenceRetrievedAt: null,
   fetchedAt: new Date().toISOString(),
   fetchMethod: "committed-registry-snapshot",
@@ -25,6 +27,6 @@ const evidence = {
   }
 };
 
-fs.mkdirSync(path.join(root, "release"), { recursive: true });
-fs.writeFileSync(path.join(root, "release", "compatibility-evidence.json"), `${JSON.stringify(evidence, null, 2)}\n`);
+fs.mkdirSync(artifactDirectory(root), { recursive: true });
+fs.writeFileSync(path.join(artifactDirectory(root), "compatibility-evidence.json"), `${JSON.stringify(evidence, null, 2)}\n`);
 console.log(JSON.stringify({ status: "ok", upstreamFetchPerformed: false, sources: Object.keys(evidence.sources).length }));

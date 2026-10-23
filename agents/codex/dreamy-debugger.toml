@@ -16,6 +16,8 @@ PHASE 1 - TRIAGE
 
 Classify the failure: compile, runtime exception, wrong behavior, Editor, scene/prefab, save/data, async/lifecycle, pooling, Addressables, package integration, Android/iOS build, CI, or performance.
 
+For toolkit CI/test/package failures, read docs/toolkit-ci-triage.md when available. Resolve each failing platform/job separately.
+
 PHASE 2 - REPRODUCE
 
 Record expected behavior, actual behavior, reproduction steps, frequency, platform, and first known bad state/version when available.

@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+import { artifactDirectory } from "../scripts/lib/source-fingerprint.mjs";
+import { evolutionCommand } from "./evolution-cli.mjs";
+import { removeHooks, configureHooks } from "./hooks/install.mjs";
 import crypto from "node:crypto";
 import { execFileSync, spawnSync } from "node:child_process";
 import fs from "node:fs";
@@ -150,8 +153,10 @@ function removeManagedBlock(text) {
   return `${text.slice(0, removeStart)}${text.slice(removeEnd)}`;
 }
 
-function renderManagedBlock(lineEnding = "lf") {
-  return normalizeLineEndings(fs.readFileSync(path.join(root, "templates", "AGENTS.managed.md"), "utf8"), lineEnding);
+function renderManagedBlock(lineEnding = "lf", desired = null) {
+  const template = fs.readFileSync(path.join(root, "templates", "AGENTS.managed.md"), "utf8");
+  const names = (desired?.agents ?? []).map(a => path.basename(a.source, ".toml").replaceAll("-", "_"));
+  return normalizeLineEndings(template.replace("{{INSTALLED_AGENTS}}", names.length ? names.join(", ") : "See resolved installation; no agent capability is assumed."), lineEnding);
 }
 
 function stateManagedBlockHash(state) {
@@ -463,7 +468,7 @@ function installProject(args) {
   writeJson(path.join(stateDir, "project-profile.json"), profile);
 
   const lineEnding = detectLineEnding(existingAgents);
-  const managedBlock = renderManagedBlock(lineEnding);
+  const managedBlock = renderManagedBlock(lineEnding, desired);
   const beforeHash = fs.existsSync(agentsMd) ? sha256File(agentsMd) : "";
   const separator = existingAgents ? existingAgents.endsWith(lineEndingValue(lineEnding)) ? lineEndingValue(lineEnding) : `${lineEndingValue(lineEnding)}${lineEndingValue(lineEnding)}` : "";
   const nextAgents = adoptingExistingBlock ? replaceManagedBlock(existingAgents, managedBlock) : `${existingAgents}${separator}${managedBlock}`;
@@ -502,6 +507,7 @@ function uninstallProject(args) {
       for (const file of fallback.agents) if (fs.existsSync(file)) fs.rmSync(file, { force: true });
       for (const dir of fallback.skills) if (fs.existsSync(dir)) fs.rmSync(dir, { recursive: true, force: true });
     }
+    if (target.kind === "project") removeHooks(target.root);
     cleanupUninstallState(target, args.purge);
     return { action, target: target.root, targetKind: target.kind, status: "ok", alreadyRemoved: true };
   }
@@ -534,9 +540,11 @@ function uninstallProject(args) {
     } catch {
       nextContent = removeDreamyManagedFragments(content);
     }
+    if (target.kind === "project") removeHooks(target.root);
     fs.writeFileSync(agentsMd, nextContent, "utf8");
   }
 
+  if (target.kind === "project") removeHooks(target.root);
   for (const file of state.agents ?? state.agentFiles ?? []) {
     if (fs.existsSync(file)) fs.rmSync(file, { force: true });
   }
@@ -584,7 +592,11 @@ function updateProject(args) {
   if (args.backup && fs.existsSync(agentsMd)) fs.copyFileSync(agentsMd, `${agentsMd}.dreamy-backup`);
 
   const lineEnding = detectLineEnding(content || renderManagedBlock(state.lineEnding ?? "lf"));
-  const nextAgents = replaceManagedBlock(content, renderManagedBlock(lineEnding));
+  if (target.kind === "project" && fs.existsSync(path.join(target.stateDir, "hook-policy.json"))) {
+    const policy = readJson(path.join(target.stateDir, "hook-policy.json"));
+    configureHooks(root, target.root, policy);
+  }
+  const nextAgents = replaceManagedBlock(content, renderManagedBlock(lineEnding, desired));
   fs.writeFileSync(agentsMd, nextAgents, "utf8");
 
   for (const file of currentAgents) if (!desired.agents.some((entry) => entry.destination === file) && fs.existsSync(file)) fs.rmSync(file, { force: true });
@@ -785,6 +797,7 @@ function formatDetectOutput(profile) {
 }
 
 async function main() {
+  if (["context", "hooks", "lessons", "skills", "task", "rollout"].includes(process.argv[2])) return evolutionCommand(root, process.argv.slice(2));
   const { cmd, args } = parseArgs(process.argv.slice(2));
   const wantsJson = Boolean(args.json);
   if (cmd === "setup" || cmd === "init") {
@@ -907,8 +920,9 @@ async function main() {
     const catalogPath = path.join(root, "evals", "catalog.json");
     const catalogText = fs.readFileSync(catalogPath, "utf8");
     const report = buildCatalogValidationReport(catalogText, path.join(root, "schemas"));
-    fs.mkdirSync(path.join(root, "release"), { recursive: true });
-    writeJson(path.join(root, "release", "eval-report.json"), report);
+    fs.mkdirSync(artifactDirectory(root), { recursive: true });
+    report.runId = process.env.DREAMY_RUN_ID || null;
+    writeJson(path.join(artifactDirectory(root), "eval-report.json"), report);
     console.log(JSON.stringify(report));
   } else if (cmd === "update") {
     const res = updateProject(args);
@@ -916,6 +930,9 @@ async function main() {
     else formatUpdateOutput(res);
   } else {
     console.log(`dreamy-kit commands:
+  context report | hooks configure/doctor/probe/smoke | lessons list/record/verify/recall/forget/prune/export
+  task checkpoint/verify | skills draft/propose/prepare-evaluation/revise/promote | rollout snapshot
+    (see docs/toolkit-evolution.md and docs/toolkit-evolution-handoff.vi.md)
   setup / init
   validate
   harness [operation] [target]

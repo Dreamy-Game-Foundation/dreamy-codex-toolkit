@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "profiles": {
+    "off": [],
+    "minimal": [
+      "session-context",
+      "tool-observation",
+      "checkpoint"
+    ],
+    "standard": [
+      "session-context",
+      "tool-observation",
+      "checkpoint",
+      "verify-stop"
+    ],
+    "strict": [
+      "session-context",
+      "tool-observation",
+      "checkpoint",
+      "verify-stop",
+      "serialized-risk"
+    ]
+  }
+}

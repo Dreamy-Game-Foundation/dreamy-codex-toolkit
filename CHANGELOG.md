@@ -2,6 +2,23 @@
 
 ## Unreleased
 
+- Added an isolated acceptance lab with retained CLI/runner evidence and observed Extension SessionStart, Interrupt and PreCompact trials.
+- Added an optional Codex 0.163.0 transcript metadata adapter for missing native Bash exit status, bounded correlation checks and privacy diagnostics; native PostToolUse retest recorded one sanitized failure observation. Default response-only behavior is preserved.
+
+- Recorded the authorized two-turn native smoke: SessionStart completed in 37 ms, 13,915 total tokens, no unexpected tools. Original exact-field grades remain failed; clarified quick-docs observer labels for future prompts without rerunning the model.
+
+- Fixed native smoke/benchmark timing for Codex 0.163.0: SessionStart is deferred until the first user turn. Zero-model smoke explains the deferred result; authorized trials require delivery before accepting results and retain measured usage on delivery failures.
+
+- Added zero-model skill drafting/evaluation preparation, retained promotion report provenance and package-lock-aware lesson eligibility.
+- Added a bounded built-in native decision adapter, exact payload authorization plans, replay protection, a two-turn smoke manifest and daily rollout snapshots.
+- Added a Vietnamese owner handoff for native trust, benchmark authorization, Unity readiness and rollout; no additional model calls are enabled by default.
+
+- Fixed portable unit-test discovery and npm packaging invocation for the Linux/Windows CI matrix.
+- Bound package release evidence to version, source fingerprint, run identity and tarball hash; reordered CI gates and uploaded run artifacts.
+- Added opt-in project hook profiles, ownership-preserving installation/recovery, quiet local handlers and bounded verification continuation.
+- Added project-scoped lessons, fresh verification receipts, lexical recall/deduplication and gated project skill candidates; no background model calls.
+- Added context inventory/budget validation, compact authoring pilots and a development evolution benchmark cohort. Native lifecycle and semantic improvements remain unestablished pending external gates.
+
 - Added `unity-ui-reskin` for reference-driven uGUI prefab restyling, adaptive anchors, TMP outline presets and evidence-based visual verification.
 - Included the skill in `unity-core` and added routing from Unity UI and Dreamy UI.
 

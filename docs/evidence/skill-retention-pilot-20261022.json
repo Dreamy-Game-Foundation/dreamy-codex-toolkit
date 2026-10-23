@@ -1,0 +1,208 @@
+{
+  "schemaVersion": 1,
+  "kind": "observed-source-entry-retention-pilot",
+  "releaseEligible": false,
+  "baselineCommit": "21d4af56e5a757b2700d46909d279b07d9db099d",
+  "observedAt": "2026-10-22T06:43:55.245Z",
+  "modelCalls": 4,
+  "limitations": [
+    "One batch per skill/variant; decision probes do not establish coding success",
+    "Entrypoint text only; no reference loading or native hook treatment",
+    "Configured account/runtime are inherited; this is not the fully isolated B0-B4 cohort",
+    "Forced-choice probes may be answered from prior model knowledge; no no-skill control",
+    "Baseline preceded compact; one trial per variant, no randomization or replication",
+    "Input token counts include inherited runtime context; byte reduction is not a token-savings estimate",
+    "This pilot is not an isolated B0-B4 cohort and does not authorize candidate promotion"
+  ],
+  "runtime": "codex_vscode/0.163.0 (Ubuntu 26.4.0; x86_64) dumb (dreamy_toolkit; 1)",
+  "model": "gpt-6.1-sol",
+  "reasoning": "low",
+  "status": "pass",
+  "testedSkillCommit": "290a2e0f4d70d0755d5f8f2fb832c4d134b1e8ac",
+  "harnessSha256": "3ccdf857cbf93f9072de8a0fc13d81c0a9d04d51c464afdf4c8014752cdc5225",
+  "rawReportSha256": "acf3bfeced311d7ff909e05daf6f546768cad2a35fbe82fb6a6fadd5c42f46fa",
+  "trials": [
+    {
+      "skill": "unity-foundations",
+      "variant": "baseline",
+      "sourceHash": "60a247672a2359865178e6f3b557ba59b6368a112078e9d93c2d3462e31b6c25",
+      "sourceBytes": 4345,
+      "promptBytes": 4992,
+      "model": "gpt-6.1-sol",
+      "status": "pass",
+      "checks": [
+        {
+          "id": "assembly",
+          "expected": "move-boundary",
+          "actual": "move-boundary"
+        },
+        {
+          "id": "leaf",
+          "expected": "inject-explicitly",
+          "actual": "inject-explicitly"
+        },
+        {
+          "id": "unknown-api",
+          "expected": "inspect-first",
+          "actual": "inspect-first"
+        },
+        {
+          "id": "negative-docs",
+          "expected": "prose-only",
+          "actual": "prose-only"
+        }
+      ],
+      "usage": {
+        "totalTokens": 11432,
+        "inputTokens": 11374,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 58,
+        "reasoningOutputTokens": 0
+      },
+      "usageMeasurement": "measured-runtime",
+      "unexpectedTools": 0,
+      "rawArtifactSha256": "de3cb26ff175a472840963441da9894486b6078c604764d89489ac5ea4cfda4f"
+    },
+    {
+      "skill": "unity-foundations",
+      "variant": "compact",
+      "sourceHash": "5c07294de7ec0eaf85bad92b7b07ed93c464f3978d826024ccf32dec0625472c",
+      "sourceBytes": 2250,
+      "promptBytes": 2837,
+      "model": "gpt-6.1-sol",
+      "status": "pass",
+      "checks": [
+        {
+          "id": "assembly",
+          "expected": "move-boundary",
+          "actual": "move-boundary"
+        },
+        {
+          "id": "leaf",
+          "expected": "inject-explicitly",
+          "actual": "inject-explicitly"
+        },
+        {
+          "id": "unknown-api",
+          "expected": "inspect-first",
+          "actual": "inspect-first"
+        },
+        {
+          "id": "negative-docs",
+          "expected": "prose-only",
+          "actual": "prose-only"
+        }
+      ],
+      "usage": {
+        "totalTokens": 10916,
+        "inputTokens": 10858,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 58,
+        "reasoningOutputTokens": 0
+      },
+      "usageMeasurement": "measured-runtime",
+      "unexpectedTools": 0,
+      "rawArtifactSha256": "34219a954cd825c2c19b13362dc7b72b0da03f5dc98d18f14fdec2b31d126682"
+    },
+    {
+      "skill": "unity-testing",
+      "variant": "baseline",
+      "sourceHash": "81e681f710e2c67b927011a41d4c20fd80bfc71c829fc9b8b2ffa4945a10499f",
+      "sourceBytes": 4233,
+      "promptBytes": 4897,
+      "model": "gpt-6.1-sol",
+      "status": "pass",
+      "checks": [
+        {
+          "id": "logic",
+          "expected": "pure-csharp",
+          "actual": "pure-csharp"
+        },
+        {
+          "id": "lifecycle",
+          "expected": "playmode-cleanup",
+          "actual": "playmode-cleanup"
+        },
+        {
+          "id": "missing-unity",
+          "expected": "report-not-run-gap",
+          "actual": "report-not-run-gap"
+        },
+        {
+          "id": "serialized",
+          "expected": "editmode-representative-assets",
+          "actual": "editmode-representative-assets"
+        }
+      ],
+      "usage": {
+        "totalTokens": 11428,
+        "inputTokens": 11365,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 63,
+        "reasoningOutputTokens": 0
+      },
+      "usageMeasurement": "measured-runtime",
+      "unexpectedTools": 0,
+      "rawArtifactSha256": "f86271ec7e22f02a1cc2324c350036f2326423254f35acc8324470532956e291"
+    },
+    {
+      "skill": "unity-testing",
+      "variant": "compact",
+      "sourceHash": "5ba7fab9212ae07c3239b2107cf5408f400fac2812f90f314717cc53a9b0dd7d",
+      "sourceBytes": 2212,
+      "promptBytes": 2814,
+      "model": "gpt-6.1-sol",
+      "status": "pass",
+      "checks": [
+        {
+          "id": "logic",
+          "expected": "pure-csharp",
+          "actual": "pure-csharp"
+        },
+        {
+          "id": "lifecycle",
+          "expected": "playmode-cleanup",
+          "actual": "playmode-cleanup"
+        },
+        {
+          "id": "missing-unity",
+          "expected": "report-not-run-gap",
+          "actual": "report-not-run-gap"
+        },
+        {
+          "id": "serialized",
+          "expected": "editmode-representative-assets",
+          "actual": "editmode-representative-assets"
+        }
+      ],
+      "usage": {
+        "totalTokens": 10922,
+        "inputTokens": 10859,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 63,
+        "reasoningOutputTokens": 0
+      },
+      "usageMeasurement": "measured-runtime",
+      "unexpectedTools": 0,
+      "rawArtifactSha256": "06f2759b4f467cf16a497b1169fa92f137347c1f0b4de8742f4691e250fc6b88"
+    }
+  ],
+  "comparison": {
+    "uniqueCases": 8,
+    "observedAnswers": 16,
+    "baselineCorrect": 8,
+    "compactCorrect": 8,
+    "baselineInputTokens": 22739,
+    "compactInputTokens": 21717,
+    "inputTokensDifference": 1022,
+    "inputReductionPercent": 4.4945,
+    "totalInputTokens": 44456,
+    "totalOutputTokens": 242,
+    "totalTokens": 44698,
+    "unexpectedToolCalls": 0
+  }
+}

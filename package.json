@@ -5,9 +5,9 @@
   "type": "module",
   "description": "Codex toolkit for Dreamy Unity projects and packages.",
   "scripts": {
-    "validate": "node src/cli.js validate && node scripts/validate-skills.mjs && node scripts/validate-acceptance.mjs",
-    "test": "npm run validate && node --test tests/unit/*.test.mjs",
-    "test:node": "node --test tests/unit/*.test.mjs",
+    "validate": "node src/cli.js validate && node scripts/validate-skills.mjs && node scripts/validate-acceptance.mjs && node scripts/validate-context-budget.mjs",
+    "test": "npm run validate && node scripts/test-unit.mjs",
+    "test:node": "node scripts/test-unit.mjs",
     "eval:deterministic": "node src/cli.js eval",
     "benchmark": "node scripts/benchmark.mjs",
     "benchmark:selftest": "node scripts/benchmark.mjs --manifest benchmarks/manifests/selftest.json",
@@ -17,7 +17,9 @@
     "compatibility:refresh": "npm run compatibility:fetch && npm run compatibility:validate && npm run compatibility:report",
     "release:check": "node scripts/release-check.mjs",
     "changelog": "node scripts/changelog.mjs",
-    "pack:smoke": "node scripts/pack-smoke.mjs"
+    "pack:smoke": "node scripts/pack-smoke.mjs",
+    "hooks:smoke": "node scripts/hook-smoke.mjs",
+    "context:report": "node src/cli.js context report --json"
   },
   "bin": {
     "dreamy-kit": "src/cli.js"
@@ -34,6 +36,7 @@
     "docs/",
     "evals/",
     "harness/",
+    "hooks/",
     "modules/",
     "presets/",
     "rules/",

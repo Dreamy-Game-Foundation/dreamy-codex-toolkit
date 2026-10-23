@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "kind": "extension-posttooluse-followup",
+  "date": "2026-10-23",
+  "sessionId": "01a166c7-ff52-7131-82db-f6337be71daf",
+  "nativeDelivery": "observed-correlated",
+  "failureObservation": "failed",
+  "userReportedTrial": {
+    "commandAttempts": 1,
+    "exitCode": 7,
+    "observationsBefore": 2,
+    "observationsAfter": 2,
+    "receiptAtTrial": "2026-10-23T03:37:16.487Z",
+    "toolName": "inferred Bash; not persisted by old receipt"
+  },
+  "operatorVerified": {
+    "runtimeToolResultAt": "2026-10-23T03:37:16.491Z",
+    "exitCode": 7,
+    "latestReceipt": {
+      "schemaVersion": 1,
+      "event": "PostToolUse",
+      "sessionId": "01a166c7-ff52-7131-82db-f6337be71daf",
+      "observedAt": "2026-10-23T03:38:02.350Z",
+      "source": "native-or-explicit-invocation",
+      "metrics": {
+        "durationMs": 0.9816350000000007,
+        "contextBytes": 0,
+        "handlers": 1,
+        "errors": []
+      }
+    },
+    "latestReceiptSha256": "bb70e416d3b348e7bc006607ccc4e5e69295601af768101eedaae6e92c8d290b",
+    "latestReceiptMayHaveBeenOverwritten": true
+  },
+  "diagnosis": {
+    "basis": "Codex rust-v0.163.0 ExecCommandToolOutput::post_tool_use_response returns raw stdout as JSON string; handler only reads integer exit_code/exitCode on an object. Exact native input of the trial was not captured.",
+    "sourceFiles": {
+      "context.rs": {
+        "tag": "rust-v0.163.0",
+        "sha256": "9a9acc6daab2112bd9ca1a07a1e1f2105b20a7f565878157c726ee0d7a3e00cc"
+      },
+      "hooks.rs": {
+        "tag": "rust-v0.163.0",
+        "sha256": "615345d43c48a1111c058733fd4c12c1fa46293d557e0a95009cd2a46cc208f7"
+      }
+    }
+  },
+  "remediation": {
+    "sourceUpdated": true,
+    "diagnostic": "metrics.diagnostics records tool category, response kind, bounded outcome and integer exit code or null; no output/input capture",
+    "statuslessBehavior": "Skip observation, report missing-exit-code; do not infer process failure from stdout",
+    "nativeFailureCaptureFixed": false,
+    "existingTrustedLabUpdated": false,
+    "reason": "Keep the currently trusted lab runtime intact for remaining lifecycle trials. Updated definitions require fresh native review before use."
+  },
+  "auxiliaryModelCalls": 0,
+  "operationalAcceptance": "not-established"
+}

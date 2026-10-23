@@ -1,18 +1,22 @@
 ---
 name: example-skill
-description: Use for a concrete domain, trigger, and verification outcome.
+description: Use when a concrete, recurring task needs domain-specific decisions and evidence.
 ---
 
 # Example Skill
 
-## Purpose
-## When To Use
-## When Not To Use
-## Required Inspection
-## Decision Tree
-## Workflow
-## Architecture Rules
-## Common Failure Modes
+## Scope
+
+State the concrete trigger and nearby cases owned elsewhere. Inspect the relevant owner and inputs.
+
+## Decisions
+
+Explain the choices that are not obvious from the task. Link conditional details instead of duplicating them.
+
 ## Verification
-## Allowed Claims
+
+Name the observable result and the smallest relevant check. State unavailable verification precisely.
+
 ## References
+
+Add only references needed for actual decisions, with a reading condition.

@@ -82,7 +82,12 @@ for (const file of files) {
     const referencePath = path.join(path.dirname(file), "references", match[1]);
     if (!fs.existsSync(referencePath)) errors.push(`${rel}: missing referenced file references/${match[1]}`);
   }
-  if (rel.includes("/dreamy/") || rel.includes("skills/unity-") || rel.includes("skills/gameplay/") || rel.includes("skills/systems/system-")) {
+  const compact = indexEntry?.authoringProfile === "compact-workflow";
+  if (compact) {
+    for (const heading of ["## Scope", "## Decisions", "## Verification", "## References"]) if (!text.includes(heading)) errors.push(`${rel}: compact workflow missing ${heading}`);
+    if (Buffer.byteLength(text) > 5000) errors.push(`${rel}: compact workflow exceeds 5000 bytes`);
+  }
+  if (!compact && (rel.includes("/dreamy/") || rel.includes("skills/unity-") || rel.includes("skills/gameplay/") || rel.includes("skills/systems/system-"))) {
     for (const heading of required) {
       if (!text.includes(heading)) errors.push(`${rel}: missing ${heading}`);
     }

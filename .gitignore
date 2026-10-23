@@ -1,2 +1,6 @@
 node_modules/
 benchmarks/runs/
+
+artifacts/
+.dreamy/
+*.tgz

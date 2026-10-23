@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "kind": "extension-precompact-followup",
+  "date": "2026-10-23",
+  "status": "observed-correlated",
+  "sessionId": "01a166c7-ff52-7131-82db-f6337be71daf",
+  "checkpoint": {
+    "schemaVersion": 1,
+    "taskId": "hook-compact-test",
+    "status": "active",
+    "files": [
+      "AGENTS.md"
+    ],
+    "sourceFingerprint": "62b332ad546874103254581eb06f7393ca6fd4856b1492be5d4556d6020077d2",
+    "requiredCommands": [
+      "validate"
+    ],
+    "objective": "",
+    "nextAction": "Kiểm tra tài liệu lab sau compact",
+    "updatedAt": "2026-10-23T04:03:46.825Z",
+    "lastLifecycleEvent": "PreCompact"
+  },
+  "receipt": {
+    "schemaVersion": 1,
+    "event": "PreCompact",
+    "sessionId": "01a166c7-ff52-7131-82db-f6337be71daf",
+    "observedAt": "2026-10-23T04:03:46.826Z",
+    "source": "native-or-explicit-invocation",
+    "metrics": {
+      "durationMs": 2.256136999999999,
+      "contextBytes": 0,
+      "handlers": 1,
+      "errors": []
+    }
+  },
+  "interruptArchive": {
+    "status": "cancelled",
+    "lastLifecycleEvent": "Interrupt",
+    "sha256": "0b614e8cacc40e05b248920c5663d574145351511dcf17b46fec803ea2ecf5f0",
+    "matchesPrevious": true
+  },
+  "artifactHashes": {
+    ".dreamy/acceptance-labs/2026-10-22T10-43-54.550Z-bcd966/project/.dreamy/checkpoints/856118834b0434fc9949e63c67349b2a.json": "e3f47ec3f7d5effa1eba688c74905dc45f1f0b0b50cf2e4c95ecefe41c5935e6",
+    ".dreamy/acceptance-labs/2026-10-22T10-43-54.550Z-bcd966/project/.dreamy/hook-receipts/f4cc1711e2f408e53d283c7761ce002a17247128d388688f420d8900691766b7.json": "cb5510d7ef193220e9f6b82c9d8b102510bdc16f825f9b55904640e7632b5382",
+    ".dreamy/acceptance-labs/2026-10-22T10-43-54.550Z-bcd966/project/.dreamy/checkpoints/archive/856118834b0434fc9949e63c67349b2a.hook-interrupt-test.cancelled.json": "0b614e8cacc40e05b248920c5663d574145351511dcf17b46fec803ea2ecf5f0"
+  },
+  "verification": "Operator read both artifacts and hashed the Interrupt archive; same session previously matched vscode runtime metadata. User reports actual Extension compact and no runner/dispatch or synthetic event.",
+  "scope": "PreCompact delivery, active checkpoint and nextAction preservation only; no proof of automatic checkpoint injection after compact",
+  "auxiliaryModelCalls": 0,
+  "operationalAcceptance": "not-established",
+  "limitation": "Generic receipt source requires session/runtime correlation and reported trial procedure; not a provenance guarantee."
+}

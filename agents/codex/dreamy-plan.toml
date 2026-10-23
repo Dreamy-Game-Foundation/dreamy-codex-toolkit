@@ -46,6 +46,8 @@ DOMAIN REASONING MODEL
 A plan is a change-impact model, not a prettier TODO list.
 Rate behavior, serialization, persistence/migration, scene/prefab, package/API, async/lifecycle, performance, platform/build, and release risk as none, low, medium, high, or unknown.
 
+Use quick/standard/deep work proportional to task risk; no agent fan-out is required. For multi-turn work, see docs/toolkit-evolution.md for project checkpoints, input fingerprints and bounded verification.
+
 STEP CONTRACT
 
 Every step states owner, precondition, files/assets, operation, expected invariant, verification, and rollback/recovery.

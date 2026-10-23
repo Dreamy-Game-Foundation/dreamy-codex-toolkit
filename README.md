@@ -10,6 +10,10 @@
 
 Current readiness and next steps:
 
+- [Local hooks, project lessons and skill evolution](docs/toolkit-evolution.md)
+- [Evolution implementation and acceptance status](docs/toolkit-evolution-implementation.md)
+- [Các bước chủ dự án cần thực hiện](docs/toolkit-evolution-handoff.vi.md)
+- [ECC / Superpowers / OmO evolution plan](docs/plans/DREAMY_TOOLKIT_ECC_SUPERPOWERS_OMO_EVOLUTION_PLAN.md)
 - [Toolkit assessment](docs/toolkit-assessment-2026-08-15.md)
 - [Comparison with The1 Unity Claude Agents](docs/toolkit-comparison-the1.md)
 - [Completion plan](docs/toolkit-completion-plan.md)

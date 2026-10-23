@@ -106,6 +106,95 @@
       "status": "observed",
       "role": "dreamy-package",
       "localPath": ".research/dreamy-packages/com.dreamy.feedback"
+    },
+    {
+      "id": "evolution-ecc",
+      "remote": "https://github.com/affaan-m/ECC",
+      "commit": "90606c8315ee09cafc303515c5f33024db6b9882",
+      "status": "observed-external",
+      "role": "reference-evolution-mechanisms",
+      "retrievedAt": "2026-10-22T03:51:02Z",
+      "evidenceNote": "Commit-pinned source archive inspected during evolution research; upstream code was not executed or vendored. Temporary cache is not required for toolkit operation. See docs/plans/DREAMY_TOOLKIT_ECC_SUPERPOWERS_OMO_EVOLUTION_PLAN.md.",
+      "sourceFiles": [
+        {
+          "path": "hooks/codex-hooks.json",
+          "sha256": "b534b7aeb02527dd97664e037d12721a429f112cd54711815925af65f0aca091"
+        },
+        {
+          "path": "scripts/lib/hook-flags.js",
+          "sha256": "1f5fbf2d2ebd0ab07a3e54406db18c2932ae7bf965513ec12c521da1be54425d"
+        },
+        {
+          "path": "scripts/hooks/run-with-flags.js",
+          "sha256": "437772508a8a47b55abf6aa592da95d52eae5b5f8ec04b257a6566632457dc09"
+        },
+        {
+          "path": "skills/continuous-learning-v2/SKILL.md",
+          "sha256": "ddad12451a0d582c6ef1b197b7be193bef613cbc74eba4117fcb74fc7a4ecd00"
+        },
+        {
+          "path": "LICENSE",
+          "sha256": "326146379f01bb137c0a5d3c54770c1aa31076705c8b88a7f6b26a460f6221b2"
+        }
+      ]
+    },
+    {
+      "id": "evolution-superpowers",
+      "remote": "https://github.com/obra/superpowers",
+      "commit": "2ce8aa15d05bd57213e6f746f953aafb7ded7a8b",
+      "status": "observed-external",
+      "role": "reference-evolution-mechanisms",
+      "retrievedAt": "2026-10-22T03:51:02Z",
+      "evidenceNote": "Commit-pinned source archive inspected during evolution research; upstream code was not executed or vendored. Temporary cache is not required for toolkit operation. See docs/plans/DREAMY_TOOLKIT_ECC_SUPERPOWERS_OMO_EVOLUTION_PLAN.md.",
+      "sourceFiles": [
+        {
+          "path": "skills/writing-plans/SKILL.md",
+          "sha256": "a6c67c1900064347c2a329990dd3c555657c51c3ec53b259a08aa01a2c26139a"
+        },
+        {
+          "path": "skills/systematic-debugging/SKILL.md",
+          "sha256": "51c6435d98c83c42c96ba7c35725a0b2c376cd487fb1a4e6bd0ddbe7e33ef202"
+        },
+        {
+          "path": "skills/writing-skills/SKILL.md",
+          "sha256": "8cb3ac68c6d8c4bb46886b998b09af7989643cab8bd0e46ee86dd62e64546bbe"
+        },
+        {
+          "path": "hooks/session-start",
+          "sha256": "5c15e62a90ed13ad8e4b3561148c54c26c6ee28b41ec3a55a241f68b400d886d"
+        },
+        {
+          "path": "LICENSE",
+          "sha256": "a37e0e9697144819e1d965176ac4ae5bc3fa02d11e7812036bbcadf6dafe2400"
+        }
+      ]
+    },
+    {
+      "id": "evolution-omo",
+      "remote": "https://github.com/code-yeongyu/oh-my-openagent",
+      "commit": "06949e1eb617faf7eb81f3ddd9d959408e3f1892",
+      "status": "observed-external",
+      "role": "reference-evolution-mechanisms",
+      "retrievedAt": "2026-10-22T03:51:02Z",
+      "evidenceNote": "Commit-pinned source archive inspected during evolution research; upstream code was not executed or vendored. Temporary cache is not required for toolkit operation. See docs/plans/DREAMY_TOOLKIT_ECC_SUPERPOWERS_OMO_EVOLUTION_PLAN.md.",
+      "sourceFiles": [
+        {
+          "path": "packages/rules-engine/src/engine/truncator.ts",
+          "sha256": "20c5e56fde740c03ab2611baa6f678bf0916ea2c480b40fc9a95ea0651c0295a"
+        },
+        {
+          "path": "packages/memory-core/src/recall/ledger.ts",
+          "sha256": "dfe181b50636b6acdc6d06d6c051b705a90b6f79b246f1cd5f034f6e81d6b4db"
+        },
+        {
+          "path": "packages/omo-codex/plugin/components/ulw-execute-continuation/src/codex-hook.ts",
+          "sha256": "63c2ec5ed7c35a419a56746d07680df7febe931cb637139771be0d3774bfeace"
+        },
+        {
+          "path": "LICENSE.md",
+          "sha256": "b61ac928f152d13517328263e6bee9175b928f9ab696a2d2ca2b6cfd961ddc32"
+        }
+      ]
     }
   ]
 }

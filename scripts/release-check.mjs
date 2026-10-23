@@ -1,10 +1,13 @@
 import fs from "node:fs";
 import path from "node:path";
 import { validate } from "./validate.mjs";
-import { catalogReportErrors } from "../src/release-evidence.js";
+import { catalogReportErrors, packReportErrors } from "../src/release-evidence.js";
 import { createSchemaValidator, validateWithSchema } from "../src/schema-validation.js";
 
+import { artifactDirectory, hash } from "./lib/source-fingerprint.mjs";
+
 const root = path.resolve(import.meta.dirname, "..");
+const artifacts = artifactDirectory(root);
 const toolkit = JSON.parse(fs.readFileSync(path.join(root, "toolkit.json"), "utf8"));
 const pkg = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"));
 const changelog = fs.readFileSync(path.join(root, "CHANGELOG.md"), "utf8");
@@ -17,18 +20,19 @@ let semanticQualityClaim = "not-established";
 if (toolkit.version !== pkg.version) errors.push("toolkit.json and package.json versions differ");
 if (!changelog.includes(toolkit.version)) errors.push("CHANGELOG does not mention current version");
 if ((evals.cases ?? []).length < 60) errors.push("release gate requires at least 60 eval cases");
-const evalReportPath = path.join(root, "release/eval-report.json");
+const evalReportPath = path.join(artifacts, "eval-report.json");
 if (!fs.existsSync(evalReportPath)) {
   errors.push("release/eval-report.json is missing; run npm run eval:deterministic");
 } else {
   try {
     const report = JSON.parse(fs.readFileSync(evalReportPath, "utf8"));
     errors.push(...catalogReportErrors(report, evalCatalogText, path.join(root, "schemas")));
+    if (process.env.DREAMY_RUN_ID && report.runId !== process.env.DREAMY_RUN_ID) errors.push("eval report belongs to another run");
   } catch (error) {
     errors.push(error.message);
   }
 }
-const benchmarkReportPath = path.join(root, "release", "benchmark-report.json");
+const benchmarkReportPath = path.join(artifacts, "benchmark-report.json");
 if (!fs.existsSync(benchmarkReportPath)) {
   productionBlockers.push("release/benchmark-report.json is missing; catalog validation is not a quality score");
 } else {
@@ -76,9 +80,20 @@ for (const [name, record] of Object.entries(dreamyCompatibility.packages ?? {}))
 if ((dreamyCompatibility.globalDrift ?? []).length > 0) {
   productionBlockers.push("global Dreamy ecosystem drift remains unresolved");
 }
-if (!fs.existsSync(path.join(root, "release/compatibility-drift-report.json"))) errors.push("compatibility drift JSON report is missing");
-if (!fs.existsSync(path.join(root, "release/compatibility-drift-report.md"))) errors.push("compatibility drift Markdown report is missing");
-if (!fs.existsSync(path.join(root, "release/npm-pack-smoke.json"))) errors.push("npm pack smoke report is missing; run npm run pack:smoke");
+if (!fs.existsSync(path.join(artifacts, "compatibility-drift-report.json"))) errors.push("compatibility drift JSON report is missing");
+if (!fs.existsSync(path.join(artifacts, "compatibility-drift-report.md"))) errors.push("compatibility drift Markdown report is missing");
+try {
+  const pack = JSON.parse(fs.readFileSync(path.join(artifacts, "npm-pack-smoke.json"), "utf8"));
+  errors.push(...packReportErrors(pack, root, artifacts, process.env.DREAMY_RUN_ID || null));
+} catch (error) { errors.push(`pack evidence: ${error.message}; run npm run pack:smoke`); }
+try {
+  const drift = JSON.parse(fs.readFileSync(path.join(artifacts, "compatibility-drift-report.json"), "utf8"));
+  if (process.env.DREAMY_RUN_ID && drift.runId !== process.env.DREAMY_RUN_ID) errors.push("compatibility report belongs to another run");
+  for (const [name, relative] of [["dreamyPackages", toolkit.compatibility.dreamyPackages], ["thirdParty", toolkit.compatibility.thirdParty]]) {
+    const expected = hash(fs.readFileSync(path.join(root, relative)));
+    if (drift.evidenceSnapshot?.sources?.[name]?.hash !== expected) errors.push(`compatibility report is stale: ${name}`);
+  }
+} catch (error) { errors.push(`compatibility freshness: ${error.message}`); }
 await validate().catch((error) => errors.push(error.message));
 
 if (toolkit.status !== "alpha" && productionBlockers.length) errors.push(...productionBlockers);

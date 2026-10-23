@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "kind": "native-posttooluse-retest",
+  "date": "2026-10-23",
+  "status": "pass",
+  "scope": "Native failure observation in existing Extension-originated thread, activated by CLI queue; not a human Extension UI-click trial or full toolkit acceptance.",
+  "sessionId": "01a166c7-ff52-7131-82db-f6337be71daf",
+  "activation": "codex queue",
+  "nativeTrustReview": "Four exact project hook definitions reviewed/trusted through native CLI UI; no bypass or manual trust-hash editing.",
+  "queuedUserTurns": 1,
+  "nativeCommandAttempts": 1,
+  "nativeShellCommandsIncludingReadOnlyAudit": 5,
+  "turnStartedAt": "2026-10-23T04:21:53.265Z",
+  "turnCompletedAt": "2026-10-23T04:22:32.518Z",
+  "command": {
+    "eventId": "exec-5812d6f8-0120-4c6c-8ced-8e9f6a7fa4b1",
+    "completedAt": "2026-10-23T04:22:01.818Z",
+    "exitCode": 7
+  },
+  "observations": {
+    "before": 2,
+    "after": 3,
+    "delta": 1,
+    "previousHashesUnchanged": true,
+    "new": {
+      "schemaVersion": 1,
+      "id": "e08f01d794f59369e4306807b63e841d8cd7e6513d7f08e052c0762251f9bb98",
+      "projectId": "8fcd95952f3ecb2ec6ac13ce17fc2628b80eb6d5cc9e2e9aacc3e8e8066d2bf1",
+      "taskId": "hook-compact-test",
+      "eventId": "exec-5812d6f8-0120-4c6c-8ced-8e9f6a7fa4b1",
+      "observedAt": "2026-10-23T04:22:01.855Z",
+      "platform": "linux",
+      "operation": "Bash",
+      "outcome": "fail",
+      "signature": "ERR_ASSERTION",
+      "rawPromptCaptured": false,
+      "rawToolInputCaptured": false
+    },
+    "newFileSha256": "392e2ea064baa5f526c9558ed978107e1eded0bad030adb78fd06b957691e6ee"
+  },
+  "failureReceiptSnapshot": {
+    "schemaVersion": 1,
+    "event": "PostToolUse",
+    "sessionId": "01a166c7-ff52-7131-82db-f6337be71daf",
+    "observedAt": "2026-10-23T04:22:01.985Z",
+    "source": "native-or-explicit-invocation",
+    "metrics": {
+      "durationMs": 135.507838,
+      "contextBytes": 0,
+      "handlers": 1,
+      "errors": [],
+      "diagnostics": [
+        {
+          "handler": "tool-observation",
+          "toolName": "Bash",
+          "responseKind": "string",
+          "outcome": "failure-recorded",
+          "exitCode": 7,
+          "statusSource": "codex-transcript-0.163"
+        }
+      ]
+    }
+  },
+  "snapshotProvenance": {
+    "source": "Receipt JSON read by native audit command before current receipt was overwritten by later successful audit calls",
+    "auditEventId": "exec-9bdd3e46-42e4-44fb-8007-57a918715959",
+    "auditCompletedAt": "2026-10-23T04:22:13.252Z",
+    "auditOutputSha256": "77253e0d2cb7dc8414ea2429317c3a764b3c82dd8de2ffcd08e02481b452d6c4"
+  },
+  "usage": {
+    "kind": "Runtime-measured model requests within the one normal queued agent turn",
+    "modelRequestsObserved": 6,
+    "totals": {
+      "input_tokens": 182972,
+      "cached_input_tokens": 178048,
+      "output_tokens": 2315,
+      "reasoning_output_tokens": 669,
+      "total_tokens": 185287
+    },
+    "subordinateModelCalls": 0,
+    "oldBenchmarkLedgersReused": false
+  },
+  "operationalAcceptance": "not-established",
+  "sourceHashes": {
+    "src/hooks/codex-transcript-status.mjs": "84bbc7a79a10ef3f03390a6900ea43025b36f67762c9fff41e87eb03d0400268",
+    "src/hooks/handlers/tool-observation.mjs": "0f80ea8063066bb06f4c8d05f6aab11d2365cd03c91a5d48614ab0a8a5484be7",
+    "src/hooks/dispatcher.mjs": "c603514b7611f224825af307a02d85d9992056cc0dfc2be2a9d7234e95599f7f",
+    "src/hooks/policy.mjs": "e8b54a1eb1c2f056345de95302c9ade039fbde1a9f9fcf9c765bb04cda0852ac"
+  }
+}

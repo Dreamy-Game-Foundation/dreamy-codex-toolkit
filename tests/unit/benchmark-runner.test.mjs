@@ -52,3 +52,17 @@ test("benchmark runner preserves adapter-declared not-run evidence", () => {
   assert.equal(report.treatments[0].reason, "Synthetic adapter isolation failure");
   assert.match(report.treatments[0].adapterStatusHash, /^[0-9a-f]{64}$/);
 });
+
+test('usage without runtime counters remains unavailable, not zero tokens',async()=>{
+ const {codexUsage}=await import('../../scripts/benchmark.mjs');const temp=fixture(),file=path.join(temp,'events.jsonl');
+ fs.writeFileSync(file,'{"type":"thread.started"}\n');assert.equal(codexUsage(file),null);
+ fs.appendFileSync(file,'{"type":"turn.completed","usage":{"input_tokens":100,"output_tokens":20,"cached_input_tokens":30}}\n');
+ const usage=codexUsage(file);assert.equal(usage.inputTokens,100);assert.equal(usage.cachedInputTokens,30);assert.equal(usage.reasoningOutputTokens,null);assert.equal(usage.measurement,'measured-runtime');
+});
+
+test('benchmark reruns cannot grade stale output from an earlier attempt',()=>{
+ const temp=fixture(),options={manifest:path.join(temp,'manifest.json'),output:path.join(temp,'run')};
+ assert.equal(runBenchmark(options).report.status,'complete');
+ const manifest=JSON.parse(fs.readFileSync(options.manifest,'utf8'));manifest.adapter={executable:process.execPath,args:['-e','']};fs.writeFileSync(options.manifest,JSON.stringify(manifest));
+ assert.throws(()=>runBenchmark(options),/already contains evidence/);
+});

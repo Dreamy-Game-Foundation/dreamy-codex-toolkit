@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dreamy.tools/codex/schemas/context-budget.schema.json",
+  "title": "Dreamy Context Budget",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "tokens",
+    "measurement",
+    "metadataBytes",
+    "bodyBytes",
+    "skills"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "tokens": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "measurement": {
+      "enum": [
+        "bytes-only",
+        "measured-runtime"
+      ]
+    },
+    "metadataBytes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "bodyBytes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    }
+  }
+}
