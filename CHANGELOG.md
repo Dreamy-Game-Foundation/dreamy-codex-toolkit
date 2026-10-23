@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 0.1.0-alpha.4 — 2026-10-23
+
+- Synchronized canonical toolkit, npm package, lockfile and README version for a pinned GitHub prerelease. No npm registry publication; experimental behavior stays opt-in.
+
 - Documented the complete feature/fix inventory, project upgrade path, CLI action groups, current native evidence and remaining alpha gates across README and operating/handoff/implementation guides.
 - Merged PR #1 as alpha source at `076e60a`; candidate push/PR passed eight CI jobs and merged main passed four jobs. No new stable release, npm publication or toolkit version bump.
 

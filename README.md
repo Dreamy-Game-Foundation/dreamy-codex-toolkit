@@ -1,12 +1,20 @@
 # Dreamy Codex Toolkit
 
-[![Version](https://img.shields.io/badge/version-0.1.0--alpha.3-blue.svg)](toolkit.json)
+[![Version](https://img.shields.io/badge/version-0.1.0--alpha.4-blue.svg)](toolkit.json)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Node: >=20](https://img.shields.io/badge/node-%3E%3D20-green.svg)](package.json)
 
 **Dreamy Codex Toolkit** is a standardized AI agent, skill, and configuration toolkit designed for development within the **Dreamy Unity Ecosystem**. The current supported runtime is **OpenAI Codex**; Claude and Antigravity are reference/experimental targets until dedicated adapters, file formats, and fixture tests exist.
 
 `toolkit.json` serves as the canonical source of truth for versioning, maturity, presets, modules, rules, skills, and harness metadata.
+
+Current prerelease: **0.1.0-alpha.4** (GitHub prerelease; no npm registry publication). For a pinned install after the release is available:
+
+```bash
+npm install --global https://github.com/Dreamy-Game-Foundation/dreamy-codex-toolkit/releases/download/v0.1.0-alpha.4/dreamy-codex-toolkit-0.1.0-alpha.4.tgz
+dreamy-kit --help
+# Then explicitly install/update the intended global or project target.
+```
 
 Current readiness and next steps:
 
