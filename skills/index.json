@@ -517,9 +517,10 @@
         "asset-provenance",
         "gate-results",
         "whole-game-coverage-when-requested",
-        "individual-asset-catalog-when-extracted"
+        "individual-asset-catalog-when-extracted",
+        "feature-state-reference-and-plan-coverage-when-cloning"
       ],
-      "references": 8,
+      "references": 10,
       "evalCases": [
         "vibe-original-existing-off",
         "vibe-clone-rea-auto",
@@ -541,7 +542,14 @@
         "vibe-exact-existing-assets-completion",
         "vibe-interactive-unity-notify",
         "vibe-exact-services-not-fake",
-        "vibe-pilot-before-toolkit"
+        "vibe-pilot-before-toolkit",
+        "vibe-clone-feature-reference-search",
+        "vibe-clone-feature-plan-packet",
+        "vibe-clone-inaccessible-video",
+        "vibe-clone-reference-version-conflict",
+        "vibe-clone-slice-reference-scope",
+        "vibe-clone-reference-resume",
+        "vibe-clone-no-web-research"
       ],
       "authoringProfile": "compact-workflow"
     },
@@ -1687,6 +1695,47 @@
       ],
       "references": 0,
       "evalCases": []
+    },
+    {
+      "name": "unity-vfx-authoring",
+      "category": "unity",
+      "priority": "P1",
+      "file": "skills/unity-vfx-authoring/SKILL.md",
+      "depth": "D3",
+      "maturity": "experimental",
+      "owners": [
+        "dreamy_skill_author",
+        "dreamy_unity_developer",
+        "dreamy_unity_editor",
+        "dreamy_tester"
+      ],
+      "requiresEvidence": [
+        "project-state",
+        "manifest-and-lock",
+        "effect-brief-and-recipe",
+        "asset-provenance",
+        "saved-prefab-bindings",
+        "visual-and-lifecycle-results",
+        "target-performance-when-claimed"
+      ],
+      "references": 4,
+      "evalCases": [
+        "vfx-create-2d-hit",
+        "vfx-create-3d-explosion",
+        "vfx-reference-motion",
+        "vfx-graph-required-missing",
+        "vfx-mobile-gles",
+        "vfx-2d-lighting",
+        "vfx-pool-reuse-trail",
+        "vfx-ui-overlay",
+        "vfx-no-editor",
+        "vfx-ai-flipbook-qc",
+        "vfx-negative-pool-bug",
+        "vfx-negative-single-image",
+        "vfx-conflict-no-ai-no-build",
+        "vfx-plan-only"
+      ],
+      "authoringProfile": "compact-workflow"
     },
     {
       "name": "upgrade",

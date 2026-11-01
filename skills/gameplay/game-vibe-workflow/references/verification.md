@@ -36,6 +36,8 @@ Record implemented, functional-test, presentation-review, build-verification and
 
 ## Final artifact
 
+For clone research/plan handoff, check [clone-research.md](clone-research.md): every required feature/state appears in the index with a plan/source link or a named gap; retained images/frames resolve and were opened; video intervals watched are distinguishable from inaccessible candidates. Keep version conflicts, missing-motion evidence and unimplemented functions visible. Plan/link integrity does not prove behavior or complete clone fidelity.
+
 First apply the latest requested output and build policy. If the owner stops player builds, do not build to satisfy this section: deliver source/Editor evidence, label the player gate deferred-by-owner, and keep older artifact results scoped to their revision. A normal-launch player gate resumes only when the requested scope permits it. The following checks apply when player delivery is in scope and allowed.
 
 Freeze new content with time for verification and repair. Build the target, then launch the actual output from its ordinary entry point with a fresh state and with an existing save when persistence is in scope. Verify menu/loading/world transitions, real input, UI/audio, runtime-loaded shaders/content, result/reset, save/quit/relaunch and affected platform behavior.

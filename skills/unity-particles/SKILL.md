@@ -40,6 +40,8 @@ ParticlePrefab -> SpawnRequest -> Pool/Instantiate -> PlayLifetime -> Stop/Clean
 
 ## Workflow
 
+For designing and assembling a new effect from a brief/reference, use `unity-vfx-authoring` when installed; retain focused ParticleSystem module, lifecycle and budget work here.
+
 1. Inspect assets and owners before editing serialized data.
 2. Identify the runtime owner, authoring asset, and platform budget.
 3. Make the smallest change that preserves references and existing quality tiers.

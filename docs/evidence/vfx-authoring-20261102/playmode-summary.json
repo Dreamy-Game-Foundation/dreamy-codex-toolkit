@@ -1,0 +1,27 @@
+{
+  "kind": "unity-playmode-summary",
+  "sourceXmlSha256": "8a7f06b3b4ad02f151138054a5cd53312e4918815eccdcc208011b8082ba5558",
+  "result": "Passed",
+  "total": 3,
+  "passed": 3,
+  "failed": 0,
+  "skipped": 0,
+  "cases": [
+    {
+      "name": "ExplosionPreservesChildTailThenCancelsAndReplays",
+      "result": "Passed",
+      "durationSeconds": 0.668193
+    },
+    {
+      "name": "HitCompletesNaturallyAndDoesNotAutoReplay",
+      "result": "Passed",
+      "durationSeconds": 0.985069
+    },
+    {
+      "name": "MovingTrailRendersThenClearsBeforeRelocation",
+      "result": "Passed",
+      "durationSeconds": 0.063458
+    }
+  ],
+  "scope": "Native Particle System and TrailRenderer lifecycle in an isolated Built-in lab; no production gameplay/pool integration or target-device budget claim."
+}

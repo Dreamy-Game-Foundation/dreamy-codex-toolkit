@@ -1,0 +1,75 @@
+{
+    "editor": "6000.4.12f1",
+    "pipeline": "Built-in",
+    "graphicsDevice": "NVIDIA GeForce GTX 1650",
+    "graphicsApi": "Direct3D12",
+    "shaderSupported": true,
+    "prefabReloaded": true,
+    "captures": [
+        {
+            "effect": "Hit2D",
+            "seconds": 0.05000000074505806,
+            "particles": 20,
+            "visiblePixels": 2317,
+            "path": "Evidence/Hit2D-50ms.png"
+        },
+        {
+            "effect": "Hit2D",
+            "seconds": 0.18000000715255738,
+            "particles": 20,
+            "visiblePixels": 2335,
+            "path": "Evidence/Hit2D-180ms.png"
+        },
+        {
+            "effect": "Hit2D",
+            "seconds": 0.3700000047683716,
+            "particles": 18,
+            "visiblePixels": 108,
+            "path": "Evidence/Hit2D-370ms.png"
+        },
+        {
+            "effect": "Explosion3D",
+            "seconds": 0.05999999865889549,
+            "particles": 83,
+            "visiblePixels": 3392,
+            "path": "Evidence/Explosion3D-60ms.png"
+        },
+        {
+            "effect": "Explosion3D",
+            "seconds": 0.4000000059604645,
+            "particles": 82,
+            "visiblePixels": 10036,
+            "path": "Evidence/Explosion3D-400ms.png"
+        },
+        {
+            "effect": "Explosion3D",
+            "seconds": 1.25,
+            "particles": 16,
+            "visiblePixels": 17954,
+            "path": "Evidence/Explosion3D-1250ms.png"
+        },
+        {
+            "effect": "AuraTrail",
+            "seconds": 0.15000000596046449,
+            "particles": 3,
+            "visiblePixels": 343,
+            "path": "Evidence/AuraTrail-150ms.png"
+        },
+        {
+            "effect": "AuraTrail",
+            "seconds": 0.6499999761581421,
+            "particles": 15,
+            "visiblePixels": 1062,
+            "path": "Evidence/AuraTrail-650ms.png"
+        },
+        {
+            "effect": "AuraTrail",
+            "seconds": 1.149999976158142,
+            "particles": 28,
+            "visiblePixels": 1309,
+            "path": "Evidence/AuraTrail-1150ms.png"
+        }
+    ],
+    "lifecycle": "not-run",
+    "devicePerformance": "not-run"
+}

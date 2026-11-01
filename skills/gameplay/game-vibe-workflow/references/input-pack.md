@@ -28,6 +28,8 @@ Missing runtime reference need not block independent preparation. A bounded prot
 
 ## Clone branch
 
+Use [clone-research.md](clone-research.md) to search images and available video by feature/state and persist an index, linked feature plans and source/coverage records. Reuse existing docs; enumerate the requested scope and name missing states instead of documenting only existing implementation.
+
 Select the exact-whole-game branch for "identical/full/y hệt" intent; mechanics-only clones and requested slices keep their explicit narrower scope. The detailed brief must include all applicable non-core screens and service/error states, not merely elaborate the current implementation.
 
 Create a behavior matrix with stable IDs. Include source identity/state, confidence, intended retention, current implementation, divergence and verification plan. Track source version/hash where available. Do not infer frame timing, hit selection, loss grace periods or save semantics from a screenshot or field names.

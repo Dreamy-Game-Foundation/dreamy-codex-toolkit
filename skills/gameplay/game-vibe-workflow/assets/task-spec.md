@@ -13,6 +13,9 @@ Agent-selected pilot vs requested final scope:
 For an exact whole-game clone: target version/platform; whole screen/function graph;
 web research ledger and original screenshots; uncovered state/version evidence;
 individual extracted-asset JSON catalog and per-screen source/import bindings.
+For any clone: plan index and feature-plan paths; per-function/state image/video
+research, inspected media IDs/time ranges and missing evidence. Reuse existing
+plan conventions; list all functions in the requested scope, not only current code.
 P0/P1/P2, exclusions and unresolved scope:
 
 ## Player journey
@@ -43,6 +46,9 @@ Include camera/input, targeting/physics, action/reward timing, failure rules and
 
 Camera/framing, silhouettes/scale, palette/materials, UI hierarchy, animation transitions, VFX and audio:
 Controlled capture states/aspects and normal-speed/listening checks:
+Clone plan index, feature/state inventory and reference-manifest locations:
+Image/video search attempts, selected sources and per-state inspection coverage:
+Unviewed/inaccessible videos, version conflicts and uncovered states/next action:
 
 | Ref ID | Path/link and identity | Role/what to take | Credit/source | Approval status | Limits |
 |---|---|---|---|---|---|

@@ -62,12 +62,24 @@ test("global target installs into user Codex home", () => {
   assert.ok(fs.existsSync(path.join(agentsHome, "skills", "game-vibe-workflow", "references", "rea.md")));
   assert.ok(fs.existsSync(path.join(agentsHome, "skills", "game-vibe-workflow", "references", "exact-clone.md")));
   assert.ok(fs.existsSync(path.join(agentsHome, "skills", "game-vibe-workflow", "assets", "project-brief.md")));
+  for (const relative of ["references/clone-research.md", "assets/clone-plan-index.md", "assets/clone-feature-plan.md", "assets/clone-reference-manifest.json"]) {
+    assert.deepEqual(
+      fs.readFileSync(path.join(agentsHome, "skills", "game-vibe-workflow", relative)),
+      fs.readFileSync(path.join(root, "skills", "gameplay", "game-vibe-workflow", relative)),
+    );
+  }
   assert.ok(fs.existsSync(path.join(agentsHome, "skills", "game-asset-extraction", "references", "unity-export.md")));
   assert.ok(fs.existsSync(path.join(agentsHome, "skills", "game-asset-extraction", "scripts", "extract_package.py")));
   assert.ok(fs.existsSync(path.join(agentsHome, "skills", "game-asset-extraction", "scripts", "index_assets.py")));
   assert.ok(fs.existsSync(path.join(agentsHome, "skills", "game-asset-extraction", "scripts", "_asset_common.py")));
   assert.ok(fs.existsSync(path.join(agentsHome, "skills", "game-clone", "SKILL.md")));
   assert.ok(fs.existsSync(path.join(agentsHome, "skills", "game-clone", "agents", "openai.yaml")));
+  for (const relative of ["SKILL.md", "agents/openai.yaml", "assets/effect-brief.md", "assets/effect-recipe.json", "references/technique-routing.md", "references/art-and-textures.md", "references/authoring-2d-3d.md", "references/integration-and-verification.md"]) {
+    assert.deepEqual(
+      fs.readFileSync(path.join(agentsHome, "skills", "unity-vfx-authoring", relative)),
+      fs.readFileSync(path.join(root, "skills", "unity-vfx-authoring", relative)),
+    );
+  }
   for (const reference of ["clone-contract.md", "toolchain.md", "verification.md"]) {
     assert.ok(fs.existsSync(path.join(agentsHome, "skills", "game-clone", "references", reference)));
   }
@@ -78,6 +90,47 @@ test("global target installs into user Codex home", () => {
   assert.equal(fs.existsSync(path.join(codexHome, "agents", "dreamy-unity-developer.toml")), false);
   assert.equal(fs.existsSync(path.join(agentsHome, "skills", "dreamy-feature")), false);
   assert.equal(fs.existsSync(path.join(agentsHome, "skills", "game-clone")), false);
+  assert.equal(fs.existsSync(path.join(agentsHome, "skills", "unity-vfx-authoring")), false);
+});
+
+test("VFX authoring installs without rendering specialists, repairs references and preserves project recipes", () => {
+  const target = fs.mkdtempSync(path.join(os.tmpdir(), "dreamy-vfx-lifecycle-"));
+  const skillsRoot = path.join(target, ".agents", "skills");
+  assert.equal(JSON.parse(run(["install", "--target", target, "--preset", "unity-minimal"])).status, "ok");
+  const skillRoot = path.join(skillsRoot, "unity-vfx-authoring");
+  assert.equal(fs.existsSync(path.join(skillsRoot, "unity-vfx")), false);
+  assert.equal(fs.existsSync(path.join(skillsRoot, "unity-particles")), false);
+  const entry = fs.readFileSync(path.join(skillRoot, "SKILL.md"));
+  const references = fs.readdirSync(path.join(skillRoot, "references"));
+  for (const relative of ["SKILL.md", ...references.map(name => `references/${name}`)]) {
+    const file = path.join(skillRoot, relative);
+    for (const [, link] of fs.readFileSync(file, "utf8").matchAll(/\]\(([^)]+)\)/g)) {
+      if (/^[a-z][a-z0-9+.-]*:/i.test(link) || link.startsWith("#")) continue;
+      const destination = path.resolve(path.dirname(file), link.split("#")[0]);
+      const within = path.relative(skillRoot, destination);
+      assert.ok(!within.startsWith("..") && !path.isAbsolute(within), `required link escapes the installed skill: ${link}`);
+      assert.ok(fs.existsSync(destination), `installed link missing: ${link}`);
+    }
+  }
+  const recipePath = path.join(target, "my-effect-recipe.json");
+  const recipe = JSON.parse(fs.readFileSync(path.join(skillRoot, "assets", "effect-recipe.json"), "utf8"));
+  recipe.effectId = "user-hit-effect";
+  fs.writeFileSync(recipePath, JSON.stringify(recipe));
+  const recipeBytes = fs.readFileSync(recipePath);
+  const reference = path.join(skillRoot, "references", "authoring-2d-3d.md");
+  fs.unlinkSync(reference);
+  assert.equal(JSON.parse(run(["update", "--target", target])).status, "ok");
+  assert.deepEqual(fs.readFileSync(path.join(skillRoot, "SKILL.md")), entry);
+  assert.deepEqual(fs.readFileSync(reference), fs.readFileSync(path.join(root, "skills", "unity-vfx-authoring", "references", "authoring-2d-3d.md")));
+  assert.deepEqual(fs.readFileSync(recipePath), recipeBytes);
+  for (const preset of ["unity-full", "dreamy-full"]) {
+    const resolved = JSON.parse(run(["list", "--resolved", "--target", target, "--preset", preset]));
+    assert.ok(resolved.skills.includes("unity-vfx-authoring"));
+    assert.equal(resolved.skills.filter(name => name === "unity-vfx-authoring").length, 1);
+  }
+  assert.equal(JSON.parse(run(["uninstall", "--target", target])).status, "ok");
+  assert.equal(fs.existsSync(skillRoot), false);
+  assert.deepEqual(fs.readFileSync(recipePath), recipeBytes);
 });
 
 test("clone workflow survives update with installed sibling links and preserves user files on uninstall", () => {
@@ -110,11 +163,21 @@ test("clone workflow survives update with installed sibling links and preserves 
       assert.ok(fs.existsSync(path.resolve(path.dirname(reference), link)), `installed link missing: ${link}`);
     }
   }
+  const researchRoot = path.join(skillsRoot, "game-vibe-workflow");
+  const researchReference = path.join(researchRoot, "references", "clone-research.md");
+  for (const [, link] of fs.readFileSync(researchReference, "utf8").matchAll(/\]\(([^)]+)\)/g)) {
+    if (/^[a-z][a-z0-9+.-]*:/i.test(link) || link.startsWith("#")) continue;
+    assert.ok(fs.existsSync(path.resolve(path.dirname(researchReference), link)), `installed research link missing: ${link}`);
+  }
+  const projectPlan = path.join(target, "clone-feature-plan.md");
+  fs.copyFileSync(path.join(researchRoot, "assets", "clone-feature-plan.md"), projectPlan);
+  const projectPlanBytes = fs.readFileSync(projectPlan);
   assert.deepEqual(fs.readFileSync(independentSkill), originalRea);
   assert.equal(JSON.parse(run(["uninstall", "--target", target])).status, "ok");
   assert.equal(fs.existsSync(entry), false);
   assert.equal(fs.readFileSync(annotation, "utf8"), "Keep my clone investigation notes.\n");
   assert.deepEqual(fs.readFileSync(independentSkill), originalRea);
+  assert.deepEqual(fs.readFileSync(projectPlan), projectPlanBytes);
 });
 
 test("install adopts an existing single Dreamy managed block", () => {

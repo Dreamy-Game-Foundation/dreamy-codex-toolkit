@@ -17,6 +17,7 @@
 - Fidelity dimensions (clone) or interaction keep/revise/reject hypothesis (original):
 - Reference roles: original runtime / marketing / approved concept / proposed target / clone baseline:
 - Missing observations and measurement plan; no inferred owner approval:
+- Clone plan index and per-feature plan paths; screenshots/video intervals by feature/state, research/source manifest and unresolved coverage gaps:
 
 ## Acceptance
 

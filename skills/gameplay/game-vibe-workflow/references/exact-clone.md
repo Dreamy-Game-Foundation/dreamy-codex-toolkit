@@ -18,6 +18,8 @@ Use stable surface/requirement IDs and one authoritative current state. A milest
 
 ## Research the entire experience on the web
 
+Apply [clone-research.md](clone-research.md) to persist the complete feature/state inventory, an index of feature plan files, screenshot/video source links and per-state coverage gaps. Reuse an existing plan root such as `Docs/ExactClone`; each required function must remain listed even when no matching source image/video has been found. A generic asset/reference folder without linked feature plans is incomplete preparation.
+
 Search proactively before implementation: official product/help pages and store/version history, then public full-session gameplay, first-hour/onboarding, menu/settings/shop/rank/event walkthroughs. Follow feature links and transitions beyond the main puzzle/combat loop. Search the uncovered surfaces explicitly; a collection of level solutions is not whole-game research.
 
 Record URL, author/publisher, access date, artifact/version/platform, source role, relevant screens/states and confidence. Prefer the target version. Later web documentation, regional prices, remote-config cohorts and older videos can disagree: retain the conflict and find confirming evidence; never silently apply every current feature to an old package. Do not claim exhaustive Internet coverage. Track coverage per required surface instead of a fixed page count.

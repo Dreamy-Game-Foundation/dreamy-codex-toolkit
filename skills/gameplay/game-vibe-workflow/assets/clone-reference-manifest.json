@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "kind": "clone-reference-manifest-template",
+  "status": "unconfigured",
+  "target": {
+    "game": null,
+    "publisher": null,
+    "packageId": null,
+    "version": null,
+    "platform": null,
+    "locale": null
+  },
+  "scope": null,
+  "planIndexPath": null,
+  "features": [],
+  "sources": [],
+  "media": [],
+  "searches": [],
+  "gaps": [],
+  "updatedAt": null,
+  "nextAction": null
+}

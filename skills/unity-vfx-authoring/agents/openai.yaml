@@ -1,0 +1,4 @@
+interface:
+  display_name: "Unity VFX Authoring"
+  short_description: "Create and verify editable Unity 2D/3D effects"
+  default_prompt: "Use $unity-vfx-authoring to create the requested Unity effect, choose a technique matching this project, author an editable prefab and verify its appearance, lifecycle and target budget within scope."

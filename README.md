@@ -22,6 +22,8 @@ For requested asset extraction from a supplied APK/XAPK or Unity build, use expe
 
 For a dedicated Unity clone workflow combining REA findings, AssetRipper recovery and target-project fidelity, use experimental [`game-clone`](skills/gameplay/game-clone/SKILL.md), also in `unity-core`. It reuses the two workflows above and preserves plan-only, slice, whole-game and tool-mode choices; see the [Vietnamese clone guide](docs/game-clone.vi.md). Tool setup and real-game verification remain separate tasks.
 
+For editable 2D/3D Unity effects, use experimental [`unity-vfx-authoring`](skills/unity-vfx-authoring/SKILL.md) in `unity-core`: brief, technique/asset selection, prefab authoring, preview and lifecycle/performance evidence. It supports Particle System, sprites, mesh/trails and capability-gated VFX Graph without requiring a new provider or package. See the [Vietnamese guide](docs/unity-vfx-authoring.vi.md) and [validation scope](docs/evidence/unity-vfx-authoring-validation.json).
+
 Current readiness and next steps:
 
 - [Tổng hợp tính năng, bản sửa và trạng thái đã nghiệm thu](docs/toolkit-evolution-implementation.md#feature-and-fix-inventory--23-october-2026)

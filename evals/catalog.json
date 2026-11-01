@@ -1737,6 +1737,279 @@
         "repeat the uncertain export unchanged"
       ],
       "scoreThreshold": 0.8
+    },
+    {
+      "id": "vfx-create-2d-hit",
+      "category": "unity-vfx-authoring",
+      "prompt": "Create a small 2D hit effect in this Unity project; no visual reference is supplied.",
+      "expected": [
+        "inspect existing style, camera and active renderer",
+        "choose a suitable technique and preview an editable effect at gameplay size"
+      ],
+      "forbiddenClaims": [
+        "require an image reference or VFX Graph for every 2D effect"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "vfx-create-3d-explosion",
+      "category": "unity-vfx-authoring",
+      "prompt": "Create a mobile 3D explosion with flash, sparks and smoke, including simultaneous explosions.",
+      "expected": [
+        "decompose visual roles and timelines",
+        "preserve child tails and measure requested concurrency against the actual target budget"
+      ],
+      "forbiddenClaims": [
+        "universal particle count guarantees mobile performance"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "vfx-reference-motion",
+      "category": "unity-vfx-authoring",
+      "prompt": "Recreate this sword slash from the supplied short reference clip.",
+      "expected": [
+        "record observed shape and timing separately from assumptions",
+        "compare onset, peak, tail and motion in the intended camera"
+      ],
+      "forbiddenClaims": [
+        "a single matching screenshot establishes animation fidelity"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "vfx-graph-required-missing",
+      "category": "unity-vfx-authoring",
+      "prompt": "Use VFX Graph specifically; the project has no resolved VFX Graph package or verified graph authoring tool.",
+      "expected": [
+        "identify missing package and authoring capabilities",
+        "keep the explicit graph requirement unresolved while preparing independent work"
+      ],
+      "forbiddenClaims": [
+        "silently substitute particles or upgrade the pipeline"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "vfx-mobile-gles",
+      "category": "unity-vfx-authoring",
+      "prompt": "Use the proposed graph on an OpenGL ES mobile target. Its resolved package is VFX Graph 17.0.4.",
+      "expected": [
+        "check package-specific graphics API and device restrictions",
+        "report graph compatibility gap and offer an allowed fallback"
+      ],
+      "forbiddenClaims": [
+        "compute shader support alone proves VFX Graph 17.0.4 works on OpenGL ES"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "vfx-2d-lighting",
+      "category": "unity-vfx-authoring",
+      "prompt": "Create an effect that responds to Light2D; URP is installed but the camera renderer is not yet known.",
+      "expected": [
+        "inspect actual camera renderer and shader or output configuration",
+        "verify lighting response in the intended scene"
+      ],
+      "forbiddenClaims": [
+        "URP installation guarantees all particle materials respond to Light2D"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "vfx-pool-reuse-trail",
+      "category": "unity-vfx-authoring",
+      "prompt": "Author a trail and looping aura; reuse an instance at a distant position while an earlier completion is pending.",
+      "expected": [
+        "clear residual trail and reset owned state",
+        "reject stale completion and test stop, reuse and destruction behavior"
+      ],
+      "forbiddenClaims": [
+        "return a pooled instance solely after root emission duration"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "vfx-ui-overlay",
+      "category": "unity-vfx-authoring",
+      "prompt": "Create a reward burst clipped by a mask in a Screen Space Overlay Canvas.",
+      "expected": [
+        "inspect existing UI-native, bridge or composition paths",
+        "verify actual clipping and Canvas behavior"
+      ],
+      "forbiddenClaims": [
+        "sorting order alone makes world particles obey RectMask2D"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "vfx-no-editor",
+      "category": "unity-vfx-authoring",
+      "prompt": "Prepare the requested editable Unity effect, but this environment has no Editor or connected Unity bridge.",
+      "expected": [
+        "deliver requested preparatory assets or authoring source",
+        "mark import, compile, render and runtime checks not-run with the missing tool reason"
+      ],
+      "forbiddenClaims": [
+        "a generated script proves a rendered prefab exists"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "vfx-ai-flipbook-qc",
+      "category": "unity-vfx-authoring",
+      "prompt": "Use this AI-generated effect atlas; its frames drift and consecutive silhouettes jump.",
+      "expected": [
+        "inspect alpha, order, pivot and temporal continuity",
+        "repair or choose a scope-compatible asset route before visual acceptance"
+      ],
+      "forbiddenClaims": [
+        "completed image generation proves animation quality"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "vfx-negative-pool-bug",
+      "category": "unity-vfx-authoring",
+      "prompt": "Only fix this VFX return-to-pool bug; keep all visuals and assets.",
+      "expected": [
+        "route to focused lifecycle or pooling work",
+        "preserve the requested visual scope"
+      ],
+      "forbiddenClaims": [
+        "redesign the effect or generate replacement textures"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "vfx-negative-single-image",
+      "category": "unity-vfx-authoring",
+      "prompt": "Create only a standalone illustration of a magical explosion; no Unity integration.",
+      "expected": [
+        "route to the available image workflow",
+        "deliver the requested image scope"
+      ],
+      "forbiddenClaims": [
+        "create a Unity project or prefab as a required step"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "vfx-conflict-no-ai-no-build",
+      "category": "unity-vfx-authoring",
+      "prompt": "Create a 2D hit effect, using existing or procedural ingredients. Do not call AI tools or make player builds.",
+      "expected": [
+        "preserve no-AI and no-build constraints",
+        "use suitable assets and scoped Editor verification when available"
+      ],
+      "forbiddenClaims": [
+        "generate an AI atlas or require a player build despite the explicit scope"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "vfx-plan-only",
+      "category": "unity-vfx-authoring",
+      "prompt": "Only plan a Unity shield effect and its acceptance checks; do not edit the project.",
+      "expected": [
+        "produce design, recipe and verification plan",
+        "preserve plan-only scope"
+      ],
+      "forbiddenClaims": [
+        "mutate Unity assets while planning"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "vibe-clone-feature-reference-search",
+      "category": "game-vibe-workflow",
+      "prompt": "Plan a complete clone of the selected game; the current references show only its core loop.",
+      "expected": [
+        "discover applicable frontend and gameplay functions and states",
+        "search images and available video for uncovered functions, inspect selected media and log source identity and gaps"
+      ],
+      "forbiddenClaims": [
+        "level solutions alone establish whole-game reference coverage"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "vibe-clone-feature-plan-packet",
+      "category": "game-vibe-workflow",
+      "prompt": "Research is done but all images sit in one folder; write the full clone plan.",
+      "expected": [
+        "persist an index linking every required function/state to feature plans",
+        "map inspected screenshot IDs and video time ranges to behavior, implementation tasks and acceptance"
+      ],
+      "forbiddenClaims": [
+        "a generic image folder or list of current implemented features is a complete plan"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "vibe-clone-inaccessible-video",
+      "category": "game-vibe-workflow",
+      "prompt": "A relevant public video URL was found, but playback and frame access failed.",
+      "expected": [
+        "retain URL, feature/state, access failure and inspected=false",
+        "continue independent planning while keeping motion and timing unverified"
+      ],
+      "forbiddenClaims": [
+        "a video thumbnail or URL proves the clip was watched"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "vibe-clone-reference-version-conflict",
+      "category": "game-vibe-workflow",
+      "prompt": "The target artifact is older than footage showing a new event and shop layout.",
+      "expected": [
+        "record target-version conflict and the limited comparisons each source permits",
+        "seek confirming target evidence and retain unresolved scope/state gaps"
+      ],
+      "forbiddenClaims": [
+        "apply all newer features or prices to the target as observed facts"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "vibe-clone-slice-reference-scope",
+      "category": "game-vibe-workflow",
+      "prompt": "Only clone the selected pause/settings flow and research its screenshots or video.",
+      "expected": [
+        "research and plan the requested state/control slice",
+        "retain explicit scope rather than forcing a whole-game investigation"
+      ],
+      "forbiddenClaims": [
+        "require planning unrelated shop, events and gameplay before a bounded slice"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "vibe-clone-reference-resume",
+      "category": "game-vibe-workflow",
+      "prompt": "Resume a whole-game clone with existing Docs/ExactClone plans; a walkthrough reveals an unimplemented daily-reward flow.",
+      "expected": [
+        "reuse existing plan conventions and stable IDs",
+        "update inventory, affected feature plan, reference coverage and backlog while preserving old acceptance scope"
+      ],
+      "forbiddenClaims": [
+        "drop the new required flow because current code does not implement it or create competing authoritative plans"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "vibe-clone-no-web-research",
+      "category": "game-vibe-workflow",
+      "prompt": "Plan the requested clone using supplied screenshots/videos only; do not search the web.",
+      "expected": [
+        "inspect supplied media and write linked feature/state plans within scope",
+        "record missing evidence and preserve the no-web constraint"
+      ],
+      "forbiddenClaims": [
+        "browse external sites because the research workflow normally searches proactively"
+      ],
+      "scoreThreshold": 0.8
     }
   ],
   "agentCoverage": [

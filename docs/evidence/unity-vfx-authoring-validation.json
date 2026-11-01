@@ -1,0 +1,357 @@
+{
+  "schemaVersion": 1,
+  "kind": "skill-implementation-validation",
+  "skill": "unity-vfx-authoring",
+  "toolkitVersion": "0.1.0-alpha.4",
+  "completedAtUtc": "2026-11-01T18:01:45.853583+00:00",
+  "status": "validated-with-scoped-unity-pilot",
+  "scope": "Toolkit skill, routing, templates, catalog specifications, installer lifecycle and an isolated Built-in authoring/PlayMode lab. No production-game integration, graph or target-device budget claim.",
+  "observed": {
+    "entrypointBytes": 4249,
+    "registeredSkills": 87,
+    "contextSizeAdvisories": 8,
+    "newCatalogSpecifications": 14,
+    "catalogCases": 150,
+    "unitTests": {
+      "tests": 82,
+      "pass": 82,
+      "fail": 0,
+      "skipped": 0
+    },
+    "editorRevision": "6000.4.12f1 (3ca267ce8005)",
+    "pipeline": "Built-in",
+    "graphicsApi": "Direct3D12",
+    "graphicsDevice": "NVIDIA GeForce GTX 1650",
+    "captureResolutionPixels": [
+      640,
+      480
+    ],
+    "savedReloadedPrefabs": [
+      "Hit2D",
+      "Explosion3D",
+      "AuraTrail"
+    ],
+    "simulatedTimelineCaptures": 9,
+    "retainedCaptures": 15,
+    "playModeTests": {
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "cases": [
+        "ExplosionPreservesChildTailThenCancelsAndReplays",
+        "HitCompletesNaturallyAndDoesNotAutoReplay",
+        "MovingTrailRendersThenClearsBeforeRelocation"
+      ]
+    }
+  },
+  "intended": {
+    "maturity": "experimental",
+    "distributionModule": "unity-core",
+    "baseline": "76be46ee73add115281ea5ee313150b65028c731",
+    "runtimeOwnership": "Existing project roots, feedback/load/pool owners; no new runtime framework distributed."
+  },
+  "checks": [
+    {
+      "command": "npm run validate",
+      "status": "pass",
+      "note": "Included in final npm test; 87 skills and 8 context size advisories."
+    },
+    {
+      "command": "uv run --with PyYAML python C:/Users/trinh/.codex/skills/.system/skill-creator/scripts/quick_validate.py skills/unity-vfx-authoring",
+      "status": "pass",
+      "note": "Default Python lacked yaml; isolated uv dependency succeeded without changing global Python."
+    },
+    {
+      "command": "npm test",
+      "status": "pass",
+      "tests": 82,
+      "failures": 0,
+      "skipped": 0,
+      "log": {
+        "path": ".dreamy/vfx-validation/npm-test.log",
+        "sha256": "4a984492fda8cd5622dc8465ae2f8797c3e00315a2610998cf99cd8c02169e7f"
+      }
+    },
+    {
+      "command": "node src/cli.js eval --runner catalog --json",
+      "status": "validated",
+      "catalogCases": 150,
+      "semanticStatus": "not-run",
+      "report": {
+        "path": ".dreamy/vfx-validation/eval-report.json",
+        "sha256": "78f8170336af6b20464f3ae5c51c8f5d7430927470f8ec0f8109ec5564dc2de7"
+      },
+      "note": "DREAMY_ARTIFACTS_DIR isolates the report; tracked release report was not refreshed."
+    },
+    {
+      "command": "node harness/dreamy-harness project-inspect .dreamy/labs/vfx-authoring-20261102",
+      "status": "pass",
+      "note": "Static capability profile; not itself rendering evidence."
+    },
+    {
+      "command": "Unity.exe -batchmode -projectPath <isolated-lab> -executeMethod VfxLab.Build -quit -logFile <lab>/authoring-revised.log",
+      "status": "pass",
+      "note": "Actual Unity log reports exit 0; native Windows launcher completion alone was not used as the result."
+    },
+    {
+      "command": "Unity.exe -batchmode -projectPath <isolated-lab> -runTests -testPlatform PlayMode -testResults <lab>/Evidence/playmode-revised-results.xml -logFile <lab>/playmode-revised.log",
+      "status": "pass",
+      "tests": 3,
+      "failures": 0
+    },
+    {
+      "operation": "Visual inspection of onset/peak/tail and dark/light samples",
+      "status": "observed",
+      "note": "Basic procedural lab appearance reviewed; no reference fidelity score or production-art acceptance is asserted."
+    }
+  ],
+  "installerCoverage": [
+    "temporary global install includes entry, metadata, references and templates byte-for-byte",
+    "unity-minimal installs authoring without unity-vfx or unity-particles specialists",
+    "all required local Markdown links resolve inside the installed skill",
+    "update restores a missing managed reference and preserves external project recipe",
+    "full preset resolution includes the skill exactly once",
+    "uninstall removes the managed skill and preserves external recipe"
+  ],
+  "pilotCorrections": [
+    {
+      "observation": "Initial editor probe rejected a nearly invisible late hit sample.",
+      "resolution": "Keep onset integrity separate from intended fading-tail acceptance; tune spark readability and expanding rings, then rerun capture."
+    },
+    {
+      "observation": "First live trail capture showed an unwanted segment from the initial position.",
+      "resolution": "Position while emission is suspended, clear history before enabling; revised PlayMode test checks that new trail vertices belong to the relocated spawn."
+    }
+  ],
+  "limitations": {
+    "semanticAgentEvaluation": "not-run; catalog expectations and this agent-authored pilot are not independent agent behavior evaluation",
+    "vfxGraph": "not-run; no graph package or corresponding renderer configured in the Built-in lab",
+    "urpHdrpAndLight2D": "not-run; no corresponding lab or compatibility claim",
+    "flipbookAndAiAssets": "not-run; lab uses procedural single textures and no AI/provider calls",
+    "targetDevicePerformance": "not-run; no selected mobile device or measured budget",
+    "gameplayIntegrationAndPoolLeases": "not-run; native stop/reset/reuse sampled, no production pool, async lease callback or game scene integration",
+    "sceneUnloadAndPause": "not-run; lab cases cover natural completion, stop/cancel and reuse, not every lifecycle branch",
+    "playerBuild": "not-run; no target-player build required for this skill-authoring task",
+    "globalInstallation": "not-run; no actual installation destination selected; installer tests use isolated temporary homes",
+    "localLabArtifacts": "Original prefab/source/log/XML artifacts below are gitignored local evidence. Only captures and source-free reports are retained in the repository."
+  },
+  "skillArtifacts": [
+    {
+      "path": "skills/unity-vfx-authoring/agents/openai.yaml",
+      "sha256": "0bbffe1fd4e72794fe03d56faceb01cc80959a9cb14c72a8af65672014ce79af"
+    },
+    {
+      "path": "skills/unity-vfx-authoring/assets/effect-brief.md",
+      "sha256": "2f35746da188d3b8dfa5f84cdbbdcb584a6f0c65d97c409ed4990dc87d64819c"
+    },
+    {
+      "path": "skills/unity-vfx-authoring/assets/effect-recipe.json",
+      "sha256": "343e8c616d27fca98c4cad330142b27bf1dda7b6ce3becdfc29589f9ffa5ae40"
+    },
+    {
+      "path": "skills/unity-vfx-authoring/references/art-and-textures.md",
+      "sha256": "03da54eb5a2a7ca89925e688d1bb0a605b3d8eef847e54adf847b3ff13e3e678"
+    },
+    {
+      "path": "skills/unity-vfx-authoring/references/authoring-2d-3d.md",
+      "sha256": "f1d9bf10b17848dcdb132c1e8108b7def8774ae957e7e1a3ccd0d3333b5ebed1"
+    },
+    {
+      "path": "skills/unity-vfx-authoring/references/integration-and-verification.md",
+      "sha256": "8aeea989ede6347f98301b3b043d34412bb6014852fcd1cee3b364db3bbfd761"
+    },
+    {
+      "path": "skills/unity-vfx-authoring/references/technique-routing.md",
+      "sha256": "1eaaae79f1b1372b558574c29e4af81ba756ddbc1228351b768e83ea6406a890"
+    },
+    {
+      "path": "skills/unity-vfx-authoring/SKILL.md",
+      "sha256": "f260ea1c19bad60d5f6c5bd22397210aa40403cd1f05bf011f54f9cf1dcb23be"
+    }
+  ],
+  "retainedArtifacts": [
+    {
+      "path": "docs/evidence/vfx-authoring-20261102/AuraTrail-1150ms.png",
+      "sha256": "c2be548dad706e15398b85cb4196baed931042d1edcaeb53a6e4d0c7d86eabdb"
+    },
+    {
+      "path": "docs/evidence/vfx-authoring-20261102/AuraTrail-150ms.png",
+      "sha256": "12215151c39f28beb269f71439739cec5a933c3a13ed72a220a3a2609d9d622c"
+    },
+    {
+      "path": "docs/evidence/vfx-authoring-20261102/AuraTrail-650ms.png",
+      "sha256": "44a4711a1d2f8122cba08602cb88da4d8eba2bf75ef501fc7a30d0df948b3ac4"
+    },
+    {
+      "path": "docs/evidence/vfx-authoring-20261102/AuraTrail-live-light.png",
+      "sha256": "20101c5198aca980c23bc842ff5e184e553c772ec732bf9357894eff587995ff"
+    },
+    {
+      "path": "docs/evidence/vfx-authoring-20261102/AuraTrail-live.png",
+      "sha256": "bcff05566b9b9184ca2e259cd4b4de06b98c774db69c05e2f0344017de6ea818"
+    },
+    {
+      "path": "docs/evidence/vfx-authoring-20261102/authoring-report.json",
+      "sha256": "b9131323d14c0feb36549044bab0e6c6348ee1c4449704f47c2095a4ed367062"
+    },
+    {
+      "path": "docs/evidence/vfx-authoring-20261102/Explosion3D-1250ms.png",
+      "sha256": "2f29eb87e24d9a8e94a03436c2eb686d7e24478024fd5695da9c60c05a1dbea3"
+    },
+    {
+      "path": "docs/evidence/vfx-authoring-20261102/Explosion3D-400ms.png",
+      "sha256": "9db2da06c69f4f554302da90ebc3c0693bdc154363aa0ae4e7b83882369ee24b"
+    },
+    {
+      "path": "docs/evidence/vfx-authoring-20261102/Explosion3D-60ms.png",
+      "sha256": "2d928ce597c5bcb534b6982069403f4c072c66e628f05dfc4b3e31db7dec8096"
+    },
+    {
+      "path": "docs/evidence/vfx-authoring-20261102/Explosion3D-live-dark.png",
+      "sha256": "15ec732117b09cb2f5ebcb00fb93eed90126f021fc73acab3fba225e8c666764"
+    },
+    {
+      "path": "docs/evidence/vfx-authoring-20261102/Explosion3D-live-light.png",
+      "sha256": "3b187e4bed87b43917c109dc2936109bea1dc265ba569de4d5c3646dba49587c"
+    },
+    {
+      "path": "docs/evidence/vfx-authoring-20261102/Hit2D-180ms.png",
+      "sha256": "d9df9e7979f3e8d87dc513ae0f49cfa7b425cb434dd59bd1e40a2f2350a9ca2c"
+    },
+    {
+      "path": "docs/evidence/vfx-authoring-20261102/Hit2D-370ms.png",
+      "sha256": "f5635e972a902c858afa27dc28f869a62fcd52a2aac60601e3e03a66eff9de9e"
+    },
+    {
+      "path": "docs/evidence/vfx-authoring-20261102/Hit2D-50ms.png",
+      "sha256": "ac889fc7d5e9a2158670a8204e3f274093795b08499724f77515fc9eb8bd4f4f"
+    },
+    {
+      "path": "docs/evidence/vfx-authoring-20261102/Hit2D-live-dark.png",
+      "sha256": "df28204743b9de51036d1cd4573f6ed7b2fc3e14b88cdbc4d75af19b5923fa5a"
+    },
+    {
+      "path": "docs/evidence/vfx-authoring-20261102/Hit2D-live-light.png",
+      "sha256": "a4451fcce9c769c15587d7c8a0e276a634225912a4dff2e30c580026dff01ea4"
+    },
+    {
+      "path": "docs/evidence/vfx-authoring-20261102/playmode-summary.json",
+      "sha256": "7792803a750872890227ebd352dc0ad606da4e4dd96ac66a8aa12c06dcb9e386"
+    }
+  ],
+  "localLabArtifacts": [
+    {
+      "path": ".dreamy/labs/vfx-authoring-20261102/Assets/Editor/VfxLab.cs",
+      "sha256": "3b3c818eb68e31a5b24cc68a034b08e0c41c1277723ed03032a36c5a98444a98"
+    },
+    {
+      "path": ".dreamy/labs/vfx-authoring-20261102/Assets/LabParticle.shader",
+      "sha256": "54b25c8ced43273d65986776fa0a3e7de4eb4425a0f122ac9424e20d5a1bd5f0"
+    },
+    {
+      "path": ".dreamy/labs/vfx-authoring-20261102/Assets/Tests/PlayMode/LifecycleTests.cs",
+      "sha256": "05d5b87a728ce9503b62a381c174f8a4cb28f4f199ba5c59f49c0cd2c5d51dc1"
+    },
+    {
+      "path": ".dreamy/labs/vfx-authoring-20261102/Assets/Tests/PlayMode/VfxLab.PlayModeTests.asmdef",
+      "sha256": "e0a548c8c3b09fd785b7f916e911757be1ded170fcefba2e9568c665ed82544a"
+    },
+    {
+      "path": ".dreamy/labs/vfx-authoring-20261102/Packages/manifest.json",
+      "sha256": "94516ddaa9a1c17b51bd4292f09964c2916cc91ae58ad4bcba69b6bd55668056"
+    },
+    {
+      "path": ".dreamy/labs/vfx-authoring-20261102/Packages/packages-lock.json",
+      "sha256": "d9d04a807452aac9a6fd512b46d3f794567134758bdcf3f8e3171246b377ec25"
+    },
+    {
+      "path": ".dreamy/labs/vfx-authoring-20261102/ProjectSettings/ProjectVersion.txt",
+      "sha256": "69d50c2492c8ea34ba3cfeb5bae1184169ba7ec742a5b0e6b3bfb3659e9d5ad2"
+    },
+    {
+      "path": ".dreamy/labs/vfx-authoring-20261102/authoring-revised.log",
+      "sha256": "74b9902fd06b8df503a225b53a2c0cbba8fb4f45b7177b32c04a198e0dbd69f2"
+    },
+    {
+      "path": ".dreamy/labs/vfx-authoring-20261102/playmode-revised.log",
+      "sha256": "681cec8ec5f71667d25c0ac43c014b24bac41c3f21479b42b3e96e71bce79ef1"
+    },
+    {
+      "path": ".dreamy/labs/vfx-authoring-20261102/Evidence/playmode-revised-results.xml",
+      "sha256": "8a7f06b3b4ad02f151138054a5cd53312e4918815eccdcc208011b8082ba5558"
+    },
+    {
+      "path": ".dreamy/labs/vfx-authoring-20261102/Assets/Resources/VfxLab/AuraTrail.prefab",
+      "sha256": "2f77cf564758eb180284d54f45faaa964b8cf54f2397beef9e41813c39a23af0"
+    },
+    {
+      "path": ".dreamy/labs/vfx-authoring-20261102/Assets/Resources/VfxLab/AuraTrail.prefab.meta",
+      "sha256": "8bb117eb02176e99be523528cc255948b73b3b201de570792e9a5006303eea22"
+    },
+    {
+      "path": ".dreamy/labs/vfx-authoring-20261102/Assets/Resources/VfxLab/Explosion3D.prefab",
+      "sha256": "c02041d4da6ec0f2129eb05ae7238c29e6dfd1c3f42f177aed96bd2a54ccec42"
+    },
+    {
+      "path": ".dreamy/labs/vfx-authoring-20261102/Assets/Resources/VfxLab/Explosion3D.prefab.meta",
+      "sha256": "8a064c8ac94f85365dc030817dff80a8ed7813c41f697a07864b9daca9c0a375"
+    },
+    {
+      "path": ".dreamy/labs/vfx-authoring-20261102/Assets/Resources/VfxLab/Hit2D.prefab",
+      "sha256": "a0327831f6f404bd3ad0a4ad0126124e41ee15a12945aa0b699245258474a6e5"
+    },
+    {
+      "path": ".dreamy/labs/vfx-authoring-20261102/Assets/Resources/VfxLab/Hit2D.prefab.meta",
+      "sha256": "ecaf25e7ff15abf41b297e700c98e3906c23ab9195c5aef41adfe98e65da53b3"
+    },
+    {
+      "path": ".dreamy/labs/vfx-authoring-20261102/Assets/Resources/VfxLab/Ring.mat",
+      "sha256": "9021500a8481b86d33ec8efe4e489f6286c551ae30f6ce2c910fccf237f0b7bf"
+    },
+    {
+      "path": ".dreamy/labs/vfx-authoring-20261102/Assets/Resources/VfxLab/Ring.mat.meta",
+      "sha256": "0cedff8dee1d9b6824b4b8b35810b2a299870a32c919bfd58291f1bc72638030"
+    },
+    {
+      "path": ".dreamy/labs/vfx-authoring-20261102/Assets/Resources/VfxLab/Ring.png",
+      "sha256": "4f17d3257ad770a4d6d6b98d087a48335a07fcf110f33e4f3e28f3912603589a"
+    },
+    {
+      "path": ".dreamy/labs/vfx-authoring-20261102/Assets/Resources/VfxLab/Ring.png.meta",
+      "sha256": "df62bc7c166f0c819df53c99343b7338545b948cc8046d7cc8dac8bdd8c9b6d5"
+    },
+    {
+      "path": ".dreamy/labs/vfx-authoring-20261102/Assets/Resources/VfxLab/Smoke.mat",
+      "sha256": "9d5455cb25723697884f279b2010c2c3633e76ad1b4251ac7ac0d510cbd85d75"
+    },
+    {
+      "path": ".dreamy/labs/vfx-authoring-20261102/Assets/Resources/VfxLab/Smoke.mat.meta",
+      "sha256": "361a3c1cd0aee3c6e33d4f6689577137f24c5f57b73253058e30525c065c5a1f"
+    },
+    {
+      "path": ".dreamy/labs/vfx-authoring-20261102/Assets/Resources/VfxLab/Smoke.png",
+      "sha256": "626bf06d6660ddf647795632b00e063b8cbba95e25d9b4e4b753a6f0227134a5"
+    },
+    {
+      "path": ".dreamy/labs/vfx-authoring-20261102/Assets/Resources/VfxLab/Smoke.png.meta",
+      "sha256": "ba3f98379d70ee57d92abe2108b3be2b7a1c30fbd0950616f5cb3f0cc6d19947"
+    },
+    {
+      "path": ".dreamy/labs/vfx-authoring-20261102/Assets/Resources/VfxLab/Soft.mat",
+      "sha256": "5b2ce6ac90b34abd6bcb3502679f3fa764a726ffe69230a44c3d56cc6f503b36"
+    },
+    {
+      "path": ".dreamy/labs/vfx-authoring-20261102/Assets/Resources/VfxLab/Soft.mat.meta",
+      "sha256": "b5eea0e6ce4d7d9818796c14aec3d6d759f067fe20c9107172e1a5c777841f34"
+    },
+    {
+      "path": ".dreamy/labs/vfx-authoring-20261102/Assets/Resources/VfxLab/Soft.png",
+      "sha256": "49c2ac5458de907fb6f3644effbf664387bd708f77d2f12fc74f8576d0e283f4"
+    },
+    {
+      "path": ".dreamy/labs/vfx-authoring-20261102/Assets/Resources/VfxLab/Soft.png.meta",
+      "sha256": "cf51fe70637be8537fb6c9526e45798c47fc48b62516a39b136981099302921b"
+    }
+  ],
+  "nextAction": "Use the skill on a selected project/brief; re-inspect package/renderer/owner, verify gameplay-context visuals and target budget. Run graph/device gates only for corresponding claims."
+}

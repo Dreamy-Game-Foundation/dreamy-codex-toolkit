@@ -8,6 +8,8 @@ Capture intent, core interaction, repeat/restart, platform/input, existing work,
 
 For a new or underspecified game, expand the experience contract using [input-pack.md](input-pack.md) before feature implementation. Tie the journey, screens, assets and acceptance to actual references. Reuse records and distinguish an agent pilot from the full requested scope. Missing fidelity evidence stays a gap even when a prototype can proceed.
 
+For clones, [clone-research.md](clone-research.md) turns image/video research into a project plan packet: index every required function/state, link its feature plan, inspected screenshots/video intervals and missing evidence. Reconcile new discoveries with the inventory and backlog before expanding implementation; keep an explicitly requested slice bounded.
+
 For a complete identical clone, first apply [exact-clone.md](exact-clone.md). M0 includes whole-game web research, original screenshot/state coverage, JSON links to each extracted asset and explicit implementation gaps. Complete loading/Home/shop/rank/settings and every applicable function; the representative slice tests integration without narrowing the final graph. M0 integrity can pass while exact-parity readiness remains incomplete.
 
 For a clone, make a behavior matrix: observed source → behavior to retain → implementation decision → verification. Include camera/framing, movement, action/reward timing, hit feedback, UI hierarchy and progression only as relevant. Mark parameters measured/estimated/unknown; a screenshot cannot establish attack timing or economy. Convert REA findings into this matrix when that optional investigation is selected.

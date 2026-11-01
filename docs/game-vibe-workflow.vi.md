@@ -1,13 +1,33 @@
 # Làm game bằng Game Vibe Workflow
 
-Skill `game-vibe-workflow` điều phối từ brief đến một lát cắt chơi được: chốt trải nghiệm → dựng vòng chơi bằng placeholder → chứng minh một mẫu hoàn chỉnh trong engine/build → mở rộng từng đợt → review/polish → kiểm chứng build cuối → bàn giao.
+Skill `game-vibe-workflow` điều phối theo phạm vi được yêu cầu, từ game hoàn chỉnh đến một lát cắt chơi được: chốt trải nghiệm → chứng minh một mẫu integration → mở rộng từng đợt → review/polish → kiểm chứng đầu ra trong scope → bàn giao. Không dùng một pilot để thay yêu cầu clone toàn game.
 
 Với yêu cầu **clone hoàn thiện y hệt toàn game**, dùng nhánh [exact-clone](../skills/gameplay/game-vibe-workflow/references/exact-clone.md): chuẩn bị brief toàn trải nghiệm trước khi code feature. Không tự biến yêu cầu thành slice offline hoặc vài màn dễ. Pilot là bước kiểm integration trong scope đầy đủ, không thay scope.
 
+## Tìm ảnh/video và ghi plan theo chức năng
+
+Skill yêu cầu nghiên cứu theo từng nhóm chức năng/trạng thái: gameplay, launch/loading, onboarding, Home/menu, pause/settings, result/retry, progression và các chức năng shop/lives/rank/event/daily nếu thực sự có trong game đích. Tìm ảnh bằng tên game + chức năng + trạng thái; tìm video gameplay/walkthrough/full-session và đoạn vào → thao tác → kết quả khi có. Ghi phiên bản/platform, URL/author, trạng thái, timestamp/range và mở ảnh hoặc xem đoạn video trước khi coi là bằng chứng.
+
+Nếu project chưa có quy ước, đầu ra mặc định là:
+
+```text
+Docs/ClonePlan/
+  PLAN.md              # liệt kê toàn bộ chức năng/trạng thái trong scope, link plan, milestone và gap
+  references.json      # nguồn, ảnh/frame/video, truy vấn và coverage từng trạng thái
+  features/Fxxx-*.md   # plan theo nhóm chức năng: behavior, refs, tasks, dependencies và acceptance
+  media/               # ảnh/frame đã chọn; video chỉ lưu khi cần và được phép
+```
+
+Tái sử dụng plan có sẵn như `Docs/ExactClone` thay vì tạo hai nguồn sự thật. Dùng các mẫu [plan index](../skills/gameplay/game-vibe-workflow/assets/clone-plan-index.md), [feature plan](../skills/gameplay/game-vibe-workflow/assets/clone-feature-plan.md) và [reference manifest](../skills/gameplay/game-vibe-workflow/assets/clone-reference-manifest.json). Mỗi chức năng bắt buộc phải có plan/link nguồn hoặc gap rõ; phải liệt kê cả chức năng chưa triển khai. Với slice nhỏ có thể nhóm các chức năng liên quan trong một file.
+
+Video tìm được nhưng không phát/xem được vẫn là nguồn chưa kiểm chứng; giữ URL và nguyên nhân. Không tìm thấy ảnh/video không chứng minh chức năng không tồn tại. Tách nguồn khác version, marketing, thumbnail và ảnh clone khỏi runtime game gốc; motion/timing còn thiếu thì ghi unknown. Các ràng buộc no-web, plan-only và no-build vẫn được giữ nguyên.
+
 ## Clone y hệt: chuẩn bị đủ trước khi làm
 
+Mọi clone dùng [clone-research](../skills/gameplay/game-vibe-workflow/references/clone-research.md) để tìm ảnh/video theo từng chức năng và ghi thành plan trước khi code parity. Whole-game giữ toàn bộ chức năng đã phát hiện; slice giữ đúng phạm vi được yêu cầu.
+
 1. Xác định đúng game/version/platform và đọc project/source metadata. Lập graph entry/loading/onboarding/Home/menu/gameplay/result/shop/lives/rank/pass/event/settings/profile/save và mọi chức năng có trong target. Ghi từng control, precondition, effect, exit, locked/loading/error/empty/pending/cancel/claim/expired.
-2. Tìm trên mạng cả gameplay lẫn frontend/meta: official help/store/version, video full-session/first-hour và các màn shop/rank/settings. Chụp/tải screenshot/frame gốc, ghi URL/author/version/state/aspect/timestamp và mở ảnh kiểm tra. Tách marketing, montage, ảnh clone và ảnh game khác; không gọi screenshot trang help là giao diện trong game.
+2. Tìm trên mạng cả gameplay lẫn frontend/meta: official help/store/version, tìm ảnh theo tên game + chức năng/trạng thái, tìm video full-session/first-hour và walkthrough các màn shop/rank/settings nếu áp dụng. Chụp/tải screenshot/frame gốc, ghi URL/author/version/state/aspect/timestamp và mở ảnh kiểm tra; xem đoạn video liên quan nếu truy cập được. Tách marketing, montage, ảnh clone và ảnh game khác; URL/thumbnail video không chứng minh đã xem hành vi.
 3. Sau đục asset, tạo JSON link **từng file**, kể cả file chưa dùng: ID/path/URI/type/bytes/GUID/source object/hash receipt hoặc chưa đọc. Validate link và map từng màn đến source asset → output/meta GUID → component/prefab → capture. Có art phù hợp thì nối và hoàn thiện chức năng, không giữ placeholder vì tiện.
 4. Tạo cặp ảnh gốc/clone, ghi sai lệch cụ thể và sửa rồi chụp lại. Khác board/version chỉ so layout trong phạm vi cho phép. Test luật xanh không chứng minh giống hình/feel hoặc full campaign đã giải được.
 5. Nếu cần Unity/MCP/Game View tương tác thay batch, **báo trước** lý do, project/scene, trạng thái Editor/bridge cần có và việc sẽ làm; không mặc định package MCP đã cài là kết nối được. Đây là phối hợp công việc, không xin lại quyền sửa reversible đã có. Không build khi owner đã dừng build.

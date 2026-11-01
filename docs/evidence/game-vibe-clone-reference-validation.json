@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "kind": "skill-implementation-validation",
+  "skills": [
+    "game-vibe-workflow",
+    "game-clone"
+  ],
+  "completedAtUtc": "2026-11-01T18:10:23.696675+00:00",
+  "status": "validated",
+  "scope": "Audit and strengthen clone reference discovery and persisted feature/state plans; no target game selected or researched in this task.",
+  "audit": {
+    "alreadyPresent": [
+      "whole-game web research across gameplay and frontend/meta",
+      "opened original screenshots and selected video frames",
+      "source/version/platform/state and video timestamps",
+      "explicit source-state gaps and separate fidelity gates"
+    ],
+    "gap": "No concrete indexed per-feature plan packet or reusable templates connecting each function/state to inspected image/video evidence.",
+    "correction": "Added clone-research reference, plan index, feature plan and source/media/search/coverage manifest templates; routed both clone entrypoints and intake/verification/handoff through them.",
+    "catalogReferenceCount": "game-vibe-workflow previously indexed 8 references while 9 existed; now indexes the actual 10 after adding clone-research."
+  },
+  "checks": [
+    {
+      "command": "npm test",
+      "status": "pass",
+      "tests": 82,
+      "failures": 0,
+      "skipped": 0,
+      "skillsValidated": 87,
+      "contextSizeAdvisories": 8
+    },
+    {
+      "command": "skill-creator quick_validate.py via isolated uv/PyYAML and PYTHONUTF8=1",
+      "status": "pass",
+      "targets": [
+        "game-vibe-workflow",
+        "game-clone"
+      ]
+    },
+    {
+      "command": "node src/cli.js eval --runner catalog --json",
+      "status": "validated",
+      "catalogCases": 157,
+      "newSpecifications": 7,
+      "semanticStatus": "not-run",
+      "reportPath": ".dreamy/clone-reference-validation/eval-report.json"
+    },
+    {
+      "operation": "Local Markdown link, JSON template and whitespace checks",
+      "status": "pass"
+    },
+    {
+      "operation": "Installer coverage",
+      "status": "pass",
+      "coverage": [
+        "new reference/templates arrive byte-for-byte in temporary global install",
+        "game-clone resolves cross-skill research links in installed layout",
+        "research reference resolves its templates",
+        "external feature plan survives managed uninstall"
+      ]
+    }
+  ],
+  "entrypointBytes": {
+    "game-vibe-workflow": 4917,
+    "game-clone": 4079
+  },
+  "artifacts": [
+    {
+      "path": "skills/gameplay/game-vibe-workflow/SKILL.md",
+      "sha256": "c2c909ed93901a843014c38db59b272d6426468138906d1f63cf54f305f5fde8"
+    },
+    {
+      "path": "skills/gameplay/game-clone/SKILL.md",
+      "sha256": "385f8b3feec1ac695433c4163e4a5f3d1386dbc1f12bff26caecff30fddf1bdc"
+    },
+    {
+      "path": "skills/gameplay/game-clone/references/clone-contract.md",
+      "sha256": "2eda454f313ca782d3d9aefca6b6bf14e13b59a98508bc72dd75790f4b2d04bf"
+    },
+    {
+      "path": "skills/gameplay/game-vibe-workflow/references/clone-research.md",
+      "sha256": "7246953c467b363218b5c399c3468bee70236bbb4851705788b20c6d7cb4d8e3"
+    },
+    {
+      "path": "skills/gameplay/game-vibe-workflow/assets/clone-plan-index.md",
+      "sha256": "b3d9a2f3911aa485aa97341ff73169a97215f1af1ff189420698d43dcafca0ba"
+    },
+    {
+      "path": "skills/gameplay/game-vibe-workflow/assets/clone-feature-plan.md",
+      "sha256": "69fcb4319b998ee405bbaaced5d3ea0f452a72a67884d791b1e9297345916217"
+    },
+    {
+      "path": "skills/gameplay/game-vibe-workflow/assets/clone-reference-manifest.json",
+      "sha256": "fad23a216d9e04074be6d8f2dcfb961e28c4d790de3e62e8e4075013a5858b83"
+    }
+  ],
+  "limitations": {
+    "realGameResearch": "not-run; user asked to audit/update skill guidance, not research a newly selected target game",
+    "mediaInspection": "not-run in this authoring task; future usage must inspect actual selected images and video intervals",
+    "semanticAgentEvaluation": "not-run; catalog validation and installer tests do not establish exhaustive research behavior",
+    "unityAndBuild": "not-run; no Unity project implementation changed",
+    "globalInstallation": "not-run; temporary homes used for installer verification, actual global installation unchanged"
+  },
+  "nextAction": "When using the skill for a selected clone, populate/reuse the project plan packet and retain every requested function/state with inspected source links or explicit unresolved coverage gaps."
+}

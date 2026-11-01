@@ -13,6 +13,8 @@ Choose per asset group. A clone can use original art; an original game can reuse
 
 ## AI route
 
+For engine-native 2D/3D effect creation or substantial restyling, use `unity-vfx-authoring` when available to choose techniques, author editable prefabs and verify visuals/lifecycle. Existing assets, procedural ingredients and AI art remain per-task choices; isolated pooling bugs and standalone images use their narrower workflows.
+
 Write purpose, screen size, dimensions, anchor, format, mesh/texture budget, rig/collision needs and allowed attempts. Explore meaningful design variants; after selection, change only the failed criterion and preserve accepted identity. Do not combine faithful recreation with unrelated style changes.
 
 Prepare inputs for the destination. A hero concept, orthographic parts sheet, prop image-to-3D input and motion starting pose solve different problems. Pick camera/background/lighting accordingly. For assemblable parts retain matching pose, scale and intended views. Generate hair, separate parts, multiview or video only when the actual production route needs them.

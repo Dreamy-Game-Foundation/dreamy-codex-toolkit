@@ -17,6 +17,8 @@ Reuse the conversation and existing project records before asking for missing in
 
 A store link enables public research and scope preparation. Before binary work, resolve the selected local artifact from the user or current task workspace; do not choose unrelated installed games. A screenshot's version and the APK version may differ. Do not infer original package configuration from exporter-created project settings.
 
+For reference discovery and persisted feature plans use [clone research](../../game-vibe-workflow/references/clone-research.md). Search screenshots and available video for the requested feature/state graph, inspect selected media, and link an index to per-feature plans, source IDs/time ranges and gaps. Keep all required functions listed, including unimplemented ones; plan-only scope permits research/planning without extraction or gameplay changes. Existing project plan conventions take precedence over the example folder layout.
+
 For intake and whole-game scope use [input pack](../../game-vibe-workflow/references/input-pack.md) and [exact clone](../../game-vibe-workflow/references/exact-clone.md). Record the whole screen/state graph when requested: entry, controls, preconditions, state change, result, exit, interruptions and persistence. These are discovery questions, not a reason to invent features absent from the selected game. A slice keeps its explicit boundary. A document-only request does not authorize gameplay changes.
 
 ## Link evidence to implementation

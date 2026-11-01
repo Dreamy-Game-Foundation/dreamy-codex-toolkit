@@ -9,6 +9,11 @@ Reuse existing repo conventions. The optional files in `../assets/` are output t
 | `../assets/current-state.md` | Revision, next action, running jobs, evidence and unresolved gaps |
 | `../assets/asset-record.json` | Provenance/stages and independent review dimensions |
 | `../assets/gate-result.json` | Expected/actual checks attached to artifact/revision |
+| `../assets/clone-plan-index.md` | Clone target/scope, full feature/state inventory, links to feature plans, research gaps and milestones |
+| `../assets/clone-feature-plan.md` | One feature family: state/control contract, inspected screenshots/video intervals, implementation tasks and acceptance |
+| `../assets/clone-reference-manifest.json` | Empty source/media/search/coverage record template; populate from actual observations |
+
+For clone work, read [clone-research.md](clone-research.md) before parity implementation. Reuse equivalent existing files; the plan packet must cover the requested functions and retain missing evidence even when filenames differ. Templates are adaptable; coverage and traceability are the requirement.
 
 Use `Docs/INVESTIGATION.md` or the existing analysis convention only when REA is selected. Record mode, target identity, question, permitted operation scope, evidence IDs/paths, observations, inferences and unknowns. Keep project state outside toolkit-managed installation files.
 
@@ -22,6 +27,10 @@ journey, screen/state/input contracts, source behavior or interaction hypothesis
 style/reference roles, asset roles, P0 acceptance, assumptions and constraints.
 Separate an agent-selected pilot from owner-confirmed scope. Use input-pack.md
 and task-spec.md as needed; reuse existing records and one current state.
+For clones, search feature/state images and available video, inspect selected
+media and persist an index linking every required function to feature plans,
+source IDs/time ranges and gaps before parity implementation. A requested slice
+stays bounded; inaccessible video remains unviewed rather than behavior evidence.
 Use auto unless the brief explicitly says off or required; auto does not mean
 install REA or investigate a complete source repo through binary tools.
 Build a placeholder loop, prove one representative slice through the engine
