@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "case": "Pixel Flow0.36.3 whole-game clone preparation",
+  "completedAtUtc": "2026-10-24T08:10:53.102589+00:00",
+  "sequence": [
+    "Prepared concrete game research/brief/captures/asset catalogs and gap comparisons in the game workspace",
+    "Validated catalog links and local review behavior",
+    "Then promoted reusable instructions/helper and source-free fixtures into the toolkit"
+  ],
+  "scope": "Preparation/gap discovery on the current game before toolkit promotion. No new Unity runtime or player-build verification in this task.",
+  "results": {
+    "preparationIntegrity": "pass",
+    "surfaces": 65,
+    "sources": 53,
+    "webPageScreenshots": 9,
+    "comparisonPairs": 8,
+    "exportedAndUnityProjectFiles": 24588,
+    "serializedSourceObjects": 77970,
+    "guidEntries": 17480,
+    "heavyAssetBodiesReadForCatalog": 0,
+    "genericHelperPilot": {
+      "input": "plain exports directory",
+      "files": 6758,
+      "status": "pass",
+      "scope": "Metadata/link/size only; no source-object receipt supplied for this plain-export helper pilot."
+    },
+    "localReview": {
+      "status": "pass",
+      "surfaceSearchCount": 65,
+      "comparisonCount": 8,
+      "pageErrors": [],
+      "brokenImages": []
+    },
+    "sourceStateScreenshotGaps": 44,
+    "unresolvedSelectedUiGuids": 0,
+    "builtinSelectedUiGuids": 2
+  },
+  "gates": {
+    "exactParityReady": false,
+    "fullCloneComplete": false,
+    "liveGameServicesVerified": false,
+    "unityInteractiveOpened": false,
+    "unityMcpUsed": false,
+    "playerBuildRun": false
+  },
+  "findings": [
+    "Existing Home composition differs from source level-path Home",
+    "Existing shop is a replacement coin-for-booster menu rather than source packs/No Ads/bundles",
+    "Loading/lives/rank/pass/events/account and detailed settings require full flows",
+    "Web/video versions must not be assumed identical to target package",
+    "Metadata/receipt/catalog and rule tests do not prove recovered native behavior or whole-game fidelity"
+  ],
+  "artifacts": [
+    {
+      "logicalPath": "Docs/ExactClone/BRIEF.vi.md",
+      "sha256": "71f923d95278516f242670721e3f7def3abd70b970bbd98f73f164e19d789f8e"
+    },
+    {
+      "logicalPath": "Docs/ExactClone/screen-contracts.json",
+      "sha256": "8c6f9d57b66865c1c4a5487cd8abedf048ed53d87a1719088d6a5e4e1bd7f5aa"
+    },
+    {
+      "logicalPath": "Docs/ExactClone/comparisons.json",
+      "sha256": "5dd1c40e48a6dfb00c7f36de4eade8d191723b4484f66981d3f4aa14cce30068"
+    },
+    {
+      "logicalPath": "Docs/ExactClone/visual-evidence.json",
+      "sha256": "e772fb70cf995a6dbb9672a51b0e591609a5f8e9789fb87f6e8c741d895ec28c"
+    },
+    {
+      "logicalPath": "Docs/ExactClone/source-ui-structure.json",
+      "sha256": "fbf61b2b8d014b721bb0dd61e7eb9beaf7f0ab18db60fd03913a7606a7a377cf"
+    },
+    {
+      "logicalPath": "Docs/ExactClone/validation.json",
+      "sha256": "e3398711fce6838d18bafccbe25fd139207b0708d7cf55cd06de2fef59f7048a"
+    },
+    {
+      "logicalPath": "Docs/AssetCatalog/manifest.json",
+      "sha256": "4fa54e454e2267be8aff9daaddef425c855755e27e319fdc520c241887b84e45"
+    },
+    {
+      "logicalPath": "Docs/AssetCatalog/validation.json",
+      "sha256": "0976ba60c0db228eb68004e9e20aeba6bd68c4819979a74a9d6e3b9847fc5b42"
+    },
+    {
+      "logicalPath": "Docs/ExactClone/Research/sources.json",
+      "sha256": "706007a25191c4aafde5d59f88cf46b19b2ee19bd2fb81cd1e40b853eb47d8d8"
+    },
+    {
+      "logicalPath": "Docs/ExactClone/Research/review-browser-validation.json",
+      "sha256": "43899dcac5b935b9f5bbe54f9e344ffce46bd091f957923bccfdd8ec713ea264"
+    }
+  ],
+  "redistribution": "Only this source-free summary and reusable helper/fixtures are in the toolkit. No extracted game asset, web screenshot, downloaded video, private absolute path or service credential is included.",
+  "modelBehaviorEvaluation": "Not run; catalog cases specify expected decisions, not observed model success."
+}

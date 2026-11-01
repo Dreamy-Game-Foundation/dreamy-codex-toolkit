@@ -3,13 +3,14 @@
   "kind": "catalog-validation",
   "status": "validated",
   "runner": "catalog",
-  "generatedAt": "2026-08-14T19:12:54.397Z",
-  "catalogHash": "08e106565dd0336e41367f3923aaa152c85ca5df5e5679d8956e3079c2f10b42",
+  "generatedAt": "2026-11-01T12:51:10.739Z",
+  "catalogHash": "0d699d6c384e42b0fd8ddf3c7b34fd222adaee156bc74a4aae5f5d3abbbea9dc",
   "coverage": "v1-seed",
-  "catalogCases": 77,
-  "validatedCases": 77,
+  "catalogCases": 136,
+  "validatedCases": 136,
   "semantic": {
     "status": "not-run",
     "reason": "Catalog validation does not execute an agent or grade semantic output."
-  }
+  },
+  "runId": null
 }

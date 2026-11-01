@@ -21,6 +21,9 @@
     "skills/unity-camera",
     "skills/unity-addressables",
     "skills/unity-profiling",
-    "skills/unity-memory"
+    "skills/unity-memory",
+    "skills/gameplay/game-clone",
+    "skills/gameplay/game-vibe-workflow",
+    "skills/gameplay/game-asset-extraction"
   ]
 }

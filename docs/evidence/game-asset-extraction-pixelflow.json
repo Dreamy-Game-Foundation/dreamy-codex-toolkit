@@ -1,0 +1,240 @@
+{
+  "schemaVersion": 1,
+  "kind": "asset-extraction-case-and-helper-pilot",
+  "recordedAt": "2026-10-23T17:45:49.176145+00:00",
+  "status": "scoped-evidence",
+  "distribution": "Source-free summary and hashes only; no original package, game assets, proprietary level data, scripts, tool binaries or personal absolute paths.",
+  "source": {
+    "label": "Pixel+Flow!_0.36.3_APKPure.xapk",
+    "bytes": 326777529,
+    "sha256": "ad7b8a8f7659ec86a583976e466458b69fd58f08f2667f6f17925fa570e9bad2",
+    "unchanged": true
+  },
+  "observedTools": {
+    "python": "3.12.4",
+    "UnityPy": "1.25.4",
+    "AssetRipper": "2.0.0",
+    "unityHeaders": "6000.0.58f2",
+    "assetRipperWindowsX64ZipSha256": "9a7ef0e7c5c3ea5b90b4e6d855e2d98d5f7ec8c3f9e26fccbc194c6a7b01baf7"
+  },
+  "historicalFullExtraction": {
+    "implementation": "Case-specific scripts from the authorized extraction, not the new portable helpers.",
+    "reportFingerprints": [
+      {
+        "path": "reports/source.json",
+        "sha256": "8852c25c202f50ded221666ae9fcc363dc9b9e3b7991f4b0868061ccadf5378f"
+      },
+      {
+        "path": "reports/validation.json",
+        "sha256": "a18a25253379f8dd56b4592ba524809be62820efcc4666af5ad0c0a2580045df"
+      },
+      {
+        "path": "reports/final-summary.json",
+        "sha256": "48668aa6b47c79733d8fae87c7054e8e6823e3bbe8193c6fe9892f0bdd7b8df0"
+      },
+      {
+        "path": "reports/export-error-resolutions.json",
+        "sha256": "ce2d585dabebec833a76c726421c63380ed9f2b012275e19058fafa1af5180ef"
+      },
+      {
+        "path": "reports/level-count-verification.json",
+        "sha256": "4de6c49d3d8264864007c17e0d34c0df88e16ed1c4576e364089e6c69b551313"
+      },
+      {
+        "path": "tools/requirements.lock.txt",
+        "sha256": "71b87af5c12c178685abe893d056646eb7afc0073dab9bd5998bdbcfd3b41866"
+      }
+    ],
+    "exportedObjects": {
+      "Material": 1038,
+      "Texture2D": 726,
+      "Sprite": 1215,
+      "Mesh": 439,
+      "AudioClip": 154,
+      "Font": 15,
+      "VideoClip": 10,
+      "SpriteAtlas": 25,
+      "TextAsset": 12,
+      "AnimationClip": 2,
+      "AnimatorController": 2,
+      "PhysicMaterial": 2
+    },
+    "levelDefinitions": 3117,
+    "plainLevelManifests": 1,
+    "matchingLevelGroups": 22,
+    "nativeUnityOutput": {
+      "prefabs": 460,
+      "scenes": 4,
+      "materials": 1016,
+      "dummyScriptClasses": 10514,
+      "dummyShaders": 242
+    },
+    "fileValidation": {
+      "status": "pass",
+      "checks": {
+        "json_documents": 4187,
+        "wav_payloads": 154,
+        "font_signatures": 15,
+        "obj_files": 439,
+        "png_structure_and_crc": 1941,
+        "video_container_headers_only": 10,
+        "output_receipts_matched": 3640,
+        "level_groups_matched": 22,
+        "original_xapk_hash_unchanged": 1,
+        "confirmed_empty_runtime_font_textures": 15
+      },
+      "failures": []
+    },
+    "countingNote": "Format-check counts can overlap; do not add them to infer a unique file or gameplay-content total. SDK/debug/common assets were not curated away.",
+    "notRun": [
+      "Unity project compilation/play/build",
+      "gameplay equivalence",
+      "full video decoding and audio listening"
+    ],
+    "limits": [
+      "Exported scripts are dummy classes and shaders use AssetRipper Dummy mode.",
+      "Fifteen source runtime font textures contain no pixels; none were fabricated."
+    ]
+  },
+  "reusableHelperPilot": {
+    "scope": "Bounded pilot of reusable helpers; not a full extraction rerun",
+    "originalPilotReportSha256": "fdead4e11fe25c43c183d4188fc991ef49c1d561595f0e456f2e3f65543161d1",
+    "package": {
+      "status": "complete",
+      "source_sha256": "ad7b8a8f7659ec86a583976e466458b69fd58f08f2667f6f17925fa570e9bad2",
+      "selected_files": 1,
+      "completed_files": 1,
+      "source_unchanged": true,
+      "dry_run_status": "dry_run",
+      "verification": {
+        "status": "pass",
+        "files_verified": 1,
+        "failures": [],
+        "scope": "Receipt identity/integrity only; no image/audio/video decoding, Unity import or gameplay verification."
+      }
+    },
+    "levels": {
+      "status": "complete",
+      "files": 2,
+      "decoded": 2,
+      "gzip_decoded": 1,
+      "samples": [
+        {
+          "kind": "gzip",
+          "source_sha256": "63341ec75c9d71adf1e7199423366fa3d46794366bfa36be7e68be4df3f71c73"
+        },
+        {
+          "kind": "plain",
+          "source_sha256": "d567cb27f1ca72c7c408a57b87946e173aa25b04999182245817bbb011a345b2"
+        }
+      ],
+      "verification": {
+        "status": "pass",
+        "files_verified": 2,
+        "failures": [],
+        "scope": "Receipt identity/integrity only; no image/audio/video decoding, Unity import or gameplay verification."
+      }
+    },
+    "unity": {
+      "status": "complete",
+      "tool": "UnityPy",
+      "version": "1.25.4",
+      "unity_versions": [
+        "6000.0.58f2"
+      ],
+      "selected_types": [
+        "AudioClip",
+        "Font",
+        "Material",
+        "Mesh",
+        "Sprite",
+        "TextAsset",
+        "Texture2D",
+        "VideoClip"
+      ],
+      "per_type_limit": 1,
+      "statuses": {
+        "retained_in_source": 77395,
+        "exported": 8
+      },
+      "exported_objects": {
+        "Material": 1,
+        "Texture2D": 1,
+        "Sprite": 1,
+        "Mesh": 1,
+        "AudioClip": 1,
+        "Font": 1,
+        "VideoClip": 1,
+        "TextAsset": 1
+      },
+      "errors": [],
+      "sources": [
+        {
+          "file": "data.unity3d",
+          "bytes": 102047957,
+          "sha256": "e19d8644e3aeed68b04d70a9017eb29c238b16657ca30ec6436da8ff17ad0327"
+        },
+        {
+          "file": "resources.resource",
+          "bytes": 2575360,
+          "sha256": "aa45025673992f094e41f10b894200edd937f9a6fd2bfff1c285b9fbe0d3b757"
+        },
+        {
+          "file": "sharedassets1.resource",
+          "bytes": 9815031,
+          "sha256": "35e05e8419c7c4f71309666676a5bbcce8afe6958b4150e582501e55b974ce55"
+        },
+        {
+          "file": "sharedassets3.resource",
+          "bytes": 2335115,
+          "sha256": "2872e4200e29d231ad82d07e6e96765bc7ba4bf09b8c9686db641bc43627a88d"
+        }
+      ],
+      "verification": {
+        "status": "pass",
+        "files_verified": 8,
+        "failures": [],
+        "scope": "Receipt identity/integrity only; no image/audio/video decoding, Unity import or gameplay verification."
+      }
+    },
+    "scripts": [
+      {
+        "path": "scripts/_asset_common.py",
+        "sha256": "3bb4d56b45cb5d2f17dc58f4e6d12c4acefe100b270fffa422ae12f7a2c91ba8"
+      },
+      {
+        "path": "scripts/decode_levels.py",
+        "sha256": "317d3a13d3d7617315d5f53683f6dff584f440a17e6c5c2659a3d1615e203af4"
+      },
+      {
+        "path": "scripts/export_unity.py",
+        "sha256": "68dc40de3fac24ab18eb378f1b89eb5f8f67764d823c1e4a0cd5cd9652886e55"
+      },
+      {
+        "path": "scripts/extract_package.py",
+        "sha256": "896b27ebef89249ec2749a3f0f8f9179a3fc4df14b833433be787f7b48afed4b"
+      },
+      {
+        "path": "scripts/verify_manifest.py",
+        "sha256": "924a5a1260c2425c8f7952c3ca90b71bfad977576a44a49cc793bf20b9141faa"
+      }
+    ],
+    "limits": [
+      "One attempted object per selected Unity type from four explicitly selected data/resource files; Addressables/default-resources bundles were not rerun.",
+      "Pilot verification checks output identity and integrity, not all media fidelity or Unity import/compile/play/build.",
+      "No new AssetRipper project export or live REA execution was performed while authoring the reusable skill."
+    ]
+  },
+  "sourceFreeRegression": {
+    "command": "python -B tests/python/asset_extraction_test.py",
+    "tests": 12,
+    "status": "pass",
+    "scope": "Synthetic path/collision/size/CRC/JSON/hash/empty-texture/resource-failure and object-identity fixtures; no model behavior claim."
+  },
+  "unestablished": [
+    "Original C# behavior recovered",
+    "Unity project imports and compiles",
+    "Player build and gameplay fidelity",
+    "All games, engines, encrypted containers or Unity versions supported"
+  ]
+}

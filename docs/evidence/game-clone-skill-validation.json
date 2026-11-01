@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "kind": "skill-implementation-validation",
+  "skill": "game-clone",
+  "toolkitVersion": "0.1.0-alpha.4",
+  "completedAtUtc": "2026-11-01T12:52:40.592235+00:00",
+  "status": "validated",
+  "scope": "Skill instructions, catalog/module routing, docs and installer lifecycle; no third-party tool installation or game reconstruction.",
+  "checks": [
+    {
+      "command": "npm test (before implementation)",
+      "status": "pass",
+      "tests": 80
+    },
+    {
+      "command": "uv run --with PyYAML python <skill-creator>/scripts/quick_validate.py skills/gameplay/game-clone",
+      "status": "pass",
+      "note": "Default Python lacked yaml; used isolated uv dependency instead of changing global Python."
+    },
+    {
+      "command": "node --test tests/unit/installer-lifecycle.test.mjs",
+      "status": "pass",
+      "tests": 17
+    },
+    {
+      "command": "npm test (after implementation)",
+      "status": "pass",
+      "tests": 81,
+      "skillsValidated": 86,
+      "contextSizeAdvisories": 8
+    },
+    {
+      "command": "node src/cli.js eval --runner catalog --json",
+      "status": "validated",
+      "catalogCases": 136,
+      "semanticStatus": "not-run"
+    },
+    {
+      "command": "node src/cli.js update --target global --dry-run --json",
+      "status": "pass"
+    },
+    {
+      "command": "node src/cli.js update --target global --json",
+      "status": "pass",
+      "preset": "dreamy-project",
+      "managedSkills": 41,
+      "backupCreated": true,
+      "codexConfigUnchanged": true,
+      "independentReaSkillUnchanged": true
+    }
+  ],
+  "lifecycleCoverage": [
+    "global install includes skill and three references",
+    "update restores managed reference and resolves sibling links in installed layout",
+    "uninstall removes managed skill and preserves external user notes and independent REA skill"
+  ],
+  "artifacts": [
+    {
+      "path": "skills/gameplay/game-clone/SKILL.md",
+      "sha256": "4c1dba1f44497f8d4e0f0f1dd01cbb526702cde998524c282a85e25e9b330a47",
+      "installedHashMatches": true
+    },
+    {
+      "path": "skills/gameplay/game-clone/agents/openai.yaml",
+      "sha256": "712eaa75f2f00f3fd72f56fb961d4a3eec9df4d37b68b7dcb479b8d2789e1af5",
+      "installedHashMatches": true
+    },
+    {
+      "path": "skills/gameplay/game-clone/references/clone-contract.md",
+      "sha256": "5a9c8291b46dcb4cadc651497c2cdf76487a0c28048aafbf95f6a4941fec493b",
+      "installedHashMatches": true
+    },
+    {
+      "path": "skills/gameplay/game-clone/references/toolchain.md",
+      "sha256": "f106030a821efc13034da260290fbcd1a03b42a603a43392380598fc99665413",
+      "installedHashMatches": true
+    },
+    {
+      "path": "skills/gameplay/game-clone/references/verification.md",
+      "sha256": "c5c2f20cf9a38ee73cb4443e7675c5f9075b832699c56cb862bb305b00789f6d",
+      "installedHashMatches": true
+    }
+  ],
+  "provenanceRecordsReused": [
+    "game-vibe-rea",
+    "game-vibe-rea-static-20261026",
+    "game-assets-assetripper"
+  ],
+  "limitations": {
+    "semanticAgentEvaluation": "not-run; eval cases specify expectations only",
+    "assetRipperPilot": "not-run; no game artifact selected for this authoring task",
+    "reaPilot": "not-run; no game artifact selected for this authoring task",
+    "unityImportPlayBuild": "not-run; no Unity project implementation changed",
+    "wholeGameFidelity": "not-established"
+  },
+  "nextAction": "Use game-clone with the selected APK/XAPK and target project; inventory/hash, then run representative AssetRipper export and a focused REA investigation."
+}

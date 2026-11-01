@@ -60,6 +60,8 @@ Screen/popup/overlay -> panel lifecycle -> bind state -> render -> collect inten
 
 ## Common Patterns
 
+- Modify suitable imported sample panels/scripts/prefabs directly, preserving GUIDs and recording local patches. Prefer serialized static UI over runtime constructors and avoid adapter chains around an already suitable panel. Dynamic lists instantiate authored prefab items.
+- Follow the template's coding style, MVP and root-owned DI. Views render state/emit intent; use generic class names unless an actual ambiguity needs qualification. For mobile layout, sprite modes, extracted fonts/presets and baseline-first image comparison, use `unity-ui-reskin` when available.
 - Bind/unbind symmetrically.
 - Back handling lives at UI manager/root/presenter level.
 - Use safe-area and target aspect checks for mobile screens.

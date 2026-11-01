@@ -1,0 +1,16 @@
+{
+  "gate": null,
+  "revision": null,
+  "artifact_sha256": null,
+  "environment": {"device": null, "resolution": null, "quality": null, "build_type": null},
+  "checks": [],
+  "check_fields": ["acceptance_id", "result", "method", "expected", "actual", "evidence", "unavailable_reason"],
+  "result_values": ["pass", "fail", "not_run", "not_applicable"],
+  "investigation": {"mode": "auto", "status": "not_run", "target_hashes": [], "evidence_ids": [], "unknowns": []},
+  "reviewer": null,
+  "owner_acceptance": "pending",
+  "clone_coverage": {"mode": null, "target_version": null, "surface_contracts": null, "source_captures": null, "asset_catalog": null, "comparison_pairs": null, "missing_states": [], "unintegrated_source_assets": [], "service_dependencies": [], "brief_parity_ready": false, "full_clone_complete": false},
+  "editor_mode": {"mode": null, "user_notified": false, "reason": null, "project_scene": null, "mcp_connection_verified": false, "evidence_limits": []},
+  "open_defects": [],
+  "next_action": null
+}

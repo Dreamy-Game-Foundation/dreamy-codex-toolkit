@@ -195,6 +195,271 @@
           "sha256": "b61ac928f152d13517328263e6bee9175b928f9ab696a2d2ca2b6cfd961ddc32"
         }
       ]
+    },
+    {
+      "id": "game-vibe-rea",
+      "remote": "https://github.com/morluto/rea",
+      "commit": "96ea32b7e4e28d3c9cd79a1de4b8e1ba3b4244e9",
+      "status": "observed-external",
+      "role": "optional-game-behavior-investigation",
+      "retrievedAt": "2026-10-23T16:34:47.380301+00:00",
+      "evidenceNote": "Selected upstream documentation and IL2CPP contracts inspected through GitHub at the pinned commit; no upstream code executed, installed or vendored. This is not a live REA/provider/Unity integration claim. See skills/gameplay/game-vibe-workflow/references/sources.md. Reused by game-clone for the combined investigation/export contract; this reuse adds no new upstream execution or real-game parity evidence.",
+      "sourceFiles": [
+        {
+          "path": "README.md",
+          "gitBlobSha": "e6e718e3abfa8a2e8017a6892ab207b62a7dad11",
+          "url": "https://github.com/morluto/rea/blob/96ea32b7e4e28d3c9cd79a1de4b8e1ba3b4244e9/README.md"
+        },
+        {
+          "path": ".agents/skills/reverse-engineer-anything/SKILL.md",
+          "gitBlobSha": "16e7c03fba39789989f4cb1089534bb10767f76b",
+          "url": "https://github.com/morluto/rea/blob/96ea32b7e4e28d3c9cd79a1de4b8e1ba3b4244e9/.agents/skills/reverse-engineer-anything/SKILL.md"
+        },
+        {
+          "path": ".agents/skills/reverse-engineer-anything/references/evidence-workflows.md",
+          "gitBlobSha": "90cf08eeb34ef8040d870f3cf8943fd782686671",
+          "url": "https://github.com/morluto/rea/blob/96ea32b7e4e28d3c9cd79a1de4b8e1ba3b4244e9/.agents/skills/reverse-engineer-anything/references/evidence-workflows.md"
+        },
+        {
+          "path": "docs/installation.md",
+          "gitBlobSha": "ab85fe0b162dd9bb96b26ae6dd0f4ef44a94612d",
+          "url": "https://github.com/morluto/rea/blob/96ea32b7e4e28d3c9cd79a1de4b8e1ba3b4244e9/docs/installation.md"
+        },
+        {
+          "path": "docs/managed-code-analysis.md",
+          "gitBlobSha": "c9f656d7ead97892c12adffd95d1ef7ae37afb88",
+          "url": "https://github.com/morluto/rea/blob/96ea32b7e4e28d3c9cd79a1de4b8e1ba3b4244e9/docs/managed-code-analysis.md"
+        },
+        {
+          "path": "docs/il2cpp-metadata.md",
+          "gitBlobSha": "017b0e40db57f5bb550bba7c2480b69c8ae58ea5",
+          "url": "https://github.com/morluto/rea/blob/96ea32b7e4e28d3c9cd79a1de4b8e1ba3b4244e9/docs/il2cpp-metadata.md"
+        },
+        {
+          "path": "docs/windows-ghidra-p0.md",
+          "gitBlobSha": "80d175031d9ded88addf3d378c39685db9ef551f",
+          "url": "https://github.com/morluto/rea/blob/96ea32b7e4e28d3c9cd79a1de4b8e1ba3b4244e9/docs/windows-ghidra-p0.md"
+        },
+        {
+          "path": "package.json",
+          "gitBlobSha": "841bdb69dbf64ea73d6629ca72a85b8e0e0ab571",
+          "url": "https://github.com/morluto/rea/blob/96ea32b7e4e28d3c9cd79a1de4b8e1ba3b4244e9/package.json"
+        },
+        {
+          "path": "src/contracts/il2cpp/il2cppToolContracts.ts",
+          "gitBlobSha": "78754dc3ca2e7b8602d39acb3a2c5fee1a663f44",
+          "url": "https://github.com/morluto/rea/blob/96ea32b7e4e28d3c9cd79a1de4b8e1ba3b4244e9/src/contracts/il2cpp/il2cppToolContracts.ts"
+        },
+        {
+          "path": "src/cli/il2cppCommands.ts",
+          "gitBlobSha": "2c88d21303cde5f09ae2d7edb20abe6a2e22bf59",
+          "url": "https://github.com/morluto/rea/blob/96ea32b7e4e28d3c9cd79a1de4b8e1ba3b4244e9/src/cli/il2cppCommands.ts"
+        },
+        {
+          "path": "LICENSE",
+          "gitBlobSha": "2d476d24fa5a9ae2ab35e5fd121494049eb2ee5d",
+          "url": "https://github.com/morluto/rea/blob/96ea32b7e4e28d3c9cd79a1de4b8e1ba3b4244e9/LICENSE"
+        }
+      ]
+    },
+    {
+      "id": "game-assets-assetripper",
+      "remote": "https://github.com/AssetRipper/AssetRipper",
+      "commit": "bb5f08ac061d43f85ae14386009b58b93b95156c",
+      "status": "observed-external",
+      "role": "optional-native-unity-asset-export",
+      "retrievedAt": "2026-10-23T17:45:06.760360+00:00",
+      "evidenceNote": "Selected CLI, loopback host, load/export route and destination deletion contracts inspected at this commit. The observed 2.0.0 release was run only in the owner-selected extraction workspace, not installed or vendored in the toolkit. Reused by game-clone for the combined investigation/export contract; this reuse adds no new upstream execution or real-game parity evidence.",
+      "sourceFiles": [
+        {
+          "path": "Source/AssetRipper.GUI.Web/Arguments.cs",
+          "url": "https://github.com/AssetRipper/AssetRipper/blob/bb5f08ac061d43f85ae14386009b58b93b95156c/Source/AssetRipper.GUI.Web/Arguments.cs",
+          "gitBlobSha": "a56823dfca153a472ab98a24a53e0290e8ab17e5"
+        },
+        {
+          "path": "Source/AssetRipper.GUI.Web/WebApplicationLauncher.cs",
+          "url": "https://github.com/AssetRipper/AssetRipper/blob/bb5f08ac061d43f85ae14386009b58b93b95156c/Source/AssetRipper.GUI.Web/WebApplicationLauncher.cs",
+          "gitBlobSha": "1d04701b1369d137f21f6c2410d7e6fe1ead77cf"
+        },
+        {
+          "path": "Source/AssetRipper.GUI.Web/Pages/Commands.cs",
+          "url": "https://github.com/AssetRipper/AssetRipper/blob/bb5f08ac061d43f85ae14386009b58b93b95156c/Source/AssetRipper.GUI.Web/Pages/Commands.cs",
+          "gitBlobSha": "d9b7bc54686bf34a35560e159d14222bfe5359f0"
+        },
+        {
+          "path": "Source/AssetRipper.GUI.Web/GameFileLoader.cs",
+          "url": "https://github.com/AssetRipper/AssetRipper/blob/bb5f08ac061d43f85ae14386009b58b93b95156c/Source/AssetRipper.GUI.Web/GameFileLoader.cs",
+          "gitBlobSha": "8d555054b5e3b544b1b3f4912bc6293d3227bede"
+        }
+      ]
+    },
+    {
+      "id": "game-vibe-rea-static-20261026",
+      "remote": "https://github.com/morluto/rea",
+      "commit": "1173c0a9dc1b352a60943a491462294db8f353ae",
+      "status": "observed-external",
+      "role": "owner-requested-static-il2cpp-investigation",
+      "retrievedAt": "2026-10-26T05:30:00+00:00",
+      "evidenceNote": "Inspected source and ran npm CLI6.8.0 metadata-only on isolated Node24.22.1. Source-free receipt docs/research/rea-pixelflow-static-20261026.json. No native provider, runtime target or MCP registration; no source assets or upstream implementation vendored in toolkit. Reused by game-clone for the combined investigation/export contract; this reuse adds no new upstream execution or real-game parity evidence.",
+      "sourceFiles": [
+        {
+          "path": "README.md",
+          "gitBlobSha": "8d8fff00f277173199af3f0cc2a374c193108ec4",
+          "url": "https://github.com/morluto/rea/blob/1173c0a9dc1b352a60943a491462294db8f353ae/README.md"
+        },
+        {
+          "path": "package.json",
+          "gitBlobSha": "4d81d78fd9f4683a6b22e2a7eb11edcc36f024b7",
+          "url": "https://github.com/morluto/rea/blob/1173c0a9dc1b352a60943a491462294db8f353ae/package.json"
+        },
+        {
+          "path": "docs/il2cpp-metadata.md",
+          "gitBlobSha": "0b89ddf7a028e5c854fed561a7d7496b667dc700",
+          "url": "https://github.com/morluto/rea/blob/1173c0a9dc1b352a60943a491462294db8f353ae/docs/il2cpp-metadata.md"
+        },
+        {
+          "path": ".agents/skills/reverse-engineer-anything/SKILL.md",
+          "gitBlobSha": "d173763599565029f5266ba28c4f6b7b0ddd35ec",
+          "url": "https://github.com/morluto/rea/blob/1173c0a9dc1b352a60943a491462294db8f353ae/.agents/skills/reverse-engineer-anything/SKILL.md"
+        },
+        {
+          "path": "scripts/rea.mjs",
+          "gitBlobSha": "27f334994a21865da0fd09e0415148b6f09d9c6c",
+          "url": "https://github.com/morluto/rea/blob/1173c0a9dc1b352a60943a491462294db8f353ae/scripts/rea.mjs"
+        }
+      ]
+    }
+  ],
+  "documentSets": [
+    {
+      "id": "game-vibe-oldcraft",
+      "origin": "Owner-supplied World of Oldcraft Report/build kit and prior workflow synthesis",
+      "retrievedAt": "2026-10-23T16:34:47.381301+00:00",
+      "status": "observed-local-text",
+      "role": "game-slice-workflow-lessons",
+      "evidenceNote": "Original analysis reviewed 74 text files (767335 bytes), excluding image/video/archive contents. Game outcomes and costs are historical report claims, not runtime results reproduced by this toolkit. Source documents are not redistributed or required by installed skills.",
+      "sourceFiles": [
+        {
+          "path": "brief.html",
+          "sha256": "a2c911ebdebda3ce5e294412671b0a5d22cb29bce7a2f8f4e032151dfaa2a3c7"
+        },
+        {
+          "path": "result.html",
+          "sha256": "72dc29da19fe1705236ab917656c51d7e3f0ec9376c319809e8ec8adea496341"
+        },
+        {
+          "path": "stats.html",
+          "sha256": "8a9cde5c5049c2b581fc35603ee9d0b1bcd62e90ab313f79f9e27e246e5ed5fa"
+        },
+        {
+          "path": "WorldOfOldcraft-build-kit/WorldOfOldcraft-build-kit/CLAUDE.md",
+          "sha256": "cfe6c0bbe1199b31dc33ff50b3349192cb0720b2f59aef382ce255a4fffa1123"
+        },
+        {
+          "path": "WorldOfOldcraft-build-kit/WorldOfOldcraft-build-kit/Docs/TASK.md",
+          "sha256": "ea773b66b0cdba0a1b080c378030b237a61071d7a64f8e970c502a2da81b13ca"
+        },
+        {
+          "path": "WorldOfOldcraft-build-kit/WorldOfOldcraft-build-kit/Docs/PIPELINE_LESSONS.md",
+          "sha256": "b517a5c8642cfa13ddd75bcde742c28090a94288d6296d7fd0f1a18bd4826660"
+        },
+        {
+          "path": "vibe-code-workflow/README.md",
+          "sha256": "7b8e9f440b4506c4dcc7d46ff223c606d2186f9e465aa222ef09d85edec5ebe3"
+        },
+        {
+          "path": "vibe-code-workflow/templates.md",
+          "sha256": "a5428ca308311a84d3f9610be544e47f4bea3b9cc6c592ba3675f592fb197659"
+        },
+        {
+          "path": "vibe-code-workflow/source-review.md",
+          "sha256": "bc3111aa33aaefbc547fa49a71d1f4386950ea0b393a31efe31ee4bfbad7c552"
+        }
+      ]
+    },
+    {
+      "id": "game-assets-pixelflow",
+      "origin": "Owner-selected Pixel Flow 0.36.3 XAPK extraction reports",
+      "retrievedAt": "2026-10-23T17:45:06.760360+00:00",
+      "status": "observed-local-extraction",
+      "role": "asset-extraction-workflow-evidence",
+      "evidenceNote": "Reports from the authorized local extraction were inspected. Only hashes and source-free outcome summaries are included; no package, proprietary asset, game data, tool binary or personal absolute path is redistributed. Full extraction used case-specific scripts; the reusable-helper pilot is scoped separately in docs/evidence/game-asset-extraction-pixelflow.json.",
+      "sourceFiles": [
+        {
+          "path": "reports/source.json",
+          "sha256": "8852c25c202f50ded221666ae9fcc363dc9b9e3b7991f4b0868061ccadf5378f"
+        },
+        {
+          "path": "reports/validation.json",
+          "sha256": "a18a25253379f8dd56b4592ba524809be62820efcc4666af5ad0c0a2580045df"
+        },
+        {
+          "path": "reports/final-summary.json",
+          "sha256": "48668aa6b47c79733d8fae87c7054e8e6823e3bbe8193c6fe9892f0bdd7b8df0"
+        },
+        {
+          "path": "reports/export-error-resolutions.json",
+          "sha256": "ce2d585dabebec833a76c726421c63380ed9f2b012275e19058fafa1af5180ef"
+        },
+        {
+          "path": "reports/level-count-verification.json",
+          "sha256": "4de6c49d3d8264864007c17e0d34c0df88e16ed1c4576e364089e6c69b551313"
+        },
+        {
+          "path": "tools/requirements.lock.txt",
+          "sha256": "71b87af5c12c178685abe893d056646eb7afc0073dab9bd5998bdbcfd3b41866"
+        }
+      ]
+    },
+    {
+      "id": "game-vibe-exact-clone-pixelflow",
+      "origin": "Owner-requested Pixel Flow whole-game preparation and correction",
+      "retrievedAt": "2026-10-24T08:10:53.102589+00:00",
+      "status": "observed-local-preparation",
+      "role": "exact-clone-workflow-correction",
+      "evidenceNote": "Concrete game preparation preceded toolkit promotion. Scope: per-file/serialized-object links, full surface contracts, web research and inspected source/candidate screenshot gaps. No completed exact clone, native behavior equivalence, live service or Unity/build claim. Only source-free hashes/counts are retained.",
+      "sourceFiles": [
+        {
+          "logicalPath": "Docs/ExactClone/BRIEF.vi.md",
+          "sha256": "71f923d95278516f242670721e3f7def3abd70b970bbd98f73f164e19d789f8e"
+        },
+        {
+          "logicalPath": "Docs/ExactClone/screen-contracts.json",
+          "sha256": "8c6f9d57b66865c1c4a5487cd8abedf048ed53d87a1719088d6a5e4e1bd7f5aa"
+        },
+        {
+          "logicalPath": "Docs/ExactClone/comparisons.json",
+          "sha256": "5dd1c40e48a6dfb00c7f36de4eade8d191723b4484f66981d3f4aa14cce30068"
+        },
+        {
+          "logicalPath": "Docs/ExactClone/visual-evidence.json",
+          "sha256": "e772fb70cf995a6dbb9672a51b0e591609a5f8e9789fb87f6e8c741d895ec28c"
+        },
+        {
+          "logicalPath": "Docs/ExactClone/source-ui-structure.json",
+          "sha256": "fbf61b2b8d014b721bb0dd61e7eb9beaf7f0ab18db60fd03913a7606a7a377cf"
+        },
+        {
+          "logicalPath": "Docs/ExactClone/validation.json",
+          "sha256": "e3398711fce6838d18bafccbe25fd139207b0708d7cf55cd06de2fef59f7048a"
+        },
+        {
+          "logicalPath": "Docs/AssetCatalog/manifest.json",
+          "sha256": "4fa54e454e2267be8aff9daaddef425c855755e27e319fdc520c241887b84e45"
+        },
+        {
+          "logicalPath": "Docs/AssetCatalog/validation.json",
+          "sha256": "0976ba60c0db228eb68004e9e20aeba6bd68c4819979a74a9d6e3b9847fc5b42"
+        },
+        {
+          "logicalPath": "Docs/ExactClone/Research/sources.json",
+          "sha256": "706007a25191c4aafde5d59f88cf46b19b2ee19bd2fb81cd1e40b853eb47d8d8"
+        },
+        {
+          "logicalPath": "Docs/ExactClone/Research/review-browser-validation.json",
+          "sha256": "43899dcac5b935b9f5bbe54f9e344ffce46bd091f957923bccfdd8ec713ea264"
+        }
+      ]
     }
   ]
 }

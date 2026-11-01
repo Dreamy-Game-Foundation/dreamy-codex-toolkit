@@ -16,6 +16,12 @@ dreamy-kit --help
 # Then explicitly install/update the intended global or project target.
 ```
 
+For clone or original game slices, use the experimental [`game-vibe-workflow`](skills/gameplay/game-vibe-workflow/SKILL.md) in `unity-core`. It supports AI, existing and procedural assets, with optional REA investigation (`off` / `auto` / `required`); see the [Vietnamese usage guide](docs/game-vibe-workflow.vi.md). REA is not installed or required by the toolkit.
+
+For requested asset extraction from a supplied APK/XAPK or Unity build, use experimental [`game-asset-extraction`](skills/gameplay/game-asset-extraction/SKILL.md), standalone or from the vibe workflow. It includes source-preserving helpers and hash receipts; see the [Vietnamese extraction guide](docs/game-asset-extraction.vi.md). UnityPy/AssetRipper are optional task-local tools, and exported assets do not establish a runnable game.
+
+For a dedicated Unity clone workflow combining REA findings, AssetRipper recovery and target-project fidelity, use experimental [`game-clone`](skills/gameplay/game-clone/SKILL.md), also in `unity-core`. It reuses the two workflows above and preserves plan-only, slice, whole-game and tool-mode choices; see the [Vietnamese clone guide](docs/game-clone.vi.md). Tool setup and real-game verification remain separate tasks.
+
 Current readiness and next steps:
 
 - [Tổng hợp tính năng, bản sửa và trạng thái đã nghiệm thu](docs/toolkit-evolution-implementation.md#feature-and-fix-inventory--23-october-2026)

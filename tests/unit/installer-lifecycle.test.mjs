@@ -59,12 +59,62 @@ test("global target installs into user Codex home", () => {
   assert.ok(fs.existsSync(path.join(agentsHome, "skills", "dreamy-feature", "SKILL.md")));
   assert.ok(fs.existsSync(path.join(agentsHome, "skills", "dreamy-core", "SKILL.md")));
   assert.ok(fs.existsSync(path.join(agentsHome, "skills", "unity-ui-reskin", "references", "tmp-materials.md")));
+  assert.ok(fs.existsSync(path.join(agentsHome, "skills", "game-vibe-workflow", "references", "rea.md")));
+  assert.ok(fs.existsSync(path.join(agentsHome, "skills", "game-vibe-workflow", "references", "exact-clone.md")));
+  assert.ok(fs.existsSync(path.join(agentsHome, "skills", "game-vibe-workflow", "assets", "project-brief.md")));
+  assert.ok(fs.existsSync(path.join(agentsHome, "skills", "game-asset-extraction", "references", "unity-export.md")));
+  assert.ok(fs.existsSync(path.join(agentsHome, "skills", "game-asset-extraction", "scripts", "extract_package.py")));
+  assert.ok(fs.existsSync(path.join(agentsHome, "skills", "game-asset-extraction", "scripts", "index_assets.py")));
+  assert.ok(fs.existsSync(path.join(agentsHome, "skills", "game-asset-extraction", "scripts", "_asset_common.py")));
+  assert.ok(fs.existsSync(path.join(agentsHome, "skills", "game-clone", "SKILL.md")));
+  assert.ok(fs.existsSync(path.join(agentsHome, "skills", "game-clone", "agents", "openai.yaml")));
+  for (const reference of ["clone-contract.md", "toolchain.md", "verification.md"]) {
+    assert.ok(fs.existsSync(path.join(agentsHome, "skills", "game-clone", "references", reference)));
+  }
   assert.equal(fs.existsSync(path.join(codexHome, "config.toml")), false);
 
   const uninstall = JSON.parse(run(["uninstall", "--target", "global"], root, env));
   assert.equal(uninstall.status, "ok");
   assert.equal(fs.existsSync(path.join(codexHome, "agents", "dreamy-unity-developer.toml")), false);
   assert.equal(fs.existsSync(path.join(agentsHome, "skills", "dreamy-feature")), false);
+  assert.equal(fs.existsSync(path.join(agentsHome, "skills", "game-clone")), false);
+});
+
+test("clone workflow survives update with installed sibling links and preserves user files on uninstall", () => {
+  const target = fs.mkdtempSync(path.join(os.tmpdir(), "dreamy-clone-lifecycle-"));
+  const skillsRoot = path.join(target, ".agents", "skills");
+  const independentSkill = path.join(skillsRoot, "reverse-engineer-anything", "SKILL.md");
+  fs.mkdirSync(path.dirname(independentSkill), { recursive: true });
+  fs.writeFileSync(independentSkill, "# Independently installed REA instructions\n");
+  const originalRea = fs.readFileSync(independentSkill);
+
+  assert.equal(JSON.parse(run(["install", "--target", target, "--preset", "dreamy-project"])).status, "ok");
+  const cloneRoot = path.join(skillsRoot, "game-clone");
+  const entry = path.join(cloneRoot, "SKILL.md");
+  const expectedEntry = fs.readFileSync(entry);
+  // Skill directories are toolkit-owned; user investigation records live outside them.
+  const annotation = path.join(target, "clone-investigation-notes.txt");
+  fs.writeFileSync(annotation, "Keep my clone investigation notes.\n");
+  // Simulate an upgrade repairing an unchanged managed reference that went missing.
+  const restored = path.join(cloneRoot, "references", "toolchain.md");
+  fs.unlinkSync(restored);
+  assert.equal(JSON.parse(run(["update", "--target", target])).status, "ok");
+  assert.deepEqual(fs.readFileSync(entry), expectedEntry);
+  assert.deepEqual(fs.readFileSync(restored), fs.readFileSync(path.join(root, "skills", "gameplay", "game-clone", "references", "toolchain.md")));
+  for (const name of fs.readdirSync(path.join(cloneRoot, "references"))) {
+    const reference = path.join(cloneRoot, "references", name);
+    const text = fs.readFileSync(reference, "utf8");
+    const links = [...text.matchAll(/\]\((\.\.\/[^)]+)\)/g)];
+    assert.ok(links.length > 0, `${name} should link to maintained sibling guidance`);
+    for (const [, link] of links) {
+      assert.ok(fs.existsSync(path.resolve(path.dirname(reference), link)), `installed link missing: ${link}`);
+    }
+  }
+  assert.deepEqual(fs.readFileSync(independentSkill), originalRea);
+  assert.equal(JSON.parse(run(["uninstall", "--target", target])).status, "ok");
+  assert.equal(fs.existsSync(entry), false);
+  assert.equal(fs.readFileSync(annotation, "utf8"), "Keep my clone investigation notes.\n");
+  assert.deepEqual(fs.readFileSync(independentSkill), originalRea);
 });
 
 test("install adopts an existing single Dreamy managed block", () => {

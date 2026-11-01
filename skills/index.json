@@ -2,6 +2,27 @@
   "schemaVersion": 1,
   "skills": [
     {
+      "name": "android-build-release",
+      "category": "platform",
+      "priority": "P1",
+      "file": "skills/platform/android-build-release/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "owners": [
+        "dreamy_build_engineer",
+        "dreamy_release_validator"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "platform-build-log"
+      ],
+      "references": 1,
+      "evalCases": [
+        "depth-build-stage-triage"
+      ]
+    },
+    {
       "name": "architecture-patterns",
       "category": "architecture",
       "priority": "P1",
@@ -26,27 +47,6 @@
         "senior-no-factory-simple-constructor",
         "senior-mvp-shop-boundary",
         "senior-direct-call-owned-child"
-      ]
-    },
-    {
-      "name": "android-build-release",
-      "category": "platform",
-      "priority": "P1",
-      "file": "skills/platform/android-build-release/SKILL.md",
-      "depth": "D3",
-      "maturity": "practitioner",
-      "owners": [
-        "dreamy_build_engineer",
-        "dreamy_release_validator"
-      ],
-      "requiresEvidence": [
-        "project-code",
-        "manifest",
-        "platform-build-log"
-      ],
-      "references": 1,
-      "evalCases": [
-        "depth-build-stage-triage"
       ]
     },
     {
@@ -410,6 +410,77 @@
       "evalCases": []
     },
     {
+      "name": "game-asset-extraction",
+      "category": "gameplay",
+      "priority": "P1",
+      "file": "skills/gameplay/game-asset-extraction/SKILL.md",
+      "depth": "D3",
+      "maturity": "experimental",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_tester",
+        "dreamy_skill_author"
+      ],
+      "requiresEvidence": [
+        "selected-artifact",
+        "source-inventory",
+        "tool-version",
+        "export-receipts",
+        "validation-results",
+        "individual-asset-catalog"
+      ],
+      "references": 4,
+      "evalCases": [
+        "assets-explicit-xapk",
+        "assets-partial-existing-output",
+        "assets-empty-vs-missing-stream",
+        "assets-gzip-level-count",
+        "assets-unknown-format",
+        "assets-negative-clone-brief",
+        "assets-conflict-rea-off",
+        "assets-dummy-project-limit",
+        "assets-manifest-not-media",
+        "assets-individual-file-catalog"
+      ],
+      "authoringProfile": "compact-workflow"
+    },
+    {
+      "name": "game-clone",
+      "category": "gameplay",
+      "priority": "P1",
+      "file": "skills/gameplay/game-clone/SKILL.md",
+      "depth": "D3",
+      "maturity": "experimental",
+      "owners": [
+        "dreamy_plan",
+        "dreamy_unity_developer",
+        "dreamy_tester",
+        "dreamy_skill_author"
+      ],
+      "requiresEvidence": [
+        "selected-source-identity",
+        "clone-contract",
+        "tool-track-results",
+        "individual-asset-catalog",
+        "behavior-evidence",
+        "fidelity-and-functional-results"
+      ],
+      "references": 3,
+      "evalCases": [
+        "clone-both-tools-artifact",
+        "clone-plan-store-only",
+        "clone-negative-extraction-only",
+        "clone-source-auto",
+        "clone-conflict-rea-off",
+        "clone-required-tool-missing",
+        "clone-dummy-script-limit",
+        "clone-export-destination",
+        "clone-whole-game-pilot",
+        "clone-resume-uncertain-export"
+      ],
+      "authoringProfile": "compact-workflow"
+    },
+    {
       "name": "game-state",
       "category": "gameplay",
       "priority": "P1",
@@ -426,6 +497,53 @@
       ],
       "references": 0,
       "evalCases": []
+    },
+    {
+      "name": "game-vibe-workflow",
+      "category": "gameplay",
+      "priority": "P1",
+      "file": "skills/gameplay/game-vibe-workflow/SKILL.md",
+      "depth": "D3",
+      "maturity": "experimental",
+      "owners": [
+        "dreamy_plan",
+        "dreamy_unity_developer",
+        "dreamy_tester",
+        "dreamy_skill_author"
+      ],
+      "requiresEvidence": [
+        "task-brief",
+        "project-state",
+        "asset-provenance",
+        "gate-results",
+        "whole-game-coverage-when-requested",
+        "individual-asset-catalog-when-extracted"
+      ],
+      "references": 8,
+      "evalCases": [
+        "vibe-original-existing-off",
+        "vibe-clone-rea-auto",
+        "vibe-rea-required-missing",
+        "vibe-complete-source-skip-rea",
+        "vibe-il2cpp-static-limit",
+        "vibe-asset-pilot",
+        "vibe-resume-receipt",
+        "vibe-negative-small-reskin",
+        "vibe-conflict-off-installed",
+        "vibe-final-build-front-end",
+        "vibe-thin-clone-input",
+        "vibe-original-input-hypothesis",
+        "vibe-conflict-no-build",
+        "vibe-thin-project-audit",
+        "vibe-negative-report-summary",
+        "vibe-exact-whole-game-prebrief",
+        "vibe-exact-capture-version-gaps",
+        "vibe-exact-existing-assets-completion",
+        "vibe-interactive-unity-notify",
+        "vibe-exact-services-not-fake",
+        "vibe-pilot-before-toolkit"
+      ],
+      "authoringProfile": "compact-workflow"
     },
     {
       "name": "gameplay-economy-currency-reward",

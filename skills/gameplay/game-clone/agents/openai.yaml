@@ -1,0 +1,4 @@
+interface:
+  display_name: "Game Clone"
+  short_description: "Clone Unity games with REA and AssetRipper evidence"
+  default_prompt: "Use $game-clone to recreate the selected Unity game in this project, preserving scope and tool choices, linking recovered assets and REA findings to implementation, and verifying function and fidelity separately."

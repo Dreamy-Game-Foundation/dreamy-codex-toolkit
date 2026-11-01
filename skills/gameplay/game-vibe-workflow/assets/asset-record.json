@@ -1,0 +1,29 @@
+{
+  "asset_id": null,
+  "revision": null,
+  "role": null,
+  "source": {
+    "kind": null,
+    "reference_paths_and_hashes": [],
+    "runtime_source_and_version": null,
+    "license_record": null
+  },
+  "stages": [],
+  "stage_fields": ["stage", "tool_or_provider", "model_or_endpoint", "input_hash", "prompt_file", "job_id", "status", "estimated_cost", "actual_cost", "currency_or_credit_unit", "output_paths_and_hashes"],
+  "runtime_contract": {
+    "units_basis_pivot": null,
+    "rig_clips_and_events": null,
+    "movement_and_yaw_owner": null,
+    "materials_and_collision": null,
+    "resource_budget": null
+  },
+  "review": {
+    "technical": "not_run",
+    "presentation": "not_run",
+    "engine": "not_run",
+    "build": "not_run",
+    "owner": "pending",
+    "evidence": [],
+    "rejection_reason": null
+  }
+}
