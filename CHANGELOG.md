@@ -16,6 +16,21 @@
 - Added workflow/runtime ownership hashes and collision/drift checks, plus agent/skill checksums for new installs. Normal global uninstall now removes recorded ownership rather than all matching catalog names.
 - Added portable consumer lifecycle/smoke coverage and packed-install checks after removing the original npm source location. Experimental maturity and native/semantic acceptance are unchanged.
 
+- Strengthened clone intake in `game-vibe-workflow`/`game-clone`: per-feature/state image and video research, inspected-media coverage, indexed feature plans and reusable source/plan templates. Missing video, version conflicts and unimplemented functions remain explicit gaps; catalog specifications do not establish exhaustive research or semantic pass.
+
+- Added experimental `unity-vfx-authoring` in `unity-core` for editable 2D/3D effects: technique routing, art/texture preparation, prefab authoring, visual iteration and owned lifecycle/budget verification. Includes templates, versioned Unity sources, routing specifications and installer lifecycle coverage; VFX Graph and device support require separate evidence.
+
+- Added experimental `game-clone` in `unity-core`: a clone-specific contract connecting REA findings and AssetRipper recovery to asset bindings, Dreamy integration and separate fidelity gates. Reuses existing extraction/game workflows, includes routing specifications and installer lifecycle coverage; no third-party tool, game asset or real-game parity claim is included.
+
+- Added an exact-whole-game branch to game-vibe-workflow: complete brief and web/gameplay research before implementation, original state screenshots, per-file asset links, full functional flows with suitable source assets, and explicit notification before interactive Unity/MCP. Applied preparation to Pixel Flow before promotion; fidelity gaps remain open.
+- Added metadata-only asset catalog creation/verification with source-object status preservation, source-free regression fixtures and additional routing/anti-fake-service eval specifications. No proprietary game captures/assets or service credentials are included in the toolkit.
+
+- Strengthened game-vibe intake with a detailed task template, player journey/screen contracts, reference/asset roles and a behavior-to-acceptance matrix. Distinguishes an agent pilot from owner-confirmed clone scope; preserves no-build instructions and separate fidelity evidence. Added catalog specifications; semantic behavior remains unproven.
+- Added experimental `game-asset-extraction` to `unity-core`, standalone or routed from the vibe workflow: ZIP-family inventory/extraction, optional UnityPy exports, bounded level-JSON decoding and output hash verification.
+- Added source-free regression fixtures, Pixel Flow extraction evidence, optional AssetRipper guidance and a Vietnamese usage guide. No game assets or third-party tool binaries are distributed; Unity import/play/build remain separate checks.
+- Added experimental `game-vibe-workflow` to `unity-core`: clone/original slices, AI/existing/procedural asset routes, bounded recovery and final-build gates.
+- Added optional REA `off`/`auto`/`required` investigation guidance with pinned upstream sources, portable project templates and routing/conflict eval specifications. REA remains an external optional tool; no package, provider or MCP registration is installed.
+
 ## 0.1.0-alpha.4 — 2026-10-23
 
 - Synchronized canonical toolkit, npm package, lockfile and README version for a pinned GitHub prerelease. No npm registry publication; experimental behavior stays opt-in.

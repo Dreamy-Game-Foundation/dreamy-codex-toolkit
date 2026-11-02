@@ -1,0 +1,4 @@
+interface:
+  display_name: "Game Vibe Workflow"
+  short_description: "Prepare and build games or faithful whole-game clones"
+  default_prompt: "Use $game-vibe-workflow for this game. For an exact whole-game clone, prepare the complete brief, web/gameplay research, source screenshots and individual asset links before implementation; preserve scope and notify me if interactive Unity/MCP is needed. Choose asset routes and use REA only for concrete investigation needs."

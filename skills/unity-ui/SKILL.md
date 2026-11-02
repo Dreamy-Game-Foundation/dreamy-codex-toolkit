@@ -58,6 +58,8 @@ Canvas -> Layout -> Binding -> Input/Raycast -> StateRender -> Transition -> Cle
 
 ## Common Patterns
 
+- Author static mobile UI in existing prefabs; spawn prefab instances for dynamic content. Reuse template coding style and view/presenter/service boundaries with explicit dependencies. Generic class names normally suffice; avoid repeating the game name on every class.
+- For mobile prefab presentation, canvas resolution/match, Simple versus Sliced decisions, extracted fonts and baseline-first screenshot comparison, follow the authoring rules in `unity-ui-reskin` when available.
 - Inspect project settings/assets before mutation.
 - Keep authoring asset, runtime owner, and platform budget separate.
 

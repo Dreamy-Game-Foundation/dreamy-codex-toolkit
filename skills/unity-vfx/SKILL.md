@@ -40,6 +40,8 @@ VFXRequest -> Asset/Prefab -> Spawn/Pool -> PlayLifetime -> FeedbackBoundary -> 
 
 ## Workflow
 
+For creation or substantial visual restyling from a brief/reference, use `unity-vfx-authoring` when installed for decomposition, ingredients and preview iteration. Keep isolated lifetime, pooling or rendering diagnosis here or in its narrower owner.
+
 1. Inspect assets and owners before editing serialized data.
 2. Identify the runtime owner, authoring asset, and platform budget.
 3. Make the smallest change that preserves references and existing quality tiers.

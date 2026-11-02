@@ -1,0 +1,4 @@
+interface:
+  display_name: "Game Asset Extraction"
+  short_description: "Extract game assets with source and output receipts"
+  default_prompt: "Use $game-asset-extraction to inspect this game package, export its requested assets into a fresh directory, and verify the results."

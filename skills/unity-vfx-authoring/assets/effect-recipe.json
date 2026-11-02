@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "kind": "effect-recipe-template",
+  "status": "unconfigured",
+  "effectId": null,
+  "observed": {
+    "projectPath": null,
+    "editorRevision": null,
+    "packageLockSha256": null,
+    "pipeline": null,
+    "cameraRenderer": null,
+    "targetDevice": null,
+    "graphicsApi": null,
+    "referenceSources": [],
+    "assetBindings": [],
+    "artifacts": [],
+    "measurements": []
+  },
+  "intended": {
+    "purpose": null,
+    "space": null,
+    "technique": null,
+    "loop": null,
+    "durationSeconds": null,
+    "peakConcurrentInstances": null,
+    "layers": [],
+    "triggerOwner": null,
+    "stopCancelOwner": null,
+    "releaseOwner": null,
+    "constraints": [],
+    "acceptanceScenarios": [],
+    "attemptLimit": null
+  },
+  "unknown": [],
+  "checks": {
+    "assetPersistence": "not-run",
+    "importCompileConsole": "not-run",
+    "visual": "not-run",
+    "lifecycle": "not-run",
+    "performance": "not-run",
+    "playerDevice": "not-run"
+  },
+  "nextAction": null
+}

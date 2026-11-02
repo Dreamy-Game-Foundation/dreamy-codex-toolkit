@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-24T02:42:03.901526+00:00",
+  "scope": "Structural and repository regression validation only. No model semantic eval, Unity play or player build was run for this input-pack revision.",
+  "skill": "game-vibe-workflow",
+  "maturity": "experimental",
+  "checks": [
+    {
+      "command": "uv run --no-project --with pyyaml python C:/Users/trinh/.codex/skills/.system/skill-creator/scripts/quick_validate.py skills/gameplay/game-vibe-workflow",
+      "status": "pass"
+    },
+    {
+      "command": "npm test",
+      "status": "pass",
+      "nodeTests": 79,
+      "failed": 0,
+      "validatedSkills": 85,
+      "contextSizeAdvisories": 7
+    },
+    {
+      "command": "git diff --check",
+      "status": "pass"
+    }
+  ],
+  "referenceCount": 7,
+  "evalSpecifications": [
+    "vibe-original-existing-off",
+    "vibe-clone-rea-auto",
+    "vibe-rea-required-missing",
+    "vibe-complete-source-skip-rea",
+    "vibe-il2cpp-static-limit",
+    "vibe-asset-pilot",
+    "vibe-resume-receipt",
+    "vibe-negative-small-reskin",
+    "vibe-conflict-off-installed",
+    "vibe-final-build-front-end",
+    "vibe-thin-clone-input",
+    "vibe-original-input-hypothesis",
+    "vibe-conflict-no-build",
+    "vibe-thin-project-audit",
+    "vibe-negative-report-summary"
+  ],
+  "semanticEval": "not-run",
+  "unityVerification": "not-run",
+  "files": [
+    {
+      "path": "skills/gameplay/game-vibe-workflow/agents/openai.yaml",
+      "sha256": "b8065a14431d13c0fb9ba2d7ab9d52825d59b7e8f5de7849f23ab727ee811f52"
+    },
+    {
+      "path": "skills/gameplay/game-vibe-workflow/assets/asset-record.json",
+      "sha256": "baa906597ebda1692b45bbf9ccec6ff4493f4e675dca6363482fa5a976cc93f4"
+    },
+    {
+      "path": "skills/gameplay/game-vibe-workflow/assets/current-state.md",
+      "sha256": "4b2f7b5cb76a1de300ee721bd07b99ec9bc692c5a05b45cc62c26555a9a67a92"
+    },
+    {
+      "path": "skills/gameplay/game-vibe-workflow/assets/gate-result.json",
+      "sha256": "33c7a1b08a45f969d39cfde80022893d60107fc2fea55daed07342cb69228da3"
+    },
+    {
+      "path": "skills/gameplay/game-vibe-workflow/assets/project-brief.md",
+      "sha256": "3cf159648049db08c176bbfb07170181d3eeedee792dda12555906bd51e25b19"
+    },
+    {
+      "path": "skills/gameplay/game-vibe-workflow/assets/task-spec.md",
+      "sha256": "5f4443e350e5d9260ff93dd3e5f069e68c7823d50e1bf3949193c2585166e411"
+    },
+    {
+      "path": "skills/gameplay/game-vibe-workflow/references/asset-routing.md",
+      "sha256": "bcfbd1e4d8d3684be62b693545bda00b24c4450d770e4ddc53ae6c6c19c2b3b1"
+    },
+    {
+      "path": "skills/gameplay/game-vibe-workflow/references/input-pack.md",
+      "sha256": "9b8fa58d2cdc4d80aa51048e71f2a2bed6ba731a781fedf9ad5af38b1985ca7c"
+    },
+    {
+      "path": "skills/gameplay/game-vibe-workflow/references/rea.md",
+      "sha256": "0946f35f185a1580aefeb3e88d84363125888735f9191815369fc5f6437b3abf"
+    },
+    {
+      "path": "skills/gameplay/game-vibe-workflow/references/sources.md",
+      "sha256": "5068a35e48df2d09f031234200dd632f923a087863d9f94463152b88ebdcf770"
+    },
+    {
+      "path": "skills/gameplay/game-vibe-workflow/references/templates.md",
+      "sha256": "df821ee2d57d5e4299da0111fc3fc0568ca6649b63d2c8280d7bfdb90bb58fb1"
+    },
+    {
+      "path": "skills/gameplay/game-vibe-workflow/references/verification.md",
+      "sha256": "b5a51f893fb4f69d572630a0302f18e4334c0563432595cca4084d4f8b6a9a89"
+    },
+    {
+      "path": "skills/gameplay/game-vibe-workflow/references/workflow.md",
+      "sha256": "e2c4ad866ca6af28c0fbfe25e4830bb96d1299b6f3162a299c0e9f337a7e7652"
+    },
+    {
+      "path": "skills/gameplay/game-vibe-workflow/SKILL.md",
+      "sha256": "8742a66fd2015cfa9f2750e2b607d0aa99918bad917e697005ecff8e4f84f7d3"
+    }
+  ]
+}

@@ -9,7 +9,7 @@
 `toolkit.json` serves as the canonical source of truth for versioning, maturity, presets, modules, rules, skills, and harness metadata.
 
 <!-- DREAMY-CATALOG:START -->
-Catalog: **84 skills, 15 agent templates, 50 rules, 9 modules, 9 presets and 103 eval cases**. Counts describe the catalog, not measured model success.
+Catalog: **88 skills, 15 agent templates, 50 rules, 9 modules, 9 presets and 165 eval cases**. Counts describe the catalog, not measured model success.
 <!-- DREAMY-CATALOG:END -->
 
 For screenshot-based checks with existing editor/browser/device tools, see [Visual review](docs/visual-review.md). Temporary-image cleanup is an explicit project setup step.
@@ -21,6 +21,14 @@ npm install --global https://github.com/Dreamy-Game-Foundation/dreamy-codex-tool
 dreamy-kit --help
 # Then explicitly install/update the intended global or project target.
 ```
+
+For clone or original game slices, use the experimental [`game-vibe-workflow`](skills/gameplay/game-vibe-workflow/SKILL.md) in `unity-core`. It supports AI, existing and procedural assets, with optional REA investigation (`off` / `auto` / `required`); see the [Vietnamese usage guide](docs/game-vibe-workflow.vi.md). REA is not installed or required by the toolkit.
+
+For requested asset extraction from a supplied APK/XAPK or Unity build, use experimental [`game-asset-extraction`](skills/gameplay/game-asset-extraction/SKILL.md), standalone or from the vibe workflow. It includes source-preserving helpers and hash receipts; see the [Vietnamese extraction guide](docs/game-asset-extraction.vi.md). UnityPy/AssetRipper are optional task-local tools, and exported assets do not establish a runnable game.
+
+For a dedicated Unity clone workflow combining REA findings, AssetRipper recovery and target-project fidelity, use experimental [`game-clone`](skills/gameplay/game-clone/SKILL.md), also in `unity-core`. It reuses the two workflows above and preserves plan-only, slice, whole-game and tool-mode choices; see the [Vietnamese clone guide](docs/game-clone.vi.md). Tool setup and real-game verification remain separate tasks.
+
+For editable 2D/3D Unity effects, use experimental [`unity-vfx-authoring`](skills/unity-vfx-authoring/SKILL.md) in `unity-core`: brief, technique/asset selection, prefab authoring, preview and lifecycle/performance evidence. It supports Particle System, sprites, mesh/trails and capability-gated VFX Graph without requiring a new provider or package. See the [Vietnamese guide](docs/unity-vfx-authoring.vi.md) and [validation scope](docs/evidence/unity-vfx-authoring-validation.json).
 
 Current readiness and next steps:
 

@@ -1,0 +1,2 @@
+# Optional Unity export only; archive, JSON decoding and receipt verification use the standard library.
+UnityPy==1.25.4
