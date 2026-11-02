@@ -26,6 +26,14 @@ const runtimeSources = [
   "src/knowledge",
   "src/lib",
   "src/verification-plan.mjs",
+  "src/project-profile.js",
+  "src/schema-validation.js",
+  "harness/dreamy-harness",
+  "schemas/evidence.schema.json",
+  "schemas/project-profile.schema.json",
+  "schemas/verification-receipt.schema.json",
+  "compatibility/dreamy-packages.json",
+  "package.json",
 ];
 function treeHash(root, sources = [""]) {
   const parts = [];

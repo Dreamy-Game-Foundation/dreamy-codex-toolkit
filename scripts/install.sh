@@ -9,11 +9,14 @@ if ! command -v node >/dev/null 2>&1; then
     exit 1
 fi
 
+node -e 'process.exit(Number(process.versions.node.split(".")[0]) >= 20 ? 0 : 1)' || { echo "Node.js >=20 required; upgrade from https://nodejs.org/"; exit 1; }
+
 TARGET="${1:-.}"
 PRESET="${2:-dreamy-project}"
+HOOKS="${3:-off}"
 
 echo "🚀 Installing Dreamy Codex Toolkit (Target: $TARGET, Preset: $PRESET)..."
-npx --yes github:Dreamy-Game-Foundation/dreamy-codex-toolkit#main install --target "$TARGET" --preset "$PRESET"
+npx --yes github:Dreamy-Game-Foundation/dreamy-codex-toolkit#main install --target "$TARGET" --preset "$PRESET" --hooks "$HOOKS"
 
 echo ""
 echo "✅ Installation finished successfully!"

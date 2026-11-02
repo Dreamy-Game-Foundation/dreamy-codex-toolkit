@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Codex toolkit for Dreamy Unity projects and packages.",
   "scripts": {
-    "validate": "node src/cli.js validate && node scripts/validate-skills.mjs && node scripts/validate-acceptance.mjs && node scripts/validate-context-budget.mjs",
+    "validate": "node src/cli.js validate && node scripts/validate-skills.mjs && node scripts/validate-acceptance.mjs && node scripts/validate-context-budget.mjs && node scripts/catalog-summary.mjs --check",
     "test": "npm run validate && node scripts/test-unit.mjs",
     "test:node": "node scripts/test-unit.mjs",
     "eval:deterministic": "node src/cli.js eval",
@@ -32,6 +32,9 @@
     "benchmarks/adapters/",
     "benchmarks/cases/",
     "benchmarks/manifests/",
+    "benchmarks/fixtures/",
+    "benchmarks/graders/",
+    "benchmarks/candidates/",
     "compatibility/",
     "docs/",
     "evals/",
@@ -68,6 +71,7 @@
   "license": "MIT",
   "dependencies": {
     "ajv": "^8.20.0",
-    "ajv-formats": "^3.0.1"
+    "ajv-formats": "^3.0.1",
+    "saxes": "^6.0.0"
   }
 }

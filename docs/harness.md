@@ -36,3 +36,15 @@ dreamy-kit harness test-editmode C:\path\to\project
 ```
 
 Unity logs and test XML are written to a unique temporary evidence directory and listed with SHA-256 checksums. The repository includes a pinned `6000.4.12f1` vertical-slice fixture. The local Editor attempt on 2026-08-15 was correctly classified `degraded` because Unity licensing was unavailable, so there is still no successful compile/test evidence and `compatibility/unity.json.tested` remains empty.
+
+EditMode/PlayMode success requires well-formed NUnit 3 XML with a `test-run`
+root, `result="Passed"`, consistent total/passed/failed/skipped/inconclusive
+counts and matching individual `test-case` results. At least one test must
+pass; empty, all-skipped, inconclusive, missing or malformed results fail even
+when Unity exits zero. A successful suite may include skipped tests alongside
+passing tests. Evidence includes `testResults` with counts and the rejection
+reason. XML is limited to 32 MiB and 256 nesting levels; DOCTYPE is rejected.
+Licensing and timeout problems remain degraded infrastructure evidence.
+These parser/process contracts are fixture-tested; they do not establish real
+Unity Editor acceptance. `console` currently inspects a fresh batchmode log,
+not the Console of a running Editor.

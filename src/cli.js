@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 import { artifactDirectory } from "../scripts/lib/source-fingerprint.mjs";
 import { evolutionCommand } from "./evolution-cli.mjs";
+import { installWorkflow, removeWorkflow, checkWorkflowOwnership, contentHash } from "./consumer-install.mjs";
+import { inside as safeInside } from "./lib/local-data.mjs";
+import { consumerDoctor } from "./consumer-doctor.mjs";
 import { removeHooks, configureHooks } from "./hooks/install.mjs";
 import crypto from "node:crypto";
 import { execFileSync, spawnSync } from "node:child_process";
@@ -25,7 +28,9 @@ function parseArgs(argv) {
   const args = { target: defaultTarget, preset: "dreamy-project", dryRun: false, force: false, backup: false, runner: "catalog", json: false, harnessArgs: [] };
   for (let i = 0; i < rest.length; i += 1) {
     const arg = rest[i];
-    if (arg === "--target" || arg === "--preset" || arg === "--runner") {
+    if (arg === "--target" || arg === "--preset" || arg === "--runner" || arg === "--hooks") {
+      if (!rest[i + 1] || rest[i + 1].startsWith("--")) throw Error(`Missing value for ${arg}`);
+      if (arg === "--preset") args.presetProvided = true;
       args[arg.slice(2)] = rest[++i];
     } else if (arg === "--dry-run") {
       args.dryRun = true;
@@ -37,6 +42,8 @@ function parseArgs(argv) {
       args.backup = true;
     } else if (arg === "--fix") {
       args.fix = true;
+    } else if (arg === "--native") {
+      args.native = true;
     } else if (arg === "--json") {
       args.json = true;
     } else if (cmd === "harness") {
@@ -45,6 +52,7 @@ function parseArgs(argv) {
       throw new Error(`Unknown argument: ${arg}`);
     }
   }
+  if (args.hooks !== undefined && !["off", "minimal", "standard", "strict"].includes(args.hooks)) throw Error("--hooks must be off, minimal, standard or strict");
   return { cmd, args };
 }
 
@@ -153,10 +161,9 @@ function removeManagedBlock(text) {
   return `${text.slice(0, removeStart)}${text.slice(removeEnd)}`;
 }
 
-function renderManagedBlock(lineEnding = "lf", desired = null) {
+function renderManagedBlock(lineEnding = "lf") {
   const template = fs.readFileSync(path.join(root, "templates", "AGENTS.managed.md"), "utf8");
-  const names = (desired?.agents ?? []).map(a => path.basename(a.source, ".toml").replaceAll("-", "_"));
-  return normalizeLineEndings(template.replace("{{INSTALLED_AGENTS}}", names.length ? names.join(", ") : "See resolved installation; no agent capability is assumed."), lineEnding);
+  return normalizeLineEndings(template, lineEnding);
 }
 
 function stateManagedBlockHash(state) {
@@ -292,7 +299,7 @@ function harnessCapability() {
 function runHarnessCommand(args) {
   const harnessArgs = [...args.harnessArgs];
   if (harnessArgs.length === 0) harnessArgs.push("help");
-  if (harnessArgs.length === 1) harnessArgs.push(args.target);
+  if (harnessArgs.filter(a => !a.startsWith("--")).length === 1) harnessArgs.push(args.target);
   const result = spawnSync(process.execPath, [path.join(root, "harness", "dreamy-harness"), ...harnessArgs], {
     cwd: root,
     stdio: "inherit"
@@ -432,6 +439,7 @@ function writeManagedState(target, preset, profile, desired, beforeHash, afterHa
     skills: desired.skills.map((entry) => entry.destination),
     agents: desired.agents.map((entry) => entry.destination),
     managedFiles: [target.agentsMd],
+    artifactHashes: Object.fromEntries([...desired.agents, ...desired.skills].map(e => [e.destination, contentHash(e.destination)])),
     managedBlockHash,
     managedTemplateVersion: "schema=1",
     lineEnding,
@@ -441,15 +449,48 @@ function writeManagedState(target, preset, profile, desired, beforeHash, afterHa
   });
 }
 
+function checkOwnedAncestors(base, file) { safeInside(base, path.relative(base, file)); }
+function checkArtifacts(target, state, desired = { agents: [], skills: [] }) {
+  const owned = [...(state?.agents ?? state?.agentFiles ?? []), ...(state?.skills ?? state?.skillDirs ?? [])];
+  for (const file of [...new Set([...owned, ...desired.agents.map(e => e.destination), ...desired.skills.map(e => e.destination)])]) {
+    const relative = path.relative(target.agentsDir, file);
+    const skillRelative = path.relative(target.skillsDir, file);
+    const contained = rel => rel && rel !== ".." && !rel.startsWith(`..${path.sep}`) && !path.isAbsolute(rel);
+    if (!contained(relative) && !contained(skillRelative)) throw Error(`Artifact outside managed roots: ${file}`);
+    const ownerRoot = contained(relative) ? target.agentsDir : target.skillsDir;
+    checkOwnedAncestors(ownerRoot, file);
+    if (!fs.existsSync(file)) continue;
+    if (!owned.includes(file)) throw Error(`Unowned artifact collision: ${file}`);
+    if (state?.artifactHashes?.[file] && contentHash(file) !== state.artifactHashes[file]) throw Error(`Owned artifact checksum drift: ${file}; preserve edits first`);
+  }
+}
+function installHooks(args, target, dryRun = false) {
+  if (target.kind === "global") {
+    if (args.hooks && args.hooks !== "off") throw Error("Global install does not install hooks; configure --target PROJECT separately");
+    return { profile: "off", configuration: "project-only", trust: "not-probed", operational: false };
+  }
+  const file = path.join(target.stateDir, "hook-policy.json");
+  const policy = fs.existsSync(file) ? readJson(file) : null;
+  const profile = args.hooks ?? policy?.profile ?? "off";
+  if (profile === "off" && !policy) return { profile, configuration: "not-installed", trust: "not-probed", operational: false };
+  const result = configureHooks(root, target.root, { ...policy, profile, dryRun });
+  return { ...result, configuration: profile === "off" ? "not-installed" : "detected", trust: profile === "off" ? "not-required" : result.trust };
+}
+
 function installProject(args) {
   const target = resolveTarget(args.target);
   const presetPath = path.join(root, "presets", `${args.preset}.json`);
   if (!fs.existsSync(presetPath)) throw new Error(`Unknown preset: ${args.preset}`);
 
+  const statePath = path.join(target.stateDir, "install-state.json");
+  if (fs.existsSync(statePath)) return { ...updateProject(args), action: "install" };
   const profile = profileForTarget(target, args.preset);
   const desired = desiredInstall(target, args.preset, profile);
+  checkWorkflowOwnership(target);
+  checkArtifacts(target, null, desired);
+  const hookPlan = installHooks(args, target, true);
   if (args.dryRun) {
-    return { action: "install", target: target.root, targetKind: target.kind, preset: args.preset, profile, resolvedModules: desired.resolvedModules, skills: desired.skills.length, agents: desired.agents.length, dryRun: true };
+    return { action: "install", target: target.root, targetKind: target.kind, preset: args.preset, profile, resolvedModules: desired.resolvedModules, skills: desired.skills.length, agents: desired.agents.length, hooks: hookPlan, entrypoint: "Tools/dreamy-kit", dryRun: true };
   }
 
   fs.mkdirSync(target.root, { recursive: true });
@@ -463,6 +504,8 @@ function installProject(args) {
     validateManagedBlock(existingAgents);
   }
 
+  const workflow = installWorkflow(root, target);
+  const hooks = installHooks(args, target);
   const stateDir = target.stateDir;
   fs.mkdirSync(stateDir, { recursive: true });
   writeJson(path.join(stateDir, "project-profile.json"), profile);
@@ -487,12 +530,13 @@ function installProject(args) {
 
   writeManagedState(target, args.preset, profile, desired, beforeHash, afterHash, hashManagedBlock(nextAgents), lineEnding);
 
-  return { action: "install", target: target.root, targetKind: target.kind, preset: args.preset, status: "ok", adoptedExistingBlock: adoptingExistingBlock };
+  return { action: "install", target: target.root, targetKind: target.kind, preset: args.preset, status: "ok", adoptedExistingBlock: adoptingExistingBlock, workflow, hooks };
 }
 
 function uninstallProject(args) {
   const target = resolveTarget(args.target);
   const action = args.purge ? "purge" : "uninstall";
+  checkWorkflowOwnership(target);
   if (args.dryRun) return { action, target: target.root, targetKind: target.kind, dryRun: true };
 
   const statePath = path.join(target.stateDir, "install-state.json");
@@ -502,16 +546,19 @@ function uninstallProject(args) {
       if (!args.force && !args.purge) throw new Error("Missing install state; rerun with --force after reviewing AGENTS.md");
       fs.writeFileSync(target.agentsMd, removeDreamyManagedFragments(content), "utf8");
     }
-    if (args.purge || args.force || target.kind === "global") {
+    if (args.purge || args.force) {
       const fallback = knownManagedArtifacts(target);
       for (const file of fallback.agents) if (fs.existsSync(file)) fs.rmSync(file, { force: true });
       for (const dir of fallback.skills) if (fs.existsSync(dir)) fs.rmSync(dir, { recursive: true, force: true });
     }
     if (target.kind === "project") removeHooks(target.root);
+    removeWorkflow(target);
     cleanupUninstallState(target, args.purge);
     return { action, target: target.root, targetKind: target.kind, status: "ok", alreadyRemoved: true };
   }
   const state = readJson(statePath);
+  checkWorkflowOwnership(target);
+  checkArtifacts(target, state);
 
   const agentsMd = target.agentsMd;
   if (fs.existsSync(agentsMd)) {
@@ -551,12 +598,13 @@ function uninstallProject(args) {
   for (const dir of state.skills ?? state.skillDirs ?? []) {
     if (fs.existsSync(dir)) fs.rmSync(dir, { recursive: true, force: true });
   }
-  if (args.purge || target.kind === "global") {
+  if (args.purge) {
     const fallback = knownManagedArtifacts(target);
     for (const file of fallback.agents) if (fs.existsSync(file)) fs.rmSync(file, { force: true });
     for (const dir of fallback.skills) if (fs.existsSync(dir)) fs.rmSync(dir, { recursive: true, force: true });
   }
 
+  removeWorkflow(target);
   cleanupUninstallState(target, args.purge);
 
   return { action, target: target.root, targetKind: target.kind, status: "ok" };
@@ -571,11 +619,14 @@ function updateProject(args) {
     throw new Error("Missing install state; run dreamy-kit install first");
   }
   const state = readJson(statePath);
-  const preset = args.preset === "dreamy-project" ? state.preset ?? args.preset : args.preset;
+  const preset = args.presetProvided ? args.preset : state.preset ?? args.preset;
   const profile = profileForTarget(target, preset);
   const desired = desiredInstall(target, preset, profile);
+  checkWorkflowOwnership(target);
+  checkArtifacts(target, state, desired);
+  const hookPlan = installHooks(args, target, true);
   if (args.dryRun) {
-    return { action: "update", target: target.root, targetKind: target.kind, fromVersion: state.toolkitVersion, toVersion: readJson(path.join(root, "toolkit.json")).version, preset, resolvedModules: desired.resolvedModules, skills: desired.skills.length, agents: desired.agents.length, dryRun: true };
+    return { action: "update", target: target.root, targetKind: target.kind, fromVersion: state.toolkitVersion, toVersion: readJson(path.join(root, "toolkit.json")).version, preset, resolvedModules: desired.resolvedModules, skills: desired.skills.length, agents: desired.agents.length, hooks: hookPlan, entrypoint: "Tools/dreamy-kit", dryRun: true };
   }
   const currentAgents = state.agents ?? state.agentFiles ?? [];
   const currentSkills = state.skills ?? state.skillDirs ?? [];
@@ -592,10 +643,8 @@ function updateProject(args) {
   if (args.backup && fs.existsSync(agentsMd)) fs.copyFileSync(agentsMd, `${agentsMd}.dreamy-backup`);
 
   const lineEnding = detectLineEnding(content || renderManagedBlock(state.lineEnding ?? "lf"));
-  if (target.kind === "project" && fs.existsSync(path.join(target.stateDir, "hook-policy.json"))) {
-    const policy = readJson(path.join(target.stateDir, "hook-policy.json"));
-    configureHooks(root, target.root, policy);
-  }
+  const workflow = installWorkflow(root, target);
+  const hooks = installHooks(args, target);
   const nextAgents = replaceManagedBlock(content, renderManagedBlock(lineEnding, desired));
   fs.writeFileSync(agentsMd, nextAgents, "utf8");
 
@@ -610,11 +659,11 @@ function updateProject(args) {
   const beforeHash = state.schemaVersion === 1 ? state.checksums?.before ?? "" : state.checksums?.["AGENTS.md"]?.before ?? "";
   const afterHash = fs.existsSync(agentsMd) ? sha256File(agentsMd) : "";
   writeManagedState(target, preset, profile, desired, beforeHash, afterHash, hashManagedBlock(nextAgents), lineEnding);
-  return { action: "update", target: target.root, targetKind: target.kind, status: "ok", fromVersion: state.toolkitVersion, preset };
+  return { action: "update", target: target.root, targetKind: target.kind, status: "ok", fromVersion: state.toolkitVersion, preset, workflow, hooks };
 }
 
 async function runInteractiveSetup(args) {
-  if (!process.stdin.isTTY) {
+  if (!process.stdin.isTTY || args.json || args.dryRun) {
     console.log(JSON.stringify(installProject(args)));
     return;
   }
@@ -656,8 +705,16 @@ async function runInteractiveSetup(args) {
     else if (pChoice === "5") preset = "core";
     else if (pChoice) preset = pChoice;
 
+    const policyPath = path.join(target.stateDir, "hook-policy.json");
+    let hooks = args.hooks ?? (fs.existsSync(policyPath) ? readJson(policyPath).profile : undefined);
+    if (target.kind === "project") {
+      const answer = await rl.question(`Hooks off/minimal/standard/strict (default: ${hooks ?? "off"}; native review required): `);
+      hooks = answer.trim() || hooks || "off";
+      if (!["off", "minimal", "standard", "strict"].includes(hooks)) throw Error("Invalid hook profile");
+    }
     console.log(`\n🚀 Installing preset '${preset}' to '${target.root}'...`);
-    const result = installProject({ target: targetPath, preset, dryRun: false });
+    const result = installProject({ ...args, target: targetPath, preset, presetProvided: !!pChoice || args.presetProvided, hooks });
+    console.log(JSON.stringify({ workflow: result.workflow, hooks: result.hooks }));
     console.log(`\n✅ Success! Dreamy Codex agents & skills have been installed.`);
     console.log(`📄 Managed block written to: ${target.agentsMd}\n`);
   } finally {
@@ -684,6 +741,8 @@ function formatInstallOutput(result) {
     console.log("     ✔ Configured Codex agents in .codex/agents/");
     console.log("     ✔ Configured Dreamy skills in .agents/skills/");
     console.log("     ✔ Generated project profile & install state\n");
+    console.log(`     Entry: ${result.workflow?.entrypoint}; Windows: ${result.workflow?.windowsEntrypoint}`);
+    console.log(`     Hooks: ${result.hooks?.profile ?? "off"}; trust: ${result.hooks?.trust ?? "not-probed"}; operational: false`);
   }
   printCommandBlock("Next commands", [
     `dreamy-kit doctor${result.targetKind === "global" ? " --target global" : ""}`,
@@ -724,7 +783,8 @@ function formatUpdateOutput(result) {
   } else {
     console.log("\n  ✨ UPDATE COMPLETED SUCCESSFULLY!");
     if (result.adoptedExistingBlock) console.log("     ✔ Rebuilt missing install state from existing Dreamy block");
-    console.log("     ✔ Refreshed all managed Dreamy agents and skills\n");
+    console.log("     ✔ Refreshed managed runtime, workflow, agents and skills\n");
+    console.log(`     Hooks: ${result.hooks?.profile ?? "off"}; trust: ${result.hooks?.trust ?? "not-probed"}; operational: false`);
   }
   printCommandBlock("Next commands", [
     `dreamy-kit doctor${result.targetKind === "global" ? " --target global" : ""}`,
@@ -766,15 +826,22 @@ function printCommandBlock(title, commands) {
 }
 
 function suggestedDoctorCommands(doc) {
-  const targetArg = doc.targetKind === "global" ? " --target global" : "";
+  const quote = value => process.platform === "win32" ? `"${value}"` : `'${value.replaceAll("'", "'\\''")}'`;
+  const localEntry = doc.capabilities.cli.entrypointStatus === "available";
+  const entry = localEntry
+    ? process.platform === "win32" ? quote(path.join(doc.target, "Tools/dreamy-kit.cmd")) : `bash ${quote(path.join(doc.target, "Tools/dreamy-kit"))}`
+    : `${quote(process.execPath)} ${quote(path.join(root, "src/cli.js"))}`;
+  const targetArg = doc.targetKind === "global" ? " --target global" : localEntry ? "" : ` --target ${quote(doc.target)}`;
   if (doc.status === "ok") {
-    return [`dreamy-kit update${targetArg}`, `dreamy-kit uninstall${targetArg}`];
+    return [`${entry} doctor${targetArg} --json`, `${entry} update${targetArg} --dry-run --json`];
   }
-  const hasStateProblem = doc.checks.some((check) => check.id === "install-state" || check.id === "managed-block");
+  const hasStateProblem = doc.checks.some((check) => ["install-state", "managed-block"].includes(check.id) && check.severity === "ERROR");
   if (hasStateProblem) {
-    return [`dreamy-kit uninstall${targetArg} --force`, `dreamy-kit install${targetArg}`];
+    // Ownership errors require inspection, not an automatic destructive reset.
+    return [`${entry} doctor${targetArg} --json`, `${entry} update${targetArg} --dry-run --json`];
   }
-  return [`dreamy-kit doctor${targetArg} --json`, `dreamy-kit update${targetArg}`];
+  const action = doc.checks.some(check => check.id === "install-state" && check.message === "not installed") ? "install" : "update";
+  return [`${entry} doctor${targetArg} --json`, `${entry} ${action}${targetArg} --dry-run --json`];
 }
 
 function formatDetectOutput(profile) {
@@ -824,6 +891,8 @@ async function main() {
   } else if (cmd === "doctor") {
     await validateArtifacts();
     const target = resolveTarget(args.target);
+    const existingState = path.join(target.stateDir, "install-state.json");
+    if (fs.existsSync(existingState) && !args.presetProvided) args.preset = readJson(existingState).preset || args.preset;
     const toolkit = readJson(path.join(root, "toolkit.json"));
     const pkg = readJson(path.join(root, "package.json"));
     const profile = profileForTarget(target, args.preset);
@@ -876,15 +945,19 @@ async function main() {
         add(`dreamy-${pkg.name}`, pkg.compatibilityStatus === "drift" ? "WARN" : "INFO", `${pkg.declaredVersion ?? pkg.resolvedVersion ?? "unknown"} ${pkg.compatibilityStatus}`);
       }
     }
+    const consumer = await consumerDoctor(target, { native: args.native });
+    for (const [id, value] of Object.entries(consumer)) add(id, value.status === "available" && value.entrypointStatus !== "missing" ? "INFO" : "WARN", JSON.stringify(value));
     const harness = harnessCapability();
     add("harness", harness.available ? "INFO" : "ERROR", harness.path);
     add("harness-unity", harness.unity === "configured" ? "INFO" : "WARN", harness.unityExecutable || "Set DREAMY_UNITY_PATH or UNITY_PATH");
     const status = checks.some((check) => check.severity === "ERROR") ? "error" : checks.some((check) => check.severity === "WARN") ? "warn" : "ok";
     const docRes = {
       status,
+      target: target.root,
       targetKind: target.kind,
       checks,
       capabilities: {
+        ...consumer,
         codexHome: codexHome(),
         userSkills: path.join(agentsHome(), "skills"),
         projectSkills: target.skillsDir,
@@ -930,21 +1003,21 @@ async function main() {
     else formatUpdateOutput(res);
   } else {
     console.log(`dreamy-kit commands:
-  context report | hooks configure/doctor/probe/smoke | lessons list/record/verify/recall/forget/prune/export
+  context report | hooks configure/doctor/probe/smoke | lessons list/show/record/verify/recall/explain/forget/prune/export
   task checkpoint/verify | skills draft/propose/prepare-evaluation/revise/promote | rollout snapshot
     (see docs/toolkit-evolution.md and docs/toolkit-evolution-handoff.vi.md)
   setup / init
   validate
   harness [operation] [target]
   detect [--target PATH] [--json]
-  install [--target PATH|global] [--preset NAME] [--dry-run] [--json]
+  install [--target PATH|global] [--preset NAME] [--hooks off|minimal|standard|strict] [--dry-run] [--json]
   uninstall [--target PATH|global] [--dry-run] [--json]
   purge [--dry-run] [--json]
-  doctor [--target PATH] [--json] [--fix]
+  doctor [--target PATH] [--json] [--native] [--fix]
   list [--resolved] [--target PATH|global] [--preset NAME]
   eval [--runner catalog]
   benchmark (use npm run benchmark -- --manifest PATH --command PATH)
-  update [--target PATH|global] [--preset NAME] [--dry-run] [--json]`);
+  update [--target PATH|global] [--preset NAME] [--hooks off|minimal|standard|strict] [--dry-run] [--json]`);
   }
 }
 

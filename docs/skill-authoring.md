@@ -12,3 +12,12 @@ Size is a budget, not a quality score. Move conditional material to references w
 Keep package API claims tied to compatibility/source evidence. Preserve user scope; project preferences are not global rules. Do not bake model choice, automatic delegation or external actions into skill activation.
 
 For behavior-changing candidates, prepare positive cases, near-miss negatives and a conflict case. Structural validation/keyword matches do not establish behavioral improvement. Use the existing benchmark runner, retain provenance and inspect actual artifacts. See [evolution workflow](toolkit-evolution.md) for candidates, promotion, bounded recall and rollback.
+
+The five compact drafts in `benchmarks/candidates/compact-pilot/` are outside the
+discoverable skill catalog and are not installed. Their inventory freezes
+baseline/candidate source hashes and records byte reduction only. Run
+`node scripts/validate-compact-pilot.mjs` before preparing a trial; source drift
+requires refreshing and reviewing that inventory. The 20 predefined decision
+probes have development/holdout splits and do not establish coding quality or
+automatic runtime discovery. Do not replace canonical skills until relevant
+behavioral and artifact gates have been reviewed.

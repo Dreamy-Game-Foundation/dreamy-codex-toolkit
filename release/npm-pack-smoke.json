@@ -1,5 +1,21 @@
 {
+  "schemaVersion": 1,
   "status": "ok",
-  "tarball": "dreamy-codex-toolkit-0.1.0-alpha.2.tgz",
-  "sha256": "c1be5dfb5771e97cba9e5a854585bfd7f1208cc905a344e7e4c3115465c7fd6e"
+  "toolkitVersion": "0.1.0-alpha.4",
+  "packageVersion": "0.1.0-alpha.4",
+  "sourceCommit": "507b3f3ee0a3869800dc1546af40d6b31ff4dd9a",
+  "sourceFingerprint": "bf6e4ae41feb6ed6dc06ffc04d446a3d2f89b198209c15e8b29f0564113134bb",
+  "runId": null,
+  "platform": "linux",
+  "nodeVersion": "v24.19.0",
+  "tarball": "dreamy-codex-toolkit-0.1.0-alpha.4.tgz",
+  "tarballSha256": "3bd06d3cec3aad7e731922065660815f6690b1176e9f049a8ac203e87f98550e",
+  "packedCliChecks": {
+    "validate": "pass",
+    "context": "pass",
+    "hookFixture": "pass",
+    "portableConsumer": "pass"
+  },
+  "startedAt": "2026-10-27T08:55:49.329Z",
+  "completedAt": "2026-10-27T08:55:50.926Z"
 }

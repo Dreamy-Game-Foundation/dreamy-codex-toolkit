@@ -112,3 +112,33 @@ test("asmdef inspection parses graph and rejects Runtime to Editor references", 
   assert.equal(evidence.status, "fail");
   assert.deepEqual(evidence.profile.asmdefs.runtimeEditorViolations, [{ assembly: "Fixture.Runtime", reference: "Fixture.Editor" }]);
 });
+
+test("Unity process evidence rejects empty/skipped XML and retains execution failure classification", { skip: process.platform === "win32" ? "POSIX fake executable; parser contracts run on all platforms" : false }, t => {
+  const project = unityFixture();
+  t.after(() => fs.rmSync(project, { recursive: true, force: true }));
+  const executable = path.join(project, "fake-editor");
+  const quote = value => `'${value.replaceAll("'", "'\\''")}'`;
+  fs.writeFileSync(executable, `#!/bin/sh\nexec ${quote(process.execPath)} ${quote(path.join(root, "tests/fixtures/unity/fake-editor.mjs"))} "$@"\n`, { mode: 0o755 });
+  const xmlFile = path.join(project, "results.xml");
+  const positive = '<test-run result="Passed" total="1" passed="1" failed="0" skipped="0" inconclusive="0"><test-suite><test-case result="Passed"/></test-suite></test-run>';
+  const env = { DREAMY_UNITY_PATH: executable, UNITY_PATH: "", FAKE_UNITY_XML: xmlFile, FAKE_UNITY_DELAY: "", FAKE_UNITY_EXIT: "0", FAKE_UNITY_LOG: "", DREAMY_UNITY_TIMEOUT_MS: "10000" };
+  fs.writeFileSync(xmlFile, positive);
+  const success = run(["test-editmode", project], 0, env);
+  assert.equal(success.testResults.counts.passed, 1);
+  for (const [xml, reason] of [
+    ['<test-run result="Skipped" total="0" passed="0" failed="0" skipped="0"/>', /count/],
+    ['<test-run result="Skipped" total="1" passed="0" failed="0" skipped="1" inconclusive="0"><test-case result="Skipped"/></test-run>', /no tests/],
+    [positive.slice(0, -1), /Invalid Unity test XML/],
+  ]) {
+    fs.writeFileSync(xmlFile, xml);
+    const failed = run(["test-playmode", project], 1, env);
+    assert.equal(failed.status, "fail");
+    assert.match(failed.summary, reason);
+    assert.ok(failed.artifacts.some(a => a.kind === "unity-test-results"));
+  }
+  fs.writeFileSync(xmlFile, positive);
+  assert.equal(run(["test-editmode", project], 1, { ...env, FAKE_UNITY_EXIT: "7" }).status, "fail");
+  assert.match(run(["test-editmode", project], 1, { ...env, FAKE_UNITY_XML: "" }).summary, /unavailable/);
+  assert.match(run(["test-editmode", project], 2, { ...env, FAKE_UNITY_LOG: "No valid Unity Editor license" }).degradedReason, /licensing/);
+  assert.match(run(["test-editmode", project], 2, { ...env, FAKE_UNITY_DELAY: "5000", DREAMY_UNITY_TIMEOUT_MS: "150" }).degradedReason, /timed out/);
+});

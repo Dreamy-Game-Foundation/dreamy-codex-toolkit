@@ -11,7 +11,7 @@ import {
   recordPath,
 } from "./knowledge/store.mjs";
 import { verifyLesson } from "./knowledge/eligibility.mjs";
-import { recall } from "./knowledge/recall.mjs";
+import { recall, explainLesson } from "./knowledge/recall.mjs";
 import { writeCheckpoint, runVerification } from "./verification-plan.mjs";
 import {
   proposeSkill,
@@ -140,6 +140,8 @@ export async function evolutionCommand(toolkitRoot, argv) {
     result = verifyLesson(root, pos[0], options.receipt);
   else if (group === "lessons" && action === "show")
     result = readJson(recordPath(root, "lessons", pos[0]));
+  else if (group === "lessons" && action === "explain")
+    result = explainLesson(root, pos[0], { query: options.query, session: options.session || "explicit" });
   else if (group === "lessons" && action === "forget")
     result = forgetLesson(root, pos[0]);
   else if (group === "lessons" && action === "prune")

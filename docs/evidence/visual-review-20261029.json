@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "kind": "visual-review-local-verification",
+  "observedAt": "2026-10-29T14:51:19.394392+00:00",
+  "skill": "visual-review",
+  "maturity": "experimental",
+  "sourceHashes": {
+    "skills/production/visual-review/SKILL.md": "316420bde5d944408e4660693043ef5a557d2d2e5401d34519a29cbb45a33084",
+    "skills/production/visual-review/references/cleanup.md": "ef576a234f4c39c157a10e7aeeb2389c52266bdd62008e39ada901cb74400555",
+    "skills/production/visual-review/references/workflow.md": "81f279a219f8abcedfa90173f5f12c40da94c31f45e6bade0f22b51960684dcc",
+    "skills/production/visual-review/scripts/visual-review.mjs": "7543d26925807d8ab42747c08e8cda4173fa93665e5b2dd75bcb30ab8045832c",
+    "tests/unit/visual-review.test.mjs": "dbc98b10cef5cc4823c541bc8af94015c9931725429b58710e90175d7e6a34f5",
+    "skills/index.json": "c5beef8167a87737d1c88fd4752afb597285ae149046a9faa8b163282311474c",
+    "modules/production/module.json": "326081937fd5e4adb9839b527fe28e90dda78a0b2f92a6f72d60e07858d8b157",
+    "evals/catalog.json": "6aef58f3c755e76d0e79b86e80dcbcf1fd910fd84d0ade70a4faccd9999775f4",
+    "scripts/pack-smoke.mjs": "93c1999921bd1f1af6ec99a328037244a557d574f86c208a5981e8a113b4ef49"
+  },
+  "unit": {
+    "command": "npm test",
+    "exitCode": 0,
+    "total": 140,
+    "pass": 139,
+    "fail": 0,
+    "skipped": 1,
+    "platform": "linux",
+    "node": "v24.19.0",
+    "visualReviewCases": 15,
+    "logSha256": "e836c3b22ce0b72264cbf1b7faaf8d4a22f2e35d9e3581b1b3c0695f7f9ab11c",
+    "logTail": "✔ installed hook runtime agrees on checker freshness and rejects a stale static receipt (195.863087ms)\n✔ standalone helper stores real file bytes outside assets and Git ignores generated images (118.963224ms)\n✔ matching successful commit deletes only registered images and retains receipt and original (130.670985ms)\n✔ partial staging and unrelated commits preserve review images (129.434304ms)\n✔ before screenshot can use old source; after source drift cannot be finalized (92.610222ms)\n✔ modified image, pinned run and active capture are preserved (154.265058ms)\n✔ tracked review files and foreign hook managers are rejected without overwriting them (83.461447ms)\n✔ hooks preserve images on failed commit and clean after a normal successful commit (221.623312ms)\n✔ commit tree changed after ticket and amended commits cannot trigger cleanup (119.759583ms)\n✔ first commit and deleted source inputs can bind cleanup (137.882136ms)\n✔ sibling worktrees sharing Git hooks clean only their own store (300.229867ms)\n✔ unsafe paths, non-images and symlink screenshots cannot enter cleanup ownership (66.334193ms)\n✔ teardown preserves screenshots and user ignore rules and stops automatic cleanup (72.636735ms)\n✔ standalone CLI has no toolkit dependency and rejects incomplete arguments (110.473127ms)\n✔ two tasks in one worktree clean only the committed input, including CRLF normalization (120.321855ms)\n✔ capture-tool output in the run directory is adopted once and cleaned without importing other files (100.844305ms)\nℹ tests 140\nℹ suites 0\nℹ pass 139\nℹ fail 0\nℹ cancelled 0\nℹ skipped 1\nℹ todo 0\nℹ duration_ms 6215.196223"
+  },
+  "skillStructure": {
+    "command": "python3 /home/tutrinh/.codex/skills/.system/skill-creator/scripts/quick_validate.py skills/production/visual-review",
+    "status": "pass"
+  },
+  "catalogValidation": {
+    "command": "npm run eval:deterministic",
+    "kind": "catalog-validation",
+    "output": "\n> dreamy-codex-toolkit@0.1.0-alpha.4 eval:deterministic\n> node src/cli.js eval\n\n{\"schemaVersion\":1,\"kind\":\"catalog-validation\",\"status\":\"validated\",\"runner\":\"catalog\",\"generatedAt\":\"2026-10-29T14:50:20.662Z\",\"catalogHash\":\"6aef58f3c755e76d0e79b86e80dcbcf1fd910fd84d0ade70a4faccd9999775f4\",\"coverage\":\"v1-seed\",\"catalogCases\":103,\"validatedCases\":103,\"semantic\":{\"status\":\"not-run\",\"reason\":\"Catalog validation does not execute an agent or grade semantic output.\"},\"runId\":null}\n",
+    "semanticQuality": "not-established"
+  },
+  "packageEvidence": "artifacts/visual-review-20261029/npm-pack-smoke.json",
+  "captureAcceptance": "not-run",
+  "clientPreviewAcceptance": "not-run",
+  "limitations": [
+    "Synthetic PNG files and real temporary Git repositories test helper mechanics, not rendered output.",
+    "No hooks or review store were installed in the working repository.",
+    "No global skill/config installation, model calls or public sharing.",
+    "Only declared source inputs are bound to cleanup; external runtime state is not proven."
+  ]
+}

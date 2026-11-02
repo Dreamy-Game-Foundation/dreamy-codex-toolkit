@@ -7,6 +7,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { inspectProject } from "../src/project-profile.js";
 import { createSchemaValidator, validateWithSchema } from "../src/schema-validation.js";
+import { readUnityTestResults } from "../src/lib/unity-test-results.mjs";
 
 const toolkitRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const rawArgs = process.argv.slice(2);
@@ -194,10 +195,11 @@ function unityOperation(operation) {
     json({ operation, target, status: "degraded", summary: degradedReason, unityVersion: profile.engine?.version ?? null, unityExecutable: unity, manifestHash: manifest, packagesLockHash: lock, degradedReason, diagnostics: [degradedReason], errors, warnings, exceptions, artifacts, profileHash: profileHash(profile) }, 2);
     return;
   }
-  const testResultPassed = !resultFile || (fs.existsSync(resultFile) && /<test-run\b[^>]*\bfailed="0"/i.test(fs.readFileSync(resultFile, "utf8")));
+  const testResults = resultFile ? readUnityTestResults(resultFile) : null;
+  const testResultPassed = !testResults || testResults.pass;
   const passed = result.status === 0 && errors.length === 0 && testResultPassed;
   const failureDiagnostic = resultFile && !testResultPassed
-      ? "Unity test result is missing or contains failures"
+      ? testResults.reason
       : `Unity exited ${result.status ?? "without an exit code"}`;
   json({
     operation,
@@ -212,6 +214,7 @@ function unityOperation(operation) {
     errors,
     warnings,
     exceptions,
+    ...(testResults ? { testResults } : {}),
     artifacts,
     profileHash: profileHash(profile)
   }, passed ? 0 : 1);

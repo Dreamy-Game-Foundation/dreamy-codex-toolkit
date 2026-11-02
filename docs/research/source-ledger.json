@@ -1,6 +1,13 @@
 {
   "schemaVersion": 1,
   "retrievedAt": "2026-08-13T00:00:00+07:00",
+  "researchSnapshots": [
+    {
+      "retrievedAt": "2026-10-29",
+      "file": "docs/evidence/toolkit-audit-20261029.json",
+      "purpose": "Current upstream metadata and scoped source inspection; historical repository entries below retain their original provenance."
+    }
+  ],
   "repositories": [
     {
       "id": "everything-claude-unity",

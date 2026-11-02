@@ -1605,6 +1605,36 @@
       ],
       "references": 0,
       "evalCases": []
+    },
+    {
+      "name": "visual-review",
+      "category": "production",
+      "priority": "P1",
+      "file": "skills/production/visual-review/SKILL.md",
+      "depth": "D3",
+      "maturity": "experimental",
+      "owners": [
+        "dreamy_unity_editor",
+        "dreamy_tester"
+      ],
+      "requiresEvidence": [
+        "visual-criterion",
+        "actual-screenshot",
+        "source-snapshot",
+        "client-preview-status"
+      ],
+      "references": 2,
+      "evalCases": [
+        "visual-review-result",
+        "visual-review-console-only",
+        "visual-review-logic-only",
+        "visual-review-export-missing",
+        "visual-review-commit-failed",
+        "visual-review-partial-staging",
+        "visual-review-other-client",
+        "visual-review-preserve-hooks"
+      ],
+      "authoringProfile": "compact-workflow"
     }
   ]
 }

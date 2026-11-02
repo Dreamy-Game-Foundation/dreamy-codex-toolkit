@@ -1,0 +1,14 @@
+#!/bin/sh
+# Managed by Dreamy Codex Toolkit. Resolve everything relative to this entrypoint.
+set -eu
+node_bin=${DREAMY_NODE_BINARY:-node}
+if ! command -v "$node_bin" >/dev/null 2>&1; then
+  echo 'Dreamy: Node.js >=20 is required. Install from https://nodejs.org/, add node to PATH, or set DREAMY_NODE_BINARY to its executable.' >&2
+  exit 2
+fi
+if ! "$node_bin" -e 'process.exit(Number(process.versions.node.split(".")[0]) >= 20 ? 0 : 1)'; then
+  echo 'Dreamy: Node.js >=20 is required. Upgrade Node or set DREAMY_NODE_BINARY.' >&2
+  exit 2
+fi
+base=$(CDPATH= cd -- "${0%/*}/.." && pwd)
+exec "$node_bin" "$base/.dreamy-codex/cli-runtime/src/project-entry.mjs" "$@"

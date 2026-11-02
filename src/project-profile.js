@@ -24,12 +24,34 @@ function walk(root, predicate, result = []) {
     throw error;
   }
   for (const entry of entries) {
-    if ([".cache", ".git", ".gradle", ".idea", ".local", ".npm", ".vscode", "Library", "Temp", "Logs", "obj", "Build", "Builds", "UserSettings", "node_modules"].includes(entry.name)) continue;
+    if ([".cache", ".git", ".gradle", ".idea", ".local", ".npm", ".vscode", ".dreamy", ".dreamy-codex", ".agents", ".codex", "Library", "Temp", "Logs", "obj", "Build", "Builds", "UserSettings", "node_modules"].includes(entry.name)) continue;
     const full = path.join(root, entry.name);
     if (entry.isDirectory()) walk(full, predicate, result);
     else if (entry.isFile() && predicate(full)) result.push(full);
   }
   return result;
+}
+
+// Keep implicit verification inputs aligned with the files the inspector reads.
+// Missing fixed inputs are retained so deletion/addition invalidates a receipt.
+export function inspectionInputs(projectRoot, { unityExecution = false } = {}) {
+  const files = new Set([
+    "Packages/manifest.json", "Packages/packages-lock.json",
+    "ProjectSettings/ProjectVersion.txt", "ProjectSettings/GraphicsSettings.asset",
+    "ProjectSettings/EditorBuildSettings.asset",
+  ]);
+  for (const file of walk(projectRoot, f => f.endsWith(".asmdef"))) {
+    files.add(relative(projectRoot, file));
+    files.add(relative(projectRoot, `${file}.meta`));
+  }
+  if (unityExecution) {
+    for (const directory of ["Assets", "Packages", "ProjectSettings"]) {
+      for (const file of walk(path.join(projectRoot, directory), () => true)) {
+        files.add(relative(projectRoot, file));
+      }
+    }
+  }
+  return [...files].sort();
 }
 
 function unityVersion(file) {

@@ -18,6 +18,7 @@
     "managedTemplateVersion": { "type": "string" },
     "lineEnding": { "enum": ["lf", "crlf"] },
     "checksums": { "type": "object" },
+    "artifactHashes": { "type": "object", "additionalProperties": { "type": "string", "pattern": "^[0-9a-f]{64}$" } },
     "detectedPackages": { "type": "array" },
     "compatibilitySnapshot": { "type": "object" }
   }

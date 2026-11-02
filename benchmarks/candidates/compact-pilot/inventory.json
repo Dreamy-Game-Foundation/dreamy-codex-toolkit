@@ -1,0 +1,61 @@
+{
+  "kind": "candidate-source-inventory",
+  "status": "draft-not-activated",
+  "semanticQuality": "not-established",
+  "measurement": "bytes-only",
+  "baselineBytes": 23554,
+  "candidateBytes": 9178,
+  "reductionPercent": 61.03,
+  "skills": [
+    {
+      "name": "dreamy-core",
+      "baselinePath": "skills/dreamy/dreamy-core/SKILL.md",
+      "baselineHash": "acb2f8ace28050cdf6717bc95fcb281d2e36e005eb4bf0c151d775d2fc664ff5",
+      "baselineBytes": 5162,
+      "candidatePath": "benchmarks/candidates/compact-pilot/dreamy-core/SKILL.md",
+      "candidateHash": "f79a4d5643de7a6579fed169ec0c4ff9a4e934651853d622158fccdd613111e2",
+      "candidateBytes": 1894,
+      "status": "draft-not-activated"
+    },
+    {
+      "name": "dreamy-ui",
+      "baselinePath": "skills/dreamy/dreamy-ui/SKILL.md",
+      "baselineHash": "fbcb67392d27e83d1f33290986e663006aae002151a6da90a06e740710a45cad",
+      "baselineBytes": 5130,
+      "candidatePath": "benchmarks/candidates/compact-pilot/dreamy-ui/SKILL.md",
+      "candidateHash": "e43ee7cdbf8849a268e873457aab0e031f515b9e666bdc7c8d5e590f22f8d872",
+      "candidateBytes": 1814,
+      "status": "draft-not-activated"
+    },
+    {
+      "name": "dreamy-assets",
+      "baselinePath": "skills/dreamy/dreamy-assets/SKILL.md",
+      "baselineHash": "b4906d1b9a0087bbaba474880190b34e1176ba25c77c99b505996bc53dc4c2da",
+      "baselineBytes": 4757,
+      "candidatePath": "benchmarks/candidates/compact-pilot/dreamy-assets/SKILL.md",
+      "candidateHash": "7b43bb40a5ff6ea4f90a2696ae04a48b5295c63ad5f202477c8dfb0ad14e3480",
+      "candidateBytes": 1874,
+      "status": "draft-not-activated"
+    },
+    {
+      "name": "unity-async",
+      "baselinePath": "skills/unity-async/SKILL.md",
+      "baselineHash": "671e54dd7f94b351f2c0cf395d7afead1a963db74e3f3587a2f30038ef9ad637",
+      "baselineBytes": 4156,
+      "candidatePath": "benchmarks/candidates/compact-pilot/unity-async/SKILL.md",
+      "candidateHash": "9fced277e82069ab1bb7a3fde6e4b90beea7b578a3b1ce69b9ff640b8e91011d",
+      "candidateBytes": 1826,
+      "status": "draft-not-activated"
+    },
+    {
+      "name": "combat",
+      "baselinePath": "skills/gameplay/combat/SKILL.md",
+      "baselineHash": "a9034236eca6574f8c41f1c5acc754d2b497c3fe382ae17e8d9829cea35e7c2b",
+      "baselineBytes": 4349,
+      "candidatePath": "benchmarks/candidates/compact-pilot/combat/SKILL.md",
+      "candidateHash": "8448a8c2f51674f0641df917f3554842c710169e33c3ab8b9f2720b2c9c8527d",
+      "candidateBytes": 1770,
+      "status": "draft-not-activated"
+    }
+  ]
+}

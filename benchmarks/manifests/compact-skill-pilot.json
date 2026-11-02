@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "name": "compact-skill-forced-load-development-pilot",
+  "purpose": "development",
+  "releaseEligible": false,
+  "model": "set-by-run-owner",
+  "reasoning": "set-by-run-owner",
+  "repetitions": 3,
+  "timeoutMs": 180000,
+  "adapter": {
+    "executable": null,
+    "args": [
+      "{promptFile}",
+      "{outputFile}"
+    ]
+  },
+  "caseFiles": [
+    "../cases/compact-skill-pilot.json"
+  ],
+  "treatments": [
+    {
+      "id": "baseline",
+      "sources": []
+    },
+    {
+      "id": "candidate",
+      "sources": []
+    }
+  ]
+}

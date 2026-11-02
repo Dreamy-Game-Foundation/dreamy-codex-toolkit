@@ -32,6 +32,6 @@ test("PowerShell installer parses and forwards install arguments", { skip: proce
   const calls = fs.readFileSync(log, "utf8").trim().split(/\r?\n/);
   assert.equal(calls.length, 2);
   assert.match(calls[0], /^--yes github:Dreamy-Game-Foundation\/dreamy-codex-toolkit#main install /);
-  assert.match(calls[0], / --preset core$/);
+  assert.match(calls[0], / --preset core --hooks off$/);
   assert.match(calls[1], /^--yes github:Dreamy-Game-Foundation\/dreamy-codex-toolkit#main doctor /);
 });

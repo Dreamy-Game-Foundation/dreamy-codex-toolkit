@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+- Added the experimental, client-independent `visual-review` skill for real screenshots on visual tasks, with a standalone ignored image store, opt-in source-bound commit cleanup and regression coverage. Installation does not enable cleanup; real capture/client acceptance remains separate.
+
+- Fixed consumer receipt freshness to include implicit Unity inspection inputs, checker/schema/compatibility sources, and compile/test project inputs and Editor configuration. Old consumer receipts remain stored but require fresh verification before lesson reuse.
+- Fixed doctor command suggestions so ordinary warnings or ownership drift never automatically recommend forced uninstall; suggested commands preserve the inspected target and use dry-run reconciliation.
+- Added read-only `lessons explain` using the same eligibility and recall selection logic, including source/context/log/applicability/query/budget/session reasons.
+- Excluded local toolkit metadata and knowledge from project assembly inspection; staged matching checker inputs in hook runtimes without granting native trust.
+- Generated README/eval counts from canonical catalogs and added a validation gate against documentation drift.
+
+- Install/setup/update now provide portable project and global entrypoints, a self-contained CLI/harness snapshot with production dependencies, and a short agent workflow; missing/old Node has actionable guidance.
+- Kept managed AGENTS.md thin and moved lessons/checkpoint/harness instructions to the installed workflow. Existing project knowledge/evidence/checkpoints remain after normal uninstall.
+- Added explicit setup/install/update hook profile selection (new install default off), preservation of existing policy and foreign config, and separate doctor diagnostics for CLI, stores, static harness, Unity setup, native discovery/trust and delivery limitations. No trust bypass, background model calls, transcript adapter opt-in or automatic promotion.
+- Added workflow/runtime ownership hashes and collision/drift checks, plus agent/skill checksums for new installs. Normal global uninstall now removes recorded ownership rather than all matching catalog names.
+- Added portable consumer lifecycle/smoke coverage and packed-install checks after removing the original npm source location. Experimental maturity and native/semantic acceptance are unchanged.
+
 ## 0.1.0-alpha.4 — 2026-10-23
 
 - Synchronized canonical toolkit, npm package, lockfile and README version for a pinned GitHub prerelease. No npm registry publication; experimental behavior stays opt-in.

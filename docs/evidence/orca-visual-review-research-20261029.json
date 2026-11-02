@@ -1,0 +1,207 @@
+{
+  "schemaVersion": 1,
+  "kind": "remote-visual-skill-research",
+  "retrievedAt": "2026-10-29T12:57:45.371768+00:00",
+  "scope": "plan only; no app pairing, capture, publish, cleanup or hook installation",
+  "repositories": [
+    {
+      "full_name": "stablyai/orca",
+      "default_branch": "main",
+      "stargazers_count": 109710,
+      "archived": false,
+      "commit": "1263370049f5b32fcf61a17987a2fc9f871ad2df",
+      "commitDate": "2026-10-29T12:42:45Z",
+      "treeTruncated": false
+    },
+    {
+      "full_name": "slopus/happy",
+      "default_branch": "main",
+      "stargazers_count": 24393,
+      "archived": false,
+      "commit": "db12192071c9f7752d59d7836ddb628b1842dc3b",
+      "commitDate": "2026-10-29T12:52:51Z",
+      "treeTruncated": false
+    },
+    {
+      "full_name": "microsoft/playwright",
+      "default_branch": "main",
+      "stargazers_count": 98798,
+      "archived": false,
+      "commit": "f33f0b751be0dd559d86c1ed27ca8baa5f9cb2b2",
+      "commitDate": "2026-10-29T11:08:59Z",
+      "treeTruncated": false
+    },
+    {
+      "full_name": "actions/upload-artifact",
+      "default_branch": "main",
+      "stargazers_count": 4244,
+      "archived": false,
+      "commit": "cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+      "commitDate": "2026-10-07T10:00:52Z",
+      "treeTruncated": false
+    }
+  ],
+  "sourceFiles": [
+    {
+      "repo": "stablyai/orca",
+      "commit": "1263370049f5b32fcf61a17987a2fc9f871ad2df",
+      "file": "mobile/src/files/MobileFileMediaPreview.tsx",
+      "url": "https://raw.githubusercontent.com/stablyai/orca/1263370049f5b32fcf61a17987a2fc9f871ad2df/mobile/src/files/MobileFileMediaPreview.tsx",
+      "sha256": "0b568b0160dcc3a260fd30d01427bfa133db79b9af048d6f274b16972adc903a",
+      "bytes": 3821
+    },
+    {
+      "repo": "stablyai/orca",
+      "commit": "1263370049f5b32fcf61a17987a2fc9f871ad2df",
+      "file": "mobile/src/files/mobile-file-media.ts",
+      "url": "https://raw.githubusercontent.com/stablyai/orca/1263370049f5b32fcf61a17987a2fc9f871ad2df/mobile/src/files/mobile-file-media.ts",
+      "sha256": "c8d2173568ba59049f607b54f7932e3da3ac595ebbd04fbc70f62e5b625e45a2",
+      "bytes": 978
+    },
+    {
+      "repo": "stablyai/orca",
+      "commit": "1263370049f5b32fcf61a17987a2fc9f871ad2df",
+      "file": "mobile/src/session/mobile-file-tap-open.ts",
+      "url": "https://raw.githubusercontent.com/stablyai/orca/1263370049f5b32fcf61a17987a2fc9f871ad2df/mobile/src/session/mobile-file-tap-open.ts",
+      "sha256": "174c01d017adb95b803db396947652fa2ef83ad8865f74d0a8c3573aa5a61e5c",
+      "bytes": 9692
+    },
+    {
+      "repo": "stablyai/orca",
+      "commit": "1263370049f5b32fcf61a17987a2fc9f871ad2df",
+      "file": "src/main/orcad/orcad-artifact-cache-retention.ts",
+      "url": "https://raw.githubusercontent.com/stablyai/orca/1263370049f5b32fcf61a17987a2fc9f871ad2df/src/main/orcad/orcad-artifact-cache-retention.ts",
+      "sha256": "ac76b1f33aefa51853f8ba65fb48abc0a3d1d4b4fd0fde4f221bbb5ce20c06d6",
+      "bytes": 4523
+    },
+    {
+      "repo": "stablyai/orca",
+      "commit": "1263370049f5b32fcf61a17987a2fc9f871ad2df",
+      "file": "src/main/artifacts/artifact-publisher.ts",
+      "url": "https://raw.githubusercontent.com/stablyai/orca/1263370049f5b32fcf61a17987a2fc9f871ad2df/src/main/artifacts/artifact-publisher.ts",
+      "sha256": "2098c6b88a864f27516c4a721ba992f794482a0a0cb2122692c5cb6b44a997b2",
+      "bytes": 8701
+    },
+    {
+      "repo": "stablyai/orca",
+      "commit": "1263370049f5b32fcf61a17987a2fc9f871ad2df",
+      "file": "src/cli/handlers/artifacts.ts",
+      "url": "https://raw.githubusercontent.com/stablyai/orca/1263370049f5b32fcf61a17987a2fc9f871ad2df/src/cli/handlers/artifacts.ts",
+      "sha256": "094afbcb403f6da28a5697b0b267c17ec0cd06b6532b1fe31ed5f7270a88f114",
+      "bytes": 7695
+    },
+    {
+      "repo": "slopus/happy",
+      "commit": "db12192071c9f7752d59d7836ddb628b1842dc3b",
+      "file": "README.md",
+      "url": "https://raw.githubusercontent.com/slopus/happy/db12192071c9f7752d59d7836ddb628b1842dc3b/README.md",
+      "sha256": "6bcfc23e9bd06156939029ca7e219eb373b15a9cb9a891896f87ccff04a69fe9",
+      "bytes": 4559
+    },
+    {
+      "repo": "slopus/happy",
+      "commit": "db12192071c9f7752d59d7836ddb628b1842dc3b",
+      "file": "packages/happy-app/sources/sync/apiArtifacts.ts",
+      "url": "https://raw.githubusercontent.com/slopus/happy/db12192071c9f7752d59d7836ddb628b1842dc3b/packages/happy-app/sources/sync/apiArtifacts.ts",
+      "sha256": "2fbcb49d70a726be4724d7e52d202b4c0d38eec4d517418478ccf81dbb31aaa4",
+      "bytes": 4552
+    },
+    {
+      "repo": "microsoft/playwright",
+      "commit": "f33f0b751be0dd559d86c1ed27ca8baa5f9cb2b2",
+      "file": "docs/src/videos.md",
+      "url": "https://raw.githubusercontent.com/microsoft/playwright/f33f0b751be0dd559d86c1ed27ca8baa5f9cb2b2/docs/src/videos.md",
+      "sha256": "4635267588ff6ab31807cec94cb9fc71874595d04ca9640b3648d2f5fe804555",
+      "bytes": 5395
+    },
+    {
+      "repo": "microsoft/playwright",
+      "commit": "f33f0b751be0dd559d86c1ed27ca8baa5f9cb2b2",
+      "file": "docs/src/screenshots.md",
+      "url": "https://raw.githubusercontent.com/microsoft/playwright/f33f0b751be0dd559d86c1ed27ca8baa5f9cb2b2/docs/src/screenshots.md",
+      "sha256": "02ff36d89081eaf600b5988ff3b23e2f2723fb6c5e58cc14ea09d9f29b307188",
+      "bytes": 2542
+    },
+    {
+      "repo": "microsoft/playwright",
+      "commit": "f33f0b751be0dd559d86c1ed27ca8baa5f9cb2b2",
+      "file": ".gitignore",
+      "url": "https://raw.githubusercontent.com/microsoft/playwright/f33f0b751be0dd559d86c1ed27ca8baa5f9cb2b2/.gitignore",
+      "sha256": "09bd733960494825cbd95c3ff19f1a97b5179a5440ea8d34f615bd522f514d44",
+      "bytes": 658
+    },
+    {
+      "repo": "actions/upload-artifact",
+      "commit": "cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+      "file": "README.md",
+      "url": "https://raw.githubusercontent.com/actions/upload-artifact/cf430e030ddbb5b0abf93d22962f4752f3646cd9/README.md",
+      "sha256": "82e3d7226dabea938b107b93e015aa816150d6894fff631064aa2884c26771f7",
+      "bytes": 18601
+    },
+    {
+      "repo": "stablyai/orca",
+      "commit": "1263370049f5b32fcf61a17987a2fc9f871ad2df",
+      "file": "src/main/ipc/filesystem/filesystem-list-files.ts",
+      "url": "https://raw.githubusercontent.com/stablyai/orca/1263370049f5b32fcf61a17987a2fc9f871ad2df/src/main/ipc/filesystem/filesystem-list-files.ts",
+      "sha256": "e46d251e98f012c688df0edfbd051ea126b54d8d02dc7acfdafedde69a5c4561",
+      "bytes": 12249
+    },
+    {
+      "repo": "stablyai/orca",
+      "commit": "1263370049f5b32fcf61a17987a2fc9f871ad2df",
+      "file": "src/main/git/source-control/commit-changes.ts",
+      "url": "https://raw.githubusercontent.com/stablyai/orca/1263370049f5b32fcf61a17987a2fc9f871ad2df/src/main/git/source-control/commit-changes.ts",
+      "sha256": "cbbdc96d7db24627d67eda33d9c07af8646e709962caf6b33f016d9b39b7e83c",
+      "bytes": 1240
+    },
+    {
+      "repo": "stablyai/orca",
+      "commit": "1263370049f5b32fcf61a17987a2fc9f871ad2df",
+      "file": "src/main/runtime/terminal/artifacts/terminal-artifacts.ts",
+      "url": "https://raw.githubusercontent.com/stablyai/orca/1263370049f5b32fcf61a17987a2fc9f871ad2df/src/main/runtime/terminal/artifacts/terminal-artifacts.ts",
+      "sha256": "99a5a925c05953ba6c369876657963278e84b39fa6636910f5700afb5bd8d216",
+      "bytes": 4326
+    },
+    {
+      "repo": "stablyai/orca",
+      "commit": "1263370049f5b32fcf61a17987a2fc9f871ad2df",
+      "file": "src/main/runtime/terminal/artifacts/file-grants.ts",
+      "url": "https://raw.githubusercontent.com/stablyai/orca/1263370049f5b32fcf61a17987a2fc9f871ad2df/src/main/runtime/terminal/artifacts/file-grants.ts",
+      "sha256": "5c08ff7f9cba995dc4017aeb1be055c3aa245825455f459922af5fc77ae16100",
+      "bytes": 4297
+    }
+  ],
+  "officialDocs": [
+    {
+      "url": "https://www.onorca.dev/docs/mobile",
+      "observed": "Documents workspace file browser, media previews and mobile source control; no live phone acceptance performed."
+    },
+    {
+      "url": "https://git-scm.com/docs/githooks",
+      "observed": "post-commit runs after commit and cannot change commit outcome."
+    },
+    {
+      "url": "https://git-scm.com/docs/gitignore",
+      "observed": "Ignore rules do not affect already tracked files."
+    }
+  ],
+  "localOrca": {
+    "executable": "/home/tutrinh/.local/bin/orca-ide",
+    "guideCommand": "orca-ide skills get orca-cli --json",
+    "guideSha256": "bdc4f0e475482143ac2f8f29c9781a958fc15f0233f7d027dc9108f027617213",
+    "artifactGuideExcerpt": "## Artifacts\n\nArtifacts publish HTML or Markdown files through the signed-in Orca account. Anyone can view\nthe share URL; creating, listing, updating, and deleting need the active profile signed in.\n\n**Publishing is off by default and only a human can turn it on.** `share` and `update` need a\ndevice-wide capability the user grants in the desktop app under Settings → Artifacts (\"Allow\npublishing public artifact links\"). It applies to every caller on the device, agent or human.\nThere is no CLI or RPC way to grant it. `list`, `unshare`, and `delete` are never gated, so old\nlinks stay auditable and revocable.\n\nA denied share fails with `artifact_sharing_disabled` before any upload. Do not retry; the\nanswer will not change until a human acts. Tell the user to turn the setting on and re-run, or\ndeliver the file locally if they decline.\n\nOn a headless Orca server, artifact and skill-sharing commands fail with\n`sharing_unavailable_on_host`: no Orca cloud sign-in exists there. Do not retry or ask the\nuser to change settings; tell them to share from the Orca desktop app instead.\n\nThe `artifacts` commands, and the separate default-off permission for publishing installed skills, are in `references/publishing.md`. Load it before publishing either kind of link; a skill folder can hold scripts, configuration, or credentials.\n\n",
+    "publishingReference": "# Artifact and skill publishing commands\n\nThe publish gate and its recovery are in the guide body. This is the command surface behind it.\n\n## Artifacts\n\n```text\nORCA artifacts share <file> --json\nORCA artifacts update <file> --json\nORCA artifacts unshare <file> --json\nORCA artifacts list [--cursor <cursor>] --json\nORCA artifacts delete <id> --json\n```\n\n- `share`, `update`, and `unshare` accept `.html`, `.htm`, `.md`, and `.markdown` files.\n- `share` saves the returned edit token in the active Orca profile and never includes it\n  in CLI output. `update` and `unshare` look up that record by the resolved local file\n  path, so use the same path and Orca profile that originally shared the file.\n- `list` returns one page of artifacts owned by the signed-in account. If JSON output has\n  `nextCursor`, pass it back with `--cursor <cursor>`. `delete <id>` deletes an account-owned\n  artifact by the id returned from `list`; it does not need the original local file or its\n  edit-token record.\n- Relative HTML assets are not uploaded. Share a self-contained HTML file or use absolute\n  asset URLs.\n- If an upload exceeds the CLI transport limit, use the browser upload page as directed\n  by the error.\n- For local or staging development, `--api-url <url>` overrides the artifact service;\n  `ORCA_ARTIFACTS_API_URL` provides the same override for the session.\n- `ORCA_CLOUD_AUTH_TOKEN` is a development-only authentication override. Prefer the active\n  Orca profile's normal PropelAuth session and never expose the token in logs or agent output.\n\n## Skill sharing\n\nAgents can publish one or more installed skills behind one unlisted link through the\nsigned-in Orca account. The user must first grant the separate, default-off permission in\nSettings → Share Skills (\"Allow agents and the Orca CLI to publish skill links\"). There is\nno CLI or RPC way to grant it. Manual publishing from the reviewed desktop flow remains\navailable without this agent permission.\n\n```text\nORCA skills installed --json\nORCA skills share --skill <selector> [--skill <selector> ...] --bundle-name <name> --json\n```\n\n- `skills installed` returns safe discovery IDs and names. It does not expose local skill\n  paths in CLI output. Sharing then verifies that each `SKILL.md` declares a portable\n  lowercase name containing only letters, numbers, and hyphens.\n- Each `--skill` must be an exact discovery ID or an unambiguous installed-skill name.\n  Use IDs when names collide.\n- Multiple `--skill` flags create one bundle and one link. `--all` and arbitrary paths are\n  intentionally unsupported; name every skill the user asked to publish.\n- Skill folders can contain scripts, configuration, or credentials. The permission is\n  authority, not intent: publish only the skills the user named and never widen the set.\n- A denied command fails with `agent_skill_sharing_disabled`. Do not retry; ask the user to\n  enable the switch in the desktop app if they want this action.\n- On a headless Orca server, skill and artifact sharing fail with `sharing_unavailable_on_host`.\n  Do not retry; the host has no Orca cloud sign-in, so the user must share from the desktop app.\n- Orca stages one agent-published bundle at a time per host. If another publish is active,\n  wait for it to finish before retrying `agent_skill_sharing_busy`.\n- Sharing again under a `--bundle-name` the account already published adds a new version to\n  that package. `agent_skill_bundle_name_taken` means the name is already in use; do not\n  retry, ask the user for a different name.\n- Run the command in an Orca terminal on the machine that stores the skills. Forwarded WSL,\n  SSH, and paired-runtime invocations fail before discovery so Orca cannot read from the\n  wrong filesystem.\n- The JSON result contains the unlisted URL and public share/package/version IDs. It never\n  includes cloud authentication tokens.\n",
+    "runtimeStatus": {
+      "running": false,
+      "state": "stale_bootstrap",
+      "reachable": false
+    },
+    "mobilePreviewAcceptance": "not-run"
+  },
+  "sourceInterpretationNotes": [
+    "orcad-artifact-cache-retention.ts prunes Orca runtime binary slots; it is not a user-media retention API and must not be used to infer screenshot/video retention.",
+    "Current upstream source may differ from installed Orca; installed CLI guide governs command syntax.",
+    "Private paired access does not imply public artifact links are private.",
+    "No upstream installers or runtime code executed."
+  ]
+}

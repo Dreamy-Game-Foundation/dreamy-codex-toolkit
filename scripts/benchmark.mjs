@@ -5,6 +5,7 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createSchemaValidator, validateWithSchema } from "../src/schema-validation.js";
+import { prepareArtifactTask, gradeArtifactTask } from "./lib/artifact-grader.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -12,7 +13,7 @@ function parseArgs(argv) {
   const result = { manifest: "benchmarks/manifests/pilot.json", command: null, output: null, treatment: null, case: null, publishRelease: false };
   for (let index = 0; index < argv.length; index += 1) {
     const name = argv[index];
-    if (["--manifest", "--command", "--output", "--treatment", "--case"].includes(name)) result[name.slice(2)] = argv[++index];
+    if (["--manifest", "--command", "--output", "--treatment", "--case", "--split"].includes(name)) result[name.slice(2)] = argv[++index];
     else if (name === "--publish-release") result.publishRelease = true;
     else if (name === "--prepare") result.prepare = true;
     else throw new Error(`Unknown argument: ${name}`);
@@ -132,7 +133,9 @@ export function runBenchmark(options) {
   const caseFiles = manifest.caseFiles ?? [];
   const cases = caseFiles
     .flatMap((file) => readJson(path.resolve(path.dirname(manifestPath), file)).cases ?? [])
-    .filter((benchmarkCase) => !options.case || benchmarkCase.id === options.case);
+    .filter((benchmarkCase) => (!options.case || benchmarkCase.id === options.case) && (!options.split || benchmarkCase.split === options.split));
+  if (!cases.length) throw new Error("No benchmark cases selected");
+  if (!manifest.treatments.some(item => !options.treatment || item.id === options.treatment)) throw new Error("No benchmark treatments selected");
   const command = options.prepare ? null : options.command ?? manifest.adapter?.executable ?? null;
   const commandArgs = manifest.adapter?.args ?? ["{promptFile}", "{outputFile}"];
   const results = [];
@@ -141,16 +144,19 @@ export function runBenchmark(options) {
     if (!/^[a-zA-Z0-9][a-zA-Z0-9_.-]{0,95}$/.test(treatment.id)) throw new Error("Invalid treatment ID");
     for (const benchmarkCase of cases) {
       if (!/^[a-zA-Z0-9][a-zA-Z0-9_.-]{0,95}$/.test(benchmarkCase.id)) throw new Error("Invalid case ID");
+      if (benchmarkCase.grader?.type && !["json-fields", "artifact-task"].includes(benchmarkCase.grader.type)) throw new Error(`Unknown grader type: ${benchmarkCase.grader.type}`);
       const caseTreatment = benchmarkCase.treatments?.[treatment.id] ?? {};
       const source = treatmentSources({ ...treatment, sources: caseTreatment.sources ?? treatment.sources }, manifest.maxSourceBytes ?? 1_000_000);
       const repetitions = benchmarkCase.repetitions ?? manifest.repetitions ?? 1;
+      if (!Number.isSafeInteger(repetitions) || repetitions < 1) throw new Error("Benchmark repetitions must be a positive integer");
       for (let repetition = 1; repetition <= repetitions; repetition += 1) {
         const attemptDir = path.join(runDir, treatment.id, benchmarkCase.id, String(repetition));
         if (fs.existsSync(attemptDir) && fs.readdirSync(attemptDir).length) throw new Error("Attempt directory already contains evidence; choose a new output directory");
         fs.mkdirSync(attemptDir, { recursive: true });
+        const artifactTask = prepareArtifactTask(benchmarkCase.grader, path.dirname(manifestPath), attemptDir);
         const promptFile = path.join(attemptDir, "prompt.md");
         const outputFile = path.join(attemptDir, "output.md");
-        const prompt = [benchmarkCase.prompt, source.sections.length ? `Treatment sources:\n${source.sections.join("\n\n")}` : ""].filter(Boolean).join("\n\n");
+        const prompt = [benchmarkCase.prompt, artifactTask ? `Task workspace: ${artifactTask.workspace}\nModify files in this workspace. Verification is performed independently after execution.` : "", source.sections.length ? `Treatment sources:\n${source.sections.join("\n\n")}` : ""].filter(Boolean).join("\n\n");
         fs.writeFileSync(promptFile, prompt, "utf8");
         fs.writeFileSync(path.join(attemptDir, "trial-context.json"), JSON.stringify({ schemaVersion: 1, treatment: treatment.id, caseId: benchmarkCase.id, repetition, query: benchmarkCase.prompt, purpose: manifest.purpose ?? "development", model: manifest.model ?? "unspecified", reasoning: manifest.reasoning ?? "unspecified", manifestHash: hash(manifestText) }, null, 2) + "\n");
         if (!command || source.status !== "ready") {
@@ -162,6 +168,7 @@ export function runBenchmark(options) {
           promptFile,
           outputFile,
           attemptDir,
+          workspace: artifactTask?.workspace ?? "",
           treatment: treatment.id,
           caseId: benchmarkCase.id,
           model: manifest.model ?? "unspecified",
@@ -175,7 +182,11 @@ export function runBenchmark(options) {
         const eventsFile = path.join(attemptDir, "codex-events.jsonl");
         const adapterStatusFile = path.join(attemptDir, "adapter-status.json");
         const adapterStatus = fs.existsSync(adapterStatusFile) ? readJson(adapterStatusFile) : null;
-        const grading = grade(output, benchmarkCase);
+        const grading = artifactTask ? gradeArtifactTask(artifactTask, attemptDir) : grade(output, benchmarkCase);
+        if (artifactTask) {
+          grading.workspacePath = path.relative(runDir, artifactTask.workspace).replaceAll("\\", "/");
+          if (grading.logPath) grading.logPath = path.relative(runDir, path.join(attemptDir, grading.logPath)).replaceAll("\\", "/");
+        }
         const executionOk = execution.status === 0 && !execution.error;
         results.push({
           treatment: treatment.id,
@@ -219,10 +230,13 @@ export function runBenchmark(options) {
     finishedAt: new Date().toISOString(),
     manifest: path.relative(root, manifestPath).replaceAll("\\", "/"),
     manifestHash: hash(manifestText),
+    selection: { case: options.case ?? null, split: options.split ?? null, treatment: options.treatment ?? null },
     policy,
     adapter: command ? { executable: command, args: commandArgs } : null,
     provenance: {
       ...gitProvenance(),
+      runnerHash: hash(fs.readFileSync(fileURLToPath(import.meta.url))),
+      artifactGraderHash: hash(fs.readFileSync(new URL("./lib/artifact-grader.mjs", import.meta.url))),
       model: manifest.model ?? "unspecified",
       reasoning: manifest.reasoning ?? "unspecified",
       node: process.version,

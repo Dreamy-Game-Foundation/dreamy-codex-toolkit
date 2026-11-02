@@ -1,0 +1,214 @@
+{
+  "schemaVersion": 1,
+  "kind": "local-hardening-verification",
+  "observedAt": "2026-10-29T04:41:12.814456+00:00",
+  "scope": "dirty alpha.4 working tree; no release/native/Unity semantic acceptance",
+  "sourceHashes": {
+    "harness/dreamy-harness": "2059e3b9dd1a752f3ec97175547cfb563039ee68aafb2d6299733108ddde6f92",
+    "src/lib/unity-test-results.mjs": "2f75aa0a0a3da54306122811757a4189279d01b845d617243f98c84d2d8e4d9e",
+    "src/lib/verification-context.mjs": "05724b99271df5136a87d6dc674826ef5c8c8f4def82c03f6822f35d1c8ee633",
+    "scripts/benchmark.mjs": "87a9e070159a63862445813dd840eb065af70e8fed7b5f03f35f364226de65ee",
+    "scripts/lib/artifact-grader.mjs": "e6a59a68798c4ba9ab80bb30b173cfe0c319baed6a45885c32cc421d130837d3",
+    "schemas/evidence.schema.json": "bd0a235e854bca04633c5829fe819e3d399547a94437bafe038cfbf62fd678e5",
+    "package.json": "de20f9a055758e3edf0c3c98d92f9d01ede89aa5cc9e36e36dcd19134bb6ddd8",
+    "package-lock.json": "23b6872b05a304610dee3fd6128e633a955fb5c25ab6a1d9346181e3db6f8af3",
+    "tests/unit/artifact-grader.test.mjs": "d7b2893e2a84978b0a0a68b7eb42da368129bc2c54e6ef983bcb2e99c67cc4a9",
+    "tests/unit/unity-test-results.test.mjs": "bd4b83049a52582e1087093e85631afa47fe1b5fea31f2aefaceb5adecda7c92",
+    "tests/unit/harness-contract.test.mjs": "34f3e533e18a3809bbfbbb402bf787e8f1c26a5dfcc0b401c6bed4c2e0b56a1b",
+    "tests/unit/benchmark-runner.test.mjs": "41c668e81566bc54b620a1e30f3131aa264f69c65a0398ed312b120e784f9c9a",
+    "tests/unit/verification-context.test.mjs": "33d46c44419281e31b6d24be78c1d5aa14f454c56ea3c6e21fff4f553fc0b5b3"
+  },
+  "tests": {
+    "command": "npm test",
+    "exitCode": 0,
+    "node": "v24.19.0",
+    "platform": "linux",
+    "total": 125,
+    "passed": 124,
+    "failed": 0,
+    "skipped": 1,
+    "log": "\n> dreamy-codex-toolkit@0.1.0-alpha.4 test\n> npm run validate && node scripts/test-unit.mjs\n\n\n> dreamy-codex-toolkit@0.1.0-alpha.4 validate\n> node src/cli.js validate && node scripts/validate-skills.mjs && node scripts/validate-acceptance.mjs && node scripts/validate-context-budget.mjs && node scripts/catalog-summary.mjs --check\n\nvalidate: OK\nskill validation: OK (83 skills)\nacceptance validation: OK\ncontext validation: OK (6 size advisories)\n{\"counts\":{\"skills\":83,\"agents\":15,\"rules\":50,\"modules\":9,\"presets\":9,\"evals\":95},\"stale\":[]}\n✔ isolated lab runs real CLI/verification workflows without claiming native or model acceptance (2070.962751ms)\n✔ artifact benchmark rejects a correct-sounding answer when the patch is absent (146.627469ms)\n✔ artifact benchmark executes the independent verifier and resets each repetition (168.02489ms)\n✔ missing artifact is a failed attempted trial, and preparation never runs a verifier (75.521917ms)\n✔ artifact grader rejects changed trusted inputs and verifier-side repairs (24.446493ms)\n✔ artifact verifier timeout cannot become a pass (103.044713ms)\n✔ benchmark runner invokes adapter and grades observed output (136.928987ms)\n✔ benchmark runner reports not-run when no adapter command exists (50.386514ms)\n✔ benchmark runner preserves adapter-declared not-run evidence (55.309987ms)\n✔ usage without runtime counters remains unavailable, not zero tokens (0.619557ms)\n✔ benchmark reruns cannot grade stale output from an earlier attempt (51.284944ms)\n✔ benchmark rejects empty selections and invalid repetition counts (0.733293ms)\n✔ catalog docs detect drift, reconcile canonical counts and preserve surrounding bytes (5.483416ms)\n✔ detects an external skill path in a nested Codex JSONL command (1.17579ms)\n✔ does not flag a trace without installed skill paths (0.252023ms)\n✔ fresh project smoke: bundled CLI, checkpoint, actual failure/receipt/lesson and uninstall retention (2837.017951ms)\n✔ runtime update stages a new distribution and restores prior ownership on failure (9.049213ms)\n✔ setup hooks preserve foreign config; update keeps profile and status source without granting trust (726.245073ms)\n✔ workflow collisions and managed edits refuse mutation, including uninstall (321.835765ms)\n✔ agent/skill edits and unowned name collisions are preserved (230.841687ms)\n✔ portable shell/Windows entrypoint and missing Node guidance (169.587832ms)\n✔ global bundled entrypoint uses project cwd; project hooks remain separately configured (954.56849ms)\n✔ doctor warnings and ownership errors never recommend a forced uninstall (876.635911ms)\n✔ catalog validation never fabricates semantic pass fields (73.254226ms)\n✔ catalog validation rejects malformed eval cases through JSON Schema (26.963328ms)\n✔ release freshness rejects stale and fabricated reports (75.49581ms)\n✔ lessons require failure and fresh resolution; recall is scoped, capped and deduplicated (70.447578ms)\n✔ record boundaries reject traversal, symlinks, duplicate overwrite and missing evidence (9.777994ms)\n✔ observation retention preserves referenced failures (22.695578ms)\n✔ native protocol: silent no-op, session dedupe, Stop cap and interruption (7.866542ms)\n✔ hook controls, native deny shape and Unicode caps (2.582715ms)\n✔ policy applies lower resource limits and rejects typos or oversized budgets (3.251443ms)\n✔ native probe reports runtime trust and discovery without claiming event delivery (93.521627ms)\n✔ zero-model smoke reports deferred SessionStart without requesting a turn or renewed trust (51.57475ms)\n✔ hook lifecycle preserves user hooks and refuses drift; user data survives uninstall (39.575032ms)\n✔ installed fixture smoke is not native lifecycle proof (54.342738ms)\n✔ runtime and policy changes alter native definitions so exact trust requires review (24.45886ms)\n✔ verification does not claim toolkit checks verify unrelated source (1.767383ms)\n✔ candidate skills stay undiscovered until matching semantic report; stale candidates reject (18.271342ms)\n✔ CLI rejects malformed records and reports measured bytes without token claims (154.176841ms)\n✔ candidate promotion requires real behavioral artifacts and preserves unrelated skills (21.73851ms)\n✔ hook transaction recovery preserves previous bytes and runtime on interruption (7.97561ms)\n✔ uninstall removes owned hooks but keeps project lessons and promoted skills (196.941358ms)\n✔ compaction does not renew a Stop continuation budget (1.136764ms)\n✔ dry-run on an unsupported destructive command is rejected (59.037526ms)\n✔ wrong platform/command or changed log cannot verify a lesson (9.139171ms)\n✔ failure hook ties a known check to its active task without retaining command secrets (3.566623ms)\n✔ native Bash stdout without status reports a coverage gap without inventing observations (9.425485ms)\n✔ candidate revisions are bounded and canonical skill names cannot be shadowed (18.862869ms)\n✔ lexical recall respects positive, near-miss, conflict and payload budgets (37.645803ms)\n✔ checker or added test inputs invalidate a receipt even if requested source is unchanged (7.526083ms)\n✔ drafts use fresh verified lessons, remain undiscovered and require concrete evaluation cases (28.996913ms)\n✔ lesson preview does not consume recall and package-bound eligibility follows the inspected lock (34.261103ms)\n✔ explicit promotion retains report provenance and rejects altered artifacts on reuse (25.647627ms)\n✔ rollout counts distinct UTC observation days per runtime/policy without inventing acceptance (1.323891ms)\n✔ harness git-status emits machine-readable evidence (191.91602ms)\n✔ CLI harness wrapper delegates to harness operations (239.912239ms)\n✔ Unity-dependent harness operations degrade without fake success (182.35957ms)\n✔ project inspection passes only complete Unity source fixtures (314.955656ms)\n✔ committed Unity vertical slice has a valid machine profile (102.773819ms)\n✔ asmdef inspection parses graph and rejects Runtime to Editor references (89.948269ms)\n✔ Unity process evidence rejects empty/skipped XML and retains execution failure classification (1049.737358ms)\nDreamy managed block checksum drift; rerun with --force only after reviewing managed block changes\nDreamy managed block checksum drift; refusing uninstall\nMalformed Dreamy managed block markers\nMalformed Dreamy managed block markers\n✔ installer writes and removes Dreamy managed files (380.303386ms)\n✔ global target installs into user Codex home (202.795769ms)\n✔ install adopts an existing single Dreamy managed block (226.595955ms)\n✔ agent installation follows resolved modules instead of installing every agent (95.067755ms)\n✔ Dreamy package skills are selected from skill metadata (100.822862ms)\n✔ list --resolved shows deterministic preset graph (57.959094ms)\n✔ purge removes Dreamy state but preserves unrelated Codex and Agents files (225.499091ms)\n✔ purge defaults to global target from any working directory (193.809351ms)\n✔ purge recovers malformed global markers and removes known managed artifacts (55.958819ms)\n✔ update refreshes an existing managed install (292.001517ms)\n✔ update and uninstall tolerate user edits outside the managed block (314.7215ms)\n✔ managed block drift refuses update and uninstall unless forced (364.703315ms)\n✔ managed AGENTS lifecycle preserves CRLF files (318.101185ms)\n✔ malformed managed block markers are detected (104.183004ms)\n✔ update migrates v1 install state to v2 (213.904408ms)\n✔ doctor emits meaningful native-path diagnostics (233.491855ms)\n✔ native adapter requires explicit consent and exact prompt/context before any runtime starts (63.562703ms)\n✔ model-turn ledger prevents replay across new output attempts (3.695973ms)\n✔ B0 executes an ephemeral controlled turn and preserves measured usage (2.89746ms)\n✔ B2 gates trust before execution and requires SessionStart from the authorized first turn (59.074073ms)\n✔ a blocked native member prevents wasting a baseline turn in the same plan (2.609776ms)\n✔ unexpected tool calls fail an attempted decision trial; missing usage stays unavailable (3.143322ms)\n✔ native preparation creates reviewable prompts without invoking the configured adapter (77.248626ms)\n✔ pack gate rejects old version, different source/run and missing or modified tarballs (187.032152ms)\n✔ explicit discovery supports spaces, sorts files and rejects empty directories (116.801947ms)\n✔ process diagnostics distinguish spawn failure, empty output and degraded JSON (0.86651ms)\n﹣ PowerShell installer parses and forwards install arguments (0.429207ms) # SKIP\n✔ version-bound transcript adapter correlates completed commands and keeps output private (23.021879ms)\n✔ transcript status rejects missing, stale, mismatched, ambiguous or spoofed evidence (5.8192ms)\n✔ transcript fallback is explicit policy and changes the reviewed native definition (93.015226ms)\n✔ NUnit results require executed successful tests and matching leaf counters (3.854852ms)\n✔ NUnit parser rejects original skipped zero-test false pass (0.374703ms)\n✔ NUnit parser rejects empty passed run (0.152099ms)\n✔ NUnit parser rejects all skipped (0.203805ms)\n✔ NUnit parser rejects all skipped with Passed aggregate (0.163149ms)\n✔ NUnit parser rejects failed run (0.169964ms)\n✔ NUnit parser rejects inconclusive run (0.196947ms)\n✔ NUnit parser rejects failed result with zero failures (0.125003ms)\n✔ NUnit parser rejects missing result (0.144399ms)\n✔ NUnit parser rejects missing counter (1.822038ms)\n✔ NUnit parser rejects negative count (0.185948ms)\n✔ NUnit parser rejects non-integer count (0.461152ms)\n✔ NUnit parser rejects unsafe integer (0.096024ms)\n✔ NUnit parser rejects inconsistent aggregate (0.435399ms)\n✔ NUnit parser rejects invented successful test (0.306209ms)\n✔ NUnit parser rejects unreported failing leaf (0.070564ms)\n✔ NUnit parser rejects unknown leaf result (0.22878ms)\n✔ NUnit parser rejects truncated XML (0.32885ms)\n✔ NUnit parser rejects duplicate attribute (0.072649ms)\n✔ NUnit parser rejects wrong root (0.040458ms)\n✔ NUnit parser rejects multiple roots (0.051645ms)\n✔ NUnit parser rejects DOCTYPE (0.137593ms)\n✔ NUnit parser rejects unknown entity (0.16207ms)\n✔ NUnit parser rejects empty document (0.042894ms)\n✔ NUnit reader rejects missing/oversized results before reading them (0.856045ms)\n✔ catalog artifacts validate by invariant (118.841336ms)\n✔ Dreamy package drift remains machine-visible (1.940362ms)\n✔ consumer receipt is invalid after deleting an undeclared lock; old lesson cannot be reused (443.988531ms)\n✔ implicit settings/asmdef changes and checker source changes invalidate fingerprints (9.179874ms)\n✔ Unity execution fingerprints include other source/assets and Editor configuration (2.885079ms)\n✔ lesson explanation is read-only and agrees with recall relevance/session deduplication (199.230852ms)\n✔ legacy consumer receipts require re-verification and log changes have explicit reasons (126.165946ms)\n✔ installed hook runtime agrees on checker freshness and rejects a stale static receipt (206.766417ms)\nℹ tests 125\nℹ suites 0\nℹ pass 124\nℹ fail 0\nℹ cancelled 0\nℹ skipped 1\nℹ todo 0\nℹ duration_ms 6211.7253\n",
+    "logHash": "26c5db26925b4a17819a5dfa2ddc475c25f768eebdb2a3a553ac24fbbe41167a"
+  },
+  "fixedProbe": {
+    "kind": "synthetic-adapter-probe",
+    "realUnityExecuted": false,
+    "inputXml": "<test-run result=\"Skipped\" total=\"0\" passed=\"0\" failed=\"0\" skipped=\"0\" />",
+    "processExitCode": 1,
+    "stderr": "",
+    "observedEvidence": {
+      "schemaVersion": 1,
+      "adapter": "dreamy-harness",
+      "operation": "test-editmode",
+      "status": "fail",
+      "summary": "Unity test XML has invalid or missing inconclusive count",
+      "observedAt": "2026-10-29T04:40:04.848Z",
+      "timestamp": "2026-10-29T04:40:04.848Z",
+      "startedAt": "2026-10-29T04:40:04.819Z",
+      "completedAt": "2026-10-29T04:40:04.848Z",
+      "durationMs": 29,
+      "platform": "linux",
+      "projectPath": "/run/media/tutrinh/NewData/dreamy-codex-toolkit/tests/fixtures/unity/vertical-slice",
+      "unityVersion": "6000.4.12f1",
+      "unityExecutable": "/tmp/dreamy-audit-20261029/fake-unity.py",
+      "manifestHash": "ac32363f1409c3a816ae8eec208c839dbb85ef7d8b2f139c63b93b6a15271ca2",
+      "packagesLockHash": "f24c71e8a9b91be1b347dd02029dbd40907124b3f41e71489a15c41b6bb28550",
+      "command": [
+        "/run/media/tutrinh/NewData/dreamy-codex-toolkit/harness/dreamy-harness",
+        "test-editmode",
+        "/run/media/tutrinh/NewData/dreamy-codex-toolkit/tests/fixtures/unity/vertical-slice"
+      ],
+      "artifacts": [
+        {
+          "path": "/tmp/dreamy-harness-F7hrUD/test-editmode.log",
+          "kind": "unity-log",
+          "sha256": "a86345e5664909a9120173e4c087600c3d2d80ef87e6b1d91b6b1570c17be211"
+        },
+        {
+          "path": "/tmp/dreamy-harness-F7hrUD/test-editmode.xml",
+          "kind": "unity-test-results",
+          "sha256": "f28276fb72213163b73c6c9357b57d2d305da151486c7cb05e0b1eb46e8f55eb"
+        }
+      ],
+      "diagnostics": [
+        "Unity test XML has invalid or missing inconclusive count"
+      ],
+      "errors": [],
+      "warnings": [],
+      "target": "/run/media/tutrinh/NewData/dreamy-codex-toolkit/tests/fixtures/unity/vertical-slice",
+      "exceptions": [],
+      "testResults": {
+        "pass": false,
+        "reason": "Unity test XML has invalid or missing inconclusive count",
+        "counts": null
+      },
+      "profileHash": "45bf4694d2a424bec7ada765266c3a5b9edec7174c111e07825c900712e0222b",
+      "exitCode": 1
+    },
+    "note": "Synthetic fake executable, not real Unity acceptance. Temporary artifact paths are not retained; input and observed evidence are retained here."
+  },
+  "unityAttempt": {
+    "command": "node harness/dreamy-harness compile tests/fixtures/unity/vertical-slice",
+    "exitCode": 2,
+    "evidence": {
+      "schemaVersion": 1,
+      "adapter": "dreamy-harness",
+      "operation": "compile",
+      "status": "degraded",
+      "summary": "Unity executable is not configured",
+      "observedAt": "2026-10-29T04:40:05.023Z",
+      "timestamp": "2026-10-29T04:40:05.023Z",
+      "startedAt": "2026-10-29T04:40:05.022Z",
+      "completedAt": "2026-10-29T04:40:05.023Z",
+      "durationMs": 1,
+      "platform": "linux",
+      "projectPath": "/run/media/tutrinh/NewData/dreamy-codex-toolkit/tests/fixtures/unity/vertical-slice",
+      "unityVersion": null,
+      "unityExecutable": null,
+      "manifestHash": null,
+      "packagesLockHash": null,
+      "command": [
+        "/run/media/tutrinh/NewData/dreamy-codex-toolkit/harness/dreamy-harness",
+        "compile",
+        "tests/fixtures/unity/vertical-slice"
+      ],
+      "artifacts": [],
+      "diagnostics": [
+        "Set DREAMY_UNITY_PATH to a Unity Editor executable"
+      ],
+      "errors": [],
+      "warnings": [],
+      "target": "/run/media/tutrinh/NewData/dreamy-codex-toolkit/tests/fixtures/unity/vertical-slice",
+      "degradedReason": "Set DREAMY_UNITY_PATH to a Unity Editor executable",
+      "exitCode": 2
+    }
+  },
+  "candidateInventory": {
+    "kind": "candidate-source-inventory",
+    "status": "draft-not-activated",
+    "semanticQuality": "not-established",
+    "measurement": "bytes-only",
+    "baselineBytes": 23554,
+    "candidateBytes": 9178,
+    "reductionPercent": 61.03,
+    "skills": [
+      {
+        "name": "dreamy-core",
+        "baselinePath": "skills/dreamy/dreamy-core/SKILL.md",
+        "baselineHash": "acb2f8ace28050cdf6717bc95fcb281d2e36e005eb4bf0c151d775d2fc664ff5",
+        "baselineBytes": 5162,
+        "candidatePath": "benchmarks/candidates/compact-pilot/dreamy-core/SKILL.md",
+        "candidateHash": "f79a4d5643de7a6579fed169ec0c4ff9a4e934651853d622158fccdd613111e2",
+        "candidateBytes": 1894,
+        "status": "draft-not-activated"
+      },
+      {
+        "name": "dreamy-ui",
+        "baselinePath": "skills/dreamy/dreamy-ui/SKILL.md",
+        "baselineHash": "fbcb67392d27e83d1f33290986e663006aae002151a6da90a06e740710a45cad",
+        "baselineBytes": 5130,
+        "candidatePath": "benchmarks/candidates/compact-pilot/dreamy-ui/SKILL.md",
+        "candidateHash": "e43ee7cdbf8849a268e873457aab0e031f515b9e666bdc7c8d5e590f22f8d872",
+        "candidateBytes": 1814,
+        "status": "draft-not-activated"
+      },
+      {
+        "name": "dreamy-assets",
+        "baselinePath": "skills/dreamy/dreamy-assets/SKILL.md",
+        "baselineHash": "b4906d1b9a0087bbaba474880190b34e1176ba25c77c99b505996bc53dc4c2da",
+        "baselineBytes": 4757,
+        "candidatePath": "benchmarks/candidates/compact-pilot/dreamy-assets/SKILL.md",
+        "candidateHash": "7b43bb40a5ff6ea4f90a2696ae04a48b5295c63ad5f202477c8dfb0ad14e3480",
+        "candidateBytes": 1874,
+        "status": "draft-not-activated"
+      },
+      {
+        "name": "unity-async",
+        "baselinePath": "skills/unity-async/SKILL.md",
+        "baselineHash": "671e54dd7f94b351f2c0cf395d7afead1a963db74e3f3587a2f30038ef9ad637",
+        "baselineBytes": 4156,
+        "candidatePath": "benchmarks/candidates/compact-pilot/unity-async/SKILL.md",
+        "candidateHash": "9fced277e82069ab1bb7a3fde6e4b90beea7b578a3b1ce69b9ff640b8e91011d",
+        "candidateBytes": 1826,
+        "status": "draft-not-activated"
+      },
+      {
+        "name": "combat",
+        "baselinePath": "skills/gameplay/combat/SKILL.md",
+        "baselineHash": "a9034236eca6574f8c41f1c5acc754d2b497c3fe382ae17e8d9829cea35e7c2b",
+        "baselineBytes": 4349,
+        "candidatePath": "benchmarks/candidates/compact-pilot/combat/SKILL.md",
+        "candidateHash": "8448a8c2f51674f0641df917f3554842c710169e33c3ab8b9f2720b2c9c8527d",
+        "candidateBytes": 1770,
+        "status": "draft-not-activated"
+      }
+    ]
+  },
+  "preparation": [
+    {
+      "command": "compact-skill-pilot --split development --prepare",
+      "summary": {
+        "attempted": 0,
+        "passed": 0,
+        "failed": 0,
+        "notRun": 60
+      }
+    },
+    {
+      "command": "artifact-pilot --prepare",
+      "summary": {
+        "attempted": 0,
+        "passed": 0,
+        "failed": 0,
+        "notRun": 3
+      }
+    }
+  ],
+  "native": {
+    "cliVersion": "0.165.0",
+    "acceptance": "not-run",
+    "legacyStatusAdapterVersion": "0.163.0"
+  },
+  "packagingEvidence": "artifacts/hardening-20261029/npm-pack-smoke.json",
+  "modelCalls": 0
+}

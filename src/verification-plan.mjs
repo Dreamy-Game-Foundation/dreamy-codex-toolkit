@@ -1,6 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
+import { inspectionInputs } from "./project-profile.js";
+import { checkerFingerprint, unityEnvironment } from "./lib/verification-context.mjs";
 import {
   hash,
   inside,
@@ -40,12 +43,24 @@ export function fingerprint(root, files) {
 }
 // Verification depends on the checker/configuration as well as the requested source files.
 // Toolkit checks conservatively snapshot distributable inputs and tests, excluding generated outputs.
-export function verificationFingerprint(root, files) {
+export function verificationFingerprint(root, files, {
+  toolkitRoot = fileURLToPath(new URL("../", import.meta.url)),
+  commandId = "validate",
+} = {}) {
   if (
     !fs.existsSync(path.join(root, "toolkit.json")) ||
     !fs.existsSync(path.join(root, "package.json"))
-  )
-    return fingerprint(root, files);
+  ) {
+    const unityExecution = ["unit", "unity"].includes(commandId);
+    return hash(JSON.stringify({
+      version: 2,
+      commandId,
+      source: fingerprint(root, files),
+      project: fingerprint(root, inspectionInputs(root, { unityExecution })),
+      checker: checkerFingerprint(toolkitRoot),
+      environment: unityExecution ? unityEnvironment() : null,
+    }));
+  }
   const pkg = readJson(inside(root, "package.json"));
   const selected = new Set(files);
   const visit = (relative) => {
@@ -107,7 +122,7 @@ export function runVerification(
   )
     throw Error("Task ID and source input files required");
   const before = fingerprint(projectRoot, files),
-    checkFingerprint = verificationFingerprint(projectRoot, files),
+    checkFingerprint = verificationFingerprint(projectRoot, files, { toolkitRoot, commandId: id }),
     spec = command(toolkitRoot, id),
     startedAt = new Date().toISOString();
   // Toolkit checks apply to a toolkit checkout, not arbitrary Unity source.
@@ -170,7 +185,7 @@ export function runVerification(
     logHash: hash((result?.stdout || "") + (result?.stderr || "")),
     inputsUnchanged:
       before === fingerprint(projectRoot, files) &&
-      checkFingerprint === verificationFingerprint(projectRoot, files),
+      checkFingerprint === verificationFingerprint(projectRoot, files, { toolkitRoot, commandId: id }),
   };
   if (!receipt.inputsUnchanged) receipt.status = "stale";
   const dir = inside(dataRoot(projectRoot), "evidence");
@@ -183,34 +198,43 @@ export function runVerification(
   atomicJson(inside(dir, `${hash(receipt.id)}.json`), receipt);
   return receipt;
 }
-export function evidenceFor(root, taskId, files) {
+function receiptEntries(root) {
   const dir = inside(dataRoot(root), "evidence");
   if (!fs.existsSync(dir)) return [];
-  const current = fingerprint(root, files);
-  const currentCheck = verificationFingerprint(root, files);
   return fs
     .readdirSync(dir)
     .filter((f) => f.endsWith(".json"))
     .map((f) => ({
       r: readJson(inside(dir, f)),
       log: inside(dir, `${f.slice(0, -5)}.log`),
-    }))
-    .filter(
-      ({ r, log }) =>
-        r &&
-        r.schemaVersion === 1 &&
-        r.platform === process.platform &&
-        r.nodeVersion === process.version &&
-        r.verificationFingerprint === currentCheck &&
-        r.taskId === taskId &&
-        r.sourceFingerprint === current &&
-        r.status === "pass" &&
-        r.exitCode === 0 &&
-        r.inputsUnchanged &&
-        fs.existsSync(log) &&
-        hash(fs.readFileSync(log)) === r.logHash,
-    )
+    }));
+}
+function receiptReasons(root, { r, log }, taskId, files, current, checks) {
+  if (!r || r.schemaVersion !== 1) return ["invalid-receipt"];
+  const reasons = [];
+  if (!["validate", "unit", "pack", "unity"].includes(r.commandId)) return ["invalid-command"];
+  if (r.platform !== process.platform) reasons.push("receipt-platform-mismatch");
+  if (r.nodeVersion !== process.version) reasons.push("node-version-changed");
+  if (r.taskId !== taskId) reasons.push("receipt-task-mismatch");
+  if (r.sourceFingerprint !== current) reasons.push("source-changed");
+  if (!checks.has(r.commandId)) checks.set(r.commandId, verificationFingerprint(root, files, { commandId: r.commandId }));
+  if (r.verificationFingerprint !== checks.get(r.commandId)) reasons.push("verification-context-changed");
+  if (r.status !== "pass" || r.exitCode !== 0 || !r.inputsUnchanged) reasons.push("receipt-not-successful");
+  if (!fs.existsSync(log)) reasons.push("receipt-log-missing");
+  else if (hash(fs.readFileSync(log)) !== r.logHash) reasons.push("receipt-log-changed");
+  return reasons;
+}
+export function evidenceFor(root, taskId, files) {
+  const current = fingerprint(root, files), checks = new Map();
+  return receiptEntries(root)
+    .filter(entry => receiptReasons(root, entry, taskId, files, current, checks).length === 0)
     .map(({ r }) => r);
+}
+export function explainReceipt(root, receiptId, taskId, files) {
+  const entry = receiptEntries(root).find(({ r }) => r?.id === receiptId);
+  if (!entry) return { valid: false, reasons: ["receipt-missing"] };
+  const reasons = receiptReasons(root, entry, taskId, files, fingerprint(root, files), new Map());
+  return { valid: reasons.length === 0, reasons };
 }
 export function writeCheckpoint(root, session, input) {
   if (

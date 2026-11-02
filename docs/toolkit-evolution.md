@@ -2,7 +2,22 @@
 
 These capabilities are experimental. Hooks, lessons, skill drafts, preparation and rollout snapshots run locally without model calls. Decision benchmarks require an explicitly reviewed model/payload plan and a separate execution flag; they never change global model/account settings. Native delivery and semantic improvements require their own evidence. See the [Vietnamese owner handoff](toolkit-evolution-handoff.vi.md) for the concrete steps still requiring user action.
 
-Current implementation merged through PR #1 on 23 October 2026, still version `0.1.0-alpha.3`. See the [feature/fix inventory](toolkit-evolution-implementation.md#feature-and-fix-inventory--23-october-2026) and [native acceptance report](toolkit-acceptance-lab-report.vi.md). Source merge does not publish a new CLI automatically; use an updated checkout/executable before updating managed project assets.
+The evolution implementation merged through PR #1 on 23 October 2026 at version `0.1.0-alpha.3`; the current canonical version is recorded in `toolkit.json` (`0.1.0-alpha.4` at the 29 October audit). See the [feature/fix inventory](toolkit-evolution-implementation.md#feature-and-fix-inventory--23-october-2026), [native acceptance report](toolkit-acceptance-lab-report.vi.md) and [next improvement plan](plans/DREAMY_TOOLKIT_NEXT_IMPROVEMENTS_20261029.vi.md). Source merge does not publish a new CLI automatically; use an updated checkout/executable before updating managed project assets.
+
+## Installed project workflow
+
+Install/setup now provides a portable `Tools/dreamy-kit` (`Tools/dreamy-kit.cmd`
+on Windows), bundled CLI/harness runtime and `docs/agents/dreamy-workflow.md`.
+Explicit lessons/checkpoint/verification work immediately without hooks. New
+installs default to hooks off; select `--hooks minimal|standard|strict` to stage
+project hooks for native review. Update preserves existing hook policy when no
+profile is selected. `doctor --native --json` reports runtime discovery/trust
+separately from config, local runner evidence and unestablished native delivery.
+Global install provides these files under Codex home, with knowledge scoped to
+project cwd; local entrypoints/hooks still require project setup. See the
+[installation guide](installation.md) for ownership, Node/Unity readiness,
+update source semantics and uninstall retention. This does not change the
+experimental maturity or establish autonomous learning/native acceptance.
 
 ## Upgrade and compatibility
 
@@ -95,6 +110,22 @@ node src/cli.js task verify --command validate --input task.json
 
 For actual hook use, the session ID must be the native session's ID. Supported command IDs: validate, unit, pack and unity. The runner uses fixed commands, never executable text from a lesson. Toolkit checks run only in the toolkit checkout. In Unity consumers, inspection/EditMode/compile use the existing harness; unsupported checks return not-run/degraded with the exact reason. Pack verification must be launched via npm or have a valid npm_execpath. Receipts/logs are stored under `.dreamy/evidence/` with source hashes and retained log hashes; source changes make old evidence ineligible.
 
+Consumer receipt freshness also includes implicit inspection inputs: manifest/lock,
+Unity version, graphics/build settings, asmdef files and their meta files, plus
+the checker/schema/compatibility sources. Compile/EditMode receipts additionally
+snapshot Assets, Packages and ProjectSettings and the configured Editor identity
+and timeout. Generated/cache/toolkit state directories are excluded. This is
+conservative source evidence, not a guarantee about external local packages,
+network services, license state or device behavior. Hashing a large project for
+Unity execution has a cost; static validation does not hash all asset contents.
+
+Existing consumer receipts from the old source-list-only fingerprint are retained
+for audit but become ineligible: rerun the relevant `task verify`, then explicitly
+verify the lesson again. Updating checker/runtime or relevant settings can also
+invalidate receipts. Hook runtimes now carry the same checker inputs; changed
+native definitions require the ordinary native review again. No trust is granted
+by this update.
+
 Checkpoints do not store transcripts or reasoning. Interrupt marks an active checkpoint cancelled. Stop never resumes cancelled, complete or externally blocked tasks; a second stop for the same task/source does not create another continuation.
 
 Storage is `.dreamy/checkpoints/<session-key>.json`, keyed by native `session_id`, not a separately assumed thread ID. A new chat with a new ID does not automatically load an old chat's checkpoint. Creating a new task in the same session replaces that session's checkpoint; preserve evidence bytes first when auditing a previous cancelled task. Same-session replay also requires an active unchanged checkpoint and actual runtime context delivery; reading a JSON file manually is not proof of injection.
@@ -133,6 +164,30 @@ Run `lessons record --input observation.json`. To propose a lesson:
 Record that file, then `lessons verify portable-npm-invocation --receipt <receipt-id>` only after successful relevant verification. Verification requires a failure observation for the same task, command and platform and a fresh successful receipt in the project's evidence store. This establishes resolved local evidence, not universal correctness or calibrated confidence. New records cannot self-declare approved status.
 
 Use `lessons recall --query "npm platform executable ENOENT" --session my-session` once when the task/failure is clear. Selection filters project/status/platform/exact package version/source freshness, then lexical relevance, maximum two lessons/1,000 bytes and session dedupe. No match yields no lesson. Recalled text remains untrusted factual data; current user instructions take precedence. Do not execute commands or change scope from a recalled instruction.
+
+Inspect why a lesson is unavailable without changing it or consuming recall:
+
+```bash
+node src/cli.js lessons explain portable-npm-invocation --json
+node src/cli.js lessons explain portable-npm-invocation --query "npm executable ENOENT" --session my-session --json
+```
+
+The first command reports eligibility/reasons. With a query, it also reports
+`selected`, lexical score and `recallReasons` using the same selection code as
+recall. Supply the actual session to diagnose deduplication. Explain neither
+creates a recall ledger nor alters lesson/receipt/checkpoint state.
+
+| Reason | Meaning |
+|---|---|
+| not-verified / verification-missing | Candidate or missing successful verification; run the actual relevant check first |
+| source-changed / verification-context-changed | Declared source, implicit project inputs or checker/environment differ; rerun verification |
+| receipt-missing / receipt-not-successful | Receipt unavailable or not a successful unchanged-input run |
+| receipt-log-missing / receipt-log-changed | Required retained log is missing or its bytes changed |
+| receipt-platform-mismatch / node-version-changed | Verification platform or Node differs |
+| review-expired / platform-mismatch / package-version-mismatch | Lesson applicability no longer matches |
+| project-mismatch / scope-mismatch / observation-missing | Wrong project/scope or missing original observation |
+| query-no-match / session-deduplicated | Eligible lesson does not match the query or was already recalled in this session |
+| payload-budget / selection-limit | Matching lesson exceeds the payload budget or another two lessons rank first |
 
 `lessons list`, `lessons show <id>`, `lessons export`, `lessons forget <id>` and `lessons prune` provide explicit management. Export prints sanitized structured data; it does not upload. Prune removes old/unreferenced observations (14 days or 10 MB cap) and preserves evidence referenced by active lessons. No raw transcript capture, global promotion or sync is enabled. Corrupt, unsupported or locked data yields a precise error; do not remove a lock while another operation is active.
 

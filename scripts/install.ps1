@@ -1,6 +1,8 @@
 param (
     [string]$Target = ".",
-    [string]$Preset = "dreamy-project"
+    [string]$Preset = "dreamy-project",
+    [ValidateSet("off", "minimal", "standard", "strict")]
+    [string]$Hooks = "off"
 )
 
 $ErrorActionPreference = "Stop"
@@ -14,8 +16,11 @@ if (-not $node) {
     exit 1
 }
 
+& node -e "process.exit(Number(process.versions.node.split('.')[0]) >= 20 ? 0 : 1)"
+if ($LASTEXITCODE -ne 0) { throw "Node.js >=20 required; upgrade from https://nodejs.org/" }
+
 Write-Host "🚀 Installing Dreamy Codex Toolkit (Target: $Target, Preset: $Preset)..." -ForegroundColor Green
-npx --yes github:Dreamy-Game-Foundation/dreamy-codex-toolkit#main install --target "$Target" --preset "$Preset"
+npx --yes github:Dreamy-Game-Foundation/dreamy-codex-toolkit#main install --target "$Target" --preset "$Preset" --hooks "$Hooks"
 if ($LASTEXITCODE -ne 0) {
     exit $LASTEXITCODE
 }

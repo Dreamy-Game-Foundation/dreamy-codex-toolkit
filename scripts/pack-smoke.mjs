@@ -82,6 +82,29 @@ try {
   );
   if (hook.status !== "pass" || hook.nativeLifecycle.status !== "not-run")
     throw new Error("Packed hook fixture failed");
+  const consumer = path.join(temp, "fresh consumer project");
+  fs.mkdirSync(path.join(consumer, "Packages"), { recursive: true });
+  fs.mkdirSync(path.join(consumer, "ProjectSettings"));
+  fs.mkdirSync(path.join(consumer, "Assets"));
+  fs.writeFileSync(path.join(consumer, "Packages/manifest.json"), '{"dependencies":{}}');
+  fs.writeFileSync(path.join(consumer, "Packages/packages-lock.json"), '{"dependencies":{}}');
+  fs.writeFileSync(path.join(consumer, "ProjectSettings/ProjectVersion.txt"), "m_EditorVersion: 6000.0.1f1\n");
+  execFileSync(process.execPath, [cli, "install", "--target", consumer, "--preset", "unity-production", "--json"], { encoding: "utf8", timeout: 60000 });
+  // Remove the npm source/dependency location before using the portable runtime.
+  // This proves it does not quietly depend on an npx cache or global install.
+  fs.renameSync(path.join(installRoot, "node_modules"), path.join(installRoot, "source-unavailable"));
+  const entry = path.join(consumer, ".dreamy-codex/cli-runtime/src/project-entry.mjs");
+  const portable = args => JSON.parse(execFileSync(process.execPath, [entry, ...args], { cwd: temp, encoding: "utf8", timeout: 60000 }));
+  if (portable(["harness", "project-inspect"]).status !== "pass") throw Error("Packed consumer static harness failed");
+  const consumerDoctor = portable(["doctor", "--json"]);
+  if (consumerDoctor.capabilities.cli.status !== "available" || consumerDoctor.capabilities.lessons.status !== "available" || consumerDoctor.capabilities.hooks.operational !== false) throw Error("Packed consumer readiness failed");
+  // Installed skill helpers must not depend on the source checkout or opt in
+  // to cleanup merely because a production preset includes the skill.
+  execFileSync("git", ["init", "-q", consumer], { cwd: temp, encoding: "utf8" });
+  const visualHelper = path.join(consumer, ".agents/skills/visual-review/scripts/visual-review.mjs");
+  const visualDoctor = JSON.parse(execFileSync(process.execPath, [visualHelper, "doctor", "--root", consumer], { cwd: temp, encoding: "utf8", timeout: 15000 }));
+  if (visualDoctor.initialized || visualDoctor.enabled) throw Error("Visual cleanup must remain opt-in after install");
+  portable(["uninstall", "--json"]);
   if (beforeFingerprint !== sourceFingerprint(root))
     throw new Error("Source changed during packaging; rerun");
   const report = {
@@ -90,7 +113,7 @@ try {
     toolkitVersion: JSON.parse(fs.readFileSync(path.join(root, "toolkit.json")))
       .version,
     packageVersion: JSON.parse(
-      fs.readFileSync(path.join(installed, "package.json")),
+      fs.readFileSync(path.join(installRoot, "source-unavailable/dreamy-codex-toolkit/package.json")),
     ).version,
     sourceCommit: sourceCommit(root),
     sourceFingerprint: beforeFingerprint,
@@ -99,7 +122,7 @@ try {
     nodeVersion: process.version,
     tarball: name,
     tarballSha256: hash(fs.readFileSync(tarball)),
-    packedCliChecks: { validate: "pass", context: "pass", hookFixture: "pass" },
+    packedCliChecks: { validate: "pass", context: "pass", hookFixture: "pass", portableConsumer: "pass" },
     startedAt,
     completedAt: new Date().toISOString(),
   };

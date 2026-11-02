@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "cases": [{
+    "id": "panel-subscription-lifecycle",
+    "group": "lifecycle-artifact",
+    "prompt": "Repair subscription.mjs so duplicate open/close and reopen keep one reward subscription while open and none while closed. Preserve the public Panel API and event source. This is a pure JavaScript lifecycle exercise; no Unity API claim is involved.",
+    "grader": { "type": "artifact-task", "fixture": "../fixtures/lifecycle", "verifier": "../graders/subscription.mjs" }
+  }]
+}

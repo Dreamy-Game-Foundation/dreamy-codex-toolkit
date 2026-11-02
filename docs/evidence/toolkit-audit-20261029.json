@@ -1,0 +1,332 @@
+{
+  "schemaVersion": 1,
+  "kind": "research-audit-snapshot",
+  "retrievedAt": "2026-10-29T04:20:49.450215+00:00",
+  "baseline": {
+    "commit": "507b3f3ee0a3869800dc1546af40d6b31ff4dd9a",
+    "version": "0.1.0-alpha.4",
+    "dirty": true,
+    "scope": "current working tree, not clean HEAD",
+    "sourceHashes": {
+      "toolkit.json": "d3eb1cab3f66d79c71695e970e0671b96d0957d82a0310faa8831f17e5cd4dae",
+      "skills/index.json": "99d814a5c71186025d6967014ae015bde0242c86d731ced87109f34837b3d9f1",
+      "scripts/validate-skills.mjs": "51978c567879cc1296ea8bec0b5ea2a6b73ec1223828cabd70c049f20abeb865",
+      "scripts/benchmark.mjs": "ec762870f3eb6496cb251b0b679a849968ce5aa7c003f31dcf56b14d1645e338",
+      "harness/dreamy-harness": "57d5bfa392be01d57a0e6a86498981666c303504e6791685297065c2c0b30ac7",
+      "src/verification-plan.mjs": "1a29fd0256cc06df701700d1f24703a721d143d50c111cd5227ec68322ce6bcf"
+    }
+  },
+  "popularityMethod": "Single GitHub REST snapshot; cumulative stars, not measured daily/weekly growth or GitHub Trending ranking.",
+  "repositories": [
+    {
+      "full_name": "CoplayDev/unity-mcp",
+      "stargazers_count": 15509,
+      "forks_count": 1611,
+      "default_branch": "beta",
+      "pushed_at": "2026-10-19T18:48:57Z",
+      "archived": false,
+      "html_url": "https://github.com/CoplayDev/unity-mcp",
+      "sha": "ed4e205d31a545bac3686d5e19210e67959aeddd",
+      "commit_date": "2026-10-19T18:48:53Z",
+      "license": "MIT",
+      "metadataUrl": "https://api.github.com/repos/CoplayDev/unity-mcp",
+      "commitUrl": "https://github.com/CoplayDev/unity-mcp/commit/ed4e205d31a545bac3686d5e19210e67959aeddd"
+    },
+    {
+      "full_name": "Nice-Wolf-Studio/unity-claude-skills",
+      "stargazers_count": 40,
+      "forks_count": 5,
+      "default_branch": "main",
+      "pushed_at": "2026-09-15T11:52:31Z",
+      "archived": false,
+      "html_url": "https://github.com/Nice-Wolf-Studio/unity-claude-skills",
+      "sha": "a149d3e995420432f52b0899092daa4b069f441f",
+      "commit_date": "2026-09-15T11:52:29Z",
+      "license": "MIT",
+      "metadataUrl": "https://api.github.com/repos/Nice-Wolf-Studio/unity-claude-skills",
+      "commitUrl": "https://github.com/Nice-Wolf-Studio/unity-claude-skills/commit/a149d3e995420432f52b0899092daa4b069f441f"
+    },
+    {
+      "full_name": "XeldarAlz/everything-claude-unity",
+      "stargazers_count": 25,
+      "forks_count": 4,
+      "default_branch": "main",
+      "pushed_at": "2026-04-24T07:19:39Z",
+      "archived": false,
+      "html_url": "https://github.com/XeldarAlz/everything-claude-unity",
+      "sha": "bb28ccbd40b065b0958b02df0c03fb91c4fb7c5b",
+      "commit_date": "2026-04-24T07:17:14Z",
+      "license": "MIT",
+      "metadataUrl": "https://api.github.com/repos/XeldarAlz/everything-claude-unity",
+      "commitUrl": "https://github.com/XeldarAlz/everything-claude-unity/commit/bb28ccbd40b065b0958b02df0c03fb91c4fb7c5b"
+    },
+    {
+      "full_name": "affaan-m/ECC",
+      "stargazers_count": 291890,
+      "forks_count": 43210,
+      "default_branch": "main",
+      "pushed_at": "2026-10-26T04:56:56Z",
+      "archived": false,
+      "html_url": "https://github.com/affaan-m/ECC",
+      "sha": "25278e7d7b6cf6e6a4e7a6c8e10f14ff22f0eb5b",
+      "commit_date": "2026-10-26T04:03:57Z",
+      "license": "MIT",
+      "metadataUrl": "https://api.github.com/repos/affaan-m/ECC",
+      "commitUrl": "https://github.com/affaan-m/ECC/commit/25278e7d7b6cf6e6a4e7a6c8e10f14ff22f0eb5b"
+    },
+    {
+      "full_name": "agentskills/agentskills",
+      "stargazers_count": 26750,
+      "forks_count": 1977,
+      "default_branch": "main",
+      "pushed_at": "2026-08-09T20:36:04Z",
+      "archived": false,
+      "html_url": "https://github.com/agentskills/agentskills",
+      "sha": "69ef37e9424c0a7ea9dd2293b559e43ec8176379",
+      "commit_date": "2026-08-09T20:36:04Z",
+      "license": "Apache-2.0",
+      "metadataUrl": "https://api.github.com/repos/agentskills/agentskills",
+      "commitUrl": "https://github.com/agentskills/agentskills/commit/69ef37e9424c0a7ea9dd2293b559e43ec8176379"
+    },
+    {
+      "full_name": "code-yeongyu/oh-my-openagent",
+      "stargazers_count": 70451,
+      "forks_count": 5812,
+      "default_branch": "dev",
+      "pushed_at": "2026-10-29T04:15:11Z",
+      "archived": false,
+      "html_url": "https://github.com/code-yeongyu/oh-my-openagent",
+      "sha": "f6060b50fdaea42e709abadeb482ec32a12edb63",
+      "commit_date": "2026-10-29T02:06:54Z",
+      "license": "NOASSERTION",
+      "metadataUrl": "https://api.github.com/repos/code-yeongyu/oh-my-openagent",
+      "commitUrl": "https://github.com/code-yeongyu/oh-my-openagent/commit/f6060b50fdaea42e709abadeb482ec32a12edb63"
+    },
+    {
+      "full_name": "github/spec-kit",
+      "stargazers_count": 143714,
+      "forks_count": 12874,
+      "default_branch": "main",
+      "pushed_at": "2026-10-28T20:37:09Z",
+      "archived": false,
+      "html_url": "https://github.com/github/spec-kit",
+      "sha": "99e047e9b48c3ecbbc5c3e530fb45bed671960bc",
+      "commit_date": "2026-10-28T20:37:09Z",
+      "license": "MIT",
+      "metadataUrl": "https://api.github.com/repos/github/spec-kit",
+      "commitUrl": "https://github.com/github/spec-kit/commit/99e047e9b48c3ecbbc5c3e530fb45bed671960bc"
+    },
+    {
+      "full_name": "gsd-build/get-shit-done",
+      "stargazers_count": 64191,
+      "forks_count": 5425,
+      "default_branch": "main",
+      "pushed_at": "2026-05-31T17:46:54Z",
+      "archived": true,
+      "html_url": "https://github.com/gsd-build/get-shit-done",
+      "sha": "bdcaab2c752d9a33a1a1ca9acf3a3c81fb991815",
+      "commit_date": "2026-05-31T13:34:35Z",
+      "license": "MIT",
+      "metadataUrl": "https://api.github.com/repos/gsd-build/get-shit-done",
+      "commitUrl": "https://github.com/gsd-build/get-shit-done/commit/bdcaab2c752d9a33a1a1ca9acf3a3c81fb991815"
+    },
+    {
+      "full_name": "obra/superpowers",
+      "stargazers_count": 307573,
+      "forks_count": 27357,
+      "default_branch": "main",
+      "pushed_at": "2026-10-23T03:48:57Z",
+      "archived": false,
+      "html_url": "https://github.com/obra/superpowers",
+      "sha": "2ce8aa15d05bd57213e6f746f953aafb7ded7a8b",
+      "commit_date": "2026-10-21T21:00:49Z",
+      "license": "MIT",
+      "metadataUrl": "https://api.github.com/repos/obra/superpowers",
+      "commitUrl": "https://github.com/obra/superpowers/commit/2ce8aa15d05bd57213e6f746f953aafb7ded7a8b"
+    },
+    {
+      "full_name": "open-gsd/gsd-core",
+      "stargazers_count": 10976,
+      "forks_count": 774,
+      "default_branch": "next",
+      "pushed_at": "2026-10-29T03:04:00Z",
+      "archived": false,
+      "html_url": "https://github.com/open-gsd/gsd-core",
+      "sha": "ceef6898be2f3b09b4c55c51a524fde49803bb54",
+      "commit_date": "2026-10-29T01:16:47Z",
+      "license": "MIT",
+      "metadataUrl": "https://api.github.com/repos/open-gsd/gsd-core",
+      "commitUrl": "https://github.com/open-gsd/gsd-core/commit/ceef6898be2f3b09b4c55c51a524fde49803bb54"
+    }
+  ],
+  "sourceFiles": [
+    {
+      "repo": "CoplayDev/unity-mcp",
+      "file": "README.md",
+      "commit": "ed4e205d31a545bac3686d5e19210e67959aeddd",
+      "sha256": "16c53b7a0d6290ec3e0a0056de18dad3be4d675f009caf5dcbc0d184e73c04e0",
+      "url": "https://github.com/CoplayDev/unity-mcp/blob/ed4e205d31a545bac3686d5e19210e67959aeddd/README.md"
+    },
+    {
+      "repo": "Nice-Wolf-Studio/unity-claude-skills",
+      "file": "README.md",
+      "commit": "a149d3e995420432f52b0899092daa4b069f441f",
+      "sha256": "63466063be4639d96976a19091a4971a4c7eded579249b41cf978a81de68ee84",
+      "url": "https://github.com/Nice-Wolf-Studio/unity-claude-skills/blob/a149d3e995420432f52b0899092daa4b069f441f/README.md"
+    },
+    {
+      "repo": "XeldarAlz/everything-claude-unity",
+      "file": "README.md",
+      "commit": "bb28ccbd40b065b0958b02df0c03fb91c4fb7c5b",
+      "sha256": "dd64ac7568150c7f6db0248a94f5d6e9885b0bd44afbab7f99977f0658e63bb7",
+      "url": "https://github.com/XeldarAlz/everything-claude-unity/blob/bb28ccbd40b065b0958b02df0c03fb91c4fb7c5b/README.md"
+    },
+    {
+      "repo": "affaan-m/ECC",
+      "file": "scripts/lib/hook-flags.js",
+      "commit": "25278e7d7b6cf6e6a4e7a6c8e10f14ff22f0eb5b",
+      "sha256": "f5e79b210531a1f3e2a476be4a421a9ee398e91f2d2991b52e8047db260b6b8c",
+      "url": "https://github.com/affaan-m/ECC/blob/25278e7d7b6cf6e6a4e7a6c8e10f14ff22f0eb5b/scripts/lib/hook-flags.js"
+    },
+    {
+      "repo": "affaan-m/ECC",
+      "file": "skills/continuous-learning-v2/SKILL.md",
+      "commit": "25278e7d7b6cf6e6a4e7a6c8e10f14ff22f0eb5b",
+      "sha256": "ddad12451a0d582c6ef1b197b7be193bef613cbc74eba4117fcb74fc7a4ecd00",
+      "url": "https://github.com/affaan-m/ECC/blob/25278e7d7b6cf6e6a4e7a6c8e10f14ff22f0eb5b/skills/continuous-learning-v2/SKILL.md"
+    },
+    {
+      "repo": "agentskills/agentskills",
+      "file": "docs/specification.mdx",
+      "commit": "69ef37e9424c0a7ea9dd2293b559e43ec8176379",
+      "sha256": "b9079c0c10b7930e8c6a20ff2bc10cda2a3343c55185120e3f1116a1a529b220",
+      "url": "https://github.com/agentskills/agentskills/blob/69ef37e9424c0a7ea9dd2293b559e43ec8176379/docs/specification.mdx"
+    },
+    {
+      "repo": "code-yeongyu/oh-my-openagent",
+      "file": "LICENSE.md",
+      "commit": "f6060b50fdaea42e709abadeb482ec32a12edb63",
+      "sha256": "b61ac928f152d13517328263e6bee9175b928f9ab696a2d2ca2b6cfd961ddc32",
+      "url": "https://github.com/code-yeongyu/oh-my-openagent/blob/f6060b50fdaea42e709abadeb482ec32a12edb63/LICENSE.md"
+    },
+    {
+      "repo": "code-yeongyu/oh-my-openagent",
+      "file": "packages/omo-codex/plugin/components/rules/src/event-budget.ts",
+      "commit": "f6060b50fdaea42e709abadeb482ec32a12edb63",
+      "sha256": "0dd9fc4f4088059bf745e150ecfb3455b5f1ab16eaf644e446a37184857839e8",
+      "url": "https://github.com/code-yeongyu/oh-my-openagent/blob/f6060b50fdaea42e709abadeb482ec32a12edb63/packages/omo-codex/plugin/components/rules/src/event-budget.ts"
+    },
+    {
+      "repo": "github/spec-kit",
+      "file": "README.md",
+      "commit": "99e047e9b48c3ecbbc5c3e530fb45bed671960bc",
+      "sha256": "3baa99368443f26244b3a021b40eaf6f167ee591f5759c91315ad50d0a204592",
+      "url": "https://github.com/github/spec-kit/blob/99e047e9b48c3ecbbc5c3e530fb45bed671960bc/README.md"
+    },
+    {
+      "repo": "gsd-build/get-shit-done",
+      "file": "README.md",
+      "commit": "bdcaab2c752d9a33a1a1ca9acf3a3c81fb991815",
+      "sha256": "6530ef6aad23383980a7c405d32c40e73c798ee4263a883f804aef31548569b6",
+      "url": "https://github.com/gsd-build/get-shit-done/blob/bdcaab2c752d9a33a1a1ca9acf3a3c81fb991815/README.md"
+    },
+    {
+      "repo": "obra/superpowers",
+      "file": "skills/verification-before-completion/SKILL.md",
+      "commit": "2ce8aa15d05bd57213e6f746f953aafb7ded7a8b",
+      "sha256": "2befe7fc55bcadaa3d97dd9e8efeb633d2561c0ebe74c5a8b17c4d9e7e4520b3",
+      "url": "https://github.com/obra/superpowers/blob/2ce8aa15d05bd57213e6f746f953aafb7ded7a8b/skills/verification-before-completion/SKILL.md"
+    },
+    {
+      "repo": "obra/superpowers",
+      "file": "skills/writing-skills/SKILL.md",
+      "commit": "2ce8aa15d05bd57213e6f746f953aafb7ded7a8b",
+      "sha256": "8cb3ac68c6d8c4bb46886b998b09af7989643cab8bd0e46ee86dd62e64546bbe",
+      "url": "https://github.com/obra/superpowers/blob/2ce8aa15d05bd57213e6f746f953aafb7ded7a8b/skills/writing-skills/SKILL.md"
+    },
+    {
+      "repo": "open-gsd/gsd-core",
+      "file": "README.md",
+      "commit": "ceef6898be2f3b09b4c55c51a524fde49803bb54",
+      "sha256": "66fe062ee3705af835b09ffa8da112fd14bc8a6025f0d4fb22b4291d353268a9",
+      "url": "https://github.com/open-gsd/gsd-core/blob/ceef6898be2f3b09b4c55c51a524fde49803bb54/README.md"
+    }
+  ],
+  "checks": {
+    "command": "npm test",
+    "node": "v24.19.0",
+    "platform": "linux",
+    "exitCode": 0,
+    "tests": 93,
+    "passed": 92,
+    "failed": 0,
+    "skipped": 1,
+    "skipReason": "PowerShell contract requires Windows runner",
+    "outputSha256": "123606ab4921a2f304b658926bf6848762b7c00f650237d67ae60cfec1f980fd",
+    "output": "\n> dreamy-codex-toolkit@0.1.0-alpha.4 test\n> npm run validate && node scripts/test-unit.mjs\n\n\n> dreamy-codex-toolkit@0.1.0-alpha.4 validate\n> node src/cli.js validate && node scripts/validate-skills.mjs && node scripts/validate-acceptance.mjs && node scripts/validate-context-budget.mjs && node scripts/catalog-summary.mjs --check\n\nvalidate: OK\nskill validation: OK (83 skills)\nacceptance validation: OK\ncontext validation: OK (6 size advisories)\n{\"counts\":{\"skills\":83,\"agents\":15,\"rules\":50,\"modules\":9,\"presets\":9,\"evals\":95},\"stale\":[]}\n✔ isolated lab runs real CLI/verification workflows without claiming native or model acceptance (2260.977187ms)\n✔ benchmark runner invokes adapter and grades observed output (144.911124ms)\n✔ benchmark runner reports not-run when no adapter command exists (37.391072ms)\n✔ benchmark runner preserves adapter-declared not-run evidence (59.527546ms)\n✔ usage without runtime counters remains unavailable, not zero tokens (0.640534ms)\n✔ benchmark reruns cannot grade stale output from an earlier attempt (43.870561ms)\n✔ catalog docs detect drift, reconcile canonical counts and preserve surrounding bytes (3.490519ms)\n✔ detects an external skill path in a nested Codex JSONL command (1.679364ms)\n✔ does not flag a trace without installed skill paths (0.24588ms)\n✔ fresh project smoke: bundled CLI, checkpoint, actual failure/receipt/lesson and uninstall retention (3084.134313ms)\n✔ runtime update stages a new distribution and restores prior ownership on failure (5.529568ms)\n✔ setup hooks preserve foreign config; update keeps profile and status source without granting trust (750.554213ms)\n✔ workflow collisions and managed edits refuse mutation, including uninstall (339.315423ms)\n✔ agent/skill edits and unowned name collisions are preserved (234.73791ms)\n✔ portable shell/Windows entrypoint and missing Node guidance (180.072978ms)\n✔ global bundled entrypoint uses project cwd; project hooks remain separately configured (920.34466ms)\n✔ doctor warnings and ownership errors never recommend a forced uninstall (835.41617ms)\n✔ catalog validation never fabricates semantic pass fields (62.667352ms)\n✔ catalog validation rejects malformed eval cases through JSON Schema (30.9774ms)\n✔ release freshness rejects stale and fabricated reports (67.64508ms)\n✔ lessons require failure and fresh resolution; recall is scoped, capped and deduplicated (85.464786ms)\n✔ record boundaries reject traversal, symlinks, duplicate overwrite and missing evidence (11.778433ms)\n✔ observation retention preserves referenced failures (30.042746ms)\n✔ native protocol: silent no-op, session dedupe, Stop cap and interruption (7.713721ms)\n✔ hook controls, native deny shape and Unicode caps (2.56786ms)\n✔ policy applies lower resource limits and rejects typos or oversized budgets (3.102373ms)\n✔ native probe reports runtime trust and discovery without claiming event delivery (69.369218ms)\n✔ zero-model smoke reports deferred SessionStart without requesting a turn or renewed trust (51.706588ms)\n✔ hook lifecycle preserves user hooks and refuses drift; user data survives uninstall (37.741327ms)\n✔ installed fixture smoke is not native lifecycle proof (53.008691ms)\n✔ runtime and policy changes alter native definitions so exact trust requires review (23.462774ms)\n✔ verification does not claim toolkit checks verify unrelated source (3.221375ms)\n✔ candidate skills stay undiscovered until matching semantic report; stale candidates reject (14.07218ms)\n✔ CLI rejects malformed records and reports measured bytes without token claims (159.486531ms)\n✔ candidate promotion requires real behavioral artifacts and preserves unrelated skills (22.351517ms)\n✔ hook transaction recovery preserves previous bytes and runtime on interruption (9.652633ms)\n✔ uninstall removes owned hooks but keeps project lessons and promoted skills (226.613672ms)\n✔ compaction does not renew a Stop continuation budget (1.658327ms)\n✔ dry-run on an unsupported destructive command is rejected (66.72697ms)\n✔ wrong platform/command or changed log cannot verify a lesson (13.038367ms)\n✔ failure hook ties a known check to its active task without retaining command secrets (4.443563ms)\n✔ native Bash stdout without status reports a coverage gap without inventing observations (8.770599ms)\n✔ candidate revisions are bounded and canonical skill names cannot be shadowed (19.193491ms)\n✔ lexical recall respects positive, near-miss, conflict and payload budgets (36.664429ms)\n✔ checker or added test inputs invalidate a receipt even if requested source is unchanged (6.879569ms)\n✔ drafts use fresh verified lessons, remain undiscovered and require concrete evaluation cases (30.65823ms)\n✔ lesson preview does not consume recall and package-bound eligibility follows the inspected lock (32.73897ms)\n✔ explicit promotion retains report provenance and rejects altered artifacts on reuse (28.591243ms)\n✔ rollout counts distinct UTC observation days per runtime/policy without inventing acceptance (2.789189ms)\n✔ harness git-status emits machine-readable evidence (143.065641ms)\n✔ CLI harness wrapper delegates to harness operations (184.781123ms)\n✔ Unity-dependent harness operations degrade without fake success (218.316155ms)\n✔ project inspection passes only complete Unity source fixtures (318.878336ms)\n✔ committed Unity vertical slice has a valid machine profile (138.768923ms)\n✔ asmdef inspection parses graph and rejects Runtime to Editor references (102.413222ms)\nDreamy managed block checksum drift; rerun with --force only after reviewing managed block changes\nDreamy managed block checksum drift; refusing uninstall\nMalformed Dreamy managed block markers\nMalformed Dreamy managed block markers\n✔ installer writes and removes Dreamy managed files (579.49402ms)\n✔ global target installs into user Codex home (194.350641ms)\n✔ install adopts an existing single Dreamy managed block (241.403431ms)\n✔ agent installation follows resolved modules instead of installing every agent (96.56749ms)\n✔ Dreamy package skills are selected from skill metadata (95.145241ms)\n✔ list --resolved shows deterministic preset graph (61.916067ms)\n✔ purge removes Dreamy state but preserves unrelated Codex and Agents files (228.980769ms)\n✔ purge defaults to global target from any working directory (192.164047ms)\n✔ purge recovers malformed global markers and removes known managed artifacts (62.850087ms)\n✔ update refreshes an existing managed install (277.905769ms)\n✔ update and uninstall tolerate user edits outside the managed block (303.918775ms)\n✔ managed block drift refuses update and uninstall unless forced (388.907642ms)\n✔ managed AGENTS lifecycle preserves CRLF files (319.761216ms)\n✔ malformed managed block markers are detected (102.589895ms)\n✔ update migrates v1 install state to v2 (246.826606ms)\n✔ doctor emits meaningful native-path diagnostics (243.497601ms)\n✔ native adapter requires explicit consent and exact prompt/context before any runtime starts (90.648934ms)\n✔ model-turn ledger prevents replay across new output attempts (4.203223ms)\n✔ B0 executes an ephemeral controlled turn and preserves measured usage (5.271404ms)\n✔ B2 gates trust before execution and requires SessionStart from the authorized first turn (60.344476ms)\n✔ a blocked native member prevents wasting a baseline turn in the same plan (3.07174ms)\n✔ unexpected tool calls fail an attempted decision trial; missing usage stays unavailable (3.001172ms)\n✔ native preparation creates reviewable prompts without invoking the configured adapter (55.862673ms)\n✔ pack gate rejects old version, different source/run and missing or modified tarballs (183.16982ms)\n✔ explicit discovery supports spaces, sorts files and rejects empty directories (133.854583ms)\n✔ process diagnostics distinguish spawn failure, empty output and degraded JSON (0.652816ms)\n﹣ PowerShell installer parses and forwards install arguments (0.898964ms) # SKIP\n✔ version-bound transcript adapter correlates completed commands and keeps output private (21.080614ms)\n✔ transcript status rejects missing, stale, mismatched, ambiguous or spoofed evidence (4.67876ms)\n✔ transcript fallback is explicit policy and changes the reviewed native definition (98.87975ms)\n✔ catalog artifacts validate by invariant (117.463116ms)\n✔ Dreamy package drift remains machine-visible (1.168864ms)\n✔ consumer receipt is invalid after deleting an undeclared lock; old lesson cannot be reused (452.865051ms)\n✔ implicit settings/asmdef changes and checker source changes invalidate fingerprints (17.585264ms)\n✔ Unity execution fingerprints include other source/assets and Editor configuration (5.67175ms)\n✔ lesson explanation is read-only and agrees with recall relevance/session deduplication (237.695219ms)\n✔ legacy consumer receipts require re-verification and log changes have explicit reasons (120.701627ms)\n✔ installed hook runtime agrees on checker freshness and rejects a stale static receipt (195.427801ms)\nℹ tests 93\nℹ suites 0\nℹ pass 92\nℹ fail 0\nℹ cancelled 0\nℹ skipped 1\nℹ todo 0\nℹ duration_ms 6426.27735\n",
+    "initialSandboxAttempt": {
+      "exitCode": 1,
+      "reason": "EPERM spawning Node from acceptance validation; unsandboxed local rerun passed"
+    }
+  },
+  "syntheticHarnessProbe": {
+    "kind": "synthetic-adapter-probe",
+    "realUnityExecuted": false,
+    "inputXml": "<test-run result=\"Skipped\" total=\"0\" passed=\"0\" failed=\"0\" skipped=\"0\" />",
+    "processExitCode": 0,
+    "stderr": "",
+    "observedEvidence": {
+      "schemaVersion": 1,
+      "adapter": "dreamy-harness",
+      "operation": "test-editmode",
+      "status": "pass",
+      "summary": "test-editmode completed without observed errors",
+      "observedAt": "2026-10-29T04:20:02.948Z",
+      "timestamp": "2026-10-29T04:20:02.948Z",
+      "startedAt": "2026-10-29T04:20:02.920Z",
+      "completedAt": "2026-10-29T04:20:02.948Z",
+      "durationMs": 28,
+      "platform": "linux",
+      "projectPath": "/run/media/tutrinh/NewData/dreamy-codex-toolkit/tests/fixtures/unity/vertical-slice",
+      "unityVersion": "6000.4.12f1",
+      "unityExecutable": "/tmp/dreamy-audit-20261029/fake-unity.py",
+      "manifestHash": "ac32363f1409c3a816ae8eec208c839dbb85ef7d8b2f139c63b93b6a15271ca2",
+      "packagesLockHash": "f24c71e8a9b91be1b347dd02029dbd40907124b3f41e71489a15c41b6bb28550",
+      "command": [
+        "/run/media/tutrinh/NewData/dreamy-codex-toolkit/harness/dreamy-harness",
+        "test-editmode",
+        "/run/media/tutrinh/NewData/dreamy-codex-toolkit/tests/fixtures/unity/vertical-slice"
+      ],
+      "artifacts": [
+        {
+          "path": "/tmp/dreamy-harness-uZJLY0/test-editmode.log",
+          "kind": "unity-log",
+          "sha256": "a86345e5664909a9120173e4c087600c3d2d80ef87e6b1d91b6b1570c17be211"
+        },
+        {
+          "path": "/tmp/dreamy-harness-uZJLY0/test-editmode.xml",
+          "kind": "unity-test-results",
+          "sha256": "f28276fb72213163b73c6c9357b57d2d305da151486c7cb05e0b1eb46e8f55eb"
+        }
+      ],
+      "diagnostics": [
+        "test-editmode completed without observed errors"
+      ],
+      "errors": [],
+      "warnings": [],
+      "target": "/run/media/tutrinh/NewData/dreamy-codex-toolkit/tests/fixtures/unity/vertical-slice",
+      "exceptions": [],
+      "profileHash": "45bf4694d2a424bec7ada765266c3a5b9edec7174c111e07825c900712e0222b",
+      "exitCode": 0
+    },
+    "reproductionScript": "import json, os, pathlib, subprocess\n\nroot = pathlib.Path('/run/media/tutrinh/NewData/dreamy-codex-toolkit')\nout = pathlib.Path('/tmp/dreamy-audit-20261029')\nfake = out / 'fake-unity.py'\nfake.write_text('''#!/usr/bin/env python3\nimport pathlib, sys\nargs = sys.argv\npathlib.Path(args[args.index('-logFile') + 1]).write_text('Fixture runner completed\\\\n')\npathlib.Path(args[args.index('-testResults') + 1]).write_text('<test-run result=\"Skipped\" total=\"0\" passed=\"0\" failed=\"0\" skipped=\"0\" />')\n''')\nfake.chmod(0o755)\nenv = dict(os.environ, DREAMY_UNITY_PATH=str(fake))\nresult = subprocess.run(['node', str(root / 'harness/dreamy-harness'), 'test-editmode', str(root / 'tests/fixtures/unity/vertical-slice')], env=env, text=True, capture_output=True)\nreport = {'kind': 'synthetic-adapter-probe', 'realUnityExecuted': False, 'inputXml': '<test-run result=\"Skipped\" total=\"0\" passed=\"0\" failed=\"0\" skipped=\"0\" />', 'processExitCode': result.returncode, 'stdout': result.stdout, 'stderr': result.stderr}\n(out / 'empty-test-probe.json').write_text(json.dumps(report, indent=2))\nprint(json.dumps(report))\n",
+    "artifactRetention": "Synthetic input and observed JSON retained here; temporary log/XML paths are not durable artifacts."
+  },
+  "limitations": [
+    "No upstream code executed",
+    "No real Unity Editor/license/device execution",
+    "No model or native hook acceptance trial",
+    "No current remote CI acceptance asserted",
+    "Source inspection scoped to listed files; README claims are not runtime proof"
+  ]
+}

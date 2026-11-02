@@ -8,6 +8,12 @@
 
 `toolkit.json` serves as the canonical source of truth for versioning, maturity, presets, modules, rules, skills, and harness metadata.
 
+<!-- DREAMY-CATALOG:START -->
+Catalog: **84 skills, 15 agent templates, 50 rules, 9 modules, 9 presets and 103 eval cases**. Counts describe the catalog, not measured model success.
+<!-- DREAMY-CATALOG:END -->
+
+For screenshot-based checks with existing editor/browser/device tools, see [Visual review](docs/visual-review.md). Temporary-image cleanup is an explicit project setup step.
+
 Current prerelease: **0.1.0-alpha.4** (GitHub prerelease; no npm registry publication). For a pinned install after the release is available:
 
 ```bash
@@ -276,7 +282,7 @@ Commands default to the current directory unless `--target global` is specified.
 | `hooks recover` | Recovers an interrupted owned hook transaction | `--target PATH`, `--json` |
 | `task checkpoint` | Writes a checkpoint via validated JSON input; not a top-level `checkpoint` command | `--session NATIVE_ID`, `--input task.json`, `--target PATH` |
 | `task verify` | Runs a fixed validate/unit/pack/unity check and stores receipt/log hashes | `--command ID`, `--input task.json`, `--target PATH` |
-| `lessons list/show/record/verify/recall/forget/prune/export` | Manages scoped observations, verified local lessons and bounded recall | See [operating guide](docs/toolkit-evolution.md#project-lessons) for action-specific options |
+| `lessons list/show/record/verify/recall/explain/forget/prune/export` | Manages scoped observations, verified local lessons and bounded recall | See [operating guide](docs/toolkit-evolution.md#project-lessons) for action-specific options |
 | `skills draft/propose/prepare-evaluation/revise/promote` | Creates candidates, prepares cases and explicitly promotes evaluated skills | See [operating guide](docs/toolkit-evolution.md#skill-evolution); `--dry-run` only for promote |
 | `rollout snapshot` | Records runtime/policy cohort and distinct UTC observation days without model calls | `--target PATH`, `--json` |
 
@@ -342,3 +348,5 @@ npm test
 - **License**: MIT License - see [LICENSE](LICENSE).
 - **Master Plan**: See [`docs/plans/DREAMY_CODEX_TOOLKIT_MASTER_PLAN.md`](docs/plans/DREAMY_CODEX_TOOLKIT_MASTER_PLAN.md).
 - **Installation Doc**: See [`docs/installation.md`](docs/installation.md).
+
+Project bootstrap installs `Tools/dreamy-kit` (Windows: `Tools\dreamy-kit.cmd`), a bundled CLI/harness runtime and a short workflow. Lessons/checkpoints work through explicit CLI commands with hooks off by default. See [installation and readiness](docs/installation.md) for project/global setup, hook profiles, doctor, update and uninstall retention.

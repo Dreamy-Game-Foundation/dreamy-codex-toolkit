@@ -66,3 +66,13 @@ test('benchmark reruns cannot grade stale output from an earlier attempt',()=>{
  const manifest=JSON.parse(fs.readFileSync(options.manifest,'utf8'));manifest.adapter={executable:process.execPath,args:['-e','']};fs.writeFileSync(options.manifest,JSON.stringify(manifest));
  assert.throws(()=>runBenchmark(options),/already contains evidence/);
 });
+
+test("benchmark rejects empty selections and invalid repetition counts", () => {
+  const temp = fixture(), manifestPath = path.join(temp, "manifest.json");
+  for (const options of [{ case: "missing" }, { treatment: "missing" }, { split: "missing" }]) {
+    assert.throws(() => runBenchmark({ manifest: manifestPath, output: path.join(temp, JSON.stringify(options).replace(/[^a-z]/g, "")), ...options }), /No benchmark/);
+  }
+  const manifest = JSON.parse(fs.readFileSync(manifestPath)); manifest.repetitions = 0;
+  fs.writeFileSync(manifestPath, JSON.stringify(manifest));
+  assert.throws(() => runBenchmark({ manifest: manifestPath, output: path.join(temp, "zero") }), /positive integer/);
+});

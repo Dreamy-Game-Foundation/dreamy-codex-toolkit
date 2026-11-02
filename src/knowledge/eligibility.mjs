@@ -8,62 +8,37 @@ import {
   dataRoot,
 } from "../lib/local-data.mjs";
 import { projectIdentity, recordPath } from "./store.mjs";
-import { fingerprint, evidenceFor } from "../verification-plan.mjs";
-export function eligible(
+import { fingerprint, evidenceFor, explainReceipt } from "../verification-plan.mjs";
+export function explainEligibility(
   root,
   lesson,
   { platform = process.platform, packages, exclude = [] } = {},
 ) {
-  if (
-    lesson.schemaVersion !== 1 ||
-    !["verified-local", "approved"].includes(lesson.status) ||
-    lesson.projectId !== projectIdentity(root) ||
-    lesson.scope !== "project" ||
-    exclude.includes(lesson.id)
-  )
-    return false;
-  if (
-    !Number.isFinite(Date.parse(lesson.reviewAfter)) ||
-    Date.parse(lesson.reviewAfter) <= Date.now()
-  )
-    return false;
-  if (
-    lesson.applicability?.platforms?.length &&
-    !lesson.applicability.platforms.includes(platform)
-  )
-    return false;
+  const reasons = [];
+  if (lesson.schemaVersion !== 1) reasons.push("unsupported-lesson-version");
+  if (!["verified-local", "approved"].includes(lesson.status)) reasons.push("not-verified");
+  if (lesson.projectId !== projectIdentity(root)) reasons.push("project-mismatch");
+  if (lesson.scope !== "project") reasons.push("scope-mismatch");
+  if (exclude.includes(lesson.id)) reasons.push("explicitly-excluded");
+  if (!Number.isFinite(Date.parse(lesson.reviewAfter)) || Date.parse(lesson.reviewAfter) <= Date.now()) reasons.push("review-expired");
+  if (lesson.applicability?.platforms?.length && !lesson.applicability.platforms.includes(platform)) reasons.push("platform-mismatch");
   if (!packages) {
-    const lock = readJson(inside(root, "Packages/packages-lock.json"), {
-      dependencies: {},
-    });
-    packages = Object.fromEntries(
-      Object.entries(lock.dependencies || {}).map(([id, value]) => [
-        id,
-        value.version,
-      ]),
-    );
+    const lock = readJson(inside(root, "Packages/packages-lock.json"), { dependencies: {} });
+    packages = Object.fromEntries(Object.entries(lock.dependencies || {}).map(([id, value]) => [id, value.version]));
   }
-  for (const [pkg, version] of Object.entries(
-    lesson.applicability?.packages || {},
-  ))
-    if (packages[pkg] !== version) return false;
-  if (
-    !lesson.verification ||
-    fingerprint(root, lesson.verification.files) !==
-      lesson.verification.sourceFingerprint
-  )
-    return false;
-  if (
-    !lesson.evidenceRefs.every((id) =>
-      readJson(recordPath(root, "observations", id)),
-    )
-  )
-    return false;
-  return evidenceFor(
-    root,
-    lesson.verification.taskId,
-    lesson.verification.files,
-  ).some((r) => r.id === lesson.verification.receiptId);
+  for (const [pkg, version] of Object.entries(lesson.applicability?.packages || {})) {
+    if (packages[pkg] !== version) reasons.push("package-version-mismatch");
+  }
+  if (!lesson.verification) reasons.push("verification-missing");
+  else {
+    if (fingerprint(root, lesson.verification.files) !== lesson.verification.sourceFingerprint) reasons.push("source-changed");
+    reasons.push(...explainReceipt(root, lesson.verification.receiptId, lesson.verification.taskId, lesson.verification.files).reasons);
+  }
+  if (!lesson.evidenceRefs?.length || !lesson.evidenceRefs.every(id => readJson(recordPath(root, "observations", id)))) reasons.push("observation-missing");
+  return { eligible: reasons.length === 0, reasons: [...new Set(reasons)] };
+}
+export function eligible(root, lesson, context = {}) {
+  return explainEligibility(root, lesson, context).eligible;
 }
 export function verifyLesson(root, id, receiptId) {
   const file = recordPath(root, "lessons", id);

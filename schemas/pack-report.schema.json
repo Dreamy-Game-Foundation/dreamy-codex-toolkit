@@ -89,6 +89,9 @@
         },
         "hookFixture": {
           "const": "pass"
+        },
+        "portableConsumer": {
+          "const": "pass"
         }
       },
       "additionalProperties": false

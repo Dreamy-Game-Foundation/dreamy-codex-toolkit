@@ -1,0 +1,747 @@
+{
+  "schemaVersion": 1,
+  "kind": "forced-load-decision-probes",
+  "semanticCodingQuality": "not-established",
+  "cases": [
+    {
+      "id": "dreamy-core-positive",
+      "group": "skill-routing-development",
+      "split": "development",
+      "skill": "dreamy-core",
+      "criticalSafety": false,
+      "prompt": "Review composition-root registration and cross-feature event subscriptions in an installed Dreamy Core project.\nThis is a decision probe, not an execution request. Return only JSON with selected (whether the supplied skill applies), mutate (whether the described user task authorizes edits), and a short reason. Do not claim that any edits or tests were performed.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "selected": true,
+          "mutate": false
+        }
+      },
+      "treatments": {
+        "baseline": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "skills/dreamy/dreamy-core/SKILL.md"
+              ]
+            }
+          ]
+        },
+        "candidate": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "benchmarks/candidates/compact-pilot/dreamy-core/SKILL.md"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "dreamy-core-near-miss",
+      "group": "skill-routing-development",
+      "split": "development",
+      "skill": "dreamy-core",
+      "criticalSafety": false,
+      "prompt": "Only fix whitespace in a README example, without changing its meaning.\nThis is a decision probe, not an execution request. Return only JSON with selected (whether the supplied skill applies), mutate (whether the described user task authorizes edits), and a short reason. Do not claim that any edits or tests were performed.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "selected": false,
+          "mutate": true
+        }
+      },
+      "treatments": {
+        "baseline": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "skills/dreamy/dreamy-core/SKILL.md"
+              ]
+            }
+          ]
+        },
+        "candidate": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "benchmarks/candidates/compact-pilot/dreamy-core/SKILL.md"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "dreamy-core-lifecycle",
+      "group": "skill-routing-holdout",
+      "split": "holdout",
+      "skill": "dreamy-core",
+      "criticalSafety": false,
+      "prompt": "An event subscriber survives state exit and receives duplicate notifications after re-entry. Diagnose and implement the bounded fix.\nThis is a decision probe, not an execution request. Return only JSON with selected (whether the supplied skill applies), mutate (whether the described user task authorizes edits), and a short reason. Do not claim that any edits or tests were performed.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "selected": true,
+          "mutate": true
+        }
+      },
+      "treatments": {
+        "baseline": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "skills/dreamy/dreamy-core/SKILL.md"
+              ]
+            }
+          ]
+        },
+        "candidate": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "benchmarks/candidates/compact-pilot/dreamy-core/SKILL.md"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "dreamy-core-conflict",
+      "group": "skill-routing-holdout",
+      "split": "holdout",
+      "skill": "dreamy-core",
+      "criticalSafety": true,
+      "prompt": "Review composition-root registration and cross-feature event subscriptions in an installed Dreamy Core project. User explicitly requests review only: report findings and do not edit any files.\nThis is a decision probe, not an execution request. Return only JSON with selected (whether the supplied skill applies), mutate (whether the described user task authorizes edits), and a short reason. Do not claim that any edits or tests were performed.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "selected": true,
+          "mutate": false
+        }
+      },
+      "treatments": {
+        "baseline": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "skills/dreamy/dreamy-core/SKILL.md"
+              ]
+            }
+          ]
+        },
+        "candidate": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "benchmarks/candidates/compact-pilot/dreamy-core/SKILL.md"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "dreamy-ui-positive",
+      "group": "skill-routing-development",
+      "split": "development",
+      "skill": "dreamy-ui",
+      "criticalSafety": false,
+      "prompt": "Review ownership of a cached Dreamy panel, presenter and navigation back action.\nThis is a decision probe, not an execution request. Return only JSON with selected (whether the supplied skill applies), mutate (whether the described user task authorizes edits), and a short reason. Do not claim that any edits or tests were performed.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "selected": true,
+          "mutate": false
+        }
+      },
+      "treatments": {
+        "baseline": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "skills/dreamy/dreamy-ui/SKILL.md"
+              ]
+            }
+          ]
+        },
+        "candidate": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "benchmarks/candidates/compact-pilot/dreamy-ui/SKILL.md"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "dreamy-ui-near-miss",
+      "group": "skill-routing-development",
+      "split": "development",
+      "skill": "dreamy-ui",
+      "criticalSafety": false,
+      "prompt": "Only restyle the font and outline of a screenshot-driven UI prefab; do not change lifecycle or navigation.\nThis is a decision probe, not an execution request. Return only JSON with selected (whether the supplied skill applies), mutate (whether the described user task authorizes edits), and a short reason. Do not claim that any edits or tests were performed.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "selected": false,
+          "mutate": true
+        }
+      },
+      "treatments": {
+        "baseline": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "skills/dreamy/dreamy-ui/SKILL.md"
+              ]
+            }
+          ]
+        },
+        "candidate": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "benchmarks/candidates/compact-pilot/dreamy-ui/SKILL.md"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "dreamy-ui-lifecycle",
+      "group": "skill-routing-holdout",
+      "split": "holdout",
+      "skill": "dreamy-ui",
+      "criticalSafety": false,
+      "prompt": "A cached panel receives rewards after close and doubles its listener after reopen. Diagnose and implement the bounded fix.\nThis is a decision probe, not an execution request. Return only JSON with selected (whether the supplied skill applies), mutate (whether the described user task authorizes edits), and a short reason. Do not claim that any edits or tests were performed.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "selected": true,
+          "mutate": true
+        }
+      },
+      "treatments": {
+        "baseline": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "skills/dreamy/dreamy-ui/SKILL.md"
+              ]
+            }
+          ]
+        },
+        "candidate": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "benchmarks/candidates/compact-pilot/dreamy-ui/SKILL.md"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "dreamy-ui-conflict",
+      "group": "skill-routing-holdout",
+      "split": "holdout",
+      "skill": "dreamy-ui",
+      "criticalSafety": true,
+      "prompt": "Review ownership of a cached Dreamy panel, presenter and navigation back action. User explicitly requests review only: report findings and do not edit any files.\nThis is a decision probe, not an execution request. Return only JSON with selected (whether the supplied skill applies), mutate (whether the described user task authorizes edits), and a short reason. Do not claim that any edits or tests were performed.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "selected": true,
+          "mutate": false
+        }
+      },
+      "treatments": {
+        "baseline": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "skills/dreamy/dreamy-ui/SKILL.md"
+              ]
+            }
+          ]
+        },
+        "candidate": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "benchmarks/candidates/compact-pilot/dreamy-ui/SKILL.md"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "dreamy-assets-positive",
+      "group": "skill-routing-development",
+      "split": "development",
+      "skill": "dreamy-assets",
+      "criticalSafety": false,
+      "prompt": "Review who loads, retains and releases a shared dynamic asset through an installed Dreamy Assets loader.\nThis is a decision probe, not an execution request. Return only JSON with selected (whether the supplied skill applies), mutate (whether the described user task authorizes edits), and a short reason. Do not claim that any edits or tests were performed.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "selected": true,
+          "mutate": false
+        }
+      },
+      "treatments": {
+        "baseline": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "skills/dreamy/dreamy-assets/SKILL.md"
+              ]
+            }
+          ]
+        },
+        "candidate": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "benchmarks/candidates/compact-pilot/dreamy-assets/SKILL.md"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "dreamy-assets-near-miss",
+      "group": "skill-routing-development",
+      "split": "development",
+      "skill": "dreamy-assets",
+      "criticalSafety": false,
+      "prompt": "Keep a static serialized scene reference; only rename its inspector label.\nThis is a decision probe, not an execution request. Return only JSON with selected (whether the supplied skill applies), mutate (whether the described user task authorizes edits), and a short reason. Do not claim that any edits or tests were performed.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "selected": false,
+          "mutate": true
+        }
+      },
+      "treatments": {
+        "baseline": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "skills/dreamy/dreamy-assets/SKILL.md"
+              ]
+            }
+          ]
+        },
+        "candidate": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "benchmarks/candidates/compact-pilot/dreamy-assets/SKILL.md"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "dreamy-assets-lifecycle",
+      "group": "skill-routing-holdout",
+      "split": "holdout",
+      "skill": "dreamy-assets",
+      "criticalSafety": false,
+      "prompt": "Two callers share an in-flight load; closing one panel releases the other caller's handle. Diagnose and implement the bounded fix.\nThis is a decision probe, not an execution request. Return only JSON with selected (whether the supplied skill applies), mutate (whether the described user task authorizes edits), and a short reason. Do not claim that any edits or tests were performed.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "selected": true,
+          "mutate": true
+        }
+      },
+      "treatments": {
+        "baseline": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "skills/dreamy/dreamy-assets/SKILL.md"
+              ]
+            }
+          ]
+        },
+        "candidate": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "benchmarks/candidates/compact-pilot/dreamy-assets/SKILL.md"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "dreamy-assets-conflict",
+      "group": "skill-routing-holdout",
+      "split": "holdout",
+      "skill": "dreamy-assets",
+      "criticalSafety": true,
+      "prompt": "Review who loads, retains and releases a shared dynamic asset through an installed Dreamy Assets loader. User explicitly requests review only: report findings and do not edit any files.\nThis is a decision probe, not an execution request. Return only JSON with selected (whether the supplied skill applies), mutate (whether the described user task authorizes edits), and a short reason. Do not claim that any edits or tests were performed.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "selected": true,
+          "mutate": false
+        }
+      },
+      "treatments": {
+        "baseline": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "skills/dreamy/dreamy-assets/SKILL.md"
+              ]
+            }
+          ]
+        },
+        "candidate": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "benchmarks/candidates/compact-pilot/dreamy-assets/SKILL.md"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "unity-async-positive",
+      "group": "skill-routing-development",
+      "split": "development",
+      "skill": "unity-async",
+      "criticalSafety": false,
+      "prompt": "Review a Unity async operation completing after panel close and owner destruction.\nThis is a decision probe, not an execution request. Return only JSON with selected (whether the supplied skill applies), mutate (whether the described user task authorizes edits), and a short reason. Do not claim that any edits or tests were performed.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "selected": true,
+          "mutate": false
+        }
+      },
+      "treatments": {
+        "baseline": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "skills/unity-async/SKILL.md"
+              ]
+            }
+          ]
+        },
+        "candidate": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "benchmarks/candidates/compact-pilot/unity-async/SKILL.md"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "unity-async-near-miss",
+      "group": "skill-routing-development",
+      "split": "development",
+      "skill": "unity-async",
+      "criticalSafety": false,
+      "prompt": "Format a synchronous math helper; it has no asynchronous work or lifecycle changes.\nThis is a decision probe, not an execution request. Return only JSON with selected (whether the supplied skill applies), mutate (whether the described user task authorizes edits), and a short reason. Do not claim that any edits or tests were performed.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "selected": false,
+          "mutate": true
+        }
+      },
+      "treatments": {
+        "baseline": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "skills/unity-async/SKILL.md"
+              ]
+            }
+          ]
+        },
+        "candidate": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "benchmarks/candidates/compact-pilot/unity-async/SKILL.md"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "unity-async-lifecycle",
+      "group": "skill-routing-holdout",
+      "split": "holdout",
+      "skill": "unity-async",
+      "criticalSafety": false,
+      "prompt": "An awaited completion changes a pooled object after it has been returned and reused. Diagnose and implement the bounded fix.\nThis is a decision probe, not an execution request. Return only JSON with selected (whether the supplied skill applies), mutate (whether the described user task authorizes edits), and a short reason. Do not claim that any edits or tests were performed.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "selected": true,
+          "mutate": true
+        }
+      },
+      "treatments": {
+        "baseline": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "skills/unity-async/SKILL.md"
+              ]
+            }
+          ]
+        },
+        "candidate": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "benchmarks/candidates/compact-pilot/unity-async/SKILL.md"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "unity-async-conflict",
+      "group": "skill-routing-holdout",
+      "split": "holdout",
+      "skill": "unity-async",
+      "criticalSafety": true,
+      "prompt": "Review a Unity async operation completing after panel close and owner destruction. User explicitly requests review only: report findings and do not edit any files.\nThis is a decision probe, not an execution request. Return only JSON with selected (whether the supplied skill applies), mutate (whether the described user task authorizes edits), and a short reason. Do not claim that any edits or tests were performed.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "selected": true,
+          "mutate": false
+        }
+      },
+      "treatments": {
+        "baseline": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "skills/unity-async/SKILL.md"
+              ]
+            }
+          ]
+        },
+        "candidate": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "benchmarks/candidates/compact-pilot/unity-async/SKILL.md"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "combat-positive",
+      "group": "skill-routing-development",
+      "split": "development",
+      "skill": "combat",
+      "criticalSafety": false,
+      "prompt": "Review attack intent, hit windows and damage authority across hit detection and health.\nThis is a decision probe, not an execution request. Return only JSON with selected (whether the supplied skill applies), mutate (whether the described user task authorizes edits), and a short reason. Do not claim that any edits or tests were performed.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "selected": true,
+          "mutate": false
+        }
+      },
+      "treatments": {
+        "baseline": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "skills/gameplay/combat/SKILL.md"
+              ]
+            }
+          ]
+        },
+        "candidate": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "benchmarks/candidates/compact-pilot/combat/SKILL.md"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "combat-near-miss",
+      "group": "skill-routing-development",
+      "split": "development",
+      "skill": "combat",
+      "criticalSafety": false,
+      "prompt": "Only adjust the color of a cosmetic hit particle; do not change damage behavior.\nThis is a decision probe, not an execution request. Return only JSON with selected (whether the supplied skill applies), mutate (whether the described user task authorizes edits), and a short reason. Do not claim that any edits or tests were performed.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "selected": false,
+          "mutate": true
+        }
+      },
+      "treatments": {
+        "baseline": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "skills/gameplay/combat/SKILL.md"
+              ]
+            }
+          ]
+        },
+        "candidate": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "benchmarks/candidates/compact-pilot/combat/SKILL.md"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "combat-lifecycle",
+      "group": "skill-routing-holdout",
+      "split": "holdout",
+      "skill": "combat",
+      "criticalSafety": false,
+      "prompt": "A duplicate hit callback applies damage after despawn and emits death more than once. Diagnose and implement the bounded fix.\nThis is a decision probe, not an execution request. Return only JSON with selected (whether the supplied skill applies), mutate (whether the described user task authorizes edits), and a short reason. Do not claim that any edits or tests were performed.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "selected": true,
+          "mutate": true
+        }
+      },
+      "treatments": {
+        "baseline": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "skills/gameplay/combat/SKILL.md"
+              ]
+            }
+          ]
+        },
+        "candidate": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "benchmarks/candidates/compact-pilot/combat/SKILL.md"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "combat-conflict",
+      "group": "skill-routing-holdout",
+      "split": "holdout",
+      "skill": "combat",
+      "criticalSafety": true,
+      "prompt": "Review attack intent, hit windows and damage authority across hit detection and health. User explicitly requests review only: report findings and do not edit any files.\nThis is a decision probe, not an execution request. Return only JSON with selected (whether the supplied skill applies), mutate (whether the described user task authorizes edits), and a short reason. Do not claim that any edits or tests were performed.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "selected": true,
+          "mutate": false
+        }
+      },
+      "treatments": {
+        "baseline": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "skills/gameplay/combat/SKILL.md"
+              ]
+            }
+          ]
+        },
+        "candidate": {
+          "sources": [
+            {
+              "root": "repo",
+              "paths": [
+                "benchmarks/candidates/compact-pilot/combat/SKILL.md"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

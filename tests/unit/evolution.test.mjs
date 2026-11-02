@@ -24,6 +24,7 @@ import { eligible, verifyLesson } from "../../src/knowledge/eligibility.mjs";
 import { recall } from "../../src/knowledge/recall.mjs";
 import {
   fingerprint,
+  verificationFingerprint,
   writeCheckpoint,
   runVerification,
   checkpointPath,
@@ -80,7 +81,7 @@ function seed(root) {
     commandId: "pack",
     platform: process.platform,
     nodeVersion: process.version,
-    verificationFingerprint: fingerprint(root, ["source.txt"]),
+    verificationFingerprint: verificationFingerprint(root, ["source.txt"], { commandId: "pack" }),
     logHash: hash("fixture-log"),
     files: ["source.txt"],
     sourceFingerprint: fingerprint(root, ["source.txt"]),
@@ -429,6 +430,14 @@ test("runtime and policy changes alter native definitions so exact trust require
     "src/knowledge",
     "src/lib",
     "src/verification-plan.mjs",
+    "src/project-profile.js",
+    "src/schema-validation.js",
+    "harness/dreamy-harness",
+    "schemas/evidence.schema.json",
+    "schemas/project-profile.schema.json",
+    "schemas/verification-receipt.schema.json",
+    "compatibility/dreamy-packages.json",
+    "package.json",
   ]) {
     fs.mkdirSync(path.dirname(path.join(source, rel)), { recursive: true });
     fs.cpSync(path.join(toolkit, rel), path.join(source, rel), {
@@ -706,7 +715,7 @@ test("wrong platform/command or changed log cannot verify a lesson", (t) => {
   const root = workspace(t),
     { l, receipt } = seed(root),
     file = path.join(root, ".dreamy/evidence/fixture.json");
-  atomicJson(file, { ...receipt, commandId: "validate" });
+  atomicJson(file, { ...receipt, commandId: "validate", verificationFingerprint: verificationFingerprint(root, receipt.files, { commandId: "validate" }) });
   assert.throws(
     () => verifyLesson(root, l.id, receipt.id),
     /command and platform/,
@@ -935,6 +944,13 @@ test("lesson preview does not consume recall and package-bound eligibility follo
   atomicJson(path.join(root, "Packages/packages-lock.json"), {
     dependencies: { "com.example.fixture": { version: "1.0" } },
   });
+  // The package-lock is an implicit checker input. Issue a fresh fixture receipt
+  // after establishing the package context, as a real verification would do.
+  atomicJson(path.join(root, ".dreamy/evidence/fixture.json"), {
+    ...receipt,
+    verificationFingerprint: verificationFingerprint(root, receipt.files, { commandId: "pack" }),
+  });
+  verifyLesson(root, l.id, receipt.id);
   assert.equal(eligible(root, readJson(lessonFile)), true);
   const options = { session: "preview-only", preview: true };
   assert.equal(recall(root, "npm executable ENOENT", options).items.length, 1);
