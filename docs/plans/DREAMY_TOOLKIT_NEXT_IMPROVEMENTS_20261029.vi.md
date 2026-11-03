@@ -17,7 +17,7 @@ GitHub REST được đọc trực tiếp để lấy stars, default branch, tr�
 
 Không có `Packages/manifest.json` hoặc `Packages/packages-lock.json` tại root toolkit. Không phát sinh Dreamy API claim mới; fixture Unity trong `tests/fixtures` không chứng minh package được hỗ trợ trong consumer thực tế.
 
-Đây là vòng tiếp theo của [plan ECC/Superpowers/OmO](DREAMY_TOOLKIT_ECC_SUPERPOWERS_OMO_EVOLUTION_PLAN.md), đọc cùng [implementation report](../toolkit-evolution-implementation.md). Các hạng mục đã có code được ghi nhận lại bên dưới để tránh lập backlog trùng.
+Đây là vòng tiếp theo của [plan ECC/Superpowers](DREAMY_TOOLKIT_ECC_SUPERPOWERS_EVOLUTION_PLAN.md), đọc cùng [implementation report](../toolkit-evolution-implementation.md). Các hạng mục đã có code được ghi nhận lại bên dưới để tránh lập backlog trùng.
 
 ## 2. Baseline đã kiểm tra
 
@@ -87,7 +87,6 @@ Stars tại snapshot REST ngày 29/10/2026; commit đầy đủ, commit date, de
 | [Superpowers](https://github.com/obra/superpowers) | 307.573 | `2ce8aa15d05b` | Source `writing-skills` dùng baseline/pressure scenario và vòng sửa skill; `verification-before-completion` yêu cầu evidence mới. Học cách thử skill bằng hành vi; Dreamy đã có evidence freshness, bước tiếp theo là artifact task |
 | [ECC](https://github.com/affaan-m/ECC) | 291.890 | `25278e7d7b6c` | Source có hook profile/disable controls và learning theo project. Dreamy đã có cơ chế tương ứng; ưu tiên đo usefulness/eligibility, chưa cần observer hoặc confidence score mới |
 | [Spec Kit](https://github.com/github/spec-kit) | 143.714 | `99e047e9b48c` | README mô tả entrypoint riêng cho feature, bug và idea assessment, cùng preset/extension. Học task contract có scope và acceptance; không ép bug nhỏ đi qua toàn bộ quy trình feature |
-| [OmO](https://github.com/code-yeongyu/oh-my-openagent) | 70.451 | `f6060b50fdae` | File `event-budget.ts` giới hạn budget bằng min của mức cấu hình và mức động. Học budget theo sự kiện; Dreamy đã có caps, cần đo lúc runtime. Branch `dev` và license riêng cần được xét trước bất kỳ ý định mang source vào toolkit |
 | [GSD Core](https://github.com/open-gsd/gsd-core) | 10.976 | `ceef6898be2f` | README mô tả phase loop, persistent artifacts và fresh-context execution. Học artifact phục hồi công việc; không mặc định áp dụng multi-agent/waves vào mọi task |
 | [Unity MCP](https://github.com/CoplayDev/unity-mcp) | 15.509 | `ed4e205d31a5` | README mô tả bridge điều khiển Editor và tools cho scene/script/test. Dùng làm ứng viên adapter sau khi inspect API/package thực tế; không xây một bridge cạnh tranh trong Dreamy |
 | [Agent Skills](https://github.com/agentskills/agentskills) | 26.750 | `69ef37e9424c` | Specification mô tả frontmatter và progressive disclosure. Thêm kiểm tra format/interoperability, giảm phụ thuộc vào heading riêng của toolkit |
@@ -96,7 +95,7 @@ Stars tại snapshot REST ngày 29/10/2026; commit đầy đủ, commit date, de
 
 Hai repo Unity cuối là peer trực tiếp từ source ledger cũ, **không gắn nhãn hot**. Chưa audit implementation của hai peer này trong lượt hiện tại; nhận xét giới hạn ở README đã pin.
 
-[GSD cũ](https://github.com/gsd-build/get-shit-done) có 64.191 stars nhưng đã archive; [README tại snapshot](https://github.com/gsd-build/get-shit-done/blob/bdcaab2c752d9a33a1a1ca9acf3a3c81fb991815/README.md) chỉ sang `open-gsd/gsd-core`. Không cộng stars của hai repo hoặc dùng repo cũ làm nguồn active. OmO/GSD Core/Unity MCP được đọc ở default branch lần lượt `dev`/`next`/`beta`; đó không mặc nhiên là bản stable.
+[GSD cũ](https://github.com/gsd-build/get-shit-done) có 64.191 stars nhưng đã archive; [README tại snapshot](https://github.com/gsd-build/get-shit-done/blob/bdcaab2c752d9a33a1a1ca9acf3a3c81fb991815/README.md) chỉ sang `open-gsd/gsd-core`. Không cộng stars của hai repo hoặc dùng repo cũ làm nguồn active. GSD Core/Unity MCP được đọc ở default branch lần lượt `next`/`beta`; đó không mặc nhiên là bản stable.
 
 **Định vị đề xuất:** Dreamy tập trung vào ownership/package compatibility/Unity verification và bằng chứng sửa lỗi. Các framework tổng quát cung cấp mẫu workflow; chưa có benchmark chung để kết luận Dreamy tốt hơn hoặc kém hơn về coding quality.
 
@@ -169,7 +168,7 @@ Mục tiêu giảm byte là **hypothesis/target**, chưa phải kết quả. Kh�
 
 ## 8. Checkpoint cho lượt triển khai tiếp theo
 
-**Đã xong:** audit working tree; đọc metadata 10 repo và 13 source files đã pin; chạy `npm test`; tái hiện F1 bằng adapter giả; lưu snapshot và plan này. Các số lượng là phạm vi đọc, không có nghĩa audit toàn bộ upstream.
+**Đã xong:** audit working tree; snapshot sau tinh gọn giữ metadata 9 repo và 11 source files đã pin; chạy `npm test`; tái hiện F1 bằng adapter giả; lưu snapshot và plan này. Các số lượng là phạm vi đọc, không có nghĩa audit toàn bộ upstream.
 
 **Chưa làm:** sửa parser, thay skills/validator, model A/B, real Unity/native acceptance, phát hành hoặc nâng maturity. Bước kế tiếp là A0; đọc lại git status, source hash và phần thay đổi consumer chưa commit trước khi sửa.
 

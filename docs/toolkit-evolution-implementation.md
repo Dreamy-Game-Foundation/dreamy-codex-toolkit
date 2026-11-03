@@ -1,6 +1,6 @@
 # Evolution implementation evidence — updated 23 October 2026
 
-This tracks implementation of the [ECC / Superpowers / OmO plan](plans/DREAMY_TOOLKIT_ECC_SUPERPOWERS_OMO_EVOLUTION_PLAN.md). The product remains alpha. Source implementation, deterministic verification and external operational/semantic acceptance are separate states.
+This tracks implementation of the [ECC / Superpowers plan](plans/DREAMY_TOOLKIT_ECC_SUPERPOWERS_EVOLUTION_PLAN.md). The product remains alpha. Source implementation, deterministic verification and external operational/semantic acceptance are separate states.
 
 ## Feature and fix inventory — 23 October 2026
 

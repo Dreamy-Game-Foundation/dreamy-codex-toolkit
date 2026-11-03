@@ -76,15 +76,10 @@ Không nâng maturity hoặc sửa version chỉ vì plan được viết xong. 
 
 | Nguồn | Quan sát/phạm vi đối chiếu | Áp dụng vào Dreamy |
 |---|---|---|
-| [omo-herdr-dag controller, pin `69f90a2`](https://github.com/jc01rho/omo-herdr-dag/blob/69f90a23bd3e01c39fbf092d56fa7ce984bd478a/src/controller.mjs) | Có snapshot restore, hàng đợi và coalesce stream mặc định 250 ms | Tách collector, snapshot và viewer; coalesce event có giới hạn |
-| [Extension cùng pin](https://github.com/jc01rho/omo-herdr-dag/blob/69f90a23bd3e01c39fbf092d56fa7ce984bd478a/extension.mjs) | Subscribe event task/DAG qua Senpi extension bus | Viết adapter riêng; không coi event đó là Codex API |
-| [Stream tap cùng pin](https://github.com/jc01rho/omo-herdr-dag/blob/69f90a23bd3e01c39fbf092d56fa7ce984bd478a/src/stream-tap.mjs) | Bọc phương thức nội bộ của AgentSession | Không đưa patch prototype hoặc stream nội bộ vào MVP |
 | [Herdr worktree schema, pin `5bd900d`](https://github.com/herdrdev/herdr/blob/5bd900d88c80d95f5b145397e45bbeea398b8165/src/api/schema/worktrees.rs) | Khai báo list/create/open/remove và metadata worktree | Học mô hình workspace; Git CLI vẫn là nguồn MVP |
-| [omo-herdr-dag verification cùng pin](https://github.com/jc01rho/omo-herdr-dag/blob/69f90a23bd3e01c39fbf092d56fa7ce984bd478a/VERIFICATION.md) | Tách synthetic, live pane và real workflow; có giới hạn theo phiên bản | Lập ba lớp evidence tương ứng cho Dreamy |
 | [oh-my-codex README](https://github.com/Yeachan-Heo/oh-my-codex/blob/main/README.md) | Đối chiếu README tại thời điểm viết, có workflow theo worktree và state local | Tham khảo trải nghiệm; chưa dùng API nội bộ hoặc phụ thuộc runtime OMX |
-| [OmO source đã pin trong plan evolution](DREAMY_TOOLKIT_ECC_SUPERPOWERS_OMO_EVOLUTION_PLAN.md#23-nguồn-truy-vết) | Nghiên cứu trước đã ghi nguồn và giới hạn riêng | Task/dependency là gợi ý thiết kế; không import runtime OmO/Senpi |
 
-Các file controller, extension, stream tap, worktree schema và verification nêu trên đã được đọc qua GitHub connector trong lần lập plan. Không chạy upstream code. README OMX là nguồn động, chưa pin full commit; nếu triển khai adapter OMX sau này phải pin lại source và license. Các khẳng định chi tiết từ khảo sát người dùng chưa đối chiếu lại được giữ ở vai trò đầu vào nghiên cứu.
+Worktree schema nêu trên đã được đọc qua GitHub connector trong lần lập plan. Không chạy upstream code. README OMX là nguồn động, chưa pin full commit; nếu triển khai adapter OMX sau này phải pin lại source và license. Các khẳng định chi tiết từ khảo sát người dùng chưa đối chiếu lại được giữ ở vai trò đầu vào nghiên cứu.
 
 ## 4. Phạm vi theo phiên bản
 

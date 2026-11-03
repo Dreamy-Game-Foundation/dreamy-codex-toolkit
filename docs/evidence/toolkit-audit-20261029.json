@@ -89,20 +89,6 @@
       "commitUrl": "https://github.com/agentskills/agentskills/commit/69ef37e9424c0a7ea9dd2293b559e43ec8176379"
     },
     {
-      "full_name": "code-yeongyu/oh-my-openagent",
-      "stargazers_count": 70451,
-      "forks_count": 5812,
-      "default_branch": "dev",
-      "pushed_at": "2026-10-29T04:15:11Z",
-      "archived": false,
-      "html_url": "https://github.com/code-yeongyu/oh-my-openagent",
-      "sha": "f6060b50fdaea42e709abadeb482ec32a12edb63",
-      "commit_date": "2026-10-29T02:06:54Z",
-      "license": "NOASSERTION",
-      "metadataUrl": "https://api.github.com/repos/code-yeongyu/oh-my-openagent",
-      "commitUrl": "https://github.com/code-yeongyu/oh-my-openagent/commit/f6060b50fdaea42e709abadeb482ec32a12edb63"
-    },
-    {
       "full_name": "github/spec-kit",
       "stargazers_count": 143714,
       "forks_count": 12874,
@@ -201,20 +187,6 @@
       "commit": "69ef37e9424c0a7ea9dd2293b559e43ec8176379",
       "sha256": "b9079c0c10b7930e8c6a20ff2bc10cda2a3343c55185120e3f1116a1a529b220",
       "url": "https://github.com/agentskills/agentskills/blob/69ef37e9424c0a7ea9dd2293b559e43ec8176379/docs/specification.mdx"
-    },
-    {
-      "repo": "code-yeongyu/oh-my-openagent",
-      "file": "LICENSE.md",
-      "commit": "f6060b50fdaea42e709abadeb482ec32a12edb63",
-      "sha256": "b61ac928f152d13517328263e6bee9175b928f9ab696a2d2ca2b6cfd961ddc32",
-      "url": "https://github.com/code-yeongyu/oh-my-openagent/blob/f6060b50fdaea42e709abadeb482ec32a12edb63/LICENSE.md"
-    },
-    {
-      "repo": "code-yeongyu/oh-my-openagent",
-      "file": "packages/omo-codex/plugin/components/rules/src/event-budget.ts",
-      "commit": "f6060b50fdaea42e709abadeb482ec32a12edb63",
-      "sha256": "0dd9fc4f4088059bf745e150ecfb3455b5f1ab16eaf644e446a37184857839e8",
-      "url": "https://github.com/code-yeongyu/oh-my-openagent/blob/f6060b50fdaea42e709abadeb482ec32a12edb63/packages/omo-codex/plugin/components/rules/src/event-budget.ts"
     },
     {
       "repo": "github/spec-kit",
@@ -328,5 +300,9 @@
     "No model or native hook acceptance trial",
     "No current remote CI acceptance asserted",
     "Source inspection scoped to listed files; README claims are not runtime proof"
-  ]
+  ],
+  "scopeUpdate": {
+    "date": "2026-11-02",
+    "note": "Selected upstream research entries removed at owner request; retained test logs and original source hashes are historical, not current verification."
+  }
 }

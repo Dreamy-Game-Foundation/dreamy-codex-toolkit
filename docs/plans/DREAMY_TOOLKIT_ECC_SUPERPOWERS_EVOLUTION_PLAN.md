@@ -1,4 +1,4 @@
-# Kế hoạch tiến hóa Dreamy Codex Toolkit từ ECC, Superpowers và OmO
+# Kế hoạch tiến hóa Dreamy Codex Toolkit từ ECC và Superpowers
 
 Ngày nghiên cứu: **22/10/2026, Asia/Bangkok**. Baseline Dreamy: **`0.1.0-alpha.3`**, commit **`21d4af56e5a757b2700d46909d279b07d9db099d`**.
 
@@ -16,34 +16,32 @@ Mục tiêu: làm toolkit đáng tin hơn, ít tốn context hơn, có hook th�
 4. [Điều tra CI GitHub](#4-điều-tra-ci-github)
 5. [ECC: điểm mạnh và cách chuyển hóa](#5-ecc-điểm-mạnh-và-cách-chuyển-hóa)
 6. [Superpowers: điểm mạnh và cách chuyển hóa](#6-superpowers-điểm-mạnh-và-cách-chuyển-hóa)
-7. [OmO: điểm mạnh và cách chuyển hóa](#7-omo-điểm-mạnh-và-cách-chuyển-hóa)
-8. [Ma trận quyết định tích hợp](#8-ma-trận-quyết-định-tích-hợp)
-9. [Kiến trúc đích và ownership](#9-kiến-trúc-đích-và-ownership)
-10. [Ngân sách token và context](#10-ngân-sách-token-và-context)
-11. [Thiết kế hook](#11-thiết-kế-hook)
-12. [Vòng học từ lỗi](#12-vòng-học-từ-lỗi)
-13. [Tự tạo và cải tiến skill](#13-tự-tạo-và-cải-tiến-skill)
-14. [Workflow thực thi và tiếp tục công việc](#14-workflow-thực-thi-và-tiếp-tục-công-việc)
-15. [Thiết kế CI/CD đích](#15-thiết-kế-cicd-đích)
-16. [Hợp đồng dữ liệu và CLI](#16-hợp-đồng-dữ-liệu-và-cli)
-17. [Backlog triển khai chi tiết](#17-backlog-triển-khai-chi-tiết)
-18. [Test và acceptance matrix](#18-test-và-acceptance-matrix)
-19. [Benchmark và tiêu chí tiếp tục đầu tư](#19-benchmark-và-tiêu-chí-tiếp-tục-đầu-tư)
-20. [Migration, rollout và rollback](#20-migration-rollout-và-rollback)
-21. [Rủi ro, giả thuyết và việc hoãn](#21-rủi-ro-giả-thuyết-và-việc-hoãn)
-22. [Lịch thực hiện và điều kiện hoàn tất](#22-lịch-thực-hiện-và-điều-kiện-hoàn-tất)
-23. [Nguồn truy vết](#23-nguồn-truy-vết)
-24. [Bằng chứng kiểm tra của lần nghiên cứu này](#24-bằng-chứng-kiểm-tra-của-lần-nghiên-cứu-này)
+7. [Ma trận quyết định tích hợp](#7-ma-trận-quyết-định-tích-hợp)
+8. [Kiến trúc đích và ownership](#8-kiến-trúc-đích-và-ownership)
+9. [Ngân sách token và context](#9-ngân-sách-token-và-context)
+10. [Thiết kế hook](#10-thiết-kế-hook)
+11. [Vòng học từ lỗi](#11-vòng-học-từ-lỗi)
+12. [Tự tạo và cải tiến skill](#12-tự-tạo-và-cải-tiến-skill)
+13. [Workflow thực thi và tiếp tục công việc](#13-workflow-thực-thi-và-tiếp-tục-công-việc)
+14. [Thiết kế CI/CD đích](#14-thiết-kế-cicd-đích)
+15. [Hợp đồng dữ liệu và CLI](#15-hợp-đồng-dữ-liệu-và-cli)
+16. [Backlog triển khai chi tiết](#16-backlog-triển-khai-chi-tiết)
+17. [Test và acceptance matrix](#17-test-và-acceptance-matrix)
+18. [Benchmark và tiêu chí tiếp tục đầu tư](#18-benchmark-và-tiêu-chí-tiếp-tục-đầu-tư)
+19. [Migration, rollout và rollback](#19-migration-rollout-và-rollback)
+20. [Rủi ro, giả thuyết và việc hoãn](#20-rủi-ro-giả-thuyết-và-việc-hoãn)
+21. [Lịch thực hiện và điều kiện hoàn tất](#21-lịch-thực-hiện-và-điều-kiện-hoàn-tất)
+22. [Nguồn truy vết](#22-nguồn-truy-vết)
+23. [Bằng chứng kiểm tra của lần nghiên cứu này](#23-bằng-chứng-kiểm-tra-của-lần-nghiên-cứu-này)
 
 ## 1. Kết luận và thứ tự đầu tư
 
-**Nên tích hợp các cơ chế nhỏ có thể đo hiệu quả; không cài nguyên ba framework vào Dreamy.** Chúng cung cấp các bài học khác nhau:
+**Nên tích hợp các cơ chế nhỏ có thể đo hiệu quả; không cài nguyên các framework vào Dreamy.** Chúng cung cấp các bài học khác nhau:
 
 | Nguồn | Điều đáng học nhất | Áp dụng cho Dreamy | Chi phí cần tránh |
 |---|---|---|---|
 | ECC | Hook có profile, observation có phạm vi, kinh nghiệm nguyên tử, bộ test vận hành | Dispatcher gọn, project lessons, promotion có gate | Observer LLM chạy thường trực, quá nhiều hook, bootstrap phức tạp |
 | Superpowers | Root-cause debugging, task có kiểm chứng, skill được thử bằng tình huống | Workflow theo độ phức tạp, acceptance rõ, regression scenario | Bắt mọi việc qua quy trình dài, nạp skill chỉ vì gần giống từ khóa |
-| OmO | Context budget, dedupe, continuation có trạng thái, evidence receipt | Bộ giới hạn output, checkpoint, bằng chứng gắn đúng task | Hệ điều phối nhiều agent, runtime/daemon lớn, vòng tiếp tục vô hạn |
 
 Ưu tiên thực hiện:
 
@@ -78,11 +76,9 @@ Các command, schema và đường dẫn ở phần kiến trúc/backlog đều 
 |---|---|---|---|---|
 | ECC | `main` | `90606c8315ee09cafc303515c5f33024db6b9882` | `2026-10-20T21:28:23Z` | [Snapshot ECC](https://github.com/affaan-m/ECC/tree/90606c8315ee09cafc303515c5f33024db6b9882) |
 | Superpowers | `main` | `2ce8aa15d05bd57213e6f746f953aafb7ded7a8b` | `2026-10-21T21:00:49Z` | [Snapshot Superpowers](https://github.com/obra/superpowers/tree/2ce8aa15d05bd57213e6f746f953aafb7ded7a8b) |
-| OmO | `dev` | `06949e1eb617faf7eb81f3ddd9d959408e3f1892` | `2026-10-22T01:02:19Z` | [Snapshot OmO](https://github.com/code-yeongyu/oh-my-openagent/tree/06949e1eb617faf7eb81f3ddd9d959408e3f1892) |
 
-Đọc source, hook definitions, implementation, test có liên quan, config, CI và license. **Không chạy installer, hook hoặc code của ba upstream.** README giúp định vị; source quyết định nhận định về cơ chế.
+Đọc source, hook definitions, implementation, test có liên quan, config, CI và license. **Không chạy installer, hook hoặc code của hai upstream.** README giúp định vị; source quyết định nhận định về cơ chế.
 
-OmO snapshot này đã là monorepo `packages/*` với tích hợp Codex riêng; không dùng các mô tả cũ về `src/hooks/*` để quyết định kiến trúc hiện tại. Nhánh `dev` không đồng nghĩa bản stable đã phát hành; pilot sau này phải chọn release/snapshot mục tiêu riêng.
 
 ### 2.3. Phạm vi lần làm việc này
 
@@ -197,7 +193,7 @@ Lần đầu chạy trong sandbox bị `EPERM` khi gọi child process; validato
 
 ## 5. ECC: điểm mạnh và cách chuyển hóa
 
-Nguồn chi tiết: [E1–E7 ở mục 23](#23-nguồn-truy-vết).
+Nguồn chi tiết: [E1–E7 ở mục 22](#22-nguồn-truy-vết).
 
 ### 5.1. Điểm mạnh quan sát được
 
@@ -234,7 +230,7 @@ Nguồn chi tiết: [E1–E7 ở mục 23](#23-nguồn-truy-vết).
 
 ## 6. Superpowers: điểm mạnh và cách chuyển hóa
 
-Nguồn chi tiết: [S1–S7 ở mục 23](#23-nguồn-truy-vết).
+Nguồn chi tiết: [S1–S7 ở mục 22](#22-nguồn-truy-vết).
 
 ### 6.1. Điểm mạnh quan sát được
 
@@ -265,48 +261,7 @@ Nguồn chi tiết: [S1–S7 ở mục 23](#23-nguồn-truy-vết).
 - Tạo work modes `quick/standard/deep` để quy trình tỉ lệ với công việc.
 - Không import unconditional “invoke skill before any answer” hoặc “mọi task cần agent phụ”.
 
-## 7. OmO: điểm mạnh và cách chuyển hóa
-
-Nguồn chi tiết: [O1–O8 ở mục 23](#23-nguồn-truy-vết).
-
-### 7.1. Điểm mạnh quan sát được
-
-**Budget là dữ liệu thực thi:** `rules` component có budget theo event; rules engine có giới hạn từng rule và tổng output. Không chỉ nhắc model “hãy ngắn”.
-
-**Recall biết không nhắc lại:** memory recall có surfaced ledger theo session, hash và cache stat-gated. Selector có số item tối đa và loại path đã xuất hiện, giúp tránh cùng memory được nạp ở mọi prompt/tool call.
-
-**Continuation đọc trạng thái thật:** Codex continuation hook kiểm trạng thái kế hoạch còn việc; có xử lý `stop_hook_active`, blocker và context pressure. Giá trị cần học là tiếp tục dựa vào task state thay vì chỉ prompt “đừng dừng”.
-
-**Evidence receipt và retry cap:** executor verification hook kiểm vị trí receipt, realpath, symlink, file trống/cũ và attempt count. Đây là bài học rõ về không tin text “done” từ worker.
-
-**CI classification có fallback:** workflow đọc changed paths và khi không có diff tin cậy thì chạy kiểm tra rộng. Tối ưu CI phải giữ lối về kiểm tra đầy đủ.
-
-### 7.2. Điểm cần phản biện
-
-1. Monorepo/runtime gồm nhiều package, native backend, LSP, memory và orchestration. Dreamy không cần runtime mới để sửa ba lỗi CI và quản lý vài lesson.
-2. Continuation là thêm lượt model, không phải compute miễn phí. Một Stop hook viết sai có thể làm tổng token tăng mạnh dù mỗi message rất ngắn.
-3. Một số receipt checks là filesystem/age checks; file dài đủ và mới không tự chứng minh command đã pass. Dreamy nên dùng structured harness result + content/input hashes.
-4. Heuristic đọc transcript tìm context-pressure marker không phải API ổn định. Không chọn whole-transcript scan làm dependency chính.
-5. Hardcoded model context limits trong source là dữ liệu upstream; không sử dụng như thông số chính thức của model cho Dreamy.
-6. `truncator.ts` có rule được miễn cắt; do đó ngưỡng tổng không tuyệt đối cho mọi input. Dreamy nên dành riêng ngân sách safety nhỏ, không mở ngoại lệ không giới hạn.
-7. Tính scope/trust của hook installer phải được kiểm theo runtime chính thức; không sao chép thao tác tạo trusted hash vào user config.
-
-### 7.3. Ranh giới license và provenance
-
-**OBSERVED tại snapshot:** ECC và Superpowers có license MIT; `LICENSE.md` của OmO chứa **Sustainable Use License** và quy định về third-party portions. Không coi toàn bộ OmO là mã MIT có thể nhập thẳng vào toolkit MIT.
-
-Hướng thực hiện: học cơ chế ở mức concept, tự viết implementation nhỏ theo hợp đồng Dreamy, giữ source attribution. Nếu muốn tái sử dụng đoạn code/file thực tế, kiểm license của đúng file/package và điều kiện phân phối trước; không chỉ nhìn root package name.
-
-### 7.4. Chuyển hóa cho Dreamy
-
-- Per-event byte/context budget, loại output thành summary + artifact.
-- Recall top-k, content hash và dedupe theo session/context epoch.
-- Task checkpoint có requirement/evidence/next-step.
-- Stop verification chỉ nhắc tiếp tục tối đa một lần cho input fingerprint chưa có evidence, không chủ động đẻ goal mới.
-- Structured evidence thay receipt dựa vào plain text/path marker.
-- Không import orchestration/runtime/daemon/model routing của OmO.
-
-## 8. Ma trận quyết định tích hợp
+## 7. Ma trận quyết định tích hợp
 
 Tác động token dưới đây là **dự kiến**, cần benchmark; “0 LLM” nghĩa handler không gọi model, không có nghĩa nội dung output không tốn token khi model đọc.
 
@@ -316,22 +271,17 @@ Tác động token dưới đây là **dự kiến**, cần benchmark; “0 LLM�
 | D02 | Fresh release evidence | Superpowers + Dreamy gap | Làm ngay | P0 | 0 LLM | Stale/cross-commit report bị reject |
 | D03 | Hook profiles/kill switch | ECC | Nhận có chọn lọc | P1 | 0 LLM trong handler | Tắt theo profile/ID có test |
 | D04 | Single dispatcher/explicit handler map | ECC | Tự viết gọn | P1 | 0 LLM | Nhiều handler không thêm process con |
-| D05 | Token ledger/context budget | OmO | Nhận | P1 | Output ngắn | Usage có provenance, cap deterministic |
 | D06 | Skill/reference selection | Cả ba | Nhận | P1 | Giảm nếu route chính xác | Precision/recall và task success không giảm |
 | D07 | Root-cause + scoped verification | Superpowers | Hợp nhất vào rule/role có sẵn | P1 | Có thể giảm retry | Hai lỗi CI có regression độc lập |
 | D08 | Project-scoped atomic lessons | ECC | Nhận | P2 | Recall tối đa 2 lesson | Không cross-project contamination |
-| D09 | Recall dedupe/content hash | OmO | Nhận bản đơn giản | P2 | Giảm nhắc lại | Không phát lại khi content chưa đổi |
 | D10 | Self-generated skill candidate | ECC + Superpowers | Nhận có quality gate | P2 | Chỉ tại task boundary | Candidate có ablation/regression |
-| D11 | Checkpoint/continuation | OmO | Nhận có trần | P2 | Tối đa 1 continuation mặc định | Không loop, không vượt user stop |
 | D12 | LLM observer thường trực | ECC | Hoãn | P3 | Có recurring cost | Chỉ xét nếu structured lessons không đủ |
-| D13 | Multi-model routing/agent swarm | OmO | Không default | P3 | Dễ tăng mạnh | Chỉ khi user/policy cho phép và task lớn |
 | D14 | 1% skill activation rule | Superpowers | Không nhập | — | Làm rộng context | Không phù hợp mục tiêu token |
 | D15 | Tự đổi global policy/trust/model config | Một số automation patterns | Không nhập | — | Không liên quan lợi ích chính | Vượt phạm vi tự cải thiện toolkit |
-| D16 | Vector DB/memory daemon | OmO rộng hơn | Hoãn | P3 | Infra + retrieval cost | Corpus lớn và lexical recall thất bại có số liệu |
 
-## 9. Kiến trúc đích và ownership
+## 8. Kiến trúc đích và ownership
 
-### 9.1. Một vòng thực thi nhỏ
+### 8.1. Một vòng thực thi nhỏ
 
 ```mermaid
 flowchart TD
@@ -352,7 +302,7 @@ flowchart TD
 
 Học từ lỗi là một nhánh của vòng thực thi; không là điều kiện bắt buộc để mọi task kết thúc. Không để lỗi ghi lesson chặn công việc chính.
 
-### 9.2. Ownership dự kiến
+### 8.2. Ownership dự kiến
 
 | Thành phần | Owner | Được làm | Không được làm |
 |---|---|---|---|
@@ -365,7 +315,7 @@ Học từ lỗi là một nhánh của vòng thực thi; không là điều ki�
 | Skill evolution | Existing skill author capability + CLI | Sinh diff, validation, evaluation | Tự kích hoạt candidate chưa kiểm chứng |
 | Installer | Existing install/update/uninstall | Cài runtime/config mình sở hữu | Xóa user knowledge theo purge hiện tại |
 
-### 9.3. Layout dự kiến
+### 8.3. Layout dự kiến
 
 ```text
 src/
@@ -404,7 +354,7 @@ schemas/
 
 Không tạo tất cả file ngay từ đầu. Mỗi backlog item chỉ tạo phần nó dùng. Nếu hai helper rất nhỏ và cùng owner, giữ chung đến khi có lý do tách.
 
-### 9.4. Tách dữ liệu người dùng khỏi install state
+### 8.4. Tách dữ liệu người dùng khỏi install state
 
 - `.dreamy-codex/install-state.json`: managed install state hiện có; tương lai thêm ownership của hook files.
 - `.dreamy/knowledge/`: project-local observations, candidates và approved lessons; không bị uninstall/purge installer xóa.
@@ -414,9 +364,9 @@ Không tạo tất cả file ngay từ đầu. Mỗi backlog item chỉ tạo ph
 
 Project identity: hash của remote đã loại credentials + stable workspace identity; worktree giữ chung project scope nhưng checkpoint/dedupe riêng theo session/worktree. Không có remote thì hash canonical root. Không tự sync giữa máy.
 
-## 10. Ngân sách token và context
+## 9. Ngân sách token và context
 
-### 10.1. Định nghĩa chi phí cần đo
+### 9.1. Định nghĩa chi phí cần đo
 
 ```text
 T_task = runtime instructions + discovered metadata + loaded skills/references
@@ -431,7 +381,7 @@ Usage của model có thể là cumulative hoặc per-turn tùy adapter; adapter
 
 Nếu không có measured usage: ghi `tokens:null`, `measurement:"unavailable"`, vẫn ghi byte/word nhưng không công bố tiết kiệm token. Không mặc định byte/4 là tokenizer đúng cho tiếng Việt.
 
-### 10.2. Ngân sách thiết kế ban đầu
+### 9.2. Ngân sách thiết kế ban đầu
 
 Các trần token là **target cần đo bằng tokenizer/usage đã xác minh**; trần byte là deterministic fallback. Byte cap được áp trước và không bị token estimate cho phép vượt qua.
 
@@ -449,7 +399,7 @@ Các trần token là **target cần đo bằng tokenizer/usage đã xác minh**
 
 Byte budget gồm text thực sự gửi model; JSON envelope/native runtime overhead ghi riêng khi đo được. Nếu tiếng Việt chạm cap trước token target, dùng summary ngắn hơn và artifact path; không bỏ dở câu hay JSON.
 
-### 10.3. Chọn đúng nội dung
+### 9.3. Chọn đúng nội dung
 
 1. Metadata ngắn chỉ nói trigger và scope; không copy workflow vào description.
 2. Chọn một skill chính; thêm skill khác khi có domain boundary thật, không do keyword trùng.
@@ -459,7 +409,7 @@ Byte budget gồm text thực sự gửi model; JSON envelope/native runtime ove
 6. Tool result trả summary + counts + artifact path; full log giữ local có retention.
 7. Không nạp plan nghiên cứu dài này vào bootstrap hoặc skill body; chỉ mở section khi thực hiện backlog.
 
-### 10.4. Không tối ưu bằng cách mất correctness
+### 9.4. Không tối ưu bằng cách mất correctness
 
 - Không cắt phần safety invariant ở giữa câu. Reserve một phần nhỏ cho invariant, giảm optional lesson/reference trước.
 - Không dùng warning cap để che build error; full artifact phải tồn tại và command exit vẫn truyền đúng.
@@ -467,7 +417,7 @@ Byte budget gồm text thực sự gửi model; JSON envelope/native runtime ove
 - Không gọi agent phụ mặc định. Khi user/policy cho phép, chỉ delegate task có ownership độc lập và tính tổng usage mọi agent.
 - Không thay đổi preset người dùng chọn để đạt benchmark đẹp. `dreamy-full` vẫn phải giữ ý nghĩa “full”.
 
-### 10.5. Context lint cần kiểm
+### 9.5. Context lint cần kiểm
 
 - Body/description byte, duplicate paragraph, missing reference, unreachable reference.
 - Bootstrap không quảng bá agent chưa cài.
@@ -475,9 +425,9 @@ Byte budget gồm text thực sự gửi model; JSON envelope/native runtime ove
 - Metadata growth so baseline; cảnh báo nếu thêm skill nhưng không có negative routing case.
 - Budget exceptions có owner/reason/expiry; không có whitelist vô hạn cho prompt dài.
 
-## 11. Thiết kế hook
+## 10. Thiết kế hook
 
-### 11.1. Capability hiện hành và giới hạn bằng chứng
+### 10.1. Capability hiện hành và giới hạn bằng chứng
 
 Tài liệu Codex hiện có native hooks, nhưng phải kiểm đúng version/surface. Hook không managed cần trust; nhiều nguồn có thể cùng chạy. Matcher của Stop bị bỏ qua; shell/unified exec dùng tên Bash; transcript format không ổn định; PostToolUse không hoàn tác side effect. Đây là các ràng buộc adapter, không phải bằng chứng Dreamy hooks đã chạy. Xem [OpenAI Hooks](https://learn.chatgpt.com/docs/hooks).
 
@@ -485,7 +435,7 @@ Tài liệu plugin tách việc cài package khỏi trust hook và phụ thuộc
 
 Local CLI quan sát là `codex-cli 0.163.0`; lần này chỉ đọc version, **chưa chạy lifecycle smoke**.
 
-### 11.2. Capability report dự kiến
+### 10.2. Capability report dự kiến
 
 ```json
 {
@@ -507,7 +457,7 @@ Local CLI quan sát là `codex-cli 0.163.0`; lần này chỉ đọc version, **
 
 Các giá trị minh họa này **không phải runtime probe result của lượt nghiên cứu**. `operational:true` chỉ sau khi native event phát thật và handler tạo receipt mong đợi. Parse config thành công chưa đủ.
 
-### 11.3. Profile dự kiến
+### 10.3. Profile dự kiến
 
 | Profile | Handler | Mục đích | Gọi LLM |
 |---|---|---|---|
@@ -518,7 +468,7 @@ Các giá trị minh họa này **không phải runtime probe result của lư�
 
 Disable một hook ID phải độc lập profile. Tắt hook không được tắt harness/CI safety gate. Các tên profile là config Dreamy, không tự nhận là config native Codex.
 
-### 11.4. Handler catalog MVP
+### 10.4. Handler catalog MVP
 
 | ID | Native event đề xuất | Trigger nội bộ | Output | Error policy |
 |---|---|---|---|---|
@@ -530,7 +480,7 @@ Disable một hook ID phải độc lập profile. Tắt hook không được t�
 
 H05 chỉ xây sau khi H01–H04 ổn định. Không thể coi regex shell là firewall bao phủ mọi cách sửa file; harness/post-diff kiểm invariant vẫn cần.
 
-### 11.5. Dispatcher contract
+### 10.5. Dispatcher contract
 
 ```text
 stdin JSON/native event
@@ -548,7 +498,7 @@ Một process có thể gọi nhiều function handler, không fork thêm Node c
 
 Các hook của ứng dụng/plugin khác có thể chạy song song và không chịu ordering nội bộ Dreamy. Do đó H01 không được phụ thuộc hook khác tạo file trước; mỗi handler phải tự xử lý missing state.
 
-### 11.6. Timeout, overflow và failure policy
+### 10.6. Timeout, overflow và failure policy
 
 | Tình huống | Hành vi yêu cầu |
 |---|---|
@@ -565,7 +515,7 @@ Các hook của ứng dụng/plugin khác có thể chạy song song và không 
 
 Mục tiêu latency ở pilot: no-op p95 ≤100 ms POSIX, ≤200 ms Windows; ordinary event p95 ≤250 ms; SessionStart p95 ≤500 ms. Đây là target, phải đo cold/warm và storage local/network riêng. Safety scans/Unity compile chạy qua harness, không trong hot hook path.
 
-### 11.7. Trust và installer lifecycle
+### 10.7. Trust và installer lifecycle
 
 1. Inspect config hiện tại và render diff cho đúng hook definition.
 2. Native trust do runtime/user xử lý; installer không tự ghi trusted hash hoặc dùng bypass flag.
@@ -575,7 +525,7 @@ Mục tiêu latency ở pilot: no-op p95 ≤100 ms POSIX, ≤200 ms Windows; ord
 6. Check source hash của installed runner/config để phát hiện drift; không auto “repair” file đã bị user chỉnh.
 7. Sau config update: native smoke, doctor, log event và output; không đánh dấu verified bằng unit fixture.
 
-### 11.8. Chống loop ở Stop
+### 10.8. Chống loop ở Stop
 
 - Chỉ tác động task đang có verification plan; không tạo task mới từ cuối câu trả lời.
 - Nếu user stop/cancel/đổi scope: checkpoint và nhường quyền ngay.
@@ -584,13 +534,13 @@ Mục tiêu latency ở pilot: no-op p95 ≤100 ms POSIX, ≤200 ms Windows; ord
 - Hook không suy “xong” từ từ khóa của assistant. Đọc task state và evidence inventory.
 - Không gọi `create_goal`, đổi goal status, hoặc tăng token budget từ hook.
 
-## 12. Vòng học từ lỗi
+## 11. Vòng học từ lỗi
 
-### 12.1. Định nghĩa tự học trong toolkit
+### 11.1. Định nghĩa tự học trong toolkit
 
 “Tự học” ở đây là **cải thiện tri thức và workflow bên ngoài model**: lưu error signature, nguyên nhân, cách kiểm chứng, điều kiện áp dụng, rồi recall hoặc đề xuất sửa skill. Không phải thay model weights, tự tăng quyền hoặc có khả năng bảo đảm mọi lesson đều đúng.
 
-### 12.2. Pipeline đề xuất
+### 11.2. Pipeline đề xuất
 
 ```text
 Tool/harness failure
@@ -606,7 +556,7 @@ Tool/harness failure
 
 Capture/dedupe/eligibility dùng code deterministic. Tổng hợp ngôn ngữ dùng agent đang làm task tại boundary nếu có đủ evidence và task cho phép; không gọi thêm LLM/API định kỳ.
 
-### 12.3. Observation tối thiểu
+### 11.3. Observation tối thiểu
 
 ```json
 {
@@ -629,7 +579,7 @@ Capture/dedupe/eligibility dùng code deterministic. Tổng hợp ngôn ngữ d�
 
 Chỉ lấy allowlisted field và sanitized excerpt có cap. Không lưu toàn command nếu có credential; command identity có thể là tên operation/argv đã loại secret. Redaction không thay thế data minimization.
 
-### 12.4. Lesson contract
+### 11.4. Lesson contract
 
 ```json
 {
@@ -655,7 +605,7 @@ Chỉ lấy allowlisted field và sanitized excerpt có cap. Không lưu toàn c
 
 Ví dụ vẫn ở `candidate`: root cause quan sát được nhưng fix chưa chạy. Không gắn pass hoặc approved vào lesson chỉ vì lời giải nghe đúng.
 
-### 12.5. State machine
+### 11.5. State machine
 
 | State | Điều kiện vào | Được recall? | Điều kiện ra |
 |---|---|---|---|
@@ -668,7 +618,7 @@ Ví dụ vẫn ở `candidate`: root cause quan sát được nhưng fix chưa c
 
 Không auto nâng global chỉ vì cùng lỗi xảy ra hai lần trong cùng repo. Có thể đề xuất generalization khi thấy ít nhất hai project độc lập và compatibility tương ứng, nhưng vẫn cần review nội dung và negative cases.
 
-### 12.6. Confidence có ý nghĩa thực tế
+### 11.6. Confidence có ý nghĩa thực tế
 
 MVP dùng nhãn evidence thay số `0.9` dễ bị hiểu là xác suất đúng:
 
@@ -679,7 +629,7 @@ MVP dùng nhãn evidence thay số `0.9` dễ bị hiểu là xác suất đúng
 
 Một lần user sửa preference có thể tạo project preference candidate, nhưng không được suy thành rule universal. User instructions hiện tại thắng lesson lưu trước đó.
 
-### 12.7. Recall rẻ và có phạm vi
+### 11.7. Recall rẻ và có phạm vi
 
 1. Filter project, status, platform/package/version trước khi rank.
 2. Lexical matching từ error signature/path/domain; không embedding service trong MVP.
@@ -691,7 +641,7 @@ Một lần user sửa preference có thể tạo project preference candidate, 
 
 **Điểm gọi recall trong MVP:** khi task mới đã rõ scope hoặc đã thấy failure signature, agent dùng explicit `lessons recall` một lần theo workflow; H01 chỉ recall khi checkpoint đang resume đã cung cấp scope đủ rõ. H02 vẫn chỉ ghi observation và không inject lesson sau mọi tool call. Không thêm hook quét mọi prompt để tìm keyword trong MVP. Cách nối này phải được benchmark cả số tool call tăng thêm, tránh có bộ retrieval đúng nhưng không được workflow sử dụng.
 
-### 12.8. Retention và kiểm soát dữ liệu
+### 11.8. Retention và kiểm soát dữ liệu
 
 - Default raw transcript capture: **off**.
 - Observation retention ban đầu: 14 ngày hoặc cap 10 MB/project; prune records không còn được lesson/evidence tham chiếu trước.
@@ -700,9 +650,9 @@ Một lần user sửa preference có thể tạo project preference candidate, 
 - Có commands list/show/forget/export; export tạo sanitized file, không upload tự động.
 - Knowledge database read-only khi recall; dữ liệu recall là facts tham khảo, không trở thành developer instruction tự sinh có quyền override.
 
-## 13. Tự tạo và cải tiến skill
+## 12. Tự tạo và cải tiến skill
 
-### 13.1. Khi nào cần skill mới
+### 12.1. Khi nào cần skill mới
 
 Chỉ tạo candidate nếu có đủ ba điều:
 
@@ -712,7 +662,7 @@ Chỉ tạo candidate nếu có đủ ba điều:
 
 Nếu mechanical constraint được validator enforce tốt hơn, xây validator trước. Nếu một project chỉ có naming preference, giữ project lesson; không tạo global skill.
 
-### 13.2. Thứ tự xử lý
+### 12.2. Thứ tự xử lý
 
 ```text
 Tìm rule/skill đang sở hữu quyết định
@@ -724,7 +674,7 @@ Tìm rule/skill đang sở hữu quyết định
 
 Mục tiêu là **ít skill đúng hơn**, không phải nhiều skill hơn. Dùng existing `dreamy_skill_author`; không thêm một hệ author agent thứ hai.
 
-### 13.3. Candidate lifecycle
+### 12.3. Candidate lifecycle
 
 1. Tạo candidate trong `.dreamy/knowledge/skill-candidates/<id>/`, ngoài installed skill discovery path.
 2. Ghi problem, source lesson, target owner, intended activation và exclusions.
@@ -738,7 +688,7 @@ Mục tiêu là **ít skill đúng hơn**, không phải nhiều skill hơn. Dù
 
 Candidate được xem như dữ liệu chưa trusted. Không thực thi script candidate chỉ vì model vừa sinh ra; script đi qua review/test trong workspace trước khi package.
 
-### 13.4. Skills có thể cần thêm hoặc hợp nhất
+### 12.4. Skills có thể cần thêm hoặc hợp nhất
 
 | Capability | Default đề xuất | Trigger | Deliverable | Lý do |
 |---|---|---|---|---|
@@ -750,7 +700,7 @@ Candidate được xem như dữ liệu chưa trusted. Không thực thi script 
 
 Không tạo cả năm skill ngay. Mỗi skill mới phải vượt decision check ở 13.1; tools/scripts có thể là giải pháp đủ.
 
-### 13.5. Cập nhật chuẩn authoring hiện tại
+### 12.5. Cập nhật chuẩn authoring hiện tại
 
 - Giữ invariant `name`/description/verification/source-grounded.
 - Thay mandatory heading count bằng 2 profile: `compact-workflow` và `domain-specialist`.
@@ -759,9 +709,9 @@ Không tạo cả năm skill ngay. Mỗi skill mới phải vượt decision che
 - Không tự cắt các skill đang có trước khi pilot chứng minh không mất behavior.
 - `scripts/validate-skills.mjs`, authoring docs, template và skill-author role phải thay cùng một contract, tránh validator nói khác hướng dẫn.
 
-## 14. Workflow thực thi và tiếp tục công việc
+## 13. Workflow thực thi và tiếp tục công việc
 
-### 14.1. Work modes
+### 13.1. Work modes
 
 | Mode | Khi dùng | Planning | Skill/reference | Verification | Auto-learning |
 |---|---|---|---|---|---|
@@ -771,7 +721,7 @@ Không tạo cả năm skill ngay. Mỗi skill mới phải vượt decision che
 
 Đây là heuristic có thể override theo yêu cầu người dùng. Mode không tự thay permission, agent policy, model hoặc reasoning. Task nhỏ vẫn phải kiểm invariant liên quan.
 
-### 14.2. Task contract tối thiểu
+### 13.2. Task contract tối thiểu
 
 ```text
 task ID / objective / allowed files and side effects
@@ -783,7 +733,7 @@ current status / next action / external blocker if any
 
 Owner là trách nhiệm của capability/file; một agent có thể thực hiện toàn bộ. Plan không yêu cầu spawn subagent. Nếu phiên cho phép delegation, ownership phải độc lập và worker output phải được verify.
 
-### 14.3. Evidence freshness
+### 13.3. Evidence freshness
 
 - Check chỉ còn fresh nếu relevant source/config/fixture/command identity chưa đổi.
 - Tách `sourceFingerprint` của inputs khỏi output directory để generated report không làm self-invalidating.
@@ -791,15 +741,15 @@ Owner là trách nhiệm của capability/file; một agent có thể thực hi�
 - Không re-run toàn suite nhiều lần nếu chỉ sửa plan prose và check đã đủ; repo rule yêu cầu `npm test` vẫn được thực hiện trước phase completion.
 - Khi check unavailable: record exact command và reason, trạng thái `degraded/not-run`, không tự đổi thành skip-success.
 
-### 14.4. Checkpoint
+### 13.4. Checkpoint
 
 Checkpoint chứa objective, current scope, completed requirement IDs, pending command, last evidence refs và next step. Không chứa transcript dài, internal reasoning hoặc secrets.
 
 Resume phải inspect git diff/status và source fingerprint trước khi tin checkpoint. File đổi ngoài task làm evidence tương ứng stale, không xóa toàn bộ tiến độ.
 
-## 15. Thiết kế CI/CD đích
+## 14. Thiết kế CI/CD đích
 
-### 15.1. Tách các loại kiểm tra
+### 14.1. Tách các loại kiểm tra
 
 | Lane | Trigger | Nội dung | Có gọi model/Unity? |
 |---|---|---|---|
@@ -813,7 +763,7 @@ Resume phải inspect git diff/status và source fingerprint trước khi tin ch
 
 MVP đầu tiên giữ matrix hiện có Linux/Windows × Node 20/22 để chứng minh hai lỗi được sửa. Quyết định support Node 20/24 là task maintenance riêng; không âm thầm bỏ Node 20 để né Windows glob bug. Nếu công bố Node `>=20`, cần xác định minor floor tương thích các API đang dùng.
 
-### 15.2. Artifact dependency order
+### 14.2. Artifact dependency order
 
 ```text
 npm ci
@@ -826,7 +776,7 @@ npm ci
 
 Khi tách jobs, report truyền qua upload/download artifact với run-specific identity; không dựa vào `release/*.json` đã commit sẵn. `release:check` có thể nhận `--artifacts-dir` nhưng giữ default local để migration có kiểm soát.
 
-### 15.3. Cache và giảm việc lặp
+### 14.3. Cache và giảm việc lặp
 
 - Cache npm theo lockfile hash; `npm ci` vẫn xác minh dependencies.
 - Chỉ chạy validate một lần/lane: `npm test` giữ full contract cho local; CI dùng `npm run validate` + `npm run test:node`.
@@ -836,7 +786,7 @@ Khi tách jobs, report truyền qua upload/download artifact với run-specific 
 - Docs-only path vẫn qua lightweight validation; thay `toolkit.json`, schema, module/preset, scripts, hooks hoặc compatibility phải invalidate lanes phù hợp.
 - Benchmark tốn model token không nằm required PR path mặc định.
 
-### 15.4. Release correctness
+### 14.4. Release correctness
 
 Pack report dự kiến chứa `schemaVersion`, `status`, `toolkitVersion`, `packageVersion`, `sourceCommit`, `sourceFingerprint`, `runId`, `platform`, `nodeVersion`, `tarballSha256`, `packedCliChecks`, `startedAt/completedAt`.
 
@@ -844,15 +794,15 @@ Gate phải xác nhận report đúng source/run, không chỉ timestamp mới. 
 
 Giữ phân biệt alpha-package readiness và production readiness đã có. CI xanh không tự xóa Unity compatibility blocker hoặc benchmark thiếu.
 
-### 15.5. Diagnostics
+### 14.5. Diagnostics
 
 Summary mỗi job: OS/Node, command, exit code, failed phase, artifact links, source fingerprint. Upload logs khi fail với retention hợp lý, đã loại credential.
 
 Không thêm bot tự push sửa lỗi CI trong MVP. Việc tự sửa có thể tạo local diff + kiểm chứng; commit/push/publish theo scope đã được user cấp, không do hook tự quyết.
 
-## 16. Hợp đồng dữ liệu và CLI
+## 15. Hợp đồng dữ liệu và CLI
 
-### 16.1. Commands mới đề xuất
+### 15.1. Commands mới đề xuất
 
 **Toàn bộ command trong bảng này chưa tồn tại ở baseline.** Chỉ thực hiện sau backlog tương ứng; CLI phải trả help rõ khi chưa hỗ trợ, không để tài liệu tạo cảm giác capability đã có.
 
@@ -875,7 +825,7 @@ Không thêm bot tự push sửa lỗi CI trong MVP. Việc tự sửa có thể
 
 Tên có thể rút gọn khi implement, nhưng phải chốt public interface trước viết fixtures/docs. Không thêm tất cả option vào `parseArgs` lớn nếu command group có parser nhỏ rõ hơn.
 
-### 16.2. Exit semantics
+### 15.2. Exit semantics
 
 - `0`: operation thành công hoặc no-op có ý nghĩa rõ trong JSON.
 - `1`: input/config/operation failure.
@@ -883,7 +833,7 @@ Tên có thể rút gọn khi implement, nhưng phải chốt public interface t
 - Không copy code `2` giữa harness và native hooks mà quên native có thể hiểu là block/continue.
 - `status:"not-run"` đi kèm reason và không đủ điều kiện quality/release claim.
 
-### 16.3. Schema và compatibility
+### 15.3. Schema và compatibility
 
 - Mỗi record có `schemaVersion`, ID, scope, timestamps và provenance.
 - Unknown future schema không bị parse như current; doctor báo unsupported.
@@ -891,7 +841,7 @@ Tên có thể rút gọn khi implement, nhưng phải chốt public interface t
 - Schema của Dreamy không được trộn custom field vào native Codex hook output nếu chưa xác minh runtime chấp nhận.
 - Enum/status của observations, lessons và evidence khác nhau; cần mapping rõ, không một field `pass` chung cho mọi tầng.
 
-## 17. Backlog triển khai chi tiết
+## 16. Backlog triển khai chi tiết
 
 Mỗi task dưới đây có thể giao cho cùng một người/agent. Tên capability là ownership tham khảo, không yêu cầu delegation. Mỗi phase kết thúc bằng `npm test`, review diff/status và ghi command không chạy được nếu có.
 
@@ -1196,9 +1146,9 @@ Mỗi task dưới đây có thể giao cho cùng một người/agent. Tên cap
 - [ ] Runtime/schema đổi phải rerun native smoke trước nâng compatibility.
 - **Acceptance:** ngân sách maintenance đo được; loại bỏ capability không có hiệu quả sau pilot.
 
-## 18. Test và acceptance matrix
+## 17. Test và acceptance matrix
 
-### 18.1. Tests hành vi bắt buộc
+### 17.1. Tests hành vi bắt buộc
 
 | ID | Tình huống | Expected result | Tầng kiểm |
 |---|---|---|---|
@@ -1231,20 +1181,20 @@ Mỗi task dưới đây có thể giao cho cùng một người/agent. Tên cap
 | T27 | Spaces, CRLF, nested cwd, Unicode | Protocol/path/ownership đúng | Cross-platform integration |
 | T28 | Budget metric không có model usage | tokens=null; không claim savings | Metrics unit |
 
-### 18.2. Không lạm dụng tests
+### 17.2. Không lạm dụng tests
 
 - Tests mới tập trung runtime behavior, migration và observed failure; không viết test chỉ kiểm câu prose xuất hiện trong plan.
 - Unit fixtures không thay native runtime smoke, Windows CI hoặc Unity compile.
 - Không yêu cầu Unity/device cho docs-only change của file plan này.
 - Sau một check pass, chỉ mở rộng/rerun khi inputs thay đổi hoặc còn failure/unresolved concern.
 
-## 19. Benchmark và tiêu chí tiếp tục đầu tư
+## 18. Benchmark và tiêu chí tiếp tục đầu tư
 
-### 19.1. Tái sử dụng runner hiện có
+### 18.1. Tái sử dụng runner hiện có
 
 Giữ `scripts/benchmark.mjs`, schema/report provenance, treatment source hashing và policy trong `benchmarks/release-policy.json`. Thêm fields/treatments có migration nếu cần; không dựng second benchmark stack.
 
-### 19.2. Treatments
+### 18.2. Treatments
 
 | Treatment | Nội dung | Câu hỏi |
 |---|---|---|
@@ -1256,7 +1206,7 @@ Giữ `scripts/benchmark.mjs`, schema/report provenance, treatment source hashin
 
 Không so model A có toolkit với model B không toolkit rồi gọi đó là hiệu quả prompt. Nếu cần native-product comparison, báo riêng với confound đầy đủ.
 
-### 19.3. Pilot 12 task × 3 repetitions
+### 18.3. Pilot 12 task × 3 repetitions
 
 | Nhóm | Số task | Ví dụ |
 |---|---:|---|
@@ -1268,7 +1218,7 @@ Không so model A có toolkit với model B không toolkit rồi gọi đó là 
 
 Training examples và holdout tách nguồn đáp án. Ít nhất một nửa task không hưởng lợi từ lesson để đo chi phí nền và false activation.
 
-### 19.4. Metrics
+### 18.4. Metrics
 
 - Task success từ observable result; critical safety/evidence-honesty failures đếm riêng.
 - Input/cached input/output/reasoning tokens khi đo được; total across agents nếu có.
@@ -1279,7 +1229,7 @@ Training examples và holdout tách nguồn đáp án. Ít nhất một nửa ta
 - Skill activation false-positive trên near-miss; regression trên negative/conflict cases.
 - Cost per successful task nếu có giá và usage đủ; otherwise report tokens/time riêng.
 
-### 19.5. Gate ban đầu
+### 18.5. Gate ban đầu
 
 | Gate | Target đề xuất |
 |---|---|
@@ -1296,9 +1246,9 @@ Training examples và holdout tách nguồn đáp án. Ít nhất một nửa ta
 
 Pilot 36 trials/treatment còn nhỏ: không diễn giải chênh lệch 1 case thành kết luận chắc chắn. Nếu quality gain chưa rõ nhưng overhead tăng, giữ capability opt-in hoặc bỏ bớt. Không tăng token budget chỉ để gate nhìn đẹp.
 
-## 20. Migration, rollout và rollback
+## 19. Migration, rollout và rollback
 
-### 20.1. Compatibility trước convenience
+### 19.1. Compatibility trước convenience
 
 1. Existing install v1/v2 vẫn đọc được; migration tạo backup/diff khi cần.
 2. Preset explicit và unrelated global/project config giữ nguyên.
@@ -1307,7 +1257,7 @@ Pilot 36 trials/treatment còn nhỏ: không diễn giải chênh lệch 1 case 
 5. Candidate skill không nằm installed path trước promotion.
 6. Registry maturity chỉ tăng theo evidence thực hiện, không theo số task đã viết vào plan.
 
-### 20.2. Rollout theo đợt
+### 19.2. Rollout theo đợt
 
 | Đợt | Scope | Điều kiện vào | Quan sát |
 |---|---|---|---|
@@ -1318,7 +1268,7 @@ Pilot 36 trials/treatment còn nhỏ: không diễn giải chênh lệch 1 case 
 | R4 | Một candidate skill pilot | Behavioral cases và A/B pass | Holdout success, false routing |
 | R5 | Default recommendation xem xét lại | Một tuần quan sát đủ + gate pass | Không mặc định bật strict/global learning |
 
-### 20.3. Rollback
+### 19.3. Rollback
 
 - Tắt profile về `off`; runtime không có hook support vẫn dùng explicit CLI/harness.
 - Revert owned hook entries theo recorded hashes, preserve user edits.
@@ -1326,9 +1276,9 @@ Pilot 36 trials/treatment còn nhỏ: không diễn giải chênh lệch 1 case 
 - Skill promotion có source diff/version để revert đúng change; không rollback unrelated skill updates.
 - CI fix rollback độc lập learning features; không gỡ regression tests đã chứng minh root cause.
 
-## 21. Rủi ro, giả thuyết và việc hoãn
+## 20. Rủi ro, giả thuyết và việc hoãn
 
-### 21.1. Risk register cụ thể
+### 20.1. Risk register cụ thể
 
 | Rủi ro | Signal | Biện pháp | Điều kiện dừng |
 |---|---|---|---|
@@ -1344,7 +1294,7 @@ Pilot 36 trials/treatment còn nhỏ: không diễn giải chênh lệch 1 case 
 | Upstream license không đồng nhất | Copy file thiếu provenance | Concept adaptation, file-level check | Không import chưa rõ quyền |
 | Budget cap bỏ safety context | Invariant bị cắt | Reserved bounded safety kernel | Không rollout cap đó |
 
-### 21.2. Hypotheses cần thử
+### 20.2. Hypotheses cần thử
 
 - **HYPOTHESIS H1:** compact authoring và giảm duplicate rule giúp giảm token mà không giảm task success.
 - **HYPOTHESIS H2:** hai lesson có relevance cao hữu ích hơn session diary dài.
@@ -1354,7 +1304,7 @@ Pilot 36 trials/treatment còn nhỏ: không diễn giải chênh lệch 1 case 
 
 Không đánh dấu các hypothesis là đạt chỉ vì implementation xong hoặc test plumbing pass.
 
-### 21.3. Hoãn có chủ ý
+### 20.3. Hoãn có chủ ý
 
 - Vector database/embeddings và cloud memory sync.
 - Background LLM observer hoặc auto weekly model job chưa được cấp budget.
@@ -1364,9 +1314,9 @@ Không đánh dấu các hypothesis là đạt chỉ vì implementation xong ho�
 - Tự thêm package dependency hoặc Unity migration từ learned lesson.
 - Nhập nguyên prompt/bootstrap/CI của upstream thay cho thiết kế dựa failure thật của Dreamy.
 
-## 22. Lịch thực hiện và điều kiện hoàn tất
+## 21. Lịch thực hiện và điều kiện hoàn tất
 
-### 22.1. Lịch tham khảo cho một người thực hiện
+### 21.1. Lịch tham khảo cho một người thực hiện
 
 | Mốc | Thời lượng dự kiến | Deliverable |
 |---|---:|---|
@@ -1380,7 +1330,7 @@ Không đánh dấu các hypothesis là đạt chỉ vì implementation xong ho�
 
 Sai số phụ thuộc Windows/native Codex test access, Unity fixture và thời gian benchmark. Không để thiếu Unity license chặn việc sửa CI Node hoặc hoàn thiện local storage.
 
-### 22.2. Definition of done từng phase
+### 21.2. Definition of done từng phase
 
 - Có code/diff đúng scope và tests meaningful cho failure thực.
 - `npm test` pass; relevant integration checks có artifact; unavailable check ghi exact reason.
@@ -1389,7 +1339,7 @@ Sai số phụ thuộc Windows/native Codex test access, Unity fixture và thờ
 - Không tăng maturity vượt evidence.
 - Có rollback đơn giản cho capability mới.
 
-### 22.3. Definition of done toàn initiative
+### 21.3. Definition of done toàn initiative
 
 - [ ] CI mới trên GitHub xanh đủ required Linux/Windows/Node matrix.
 - [ ] Pack/release gate không chấp nhận report cũ/cross-commit.
@@ -1403,7 +1353,7 @@ Sai số phụ thuộc Windows/native Codex test access, Unity fixture và thờ
 - [ ] Benchmark đạt cost/quality gate; không dùng catalog/selftest làm semantic proof.
 - [ ] Release notes ghi rõ supported runtime/version, known unknowns và disable path.
 
-## 23. Nguồn truy vết
+## 22. Nguồn truy vết
 
 Các link upstream pin commit đã inspect để tránh README/main thay đổi sau nghiên cứu. Dưới đây là file trọng tâm, không phải tuyên bố đã audit toàn bộ hàng chục MB source của mỗi repo.
 
@@ -1427,17 +1377,6 @@ Các link upstream pin commit đã inspect để tránh README/main thay đổi 
 - **S6 — Bootstrap/size:** [hooks/session-start](https://github.com/obra/superpowers/blob/2ce8aa15d05bd57213e6f746f953aafb7ded7a8b/hooks/session-start), [hooks/hooks.json](https://github.com/obra/superpowers/blob/2ce8aa15d05bd57213e6f746f953aafb7ded7a8b/hooks/hooks.json), [test-skill-size.sh](https://github.com/obra/superpowers/blob/2ce8aa15d05bd57213e6f746f953aafb7ded7a8b/tests/skill-size/test-skill-size.sh).
 - **S7 — License:** [LICENSE](https://github.com/obra/superpowers/blob/2ce8aa15d05bd57213e6f746f953aafb7ded7a8b/LICENSE).
 
-### OmO
-
-- **O1 — Current topology:** [docs/guide/overview.md](https://github.com/code-yeongyu/oh-my-openagent/blob/06949e1eb617faf7eb81f3ddd9d959408e3f1892/docs/guide/overview.md), [package.json](https://github.com/code-yeongyu/oh-my-openagent/blob/06949e1eb617faf7eb81f3ddd9d959408e3f1892/package.json).
-- **O2 — Per-event budget:** [rules/src/event-budget.ts](https://github.com/code-yeongyu/oh-my-openagent/blob/06949e1eb617faf7eb81f3ddd9d959408e3f1892/packages/omo-codex/plugin/components/rules/src/event-budget.ts), [post-compact-budget.ts](https://github.com/code-yeongyu/oh-my-openagent/blob/06949e1eb617faf7eb81f3ddd9d959408e3f1892/packages/omo-codex/plugin/components/rules/src/post-compact-budget.ts).
-- **O3 — Truncation behavior:** [rules-engine/src/engine/truncator.ts](https://github.com/code-yeongyu/oh-my-openagent/blob/06949e1eb617faf7eb81f3ddd9d959408e3f1892/packages/rules-engine/src/engine/truncator.ts).
-- **O4 — Recall:** [memory-core/src/recall/select.ts](https://github.com/code-yeongyu/oh-my-openagent/blob/06949e1eb617faf7eb81f3ddd9d959408e3f1892/packages/memory-core/src/recall/select.ts), [ledger.ts](https://github.com/code-yeongyu/oh-my-openagent/blob/06949e1eb617faf7eb81f3ddd9d959408e3f1892/packages/memory-core/src/recall/ledger.ts).
-- **O5 — Continuation:** [ulw-execute-continuation/src/codex-hook.ts](https://github.com/code-yeongyu/oh-my-openagent/blob/06949e1eb617faf7eb81f3ddd9d959408e3f1892/packages/omo-codex/plugin/components/ulw-execute-continuation/src/codex-hook.ts), [hooks.json](https://github.com/code-yeongyu/oh-my-openagent/blob/06949e1eb617faf7eb81f3ddd9d959408e3f1892/packages/omo-codex/plugin/components/ulw-execute-continuation/hooks/hooks.json).
-- **O6 — Receipt checks/retry cap:** [lazycodex-executor-verify/src/codex-hook.ts](https://github.com/code-yeongyu/oh-my-openagent/blob/06949e1eb617faf7eb81f3ddd9d959408e3f1892/packages/omo-codex/plugin/components/lazycodex-executor-verify/src/codex-hook.ts), [state.ts](https://github.com/code-yeongyu/oh-my-openagent/blob/06949e1eb617faf7eb81f3ddd9d959408e3f1892/packages/omo-codex/plugin/components/lazycodex-executor-verify/src/state.ts).
-- **O7 — Trust/config implementation cần đối chiếu runtime:** [codex-hook-trust.ts](https://github.com/code-yeongyu/oh-my-openagent/blob/06949e1eb617faf7eb81f3ddd9d959408e3f1892/packages/omo-codex/src/install/codex-hook-trust.ts).
-- **O8 — CI/license:** [.github/workflows/ci.yml](https://github.com/code-yeongyu/oh-my-openagent/blob/06949e1eb617faf7eb81f3ddd9d959408e3f1892/.github/workflows/ci.yml), [LICENSE.md](https://github.com/code-yeongyu/oh-my-openagent/blob/06949e1eb617faf7eb81f3ddd9d959408e3f1892/LICENSE.md).
-
 ### Dreamy và official docs
 
 - [Canonical toolkit](../../toolkit.json), [package scripts](../../package.json), [CI workflow](../../.github/workflows/ci.yml).
@@ -1447,11 +1386,11 @@ Các link upstream pin commit đã inspect để tránh README/main thay đổi 
 - [Existing master plan](DREAMY_CODEX_TOOLKIT_MASTER_PLAN.md), [benchmark plan](../toolkit-benchmark-plan.md), [benchmark runner](../../scripts/benchmark.mjs), [release policy](../../benchmarks/release-policy.json).
 - [OpenAI Hooks](https://learn.chatgpt.com/docs/hooks), [OpenAI plugin packaging](https://developers.openai.com/plugins/build/plugins), [OpenAI skills](https://learn.chatgpt.com/docs/build-skills). Official docs được mở ngày 22/10/2026; tính khả dụng cụ thể vẫn cần native probe như mục 11.
 
-## 24. Bằng chứng kiểm tra của lần nghiên cứu này
+## 23. Bằng chứng kiểm tra của lần nghiên cứu này
 
 | Kiểm tra | Kết quả thực tế | Giới hạn |
 |---|---|---|
-| Source snapshots | Đã tải archive pin full SHA của cả ba repo và đọc các file trọng tâm | Không chạy upstream code; không audit toàn repository |
+| Source snapshots | Đã tải archive pin full SHA của hai repo và đọc các file trọng tâm | Không chạy upstream code; không audit toàn repository |
 | GitHub runs | 8 runs gần nhất failure; lấy job metadata 2 runs gần nhất | Không kết luận toàn lịch sử |
 | Raw job logs | Linux Node 22: `npm.cmd ENOENT`; Windows Node 20: literal glob path not found | Hai job khác chỉ có metadata |
 | Local `npm test` | Node v24.19.0/Linux: 32 pass, 0 fail, 1 skip | Windows-only test chưa chạy local |
