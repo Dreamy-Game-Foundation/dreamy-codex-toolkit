@@ -37,6 +37,7 @@ Hierarchy -> PrefabOwner -> Variant/NestedContext -> Overrides -> References -> 
 - Inspect owner and overrides before mutation.
 - Prefer editor-supported changes.
 - Save only intended asset/scene.
+- When creating/changing UI presentation, use `unity-ui-responsive` to check and repair the affected layout/consumers before completion; gameplay-only prefabs do not trigger it.
 - If the owner is unclear, stop at a plan/architecture decision before mutating code.
 
 ## Workflow

@@ -64,8 +64,7 @@ Screen/popup/overlay -> panel lifecycle -> bind state -> render -> collect inten
 - Follow the template's coding style, MVP and root-owned DI. Views render state/emit intent; use generic class names unless an actual ambiguity needs qualification. For mobile layout, sprite modes, extracted fonts/presets and baseline-first image comparison, use `unity-ui-reskin` when available.
 - Bind/unbind symmetrically.
 - Back handling lives at UI manager/root/presenter level.
-- Use safe-area and target aspect checks for mobile screens.
-- MCP/editor-created UI prefabs include the project's SafeArea component or safe-area container for full-screen, panel, popup, overlay, HUD, and mobile-facing prefabs unless an owning parent already provides it.
+- For prefab presentation changes, use `unity-ui-responsive` for responsive repairs, affected consumers and SafeArea ownership (background outside the inset subtree); retain lifecycle/presenter ownership here.
 
 ## Anti-patterns
 

@@ -85,6 +85,8 @@ Only claim installed package, Unity, platform, or Dreamy behavior after inspecti
 
 ## References
 
+- For first-build brief/key intake, GitLab ownership and artifact handoff, use
+  `unity-mobile-first-build` when available; retain Android stage diagnosis here.
 - Read project `AGENTS.md` and `rules/index.json` when present; for global installs, use the packaged skill/rule context and relevant compatibility catalog before making ownership or API claims.
 - Use `references/build-stage-triage.md` before changing Gradle, manifest, signing, R8, or target SDK settings.
 - Use nearby project code and rule files as the reference source; add a skill-local reference only when repeated gotchas need more depth.

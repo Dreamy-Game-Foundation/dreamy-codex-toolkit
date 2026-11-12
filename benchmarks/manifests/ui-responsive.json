@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "name": "ui-responsive-forced-load-review",
+  "purpose": "development",
+  "releaseEligible": false,
+  "model": "set-by-run-owner",
+  "reasoning": "set-by-run-owner",
+  "repetitions": 1,
+  "timeoutMs": 180000,
+  "adapter": {
+    "executable": null,
+    "args": [
+      "{promptFile}",
+      "{outputFile}"
+    ]
+  },
+  "caseFiles": [
+    "../cases/ui-responsive.json"
+  ],
+  "treatments": [
+    {
+      "id": "responsive",
+      "sources": [
+        {
+          "root": "repo",
+          "paths": [
+            "skills/unity-ui-responsive",
+            "skills/unity-ui/SKILL.md",
+            "skills/unity-ui-reskin/SKILL.md",
+            "rules/unity/ui-input-safearea.md"
+          ]
+        }
+      ]
+    }
+  ]
+}

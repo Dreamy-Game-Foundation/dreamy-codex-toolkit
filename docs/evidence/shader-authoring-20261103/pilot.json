@@ -1,0 +1,18 @@
+{
+    "editor": "6000.4.12f1",
+    "api": "OpenGLCore",
+    "device": "NVIDIA GeForce RTX 3050/PCIe/SSE2",
+    "pipeline": "URP 17.4.0",
+    "graphKind": "Installed package custom lighting sample; no new graph nodes authored",
+    "shadowDepthVisual": "not-run",
+    "player": "not-run",
+    "deviceProfile": "not-run",
+    "hlslImportReload": true,
+    "independentMaterials": true,
+    "graphSampleImportReload": true,
+    "dissolvePixels": [
+        26004,
+        13070,
+        0
+    ]
+}

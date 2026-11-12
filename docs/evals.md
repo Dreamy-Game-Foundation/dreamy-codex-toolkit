@@ -1,7 +1,7 @@
 # Evals
 
 <!-- DREAMY-CATALOG:START -->
-`evals/catalog.json` contains **165** routing and safety case definitions. These are catalog definitions, not 165 observed model passes.
+`evals/catalog.json` contains **185** routing and safety case definitions. These are catalog definitions, not 185 observed model passes.
 <!-- DREAMY-CATALOG:END -->
 
 Each case records a unique `id`, `prompt`, expected behavior, forbidden claims, and a numeric `scoreThreshold`. The catalog also includes `agentCoverage` so agent templates cannot be added without explicit eval coverage.

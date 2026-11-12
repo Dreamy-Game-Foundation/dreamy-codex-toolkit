@@ -13,6 +13,7 @@
     "skills/platform/mobile-production",
     "skills/platform/android-build-release",
     "skills/platform/ios-build-release",
-    "skills/platform/store-release-readiness"
+    "skills/platform/store-release-readiness",
+    "skills/platform/unity-mobile-first-build"
   ]
 }

@@ -8,6 +8,8 @@ Give each layer a purpose: anticipation, impact/readability, direction/force, su
 
 Use the [brief](../assets/effect-brief.md) and [recipe](../assets/effect-recipe.json) only when useful. Scale documentation to the task; a small color change does not need a new specification. Keep editable source and imported runtime bindings traceable.
 
+For unsettled visual direction, use [concept-development.md](concept-development.md) before producing runtime ingredients. A concept board establishes a design target; export each required texture separately and validate it through the checks below.
+
 ## Select an asset route per ingredient
 
 | Route | Useful when | Check |

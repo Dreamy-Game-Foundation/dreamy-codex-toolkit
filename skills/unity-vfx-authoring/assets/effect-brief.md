@@ -16,6 +16,7 @@ Use for substantial authoring; omit fields that do not influence this task. Keep
 - Purpose, style, 2D/2.5D/3D/UI space and main readable shape:
 - One-shot/loop, onset/peak/tail, duration and direction:
 - Layers and their roles; proposed technique and asset route per layer:
+- Concept exploration if needed: camera/background, direction variants, proposed onset/peak/tail times and selection criteria:
 - Trigger, follow-target, stop/cancel/pause and spawn/load/release owners:
 - Concurrency/quality tiers and proposed budget with units:
 - Deliverables and visual/lifecycle acceptance scenarios:
@@ -30,6 +31,7 @@ Use for substantial authoring; omit fields that do not influence this task. Keep
 ## Results and next action
 
 - Saved assets and source records:
+- Selected concept file/variant, selection by user or agent, reasons and layer-to-asset mapping:
 - Captures and visual findings:
 - Import/compile/Console, lifecycle, performance, build/device status separately:
 - Remaining gaps and next action:

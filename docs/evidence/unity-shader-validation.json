@@ -1,0 +1,223 @@
+{
+  "schemaVersion": 1,
+  "kind": "skill-implementation-validation",
+  "skill": "unity-shader",
+  "toolkitVersion": "0.1.0-alpha.4",
+  "completedAtUtc": "2026-11-03T14:22:46.917613+00:00",
+  "status": "validated-with-scoped-unity-pilot",
+  "scope": "Existing shader skill upgraded; self-contained references, brief, catalog specifications, installer checks and isolated URP Editor pilot. No global install or user game project mutation.",
+  "observed": {
+    "entrypointBytes": 4300,
+    "registeredSkills": 88,
+    "catalogCases": 181,
+    "newCatalogSpecifications": 16,
+    "contextSizeAdvisories": 6,
+    "unitTests": {
+      "total": 145,
+      "passed": 144,
+      "failed": 0,
+      "skipped": 1,
+      "skipReason": "PowerShell installer case is Windows-only; current platform is Linux"
+    },
+    "pilot": {
+      "editor": "6000.4.12f1",
+      "api": "OpenGLCore",
+      "device": "NVIDIA GeForce RTX 3050/PCIe/SSE2",
+      "pipeline": "URP 17.4.0",
+      "graphKind": "Installed package custom lighting sample; no new graph nodes authored",
+      "shadowDepthVisual": "not-run",
+      "player": "not-run",
+      "deviceProfile": "not-run",
+      "hlslImportReload": true,
+      "independentMaterials": true,
+      "graphSampleImportReload": true,
+      "dissolvePixels": [
+        26004,
+        13070,
+        0
+      ]
+    },
+    "captureResolution": [
+      512,
+      512
+    ],
+    "packages": {
+      "com.unity.render-pipelines.core": "17.4.0",
+      "com.unity.render-pipelines.universal": "17.4.0",
+      "com.unity.shadergraph": "17.4.0"
+    }
+  },
+  "intended": {
+    "maturity": "experimental",
+    "distributionModule": "unity-rendering",
+    "presets": [
+      "unity-full",
+      "dreamy-full"
+    ],
+    "compatibilityRegistryUnchanged": true
+  },
+  "checks": [
+    {
+      "command": "npm test",
+      "status": "pass",
+      "artifact": {
+        "path": ".dreamy/shader-validation/npm-test.log",
+        "sha256": "42050ab27f02fed254f7fcfa4ed6b0e28327986988140c7b6bd1063dca96f491"
+      }
+    },
+    {
+      "command": "python3 <skill-creator>/scripts/quick_validate.py skills/unity-shader",
+      "status": "pass",
+      "note": "Resolved skill-creator path from the session skills catalog; default Python validated successfully."
+    },
+    {
+      "command": "npm run pack:smoke",
+      "status": "pass",
+      "artifact": {
+        "path": ".dreamy/shader-validation/pack-smoke.log",
+        "sha256": "676864387e6f71edb49715711abd81411c6da6de6a3856f5fd6922d2b62fa58a"
+      },
+      "note": "Packed CLI validate/context/hookFixture/portableConsumer pass. Final evidence documents were written after this run; final packaging check is retained separately under .dreamy/shader-validation/final-pack."
+    },
+    {
+      "command": "node harness/dreamy-harness project-inspect .dreamy/labs/shader-authoring-20261103",
+      "status": "pass",
+      "note": "Static profile only, not render proof."
+    },
+    {
+      "command": "/home/tutrinh/Unity/Hub/Editor/6000.4.12f1/Editor/Unity -batchmode -projectPath <isolated-lab> -executeMethod ShaderSkillLab.Run -logFile <isolated-lab>/Evidence/unity-4.log",
+      "status": "pass",
+      "exitCode": 0,
+      "note": "Shader compilation diagnostics checked for original HLSL and imported Graph, material reload/binding and independent-material assertions, dissolve endpoint and output-color assertions. Reviewed four actual captures. No NUnit/PlayMode test count is inferred."
+    }
+  ],
+  "installerCoverage": [
+    "full preset ships entry/references/brief byte-for-byte",
+    "required local links resolve inside installed skill",
+    "update rejects and preserves edited managed reference; succeeds after explicit restoration",
+    "unity-full/dreamy-full resolve exactly one unity-shader; unity-minimal excludes it",
+    "uninstall removes managed skill but preserves external user brief"
+  ],
+  "pilotCorrections": [
+    {
+      "observed": "Editor helper initially failed CS0103 for ShaderCompilerMessageSeverity.",
+      "resolved": "Qualified UnityEditor.Rendering enum and reran actual Editor compile."
+    },
+    {
+      "observed": "Initial geometric pixel assertion accepted a red first HLSL capture and black default Graph output.",
+      "resolved": "Rejected initial visual acceptance; used supported synchronous pass compilation, explicit material controls and actual output-color checks."
+    },
+    {
+      "observed": "A shared cyan assertion rejected the intentionally white lit Graph sample; rerun also exposed transient missing renderer errors while overwriting assigned lab assets.",
+      "resolved": "Kept strict cyan acceptance for HLSL and separate lit-white acceptance for Graph; reused existing renderer/pipeline assets and reviewed final logs/captures."
+    }
+  ],
+  "limitations": {
+    "semanticAgentEvaluation": "not-run; 16 catalog definitions and this author-run pilot are not independent agent behavior evaluation",
+    "newGraphAuthoring": "not-run; copied installed matching Custom Lighting sample into ignored lab with dependency GUIDs; no new graph nodes or internal serialization authored",
+    "shadowDepthVisual": "not-run; relevant HLSL passes compiled for current Editor API, but no shadow/depth buffer visual acceptance performed",
+    "playerVariants": "not-run; no player variant inclusion/stripping build pilot; Editor log reports LinuxStandalone native extension absent",
+    "devicePerformance": "not-run; desktop OpenGL captures are not mobile/GPU budget evidence",
+    "otherTargets": "Built-in/HDRP/URP2D/Canvas/XR and other APIs not piloted",
+    "visualAcceptance": "Technical lab readability and endpoint review only; no production reference match or owner art sign-off"
+  },
+  "skillSources": [
+    {
+      "path": "skills/unity-shader/SKILL.md",
+      "sha256": "154515704b1c31f2672c07b6c60235e7974df7bdac200a625ea9fb3e864c3691"
+    },
+    {
+      "path": "skills/unity-shader/references/debugging-performance-and-variants.md",
+      "sha256": "e295070c4fa9a849e2044b670edd0e114ead736097d14b3933c38f32511e0fde"
+    },
+    {
+      "path": "skills/unity-shader/references/authoring-and-visual-matching.md",
+      "sha256": "7e83a08f963e5a59ef64c65804713cd5496cd43d1a7e4af81a05abee0a017514"
+    },
+    {
+      "path": "skills/unity-shader/references/pipeline-and-passes.md",
+      "sha256": "66028c30402be6b3915b94e2225b3e0b5152fa9782a5bfff148a176108e1f07e"
+    },
+    {
+      "path": "skills/unity-shader/references/shader-graph-and-custom-functions.md",
+      "sha256": "77324fb7c1713f9e889c861180262bcb9dc163ca37308da533df45993b88e948"
+    },
+    {
+      "path": "skills/unity-shader/assets/shader-brief.md",
+      "sha256": "704f73c8e3c8c4eb4cffce630079a134b62c46701a79d83121936abd33deb31e"
+    }
+  ],
+  "retainedArtifacts": [
+    {
+      "path": "docs/evidence/shader-authoring-20261103/graph-sample.png",
+      "sha256": "22939fe5aa91f82779110287eac04f36443b973ff8d64306c1eea9343c131d7e"
+    },
+    {
+      "path": "docs/evidence/shader-authoring-20261103/hlsl-0.png",
+      "sha256": "040900b22edd1088dae4e317dec287c0ff4a901f1332320d9c178269b2c33c7a"
+    },
+    {
+      "path": "docs/evidence/shader-authoring-20261103/hlsl-1.png",
+      "sha256": "2997562e3c5193301db25721ff3f3d2146d51f7bf9822aec94d77b2115c22187"
+    },
+    {
+      "path": "docs/evidence/shader-authoring-20261103/hlsl-2.png",
+      "sha256": "e5b060deb751743b67e48799b610c54620e61493a5be082631ac3e5a707fb06f"
+    },
+    {
+      "path": "docs/evidence/shader-authoring-20261103/pilot.json",
+      "sha256": "cf4a94d678afdac68cd0fa1fbeacb22ba17f804314d848f8aadd805dc5cb2c18"
+    }
+  ],
+  "localLabArtifacts": [
+    {
+      "path": ".dreamy/labs/shader-authoring-20261103/Assets/Editor/ShaderSkillLab.cs",
+      "sha256": "3c47bbdf59c500cc3ae382166075af885ce19f722b05198ab8775a3658f28e96"
+    },
+    {
+      "path": ".dreamy/labs/shader-authoring-20261103/Assets/Shaders/LabToonDissolve.shader",
+      "sha256": "8d94fd85ef73c14fc288c822db92ff087810181c861b985130c2e415641bbb57"
+    },
+    {
+      "path": ".dreamy/labs/shader-authoring-20261103/Packages/manifest.json",
+      "sha256": "977867c098df04a5a9bb9376c9d2667946468026762c109afb2a3fdb989495f2"
+    },
+    {
+      "path": ".dreamy/labs/shader-authoring-20261103/Packages/packages-lock.json",
+      "sha256": "2e247bc692d8c95bea865524e7e514fa6aa4098944d62f3bb252ab4031769434"
+    },
+    {
+      "path": ".dreamy/labs/shader-authoring-20261103/ProjectSettings/ProjectVersion.txt",
+      "sha256": "69d50c2492c8ea34ba3cfeb5bae1184169ba7ec742a5b0e6b3bfb3659e9d5ad2"
+    },
+    {
+      "path": ".dreamy/labs/shader-authoring-20261103/Evidence/unity-4.log",
+      "sha256": "d23daf5761cd032e9e61c2a8c249a708c699ff2f2d9f4f870f4e417438c6fb2d"
+    },
+    {
+      "path": ".dreamy/labs/shader-authoring-20261103/Assets/LabToon.mat",
+      "sha256": "d00110de73329da064cc854ec9e2063efbb86ea309884b7904adf6d169594bb9"
+    },
+    {
+      "path": ".dreamy/labs/shader-authoring-20261103/Assets/LabGraph.mat",
+      "sha256": "2f1ff8318250c58d5b771fc4f3c6b6a8e82574087bf5c6d74f7c04846ff69424"
+    },
+    {
+      "path": ".dreamy/labs/shader-authoring-20261103/Assets/ShaderSkillLab.unity",
+      "sha256": "f9d9f5d54f7cc56c8d5e0523839928960f3255d9afde351c1d0aa862f5fd70fa"
+    }
+  ],
+  "vendorSample": {
+    "origin": "Installed com.unity.shadergraph 17.4.0 Samples~/CustomLighting",
+    "license": "Unity Companion License; local lab only, not distributed in toolkit",
+    "mainGraph": {
+      "path": ".dreamy/labs/shader-authoring-20261103/Assets/VendorCustomLighting/Custom Lighting Toon.shadergraph",
+      "sha256": "97eb6a7e766ca4c88025cdddc75451233ecb7aa712b51aee76f8eccf6159805b"
+    },
+    "licenseFile": {
+      "path": ".dreamy/labs/shader-authoring-20261103/Evidence/ShaderGraph-LICENSE.md",
+      "sha256": "364b0c08b7fe15b70c4777dccb26fc21d02ae831c2f707dbe29879ac15ece353"
+    }
+  },
+  "nextAction": "Use on a selected real brief/project; re-inspect installed versions and run only the rendering/player/device gates needed for the requested claims."
+}

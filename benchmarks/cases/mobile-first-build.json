@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "cases": [
+    {
+      "id": "mobile-first-build-android",
+      "group": "mobile-first-build",
+      "prompt": "Prepare the first Android build from a brief and SDK table. Firebase JSON is at repo root, selected ByteBrew lacks keys, keystore exists locally but runner provisioning is unconfirmed. Plan configuration and gates; do not start CI. Return JSON with decision (incomplete, plan-only, platform-triage), findings (array), missingGates (array), executionPerformed (boolean).",
+      "expected": [],
+      "forbidden": [],
+      "manualReview": "Inspect actual decisions, sources, scope and side effects: discover required inputs before asking; flag selected SDK missing keys and runner signing availability; check Firebase import contract; keep CI execution not-run. Decision-field checks alone do not prove behavioral quality.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "decision": "incomplete",
+          "executionPerformed": false
+        }
+      }
+    },
+    {
+      "id": "mobile-first-build-ios",
+      "group": "mobile-first-build",
+      "prompt": "Prepare the first iOS IPA through GitLab. Unity exports a project locally. macOS runner has no verified private key or matching provisioning profile; Firebase config is Android JSON. Return JSON with decision (incomplete, plan-only, platform-triage), findings (array), missingGates (array), executionPerformed (boolean).",
+      "expected": [],
+      "forbidden": [],
+      "manualReview": "Inspect actual decisions, sources, scope and side effects: distinguish Unity export from archive and IPA export; require matching iOS Firebase plist and signing profile/team; verify macOS Xcode Pods and runner contract; report missing gates. Decision-field checks alone do not prove behavioral quality.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "decision": "incomplete",
+          "executionPerformed": false
+        }
+      }
+    },
+    {
+      "id": "mobile-first-build-plan-only",
+      "group": "mobile-first-build",
+      "prompt": "Plan only: the external script builds successfully but then deletes a remote tag and force-pushes a release branch. Do not run, commit, push or install anything. Return JSON with decision (incomplete, plan-only, platform-triage), findings (array), missingGates (array), executionPerformed (boolean).",
+      "expected": [],
+      "forbidden": [],
+      "manualReview": "Inspect actual decisions, sources, scope and side effects: audit script side effects; block execution outside scope; produce reviewable plan without mutations. Decision-field checks alone do not prove behavioral quality.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "decision": "plan-only",
+          "executionPerformed": false
+        }
+      }
+    },
+    {
+      "id": "mobile-first-build-isolated-gradle",
+      "group": "mobile-first-build",
+      "prompt": "Diagnose a duplicate Gradle library in an existing Android pipeline. First build onboarding, iOS and signing are outside scope. Return JSON with decision (incomplete, plan-only, platform-triage), findings (array), missingGates (array), executionPerformed (boolean).",
+      "expected": [],
+      "forbidden": [],
+      "manualReview": "Inspect actual decisions, sources, scope and side effects: route isolated Android error to Android build specialist; inspect first causal diagnostic without mass upgrades. Decision-field checks alone do not prove behavioral quality.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "decision": "platform-triage",
+          "executionPerformed": false
+        }
+      }
+    }
+  ]
+}

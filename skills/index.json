@@ -1577,7 +1577,7 @@
       "priority": "P1",
       "file": "skills/unity-shader/SKILL.md",
       "depth": "D3",
-      "maturity": "practitioner",
+      "maturity": "experimental",
       "owners": [
         "dreamy_unity_developer",
         "dreamy_tester",
@@ -1586,10 +1586,32 @@
       "requiresEvidence": [
         "project-code",
         "manifest",
-        "asmdefs"
+        "asmdefs",
+        "package-lock",
+        "render-pipeline",
+        "shader-diagnostics",
+        "visual-capture"
       ],
-      "references": 0,
-      "evalCases": []
+      "references": 4,
+      "evalCases": [
+        "shader-author-dissolve",
+        "shader-reference-toon",
+        "shader-graph-custom-lighting-version",
+        "shader-pink-repro",
+        "shader-build-keyword-stripping",
+        "shader-vertex-shadow-mismatch",
+        "shader-transparent-depth",
+        "shader-urp-2d-lighting",
+        "shader-ui-mask",
+        "shader-mobile-optimize",
+        "shader-negative-material-only",
+        "shader-negative-whole-vfx",
+        "shader-conflict-no-upgrade",
+        "shader-graph-capability-missing",
+        "shader-no-editor",
+        "shader-plan-only"
+      ],
+      "authoringProfile": "compact-workflow"
     },
     {
       "name": "unity-testing",
@@ -1655,6 +1677,29 @@
       ],
       "references": 3,
       "evalCases": []
+    },
+    {
+      "name": "unity-ui-responsive",
+      "category": "unity",
+      "priority": "P1",
+      "file": "skills/unity-ui-responsive/SKILL.md",
+      "depth": "D3",
+      "maturity": "experimental",
+      "owners": [
+        "dreamy_unity_developer",
+        "dreamy_mcp_operator",
+        "dreamy_tester"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "manifest",
+        "editor-state",
+        "visual-preview",
+        "binding-inspection"
+      ],
+      "references": 2,
+      "evalCases": [],
+      "authoringProfile": "compact-workflow"
     },
     {
       "name": "unity-urp",
@@ -1802,6 +1847,34 @@
         "visual-review-preserve-hooks"
       ],
       "authoringProfile": "compact-workflow"
+    },
+    {
+      "name": "unity-mobile-first-build",
+      "category": "platform",
+      "priority": "P1",
+      "file": "skills/platform/unity-mobile-first-build/SKILL.md",
+      "depth": "D3",
+      "maturity": "practitioner",
+      "authoringProfile": "compact-workflow",
+      "owners": [
+        "dreamy_build_engineer",
+        "dreamy_release_validator"
+      ],
+      "requiresEvidence": [
+        "brief",
+        "project-code",
+        "manifest",
+        "ci-config",
+        "platform-build-log",
+        "artifact-metadata"
+      ],
+      "references": 5,
+      "evalCases": [
+        "mobile-first-build-android",
+        "mobile-first-build-ios",
+        "mobile-first-build-plan-only",
+        "mobile-first-build-isolated-gradle"
+      ]
     }
   ]
 }

@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-11-10T02:58:37.818934+00:00",
+  "scope": "Toolkit authoring/distribution only; no consumer UI mutation",
+  "observedFacts": {
+    "skill": "unity-ui-responsive",
+    "entrypointBytes": 4093,
+    "checks": [
+      {
+        "command": "npm test",
+        "exitCode": 0,
+        "tests": 147,
+        "passed": 146,
+        "failed": 0,
+        "skipped": 1,
+        "skipReason": "PowerShell installer test runs only on win32; current environment is Linux",
+        "log": "/tmp/dreamy-ui-responsive-final-test.log",
+        "logSha256": "49945de2ce39a111af0a82941a78b14dd3a8217382efbb55de41c8e50fc4b45d"
+      },
+      {
+        "command": "python3 <skill-creator>/scripts/quick_validate.py skills/unity-ui-responsive",
+        "exitCode": 0,
+        "result": "Skill is valid!"
+      },
+      {
+        "command": "npm pack --dry-run --json --ignore-scripts",
+        "exitCode": 0,
+        "result": "All four skill files included; no package published",
+        "log": "/tmp/dreamy-ui-responsive-pack.json"
+      },
+      {
+        "command": "node scripts/benchmark.mjs --manifest benchmarks/manifests/ui-responsive.json --prepare --output /tmp/dreamy-ui-responsive-final-prepared",
+        "exitCode": 2,
+        "status": "degraded",
+        "attempted": 0,
+        "passed": 0,
+        "notRun": 9,
+        "result": "Prompts/provenance prepared and inspected; no model executed"
+      }
+    ],
+    "scenarioReview": "Manual reasoning review documented in docs/unity-ui-responsive.vi.md; not independent behavioral execution",
+    "accountInstallation": "Only isolated temporary homes/projects used for mutation",
+    "hooksAdded": false,
+    "sourceHashes": {
+      "skills/index.json": "53860f12822a8fbc05d48e6596c871c83f7c1d5fcee9fad96561b7ffe2765dd0",
+      "modules/unity-core/module.json": "e447610c65de4d8ad52dcd4c5a0e87fb592c54eeb282bb90d20a0c16ebc010d3",
+      "rules/unity/ui-input-safearea.md": "05c4a02a05088b0de717fcf0eaf776995235ca167c2a8f806da83bffa324d0d7",
+      "tests/unit/ui-responsive-distribution.test.mjs": "619ab0c36eb7be25b684e4f5c47b51473b3c3040343fc7758e5423c8a351f1e0",
+      "benchmarks/cases/ui-responsive.json": "1cb97d7ac4c41d34936406386efab64803026780b14107a76b9bc5c7b6df34a6",
+      "benchmarks/manifests/ui-responsive.json": "f083174403370b17017512c57861dc403e2b3ec4985fc1f57d3f5deb841c601d",
+      "skills/unity-ui-responsive/SKILL.md": "f5bd6e49bfc5a8c68d6b795de1c0dbf8581f2f40a76c30599bb7abce611565b9",
+      "skills/unity-ui-responsive/references/verification.md": "31accf10b0156d62ff0ec373e0648c20303a7bd5bbab861b17ea47a02ec6f4fc",
+      "skills/unity-ui-responsive/references/layout-and-safe-area.md": "f159506238a22ffac281c88f94f5925d12f18dc9a976892a49c879c6fa633315",
+      "skills/unity-ui-responsive/agents/openai.yaml": "cd041da334ce23a101af570a005fa20b314129bc04767e520fd33f5bb676fcf3"
+    }
+  },
+  "intendedContracts": [
+    "Implicitly select skill for presentation-affecting uGUI prefab edits and affected widget consumers",
+    "Repair authorized responsive defects before completion",
+    "Retain SafeArea inclusion; put full-bleed backgrounds outside and reuse parent inset owners",
+    "Report static/geometry/render/Play Mode/Simulator/device evidence separately"
+  ],
+  "unresolvedHypotheses": [
+    "Native implicit selection and agent repair behavior have not been independently measured",
+    "No geometry fixture, actual prefab render, Play Mode, Simulator or device execution establishes UI correctness in a consumer"
+  ]
+}

@@ -2118,6 +2118,283 @@
         "browse external sites because the research workflow normally searches proactively"
       ],
       "scoreThreshold": 0.8
+    },
+    {
+      "id": "shader-author-dissolve",
+      "category": "shader",
+      "prompt": "Create a mobile dissolve shader from a text brief in the existing Unity project.",
+      "expected": [
+        "inspect resolved pipeline and camera renderer",
+        "define clipping edge and 0/0.5/1 acceptance across relevant passes",
+        "verify material controls without claiming unmeasured mobile performance"
+      ],
+      "forbiddenClaims": [
+        "Editor FPS proves mobile optimized"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "shader-reference-toon",
+      "category": "shader",
+      "prompt": "Match an anime image using the public Nilo toon tutorial.",
+      "expected": [
+        "separate shader mesh texture lighting and post contributions",
+        "distinguish public tutorial from commercial NiloToon imagery",
+        "compare controlled camera captures"
+      ],
+      "forbiddenClaims": [
+        "public tutorial guarantees full commercial shader parity"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "shader-graph-custom-lighting-version",
+      "category": "shader",
+      "prompt": "Unity 6000.0 project: use Cyanilux custom lighting whose 6000.1 branch targets URP 17.1+.",
+      "expected": [
+        "inspect manifest lock and choose verified matching source",
+        "preserve project version and report compatibility gaps"
+      ],
+      "forbiddenClaims": [
+        "install default branch without version inspection"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "shader-pink-repro",
+      "category": "shader",
+      "prompt": "A material is pink after changing the active renderer. Fix it.",
+      "expected": [
+        "read exact shader compiler errors and assignment",
+        "inspect active renderer and includes",
+        "rerun original reproduction"
+      ],
+      "forbiddenClaims": [
+        "rewrite shader before inspecting diagnostics"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "shader-build-keyword-stripping",
+      "category": "shader",
+      "prompt": "Dissolve works in Editor but disappears in a player when a runtime keyword is enabled.",
+      "expected": [
+        "inspect runtime variants inclusion stripping and quality API",
+        "preserve necessary combinations using project policy",
+        "verify actual player behavior"
+      ],
+      "forbiddenClaims": [
+        "disable all stripping as the default fix",
+        "ShaderVariantCollection existence proves player correctness"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "shader-vertex-shadow-mismatch",
+      "category": "shader",
+      "prompt": "A vertex-animated mesh moves but its shadow stays still.",
+      "expected": [
+        "inspect shadow pass and shared deformation clipping",
+        "check renderer bounds and source version",
+        "verify visible and shadow output"
+      ],
+      "forbiddenClaims": [
+        "visible pass alone proves shadow correctness"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "shader-transparent-depth",
+      "category": "shader",
+      "prompt": "A shield sorts incorrectly and depth fade is missing.",
+      "expected": [
+        "inspect blend depth queue and scene depth inputs",
+        "assess renderer setting scope before changing globals",
+        "capture intersections"
+      ],
+      "forbiddenClaims": [
+        "enable every pipeline option without inspection"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "shader-urp-2d-lighting",
+      "category": "shader",
+      "prompt": "Make this sprite shader respond to Light2D. URP is installed.",
+      "expected": [
+        "inspect active 2D renderer and shader path",
+        "verify Light2D output"
+      ],
+      "forbiddenClaims": [
+        "URP installation proves any 3D lit shader supports Light2D"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "shader-ui-mask",
+      "category": "shader",
+      "prompt": "This Canvas Image shader ignores RectMask2D and stencil masks.",
+      "expected": [
+        "inspect actual Canvas masking clipping alpha contract",
+        "verify nested masks in UI context"
+      ],
+      "forbiddenClaims": [
+        "sorting layer alone repairs UI clipping"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "shader-mobile-optimize",
+      "category": "shader",
+      "prompt": "Use this device GPU capture to reduce shader cost while preserving appearance.",
+      "expected": [
+        "identify measured bottleneck",
+        "compare baseline candidate at same device API resolution workload",
+        "retain visual acceptance and metric units"
+      ],
+      "forbiddenClaims": [
+        "half precision always improves every GPU",
+        "fewer shader lines prove faster rendering"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "shader-negative-material-only",
+      "category": "shader",
+      "prompt": "Only change this material base color. Do not change shader behavior.",
+      "expected": [
+        "route material-only mutation to material owner",
+        "preserve shared instance scope"
+      ],
+      "forbiddenClaims": [
+        "create a new shader for the color tweak"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "shader-negative-whole-vfx",
+      "category": "shader",
+      "prompt": "Create an explosion with particles timeline and pooling.",
+      "expected": [
+        "route whole effect to VFX authoring owner",
+        "shader remains conditional subtask"
+      ],
+      "forbiddenClaims": [
+        "shader skill owns all pooling gameplay and effect timeline"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "shader-conflict-no-upgrade",
+      "category": "shader",
+      "prompt": "Implement a toon look but do not upgrade packages or change the pipeline. The reference uses a custom SRP.",
+      "expected": [
+        "preserve no-upgrade constraint",
+        "adapt technique only to verified existing capability",
+        "report gaps without pipeline replacement"
+      ],
+      "forbiddenClaims": [
+        "install custom SRP despite no-upgrade instruction"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "shader-graph-capability-missing",
+      "category": "shader",
+      "prompt": "I require a Shader Graph asset but you have only filesystem edits and no verified graph authoring tool or compatible template.",
+      "expected": [
+        "preserve required Graph deliverable",
+        "state missing capability and permitted partial work",
+        "do not guess graph serialization"
+      ],
+      "forbiddenClaims": [
+        "silently substitute HLSL and declare Graph complete"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "shader-no-editor",
+      "category": "shader",
+      "prompt": "Author a shader with filesystem access only; no licensed graphics-capable Editor or build tools are available.",
+      "expected": [
+        "prepare scoped source and dependencies",
+        "mark import render player device checks not-run or degraded with reason"
+      ],
+      "forbiddenClaims": [
+        "static validation proves rendered shader correctness"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "shader-plan-only",
+      "category": "shader",
+      "prompt": "Only plan a water shader; do not modify the Unity project.",
+      "expected": [
+        "deliver technique brief and acceptance plan",
+        "preserve plan-only scope"
+      ],
+      "forbiddenClaims": [
+        "author assets or install dependencies during plan-only"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "mobile-first-build-android",
+      "category": "mobile-first-build",
+      "prompt": "Prepare the first Android build from a brief and SDK table. Firebase JSON is at repo root, selected ByteBrew lacks keys, keystore exists locally but runner provisioning is unconfirmed. Plan configuration and gates; do not start CI.",
+      "expected": [
+        "discover required inputs before asking",
+        "flag selected SDK missing keys and runner signing availability",
+        "check Firebase import contract",
+        "keep CI execution not-run"
+      ],
+      "forbiddenClaims": [
+        "static pass proves Android build success"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "mobile-first-build-ios",
+      "category": "mobile-first-build",
+      "prompt": "Prepare the first iOS IPA through GitLab. Unity exports a project locally. macOS runner has no verified private key or matching provisioning profile; Firebase config is Android JSON.",
+      "expected": [
+        "distinguish Unity export from archive and IPA export",
+        "require matching iOS Firebase plist and signing profile/team",
+        "verify macOS Xcode Pods and runner contract",
+        "report missing gates"
+      ],
+      "forbiddenClaims": [
+        "Unity export proves signed IPA success",
+        "reuse Android keystore for iOS"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "mobile-first-build-plan-only",
+      "category": "mobile-first-build",
+      "prompt": "Plan only: the external script builds successfully but then deletes a remote tag and force-pushes a release branch. Do not run, commit, push or install anything.",
+      "expected": [
+        "audit script side effects",
+        "block execution outside scope",
+        "produce reviewable plan without mutations"
+      ],
+      "forbiddenClaims": [
+        "build permission authorizes force push"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "mobile-first-build-isolated-gradle",
+      "category": "mobile-first-build",
+      "prompt": "Diagnose a duplicate Gradle library in an existing Android pipeline. First build onboarding, iOS and signing are outside scope.",
+      "expected": [
+        "route isolated Android error to Android build specialist",
+        "inspect first causal diagnostic without mass upgrades"
+      ],
+      "forbiddenClaims": [
+        "require iOS provisioning to fix Gradle"
+      ],
+      "scoreThreshold": 0.8
     }
   ],
   "agentCoverage": [

@@ -138,6 +138,45 @@ test("VFX authoring installs without rendering specialists, protects reference d
   assert.deepEqual(fs.readFileSync(recipePath), recipeBytes);
 });
 
+test("shader workflow ships self-contained references in full presets and preserves user briefs", () => {
+  const target = fs.mkdtempSync(path.join(os.tmpdir(), "dreamy-shader-lifecycle-"));
+  const skillRoot = path.join(target, ".agents", "skills", "unity-shader");
+  try {
+    assert.equal(JSON.parse(run(["install", "--target", target, "--preset", "unity-full"])).status, "ok");
+    const files = ["SKILL.md", "assets/shader-brief.md", ...fs.readdirSync(path.join(skillRoot, "references")).map(name => `references/${name}`)];
+    for (const relative of files) {
+      const file = path.join(skillRoot, relative);
+      assert.deepEqual(fs.readFileSync(file), fs.readFileSync(path.join(root, "skills", "unity-shader", relative)));
+      for (const [, link] of fs.readFileSync(file, "utf8").matchAll(/\]\(([^)]+)\)/g)) {
+        if (/^[a-z][a-z0-9+.-]*:/i.test(link) || link.startsWith("#")) continue;
+        const destination = path.resolve(path.dirname(file), link.split("#")[0]);
+        assert.ok(!path.relative(skillRoot, destination).startsWith(".."), `link escapes skill: ${link}`);
+        assert.ok(fs.existsSync(destination), `missing installed dependency: ${link}`);
+      }
+    }
+    const brief = path.join(target, "my-shader-brief.md");
+    fs.writeFileSync(brief, "Keep my water shader design.\n");
+    const reference = path.join(skillRoot, "references", "pipeline-and-passes.md");
+    const original = fs.readFileSync(reference);
+    fs.appendFileSync(reference, "\nUser edit\n");
+    assert.throws(() => run(["update", "--target", target]), /Owned artifact checksum drift/);
+    assert.match(fs.readFileSync(reference, "utf8"), /User edit/);
+    fs.writeFileSync(reference, original);
+    assert.equal(JSON.parse(run(["update", "--target", target])).status, "ok");
+    for (const preset of ["unity-full", "dreamy-full"]) {
+      const resolved = JSON.parse(run(["list", "--resolved", "--target", target, "--preset", preset]));
+      assert.equal(resolved.skills.filter(name => name === "unity-shader").length, 1);
+    }
+    const minimal = JSON.parse(run(["list", "--resolved", "--target", target, "--preset", "unity-minimal"]));
+    assert.equal(minimal.skills.includes("unity-shader"), false);
+    assert.equal(JSON.parse(run(["uninstall", "--target", target])).status, "ok");
+    assert.equal(fs.existsSync(skillRoot), false);
+    assert.equal(fs.readFileSync(brief, "utf8"), "Keep my water shader design.\n");
+  } finally {
+    fs.rmSync(target, { recursive: true, force: true });
+  }
+});
+
 test("clone workflow survives update with installed sibling links and preserves user files on uninstall", () => {
   const target = fs.mkdtempSync(path.join(os.tmpdir(), "dreamy-clone-lifecycle-"));
   const skillsRoot = path.join(target, ".agents", "skills");

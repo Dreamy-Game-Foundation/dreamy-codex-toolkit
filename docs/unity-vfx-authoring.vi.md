@@ -13,6 +13,14 @@ Skill experimental [`unity-vfx-authoring`](../skills/unity-vfx-authoring/SKILL.m
 
 ## Prompt ví dụ
 
+Khi cần tìm hướng hình ảnh, dùng [quy trình concept](../skills/unity-vfx-authoring/references/concept-development.md) và [mẫu concept board](../skills/unity-vfx-authoring/assets/concept-board.md): tạo ảnh onset/peak/tail cùng camera và scale, chọn hướng, ánh xạ từng layer sang texture/mesh/particle rồi dựng và so với capture Unity thật. Có thể giao riêng concept; hướng hình ảnh đã rõ hoặc chỉnh nhỏ thì bỏ qua bước tạo ảnh. Giữ ràng buộc no-AI và giới hạn số lần thử. Ảnh concept không phải sprite sheet hoặc bằng chứng effect đã chạy.
+
+```text
+Use $unity-vfx-authoring tạo concept cho explosion phép thuật 3D màu xanh tím.
+Dùng image tool có sẵn, tối đa 2 lượt tạo; board onset/peak/tail cùng camera gameplay.
+Chỉ giao concept và bảng layer/asset đề xuất, chưa sửa project Unity.
+```
+
 ```text
 Use $unity-vfx-authoring tạo hit 2D màu vàng theo style hiện có trong project.
 Dùng Particle System và texture đang có hoặc procedural; không dùng AI, không build player.

@@ -9,8 +9,10 @@
 `toolkit.json` serves as the canonical source of truth for versioning, maturity, presets, modules, rules, skills, and harness metadata.
 
 <!-- DREAMY-CATALOG:START -->
-Catalog: **88 skills, 15 agent templates, 50 rules, 9 modules, 9 presets and 165 eval cases**. Counts describe the catalog, not measured model success.
+Catalog: **90 skills, 15 agent templates, 50 rules, 9 modules, 9 presets and 185 eval cases**. Counts describe the catalog, not measured model success.
 <!-- DREAMY-CATALOG:END -->
+
+For responsive uGUI prefab changes, use experimental [`unity-ui-responsive`](skills/unity-ui-responsive/SKILL.md) in `unity-core`; see the [Vietnamese guide and validation limits](docs/unity-ui-responsive.vi.md). SafeArea contains interactive content while full-bleed backgrounds remain outside.
 
 For screenshot-based checks with existing editor/browser/device tools, see [Visual review](docs/visual-review.md). Temporary-image cleanup is an explicit project setup step.
 
@@ -29,6 +31,8 @@ For requested asset extraction from a supplied APK/XAPK or Unity build, use expe
 For a dedicated Unity clone workflow combining REA findings, AssetRipper recovery and target-project fidelity, use experimental [`game-clone`](skills/gameplay/game-clone/SKILL.md), also in `unity-core`. It reuses the two workflows above and preserves plan-only, slice, whole-game and tool-mode choices; see the [Vietnamese clone guide](docs/game-clone.vi.md). Tool setup and real-game verification remain separate tasks.
 
 For editable 2D/3D Unity effects, use experimental [`unity-vfx-authoring`](skills/unity-vfx-authoring/SKILL.md) in `unity-core`: brief, technique/asset selection, prefab authoring, preview and lifecycle/performance evidence. It supports Particle System, sprites, mesh/trails and capability-gated VFX Graph without requiring a new provider or package. See the [Vietnamese guide](docs/unity-vfx-authoring.vi.md) and [validation scope](docs/evidence/unity-vfx-authoring-validation.json).
+
+For shader creation, debugging or optimization, use experimental [`unity-shader`](skills/unity-shader/SKILL.md) in `unity-rendering` (`unity-full` / `dreamy-full`): visual matching, version-bound HLSL/Graph authoring, pass contracts and separate shader/render/player/device evidence. See the [Vietnamese guide](docs/unity-shader.vi.md).
 
 Current readiness and next steps:
 

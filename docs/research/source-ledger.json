@@ -6,6 +6,16 @@
       "retrievedAt": "2026-10-29",
       "file": "docs/evidence/toolkit-audit-20261029.json",
       "purpose": "Current upstream metadata and scoped source inspection; historical repository entries below retain their original provenance."
+    },
+    {
+      "retrievedAt": "2026-11-03",
+      "file": "docs/research/unity-shader-skill-20261103.json",
+      "purpose": "Pinned shader skill design sources; README/source observations only, no Unity compatibility or device verification."
+    },
+    {
+      "retrievedAt": "2026-11-12",
+      "file": "docs/evidence/mobile-first-build-validation.json",
+      "purpose": "Unity mobile first-build skill: Android GitLab trace research plus iOS primary documentation. Synthetic static checks and isolated distribution only; no new CI, device or semantic model acceptance."
     }
   ],
   "repositories": [
@@ -306,6 +316,122 @@
           "path": "scripts/rea.mjs",
           "gitBlobSha": "27f334994a21865da0fd09e0415148b6f09d9c6c",
           "url": "https://github.com/morluto/rea/blob/1173c0a9dc1b352a60943a491462294db8f353ae/scripts/rea.mjs"
+        }
+      ]
+    },
+    {
+      "id": "shader-reference-unity-technologies-graphics",
+      "remote": "https://github.com/Unity-Technologies/Graphics",
+      "commit": "0efc28ea742b1966b9dd9cc4489e58b986a13faf",
+      "status": "observed-external",
+      "role": "shader-skill-design-reference",
+      "evidenceNote": "README and metadata inspected; additional source files only as listed in research snapshot. No source vendored or runtime support established.",
+      "sourceFiles": [
+        {
+          "url": "https://github.com/Unity-Technologies/Graphics/blob/0efc28ea742b1966b9dd9cc4489e58b986a13faf/README.md"
+        }
+      ]
+    },
+    {
+      "id": "shader-reference-colinleung-nilocat-unityurptoonlitshaderexample",
+      "remote": "https://github.com/ColinLeung-NiloCat/UnityURPToonLitShaderExample",
+      "commit": "fbe276e0df1d1f9379e13581c20b6a080a1a6977",
+      "status": "observed-external",
+      "role": "shader-skill-design-reference",
+      "evidenceNote": "README and metadata inspected; additional source files only as listed in research snapshot. No source vendored or runtime support established.",
+      "sourceFiles": [
+        {
+          "url": "https://github.com/ColinLeung-NiloCat/UnityURPToonLitShaderExample/blob/fbe276e0df1d1f9379e13581c20b6a080a1a6977/README.md"
+        },
+        {
+          "path": "SimpleURPToonLitOutlineExample.shader",
+          "url": "https://github.com/ColinLeung-NiloCat/UnityURPToonLitShaderExample/blob/fbe276e0df1d1f9379e13581c20b6a080a1a6977/SimpleURPToonLitOutlineExample.shader"
+        },
+        {
+          "path": "SimpleURPToonLitOutlineExample_Shared.hlsl",
+          "url": "https://github.com/ColinLeung-NiloCat/UnityURPToonLitShaderExample/blob/fbe276e0df1d1f9379e13581c20b6a080a1a6977/SimpleURPToonLitOutlineExample_Shared.hlsl"
+        }
+      ]
+    },
+    {
+      "id": "shader-reference-cyanilux-urp_shadergraphcustomlighting",
+      "remote": "https://github.com/Cyanilux/URP_ShaderGraphCustomLighting",
+      "commit": "19fac6a6126a9c25d8f226b38bb12c7360557ff6",
+      "status": "observed-external",
+      "role": "shader-skill-design-reference",
+      "evidenceNote": "README and metadata inspected; additional source files only as listed in research snapshot. No source vendored or runtime support established.",
+      "sourceFiles": [
+        {
+          "url": "https://github.com/Cyanilux/URP_ShaderGraphCustomLighting/blob/19fac6a6126a9c25d8f226b38bb12c7360557ff6/README.md"
+        },
+        {
+          "path": "CustomLighting.hlsl",
+          "url": "https://github.com/Cyanilux/URP_ShaderGraphCustomLighting/blob/19fac6a6126a9c25d8f226b38bb12c7360557ff6/CustomLighting.hlsl"
+        }
+      ]
+    },
+    {
+      "id": "shader-reference-delt06-toon-rp",
+      "remote": "https://github.com/Delt06/toon-rp",
+      "commit": "687b7b26747a8bd6b0905299e5248bbca0285a77",
+      "status": "observed-external",
+      "role": "shader-skill-design-reference",
+      "evidenceNote": "README and metadata inspected; additional source files only as listed in research snapshot. No source vendored or runtime support established.",
+      "sourceFiles": [
+        {
+          "url": "https://github.com/Delt06/toon-rp/blob/687b7b26747a8bd6b0905299e5248bbca0285a77/README.md"
+        }
+      ]
+    },
+    {
+      "id": "shader-reference-poiyomi-poiyomitoonshader",
+      "remote": "https://github.com/poiyomi/PoiyomiToonShader",
+      "commit": "4f103a1bd54f852b4f6869f3c32de8c7db0ea76e",
+      "status": "observed-external",
+      "role": "shader-skill-design-reference",
+      "evidenceNote": "README and metadata inspected; additional source files only as listed in research snapshot. No source vendored or runtime support established.",
+      "sourceFiles": [
+        {
+          "url": "https://github.com/poiyomi/PoiyomiToonShader/blob/4f103a1bd54f852b4f6869f3c32de8c7db0ea76e/README.md"
+        }
+      ]
+    },
+    {
+      "id": "shader-reference-qianmo-awesome-unity-shader",
+      "remote": "https://github.com/QianMo/Awesome-Unity-Shader",
+      "commit": "2e37041035cc4708aff39a5b4387cc8f47c728a8",
+      "status": "observed-external",
+      "role": "shader-skill-design-reference",
+      "evidenceNote": "README and metadata inspected; additional source files only as listed in research snapshot. No source vendored or runtime support established.",
+      "sourceFiles": [
+        {
+          "url": "https://github.com/QianMo/Awesome-Unity-Shader/blob/2e37041035cc4708aff39a5b4387cc8f47c728a8/README.md"
+        }
+      ]
+    },
+    {
+      "id": "shader-reference-ronja-tutorials-shadertutorials",
+      "remote": "https://github.com/ronja-tutorials/ShaderTutorials",
+      "commit": "31899f7b7de1158be45c968c1ac039c04b849bbb",
+      "status": "observed-external",
+      "role": "shader-skill-design-reference",
+      "evidenceNote": "README and metadata inspected; additional source files only as listed in research snapshot. No source vendored or runtime support established.",
+      "sourceFiles": [
+        {
+          "url": "https://github.com/ronja-tutorials/ShaderTutorials/blob/31899f7b7de1158be45c968c1ac039c04b849bbb/README.md"
+        }
+      ]
+    },
+    {
+      "id": "shader-reference-keijiro-shadergraphexamples",
+      "remote": "https://github.com/keijiro/ShaderGraphExamples",
+      "commit": "991f79e9a3acfc458f166d4e9fde99f86bb86f2a",
+      "status": "observed-external",
+      "role": "shader-skill-design-reference",
+      "evidenceNote": "README and metadata inspected; additional source files only as listed in research snapshot. No source vendored or runtime support established.",
+      "sourceFiles": [
+        {
+          "url": "https://github.com/keijiro/ShaderGraphExamples/blob/991f79e9a3acfc458f166d4e9fde99f86bb86f2a/README.md"
         }
       ]
     }

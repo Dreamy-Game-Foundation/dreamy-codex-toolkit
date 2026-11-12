@@ -1,0 +1,190 @@
+{
+  "schemaVersion": 1,
+  "researchDate": "2026-11-03",
+  "purpose": "Planning an upgrade of the existing unity-shader skill; not a compatibility receipt or GitHub Trending ranking.",
+  "selectionMethod": "GitHub repository search unity shader stars:>1000, supplemented with official source and focused Shader Graph/custom SRP examples; metadata and pinned README reads through GitHub connector.",
+  "repositories": [
+    {
+      "repository": "Unity-Technologies/Graphics",
+      "url": "https://github.com/Unity-Technologies/Graphics",
+      "metadataUrl": "https://api.github.com/repos/Unity-Technologies/Graphics",
+      "observed": {
+        "stars": 3023,
+        "pushedAt": "2026-11-02T10:20:49Z",
+        "archived": false,
+        "defaultBranch": "master",
+        "githubLicenseDetection": "NOASSERTION",
+        "commit": "0efc28ea742b1966b9dd9cc4489e58b986a13faf",
+        "readmeUrl": "https://github.com/Unity-Technologies/Graphics/blob/0efc28ea742b1966b9dd9cc4489e58b986a13faf/README.md"
+      },
+      "sourceFilesInspected": [],
+      "verification": {
+        "readmeRead": true,
+        "unityImport": "not-run",
+        "render": "not-run",
+        "deviceProfile": "not-run"
+      }
+    },
+    {
+      "repository": "ColinLeung-NiloCat/UnityURPToonLitShaderExample",
+      "url": "https://github.com/ColinLeung-NiloCat/UnityURPToonLitShaderExample",
+      "metadataUrl": "https://api.github.com/repos/ColinLeung-NiloCat/UnityURPToonLitShaderExample",
+      "observed": {
+        "stars": 7848,
+        "pushedAt": "2026-07-02T12:14:30Z",
+        "archived": false,
+        "defaultBranch": "master",
+        "githubLicenseDetection": "MIT",
+        "commit": "fbe276e0df1d1f9379e13581c20b6a080a1a6977",
+        "readmeUrl": "https://github.com/ColinLeung-NiloCat/UnityURPToonLitShaderExample/blob/fbe276e0df1d1f9379e13581c20b6a080a1a6977/README.md"
+      },
+      "sourceFilesInspected": [
+        {
+          "path": "SimpleURPToonLitOutlineExample.shader",
+          "url": "https://github.com/ColinLeung-NiloCat/UnityURPToonLitShaderExample/blob/fbe276e0df1d1f9379e13581c20b6a080a1a6977/SimpleURPToonLitOutlineExample.shader"
+        },
+        {
+          "path": "SimpleURPToonLitOutlineExample_Shared.hlsl",
+          "url": "https://github.com/ColinLeung-NiloCat/UnityURPToonLitShaderExample/blob/fbe276e0df1d1f9379e13581c20b6a080a1a6977/SimpleURPToonLitOutlineExample_Shared.hlsl"
+        }
+      ],
+      "verification": {
+        "readmeRead": true,
+        "unityImport": "not-run",
+        "render": "not-run",
+        "deviceProfile": "not-run"
+      }
+    },
+    {
+      "repository": "Cyanilux/URP_ShaderGraphCustomLighting",
+      "url": "https://github.com/Cyanilux/URP_ShaderGraphCustomLighting",
+      "metadataUrl": "https://api.github.com/repos/Cyanilux/URP_ShaderGraphCustomLighting",
+      "observed": {
+        "stars": 787,
+        "pushedAt": "2025-07-09T21:54:20Z",
+        "archived": false,
+        "defaultBranch": "6000.1",
+        "githubLicenseDetection": "MIT",
+        "commit": "19fac6a6126a9c25d8f226b38bb12c7360557ff6",
+        "readmeUrl": "https://github.com/Cyanilux/URP_ShaderGraphCustomLighting/blob/19fac6a6126a9c25d8f226b38bb12c7360557ff6/README.md"
+      },
+      "sourceFilesInspected": [
+        {
+          "path": "CustomLighting.hlsl",
+          "url": "https://github.com/Cyanilux/URP_ShaderGraphCustomLighting/blob/19fac6a6126a9c25d8f226b38bb12c7360557ff6/CustomLighting.hlsl"
+        }
+      ],
+      "verification": {
+        "readmeRead": true,
+        "unityImport": "not-run",
+        "render": "not-run",
+        "deviceProfile": "not-run"
+      }
+    },
+    {
+      "repository": "Delt06/toon-rp",
+      "url": "https://github.com/Delt06/toon-rp",
+      "metadataUrl": "https://api.github.com/repos/Delt06/toon-rp",
+      "observed": {
+        "stars": 565,
+        "pushedAt": "2024-08-10T11:51:50Z",
+        "archived": false,
+        "defaultBranch": "master",
+        "githubLicenseDetection": "MIT",
+        "commit": "687b7b26747a8bd6b0905299e5248bbca0285a77",
+        "readmeUrl": "https://github.com/Delt06/toon-rp/blob/687b7b26747a8bd6b0905299e5248bbca0285a77/README.md"
+      },
+      "sourceFilesInspected": [],
+      "verification": {
+        "readmeRead": true,
+        "unityImport": "not-run",
+        "render": "not-run",
+        "deviceProfile": "not-run"
+      }
+    },
+    {
+      "repository": "poiyomi/PoiyomiToonShader",
+      "url": "https://github.com/poiyomi/PoiyomiToonShader",
+      "metadataUrl": "https://api.github.com/repos/poiyomi/PoiyomiToonShader",
+      "observed": {
+        "stars": 1682,
+        "pushedAt": "2026-10-27T08:37:26Z",
+        "archived": false,
+        "defaultBranch": "master",
+        "githubLicenseDetection": "MIT",
+        "commit": "4f103a1bd54f852b4f6869f3c32de8c7db0ea76e",
+        "readmeUrl": "https://github.com/poiyomi/PoiyomiToonShader/blob/4f103a1bd54f852b4f6869f3c32de8c7db0ea76e/README.md"
+      },
+      "sourceFilesInspected": [],
+      "verification": {
+        "readmeRead": true,
+        "unityImport": "not-run",
+        "render": "not-run",
+        "deviceProfile": "not-run"
+      }
+    },
+    {
+      "repository": "QianMo/Awesome-Unity-Shader",
+      "url": "https://github.com/QianMo/Awesome-Unity-Shader",
+      "metadataUrl": "https://api.github.com/repos/QianMo/Awesome-Unity-Shader",
+      "observed": {
+        "stars": 4362,
+        "pushedAt": "2021-10-14T15:26:08Z",
+        "archived": false,
+        "defaultBranch": "master",
+        "githubLicenseDetection": null,
+        "commit": "2e37041035cc4708aff39a5b4387cc8f47c728a8",
+        "readmeUrl": "https://github.com/QianMo/Awesome-Unity-Shader/blob/2e37041035cc4708aff39a5b4387cc8f47c728a8/README.md"
+      },
+      "sourceFilesInspected": [],
+      "verification": {
+        "readmeRead": true,
+        "unityImport": "not-run",
+        "render": "not-run",
+        "deviceProfile": "not-run"
+      }
+    },
+    {
+      "repository": "ronja-tutorials/ShaderTutorials",
+      "url": "https://github.com/ronja-tutorials/ShaderTutorials",
+      "metadataUrl": "https://api.github.com/repos/ronja-tutorials/ShaderTutorials",
+      "observed": {
+        "stars": 1067,
+        "pushedAt": "2021-06-30T14:16:14Z",
+        "archived": false,
+        "defaultBranch": "master",
+        "githubLicenseDetection": null,
+        "commit": "31899f7b7de1158be45c968c1ac039c04b849bbb",
+        "readmeUrl": "https://github.com/ronja-tutorials/ShaderTutorials/blob/31899f7b7de1158be45c968c1ac039c04b849bbb/README.md"
+      },
+      "sourceFilesInspected": [],
+      "verification": {
+        "readmeRead": true,
+        "unityImport": "not-run",
+        "render": "not-run",
+        "deviceProfile": "not-run"
+      }
+    },
+    {
+      "repository": "keijiro/ShaderGraphExamples",
+      "url": "https://github.com/keijiro/ShaderGraphExamples",
+      "metadataUrl": "https://api.github.com/repos/keijiro/ShaderGraphExamples",
+      "observed": {
+        "stars": 1264,
+        "pushedAt": "2018-11-16T05:43:14Z",
+        "archived": false,
+        "defaultBranch": "master",
+        "githubLicenseDetection": null,
+        "commit": "991f79e9a3acfc458f166d4e9fde99f86bb86f2a",
+        "readmeUrl": "https://github.com/keijiro/ShaderGraphExamples/blob/991f79e9a3acfc458f166d4e9fde99f86bb86f2a/README.md"
+      },
+      "sourceFilesInspected": [],
+      "verification": {
+        "readmeRead": true,
+        "unityImport": "not-run",
+        "render": "not-run",
+        "deviceProfile": "not-run"
+      }
+    }
+  ]
+}

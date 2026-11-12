@@ -34,7 +34,7 @@ Target device tier -> frame/memory budget -> feature/platform risk -> verificati
 
 ## Decision Tree
 
-- Runtime UX changes require safe-area/aspect/input checks.
+- Runtime UX changes require safe-area/aspect/input checks; for UI prefab presentation, use `unity-ui-responsive` for the detailed policy and scoped repairs.
 - Performance claims require measured evidence.
 - Android/iOS build/store changes route to platform skills.
 - Package/API claims still require compatibility evidence.

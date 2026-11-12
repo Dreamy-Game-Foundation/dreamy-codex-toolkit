@@ -43,7 +43,7 @@ Reference -> editable scope -> prefab ownership -> art/font mapping -> layout/sc
 ## Workflow
 
 1. Capture current ownership, bindings and visual baseline; map reference regions to editable elements and existing assets.
-2. Establish layout groups, edge/center anchors and SafeArea handling. Read `references/adaptive-layout.md` when adjusting scaling, containers or anchors.
+2. Use `unity-ui-responsive` for responsive layout and SafeArea ownership, including affected shared-widget consumers; keep full-bleed backgrounds outside SafeArea. Read `references/adaptive-layout.md` for the reskin boundary.
 3. Apply sprites, typography and decoration through verified Editor APIs. Read `references/tmp-materials.md` for font or material changes.
 4. Preserve interaction/state behavior; isolate animated scale targets from layout containers when their ownership would conflict. Do not hide existing features solely because they are absent from the picture.
 5. Save only intended assets, reload/inspect saved references, then render and inspect the result. Read `references/visual-verification.md` for evidence and proportional validation.
@@ -52,7 +52,7 @@ Reference -> editable scope -> prefab ownership -> art/font mapping -> layout/sc
 ## Architecture Rules
 
 - Prefer authoring the existing panel/item prefab over creating static UI trees at runtime. Runtime instantiation is appropriate for dynamic prefab items. In template consumers, modify the imported sample panel/script directly when it already owns the flow; keep GUIDs and bindings, document local patches, and avoid parallel replacement panels or adapter chains without a real boundary.
-- For a new mobile UI canvas, default to Scale With Screen Size, portrait 1080x1920 (landscape 1920x1080), Match Width Or Height 0.5. Explicit user settings take precedence; migrate existing authored units coherently when a change is requested. Include a SafeArea container in mobile panel prefabs, with full-bleed decoration outside it; avoid applying the inset twice.
+- For a new mobile UI canvas, default to Scale With Screen Size, portrait 1080x1920 (landscape 1920x1080), Match Width Or Height 0.5. Explicit user settings take precedence; migrate existing authored units coherently when a change is requested. Follow `unity-ui-responsive` for SafeArea ownership and background placement.
 - Default sprite rendering to Simple and preserve proportions. Use Sliced only after inspecting suitable borders and a continuous stretchable center between end caps, such as a frame/bar; border metadata alone does not justify slicing icons or illustrated art. Check transparent padding and visual deformation in the render.
 - In clones, find and open original screenshots whenever available; use them with extracted art/font bindings and saved TMP outline/shadow material presets. Do not invent UI or behavior to fill reference gaps. Match the reference preview at the baseline resolution first, re-capture and fix visible differences, then test other aspects and insets. Record exact-version/source-state gaps separately.
 - Use `unity-mcp` and `unity-scene-prefab` when available for their Editor/serialization safety rules; preserve GUIDs, variants and binding identity.

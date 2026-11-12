@@ -1,4 +1,5 @@
 node_modules/
+.research/
 benchmarks/runs/
 
 artifacts/

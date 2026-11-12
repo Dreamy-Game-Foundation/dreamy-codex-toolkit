@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "platform": "iOS",
+  "game": {
+    "name": "Fixture Comet",
+    "applicationId": "com.example.comet.ios",
+    "unityVersion": "6000.0.1f1",
+    "version": "1.2.0",
+    "buildNumber": "7.1"
+  },
+  "repo": {
+    "url": "https://gitlab.example.invalid/studio/comet.git",
+    "remoteUrl": "https://gitlab.example.invalid/studio/comet.git",
+    "branch": "ci-apple",
+    "sha": "1111111111111111111111111111111111111111"
+  },
+  "ci": {
+    "provider": "gitlab",
+    "source": "push",
+    "ruleSource": "push",
+    "ruleBranch": "ci-apple",
+    "rulesReviewed": true,
+    "templateOwned": true,
+    "rootMatchesTemplate": true,
+    "ownerKnown": true,
+    "runnerTags": [
+      "apple-fixture"
+    ],
+    "shell": "bash",
+    "unityVersion": "6000.0.1f1",
+    "toolchainRef": "inventory:android",
+    "licenseAvailable": true,
+    "dependencyAccess": true,
+    "entrypointRef": "source:build-only",
+    "entrypointVersion": "fixture-v1",
+    "sideEffectsReviewed": true,
+    "forbiddenGitEffects": false,
+    "pinsGameSha": true,
+    "propagatesExitCodes": true,
+    "macos": true,
+    "xcodeVersion": "fixture-selected-xcode",
+    "podsRequired": true,
+    "podsVersion": "fixture-pinned-pods",
+    "executor": "shell"
+  },
+  "output": {
+    "format": "ipa",
+    "variant": "release",
+    "destinationRef": "artifact:internal-download",
+    "retention": "7 days",
+    "audience": "internal",
+    "backend": "IL2CPP",
+    "architectures": [
+      "ARM64"
+    ]
+  },
+  "signing": {
+    "mode": "manual",
+    "appHistory": "existing",
+    "teamId": "FIXTURETEAM",
+    "certificateRef": "secure-file:ios-certificate",
+    "privateKeyAvailable": true,
+    "profileRef": "secure-file:ios-profile",
+    "profileApplicationId": "FIXTURETEAM.com.example.comet.ios",
+    "profileTeamId": "FIXTURETEAM",
+    "certificateMatchesProfile": true,
+    "profileValid": true,
+    "exportMethod": "development",
+    "entitlementsMatch": true,
+    "expectedFingerprint": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "observedFingerprint": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  },
+  "sdks": [
+    {
+      "name": "Applovin",
+      "enabled": true,
+      "requiredKeys": [
+        "max_sdk_key"
+      ],
+      "keyRefs": {
+        "max_sdk_key": "secret-manager:max-init"
+      }
+    }
+  ],
+  "adUnits": [
+    {
+      "provider": "AdMob",
+      "source": "GoogleAd_High",
+      "type": "Banner",
+      "tier": "High",
+      "id": "ca-app-pub-0000000000000000/0000000000"
+    }
+  ],
+  "firebase": {
+    "enabled": true,
+    "projectId": "fixture-comet",
+    "appId": "1:000000000000:ios:fixture",
+    "applicationId": "com.example.comet.ios",
+    "path": "Assets/GoogleService-Info.plist",
+    "importPath": "Assets/GoogleService-Info.plist",
+    "metaPresent": true
+  },
+  "assemblies": {
+    "facadeName": "Fixture.SDK",
+    "injectedName": "Fixture.SDK",
+    "runtimeReferencesEditor": false
+  },
+  "sources": [
+    "synthetic:brief",
+    "synthetic:source-snapshot"
+  ]
+}

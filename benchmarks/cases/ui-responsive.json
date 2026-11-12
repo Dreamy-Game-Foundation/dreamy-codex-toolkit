@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "cases": [
+    {
+      "id": "ui-responsive-shared-widget",
+      "group": "ui-responsive",
+      "prompt": "Change a shared resource widget to support larger counts. It has two consumers: a narrow HUD with an instance width override and a shop popup with a layout group. Repair responsive layout within this scope. Explain the concrete in-scope repairs, checks and evidence limits. Return JSON with fields decision (repair, no-ui-scope or degraded), actions (array), evidenceLimits (array).",
+      "expected": [],
+      "forbidden": [],
+      "manualReview": "Inspect both parent contracts and overrides; exercise large counts/locale; preserve bindings and fix scoped defects without a whole-project audit.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "decision": "repair"
+        }
+      }
+    },
+    {
+      "id": "ui-responsive-centered-popup",
+      "group": "ui-responsive",
+      "prompt": "Create a centered non-full-screen popup with no local SafeArea. Existing project policy requires SafeArea for popup UI; background must fill the screen. Its runtime parent has no inset owner. Explain the concrete in-scope repairs, checks and evidence limits. Return JSON with fields decision (repair, no-ui-scope or degraded), actions (array), evidenceLimits (array).",
+      "expected": [],
+      "forbidden": [],
+      "manualReview": "Retain the latest SafeArea policy: reuse the existing project component/container, put background outside, keep dialog centered and actions accessible. Do not stretch dialog art to fill the screen.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "decision": "repair"
+        }
+      }
+    },
+    {
+      "id": "ui-responsive-parent-safearea",
+      "group": "ui-responsive",
+      "prompt": "Repair a popup whose source lacks SafeArea but runtime parent already applies it. User says to retain SafeArea and leave the background outside. Explain the concrete in-scope repairs, checks and evidence limits. Return JSON with fields decision (repair, no-ui-scope or degraded), actions (array), evidenceLimits (array).",
+      "expected": [],
+      "forbidden": [],
+      "manualReview": "Reuse parent ownership, inspect actual runtime route/background placement and avoid double inset; do not add a local component just because it is absent.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "decision": "repair"
+        }
+      }
+    },
+    {
+      "id": "ui-responsive-notched-hud",
+      "group": "ui-responsive",
+      "prompt": "A full-screen HUD action is hidden by a left landscape notch; project supports both landscape directions. Background should remain full bleed. Explain the concrete in-scope repairs, checks and evidence limits. Return JSON with fields decision (repair, no-ui-scope or degraded), actions (array), evidenceLimits (array).",
+      "expected": [],
+      "forbidden": [],
+      "manualReview": "Repair inset at the proper owner, keep background outside, check mirrored asymmetric notch and no-inset cases with actual scaler conversion.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "decision": "repair"
+        }
+      }
+    },
+    {
+      "id": "ui-responsive-formation-image",
+      "group": "ui-responsive",
+      "prompt": "A circular image uses PreserveAspect in a wide rectangle. Radial slots are positioned from the parent width; newly spawned slots and one instance override escape the art. Explain the concrete in-scope repairs, checks and evidence limits. Return JSON with fields decision (repair, no-ui-scope or degraded), actions (array), evidenceLimits (array).",
+      "expected": [],
+      "forbidden": [],
+      "manualReview": "Use shared image/slot coordinates or actual drawn-image dimensions; inspect padding/overrides/spawn code and entire slot/hit bounds. PreserveAspect alone is insufficient.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "decision": "repair"
+        }
+      }
+    },
+    {
+      "id": "ui-responsive-tween-fit",
+      "group": "ui-responsive",
+      "prompt": "A fit controller scales a root to 0.8; entry tween resets the same root to 1. LayoutGroup also controls root placement. Keep current animation timing/easing/delay. Explain the concrete in-scope repairs, checks and evidence limits. Return JSON with fields decision (repair, no-ui-scope or degraded), actions (array), evidenceLimits (array).",
+      "expected": [],
+      "forbidden": [],
+      "manualReview": "Separate fit/layout and inner tween ownership; retain animation presets and exercise resize/reopen. Avoid Update/LateUpdate polling.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "decision": "repair"
+        }
+      }
+    },
+    {
+      "id": "ui-responsive-missing-editor-device",
+      "group": "ui-responsive",
+      "prompt": "Repair the safely inspectable source of UI text overflow. No connected Editor, render tool, Simulator or real device is available. Static checks pass. Explain the concrete in-scope repairs, checks and evidence limits. Return JSON with fields decision (repair, no-ui-scope or degraded), actions (array), evidenceLimits (array).",
+      "expected": [],
+      "forbidden": [],
+      "manualReview": "Complete safe scoped work, preserve serialization; report render/runtime/touch not-run with exact missing tools/reasons. Do not fabricate screenshots or device passes.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "decision": "degraded"
+        }
+      }
+    },
+    {
+      "id": "ui-responsive-gameplay-only",
+      "group": "ui-responsive",
+      "prompt": "Change damage calculation on a projectile prefab with no UI, layout or presentation change. Explain the concrete in-scope repairs, checks and evidence limits. Return JSON with fields decision (repair, no-ui-scope or degraded), actions (array), evidenceLimits (array).",
+      "expected": [],
+      "forbidden": [],
+      "manualReview": "Do not invoke responsive UI auditing or add SafeArea.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "decision": "no-ui-scope"
+        }
+      }
+    },
+    {
+      "id": "ui-responsive-binding-presentation",
+      "group": "ui-responsive",
+      "prompt": "Change a reward binding so item counts grow dynamically, without editing prefab art. Last item is clipped and cannot be scrolled to. Explain the concrete in-scope repairs, checks and evidence limits. Return JSON with fields decision (repair, no-ui-scope or degraded), actions (array), evidenceLimits (array).",
+      "expected": [],
+      "forbidden": [],
+      "manualReview": "Trigger responsive checks because binding changes presentation; repair content/viewport/last-item reachability and verify input with real binding when available.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "decision": "repair"
+        }
+      }
+    }
+  ]
+}

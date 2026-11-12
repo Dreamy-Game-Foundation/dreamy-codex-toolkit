@@ -1,0 +1,6 @@
+interface:
+  display_name: "Unity UI Responsive"
+  short_description: "Repair responsive Unity UI layouts and safe areas"
+  default_prompt: "Use $unity-ui-responsive to check and repair this UI prefab across supported screen sizes while preserving bindings and design."
+policy:
+  allow_implicit_invocation: true

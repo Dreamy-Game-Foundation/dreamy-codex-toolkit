@@ -35,7 +35,7 @@ TargetDeviceTier -> Budget -> FeatureRisk -> Profile/Build/Test -> Evidence -> R
 ## Decision Tree
 
 - Optimization requires measured evidence.
-- UI needs safe-area/aspect/input verification.
+- For UI prefab presentation, use `unity-ui-responsive` for SafeArea ownership, aspect/input verification and scoped repairs.
 - Asset size/compression affects build and memory.
 - If the owner is unclear, stop at a plan/architecture decision before mutating code.
 

@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "name": "mobile-first-build-forced-load-review",
+  "purpose": "development",
+  "releaseEligible": false,
+  "model": "set-by-run-owner",
+  "reasoning": "set-by-run-owner",
+  "repetitions": 1,
+  "timeoutMs": 180000,
+  "adapter": {
+    "executable": null,
+    "args": [
+      "{promptFile}",
+      "{outputFile}"
+    ]
+  },
+  "caseFiles": [
+    "../cases/mobile-first-build.json"
+  ],
+  "treatments": [
+    {
+      "id": "mobile-first-build",
+      "sources": [
+        {
+          "root": "repo",
+          "paths": [
+            "skills/platform/unity-mobile-first-build",
+            "skills/platform/android-build-release",
+            "skills/platform/ios-build-release"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -14,6 +14,7 @@ Use when choosing or running verification for Unity changes. Inspect local instr
 - Pure deterministic logic: pure C# tests where available; avoid broad PlayMode setup.
 - Serialized data, prefab references and Editor tooling: EditMode/Editor integration with representative assets and preserved GUIDs/overrides.
 - MonoBehaviour lifecycle, async destruction/cancellation, event duplication, pooled reuse and scene transitions: PlayMode with explicit cleanup and deterministic timing.
+- UI prefab presentation: use `unity-ui-responsive` for the aspect/inset/content matrix and visual/input evidence; select a regression only for a real failure.
 - Platform compilation and packaging: build the affected target. Memory/thermal/input/store behavior needs relevant device evidence.
 - Identify fixture owner, setup, cancellation/disposal and teardown. Keep Runtime test assemblies free of Editor references.
 

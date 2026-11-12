@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "kind": "skill-implementation-validation",
+  "generatedAt": "2026-11-12T04:37:04.427980+00:00",
+  "skill": "unity-mobile-first-build",
+  "supersedesPlanName": "unity-android-first-build",
+  "scope": "Repository skill implementation and isolated fixtures; no consumer game or live pipeline mutation",
+  "observed": {
+    "researchEvidence": "docs/research/2026-11-12-android-first-build-ci-evidence.json",
+    "initialFocusedTests": {
+      "command": "node --test tests/unit/mobile-first-build.test.mjs",
+      "tests": 25,
+      "passed": 25,
+      "failed": 0
+    },
+    "initialToolkitTests": {
+      "command": "npm test",
+      "tests": 172,
+      "passed": 171,
+      "failed": 0,
+      "skipped": 1
+    },
+    "quickValidate": {
+      "status": "pass",
+      "command": "python3 <skill-creator>/scripts/quick_validate.py skills/platform/unity-mobile-first-build"
+    },
+    "benchmarkPreparation": {
+      "command": "node scripts/benchmark.mjs --manifest benchmarks/manifests/mobile-first-build.json --prepare --output .dreamy/benchmarks/mobile-first-build-prepared.json",
+      "status": "degraded",
+      "attempted": 0,
+      "notRun": 4,
+      "exitCode": 2,
+      "reason": "Preparation only; no model adapter configured or invoked. JSON-field graders require manual review and do not prove full behavior."
+    },
+    "finalToolkitTests": {
+      "command": "npm test",
+      "exitCode": 0,
+      "tests": 173,
+      "passed": 172,
+      "failed": 0,
+      "skipped": 1,
+      "logPath": ".dreamy/evidence/mobile-first-build-npm-test.log",
+      "logSha256": "740656284cbb111415d660d8c54ee48f8cc97538db1f9e65d2737b586b844410",
+      "focusedCasesIncluded": 26
+    },
+    "linkAndDiffChecks": {
+      "missingLocalLinks": 0,
+      "gitDiffCheck": "pass"
+    },
+    "packDryRun": {
+      "command": "npm pack --dry-run --json",
+      "status": "pass",
+      "skillFilesIncluded": 7,
+      "globalInstalled": false
+    }
+  },
+  "intendedContracts": [
+    "Shared Unity/GitLab intake and evidence chain with separate Android/iOS target gates",
+    "Normalized-input checker only; all source, CI, build, artifact-byte and device gates remain separate"
+  ],
+  "unknown": [
+    "Observed independent agent behavioral quality",
+    "Current consumer external build-script safe build-only contract and full SDK revision",
+    "Fresh Android/iOS CI and artifact/device results"
+  ],
+  "notPerformed": [
+    "consumer changes",
+    "global install/update",
+    "live CI/build",
+    "push/commit/tag mutation",
+    "model calls/subagent evaluation",
+    "lesson or skill-candidate promotion"
+  ],
+  "sources": [
+    {
+      "url": "https://firebase.google.com/docs/unity/setup/",
+      "role": "platform client config and import contract"
+    },
+    {
+      "url": "https://developer.android.com/studio/publish/app-signing",
+      "role": "Android signing key roles"
+    },
+    {
+      "url": "https://developer.android.com/tools/apksigner",
+      "role": "APK signature verification"
+    },
+    {
+      "url": "https://developer.apple.com/documentation/xcode/distributing-your-app-for-beta-testing-and-releases",
+      "role": "iOS archive/export distinction"
+    },
+    {
+      "url": "https://developer.apple.com/documentation/xcode/distributing-your-app-to-registered-devices",
+      "role": "provisioning/device distribution"
+    },
+    {
+      "url": "https://help.apple.com/xcode/mac/current/en.lproj/dev23ea8b877.html",
+      "role": "Xcode export options"
+    },
+    {
+      "url": "https://docs.gitlab.com/ci/variables/",
+      "role": "file variable and secrets scopes"
+    }
+  ],
+  "files": {
+    "skills/platform/unity-mobile-first-build/SKILL.md": "6f606388918794d1d249c2503b09cf4c0644d73bb709794520c40eb9f0fb4b08",
+    "skills/platform/unity-mobile-first-build/references/android.md": "6c968a2bb91e425b79afb3acab98124a319d3ffd76058e679ce3c45751a33fb1",
+    "skills/platform/unity-mobile-first-build/references/dreamy-buildconfig.md": "28dd258a3316cc85830d0abde95e611d4a0f10bfad3a85c99604ef4c0a8c1f13",
+    "skills/platform/unity-mobile-first-build/references/gitlab-and-evidence.md": "97d5f7df7eab3f5e22ac7f12584139ea13459cf941445f5408eea8002cc12a7a",
+    "skills/platform/unity-mobile-first-build/references/intake-and-ownership.md": "5bf6b161f8cc1153dd92c23b17df4ff6e256ce9bf549250afc9f3be0a5a13632",
+    "skills/platform/unity-mobile-first-build/references/ios.md": "80e22b0877f9a50714b1383b00c09bc2d8b82efd788d62064236c731c6cffd9c",
+    "skills/platform/unity-mobile-first-build/scripts/preflight.mjs": "ce6bac809c8ae8b237e702347cb3e7d33c707a51de90fe0da01d2585e3f23813"
+  }
+}

@@ -36,7 +36,7 @@ Canvas -> Layout -> Binding -> Input/Raycast -> StateRender -> Transition -> Cle
 
 - Disable decorative raycasts.
 - Avoid layout rebuild storms.
-- Add safe-area/aspect handling for mobile-facing UI prefabs; MCP/editor-created full-screen, panel, popup, overlay, or HUD prefabs should include the project's SafeArea component/container unless a parent already owns it.
+- For creating or changing prefab presentation, use `unity-ui-responsive` for responsive repairs, affected consumers and SafeArea ownership (background outside the inset subtree).
 - If the owner is unclear, stop at a plan/architecture decision before mutating code.
 
 ## Workflow

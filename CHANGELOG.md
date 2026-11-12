@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Reworked `unity-shader` as an experimental author/debug/optimize workflow with visual matching, version-bound pipeline/pass inspection, Shader Graph/Custom Function guidance, variant/device evidence boundaries, a brief template and 16 catalog specifications. Keeps the existing rendering module and preset scope; catalog validation is separate from Unity and semantic acceptance.
+
 - Added the experimental, client-independent `visual-review` skill for real screenshots on visual tasks, with a standalone ignored image store, opt-in source-bound commit cleanup and regression coverage. Installation does not enable cleanup; real capture/client acceptance remains separate.
 
 - Fixed consumer receipt freshness to include implicit Unity inspection inputs, checker/schema/compatibility sources, and compile/test project inputs and Editor configuration. Old consumer receipts remain stored but require fresh verification before lesson reuse.

@@ -2,6 +2,4 @@
 
 Runtime UI must account for input mode, touch behavior, focus, and safe area.
 
-Use the project's existing UI stack and layout conventions.
-
-When creating UI prefabs through MCP/editor automation, include the project's SafeArea component or safe-area container by default for full-screen, panel, popup, overlay, HUD, and mobile-facing prefabs. Omit it only when the prefab is a nested element whose parent already owns safe-area padding.
+Use the project's existing UI stack and layout conventions. For UI prefab presentation changes, follow `unity-ui-responsive` for responsive repairs and the detailed SafeArea policy. Retain SafeArea inclusion with full-bleed backgrounds outside the inset subtree; reuse an existing parent owner to avoid double insets. This is agent guidance, not an automation hook.

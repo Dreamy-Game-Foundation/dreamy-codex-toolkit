@@ -1,0 +1,328 @@
+{
+  "schemaVersion": 1,
+  "kind": "research-only-ci-evidence",
+  "retrievedAt": "2026-11-12T04:16:15.317745+00:00",
+  "method": "read-only glab api pipelines/jobs/trace; bounded three existing Android jobs; no transcripts",
+  "limitations": [
+    "Raw traces not stored; snippets redact URLs, sensitive lines and runner-specific paths.",
+    "Trace hashes refer to decoded CLI stdout bytes, not a server-signed receipt.",
+    "No artifact downloaded or package/signature/device verified.",
+    "No source/version contract for external build scripts obtained."
+  ],
+  "jobs": [
+    {
+      "pipelineId": 3057264170,
+      "jobId": 17954012450,
+      "sha": "78de4a79c987bccb4215a6fa2fd25dda055736cc",
+      "status": "failed",
+      "url": "https://gitlab.com/trinhtuu.05/orbit-busters-tu-code/-/jobs/17954012450",
+      "runnerId": 49517466,
+      "artifacts": [
+        {
+          "file_type": "trace",
+          "filename": "job.log",
+          "size": 17129
+        }
+      ],
+      "traceStdoutSha256": "5649a1afd95637a75525f7a85658e825e39ef0cca62d57b51145591403e6e68d",
+      "snippets": [
+        {
+          "line": 3,
+          "text": "section_start:1794449227:prepare_executor"
+        },
+        {
+          "line": 4,
+          "text": "Preparing the \"shell\" executor"
+        },
+        {
+          "line": 5,
+          "text": "Using Shell (pwsh) executor..."
+        },
+        {
+          "line": 17,
+          "text": "Checking out 78de4a79 as detached HEAD (ref is build_android)..."
+        },
+        {
+          "line": 280,
+          "text": "[PIPELINE][2026-11-12 09:08:55][unity:Android:execute] Call ['[runner-path redacted] Files\\\\Unity\\\\Hub\\\\Editor\\\\6000.4.12f1\\\\Editor\\\\Unity.exe', '-batchmode', '-buildTarget', 'Android', '-projectPath', '[runner-path redacted] '-logFile', '[runner-path redacted] '-executeMethod', 'Dreamy.AutoBuild.BuildAndroid']"
+        },
+        {
+          "line": 281,
+          "text": "[PIPELINE][2026-11-12 09:08:55][unity:Android:execute] Unity editor log: [runner-path redacted]"
+        },
+        {
+          "line": 289,
+          "text": "Aborting batchmode due to failure:"
+        },
+        {
+          "line": 290,
+          "text": "Scripts have compiler errors."
+        },
+        {
+          "line": 291,
+          "text": ""
+        },
+        {
+          "line": 292,
+          "text": "[PIPELINE][2026-11-12 09:15:59][unity:Android:execute] still running after 423s"
+        },
+        {
+          "line": 293,
+          "text": "[PIPELINE][2026-11-12 09:15:59][unity:Android:execute] finished with exit code 1 after 423s"
+        },
+        {
+          "line": 294,
+          "text": "[PIPELINE][2026-11-12 09:15:59][unity-android] finished in 424.0s"
+        },
+        {
+          "line": 295,
+          "text": "Build Failed!"
+        },
+        {
+          "line": 296,
+          "text": ""
+        },
+        {
+          "line": 297,
+          "text": "📄 Watching Unity log: [runner-path redacted]"
+        },
+        {
+          "line": 298,
+          "text": ""
+        },
+        {
+          "line": 299,
+          "text": "[⚠️ tail_file error] [Errno 2] No such file or directory: '[runner-path redacted]"
+        },
+        {
+          "line": 300,
+          "text": "[ERROR] build_pipeline.py failed!"
+        }
+      ]
+    },
+    {
+      "pipelineId": 3057413268,
+      "jobId": 17954839140,
+      "sha": "f5427eb47c7387dd3a91145071f81bda95f99a43",
+      "status": "failed",
+      "url": "https://gitlab.com/trinhtuu.05/orbit-busters-tu-code/-/jobs/17954839140",
+      "runnerId": 49517466,
+      "artifacts": [
+        {
+          "file_type": "trace",
+          "filename": "job.log",
+          "size": 43354
+        }
+      ],
+      "traceStdoutSha256": "e80b02df42a14bf137ffbb14c29da4bd617856608abebbeaef191c66309a5fba",
+      "snippets": [
+        {
+          "line": 345,
+          "text": "[10:13:37] [Warning] Could not locate google-services.json or GoogleService-Info.plist files."
+        },
+        {
+          "line": 346,
+          "text": "[10:13:37] [Error] Project Bundle ID com.sd.orbitbusters does not match any bundle IDs in your google-services.json files."
+        },
+        {
+          "line": 475,
+          "text": "[10:17:33] [Exception] UnityException: Can not sign the application"
+        },
+        {
+          "line": 476,
+          "text": "Unable to sign the application; keystore file not found!"
+        },
+        {
+          "line": 477,
+          "text": "\tUnityEditor.BuildPipeline:BuildPlayer(BuildPlayerOptions)"
+        },
+        {
+          "line": 478,
+          "text": "\tDreamy.AutoBuild:PerformAndroid(Boolean, Boolean) (at Assets/DreamySDK/Modules/Editor/AutoBuild.cs:355)"
+        },
+        {
+          "line": 479,
+          "text": "\tDreamy.<BuildAndroidCo>d__15:MoveNext() (at Assets/DreamySDK/Modules/Editor/AutoBuild.cs:527)"
+        },
+        {
+          "line": 480,
+          "text": "\tUnity.EditorCoroutines.Editor.YieldProcessor:MoveNext(IEnumerator) (at ./Library/PackageCache/com.unity.editorcoroutines@87a15ed012c2/Editor/EditorCoroutine.cs:159)"
+        },
+        {
+          "line": 481,
+          "text": "\tUnity.EditorCoroutines.Editor.EditorCoroutine:ProcessIEnumeratorRecursive(IEnumerator) (at ./Library/PackageCache/com.unity.editorcoroutines@87a15ed012c2/Editor/EditorCoroutine.cs:229)"
+        },
+        {
+          "line": 482,
+          "text": "\tUnity.EditorCoroutines.Editor.EditorCoroutine:MoveNext() (at ./Library/PackageCache/com.unity.editorcoroutines@87a15ed012c2/Editor/EditorCoroutine.cs:210)"
+        },
+        {
+          "line": 483,
+          "text": "\tUnityEditor.EditorApplication:Internal_CallUpdateFunctions()"
+        },
+        {
+          "line": 484,
+          "text": "[10:17:33] [Log] Build result: Failed, total size: 0 bytes"
+        },
+        {
+          "line": 485,
+          "text": "[PIPELINE][2026-11-12 10:17:52][unity:Android:execute] still running after 362s"
+        },
+        {
+          "line": 486,
+          "text": "[PIPELINE][2026-11-12 10:17:57][unity:Android:execute] finished with exit code 1 after 367s"
+        },
+        {
+          "line": 487,
+          "text": "[PIPELINE][2026-11-12 10:17:57][unity-android] finished in 367.3s"
+        },
+        {
+          "line": 488,
+          "text": "Build Failed!"
+        },
+        {
+          "line": 489,
+          "text": "[ERROR] build_pipeline.py failed!"
+        }
+      ]
+    },
+    {
+      "pipelineId": 3057467311,
+      "jobId": 17955149208,
+      "sha": "0c79f66a66ec316da32ef8640fc3abd22ffffe8d",
+      "status": "success",
+      "url": "https://gitlab.com/trinhtuu.05/orbit-busters-tu-code/-/jobs/17955149208",
+      "runnerId": 49517466,
+      "artifacts": [
+        {
+          "file_type": "trace",
+          "filename": "job.log",
+          "size": 279746
+        }
+      ],
+      "traceStdoutSha256": "f25a0c8f487291eca656bb095b8fe66c4688e1f4050188cbed3b875525c68899",
+      "snippets": [
+        {
+          "line": 16,
+          "text": "Checking out 0c79f66a as detached HEAD (ref is build_android)..."
+        },
+        {
+          "line": 270,
+          "text": "HEAD is now at d431b7d20 fix(ads): apply full screen cooldown to resume ads"
+        },
+        {
+          "line": 317,
+          "text": "[10:27:26] [Log] Generated Firebase Android Resources file Assets\\Plugins\\Android\\FirebaseApp.androidlib\\res\\values\\google-services.xml from [runner-path redacted]"
+        },
+        {
+          "line": 496,
+          "text": "[10:48:38] [Log] Build result: Succeeded, total size: 1605061418 bytes"
+        },
+        {
+          "line": 799,
+          "text": "[11:04:10] [Log] Build result: Succeeded, total size: 1765795646 bytes"
+        },
+        {
+          "line": 800,
+          "text": "[PIPELINE][2026-11-12 11:04:23][unity:Android:execute] still running after 2289s"
+        },
+        {
+          "line": 801,
+          "text": "[PIPELINE][2026-11-12 11:04:35][unity:Android:execute] finished with exit code 0 after 2301s"
+        },
+        {
+          "line": 802,
+          "text": "[PIPELINE][2026-11-12 11:04:35][artifact-copy] started"
+        },
+        {
+          "line": 803,
+          "text": "Files copied to [private network artifact location]/[game]/[version]"
+        },
+        {
+          "line": 804,
+          "text": "[PIPELINE][2026-11-12 11:04:38][artifact-copy] finished in 3.0s"
+        },
+        {
+          "line": 805,
+          "text": "[PIPELINE][2026-11-12 11:04:38][unity-android] finished in 2304.9s"
+        },
+        {
+          "line": 806,
+          "text": "Build Success!"
+        },
+        {
+          "line": 2319,
+          "text": "Calling git: push origin :refs/tags/android_1.0.1_1 @ [runner-path redacted]"
+        },
+        {
+          "line": 2320,
+          "text": "remote: You are not allowed to push code to this project."
+        },
+        {
+          "line": 2321,
+          "text": "fatal: unable to access '[URL redacted] The requested URL returned error: 403"
+        },
+        {
+          "line": 2322,
+          "text": ""
+        },
+        {
+          "line": 2323,
+          "text": "[PIPELINE][2026-11-12 11:05:16][git] 'push origin :refs/tags/android_1.0.1_1' exited 128 in 0.8s"
+        },
+        {
+          "line": 2324,
+          "text": "Calling git: tag -a android_1.0.1_1 -m release_android_1.0.1_1 @ [runner-path redacted]"
+        },
+        {
+          "line": 2325,
+          "text": "[PIPELINE][2026-11-12 11:05:16][git] 'tag -a android_1.0.1_1 -m release_android_1.0.1_1' exited 0 in 0.0s"
+        },
+        {
+          "line": 2326,
+          "text": "Calling git: push --tags --force --set-upstream --progress  -- origin release_android:release_android @ [runner-path redacted]"
+        },
+        {
+          "line": 2327,
+          "text": "remote: You are not allowed to push code to this project."
+        },
+        {
+          "line": 2328,
+          "text": "fatal: unable to access '[URL redacted] The requested URL returned error: 403"
+        },
+        {
+          "line": 2329,
+          "text": ""
+        },
+        {
+          "line": 2330,
+          "text": "[PIPELINE][2026-11-12 11:05:17][git] 'push --tags --force --set-upstream --progress  -- origin release_android:release_android' exited 128 in 1.3s"
+        },
+        {
+          "line": 2331,
+          "text": "[INFO] Build finished successfully!"
+        },
+        {
+          "line": 2332,
+          "text": "section_end:1794456319:step_script"
+        },
+        {
+          "line": 2333,
+          "text": "section_start:1794456319:cleanup_file_variables"
+        },
+        {
+          "line": 2334,
+          "text": "Cleaning up project directory and file based variables"
+        },
+        {
+          "line": 2335,
+          "text": "section_end:1794456319:cleanup_file_variables"
+        },
+        {
+          "line": 2336,
+          "text": "Job succeeded"
+        }
+      ]
+    }
+  ]
+}
