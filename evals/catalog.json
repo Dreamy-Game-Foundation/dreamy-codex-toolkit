@@ -2395,6 +2395,172 @@
         "require iOS provisioning to fix Gradle"
       ],
       "scoreThreshold": 0.8
+    },
+    {
+      "id": "polish-control-edge",
+      "category": "production",
+      "prompt": "A platformer drops jump presses just before landing and just after leaving a ledge. Source shows Jump() executes only when grounded on the exact pressed frame. No feedback package is installed. Diagnose and propose a scoped experiment; implementation has not been run.",
+      "expected": [
+        "Trace input/state validity before effects; consider bounded single-consumption buffer and compatible grace window as rule-affecting changes.",
+        "Preserve intended jump count and test early/late input, expiry and pause; do not invent a package API."
+      ],
+      "forbiddenClaims": [
+        "A screenshot or compile pass proves game feel improved",
+        "Unmeasured device performance is verified"
+      ],
+      "scoreThreshold": 0.85
+    },
+    {
+      "id": "polish-combat-contact",
+      "category": "production",
+      "prompt": "Combat feels weak. The confirmed-hit event occurs at animation contact, but enemy reaction and sound start in a delayed completion callback. Misses currently play the same spark as hits. Preserve damage and cooldown. No runtime capture is supplied.",
+      "expected": [
+        "Align confirmed-hit presentation with contact and distinguish miss from hit; do not change damage/cooldown.",
+        "Request or defer normal-speed motion and listened audio evidence; source inspection alone does not establish improved feel."
+      ],
+      "forbiddenClaims": [
+        "A screenshot or compile pass proves game feel improved",
+        "Unmeasured device performance is verified"
+      ],
+      "scoreThreshold": 0.85
+    },
+    {
+      "id": "polish-cozy-puzzle",
+      "category": "production",
+      "prompt": "Polish a cozy tile puzzle. User asks for soft feedback and reduced motion; the tile is already responsive. Solve animation blocks the next drag through a long decorative tail. Do not redesign the puzzle.",
+      "expected": [
+        "Keep soft tone and reduce unnecessary blocking; do not default to shake, aggressive flash or global hit-stop.",
+        "Keep authoritative resolve/input gating correct and check interruption/next drag."
+      ],
+      "forbiddenClaims": [
+        "A screenshot or compile pass proves game feel improved",
+        "Unmeasured device performance is verified"
+      ],
+      "scoreThreshold": 0.85
+    },
+    {
+      "id": "polish-reward-reopen",
+      "category": "production",
+      "prompt": "A reward is committed by RewardService once. The UI count-up completion also grants it again. Closing and reopening the cached panel leaves the old completion active. Polish this reward flow without changing reward amounts.",
+      "expected": [
+        "Remove presentation authority at the existing owner; preserve exactly-once grant and authoritative final display.",
+        "Cancel/guard old lifetime callbacks; check skip, close/reopen, repeat events and scene teardown."
+      ],
+      "forbiddenClaims": [
+        "A screenshot or compile pass proves game feel improved",
+        "Unmeasured device performance is verified"
+      ],
+      "scoreThreshold": 0.85
+    },
+    {
+      "id": "polish-mobile-density",
+      "category": "production",
+      "prompt": "Polish mobile combat where 40 simultaneous confirmed hits trigger identical full-strength camera/audio effects. No target-device profile is available. User wants clearer action and stable performance, without adding packages.",
+      "expected": [
+        "Prioritize readability, channel concurrency/throttle/mix and test representative overlap.",
+        "Keep target performance unverified without matching profile; do not invent a measured budget."
+      ],
+      "forbiddenClaims": [
+        "A screenshot or compile pass proves game feel improved",
+        "Unmeasured device performance is verified"
+      ],
+      "scoreThreshold": 0.85
+    },
+    {
+      "id": "polish-heavy-intent",
+      "category": "production",
+      "prompt": "A heavy melee game has deliberate readable wind-up. Input acknowledgement is immediate, and designer asks to retain the heavy attack timing and cooldown. Polish impact only; no animation timing redesign.",
+      "expected": [
+        "Preserve deliberate anticipation/cooldown; inspect contact and reaction/mix/camera choices within impact scope.",
+        "Do not make every action snappy; verify contact/readability and disclose absent runtime evidence."
+      ],
+      "forbiddenClaims": [
+        "A screenshot or compile pass proves game feel improved",
+        "Unmeasured device performance is verified"
+      ],
+      "scoreThreshold": 0.85
+    },
+    {
+      "id": "polish-screenshot-only",
+      "category": "production",
+      "prompt": "Review game feel from one still screenshot of a player, enemy and HUD. There is no source, clip, Editor, audio or device. Provide useful findings without claiming unobserved behavior.",
+      "expected": [
+        "Limit observations to visible framing/readability; mark timing/input/audio/haptics as hypotheses or unavailable.",
+        "No invented latency, animation diagnosis, playtest or runtime verification."
+      ],
+      "forbiddenClaims": [
+        "A screenshot or compile pass proves game feel improved",
+        "Unmeasured device performance is verified"
+      ],
+      "scoreThreshold": 0.85
+    },
+    {
+      "id": "polish-clock-network",
+      "category": "production",
+      "prompt": "Polish predicted multiplayer hit feedback. Local attack is shown before server confirmation; a shared timeScale hit-stop currently restores scale to 1 even when paused. Effects and callbacks can overlap on pooled objects.",
+      "expected": [
+        "Distinguish predicted input cues and authoritative impact; preserve confirmation/rejection behavior.",
+        "Inspect existing clock/pause owner; avoid blanket global freeze and stale restore/callbacks; test overlapping requests, pool reuse and cancellation."
+      ],
+      "forbiddenClaims": [
+        "A screenshot or compile pass proves game feel improved",
+        "Unmeasured device performance is verified"
+      ],
+      "scoreThreshold": 0.85
+    },
+    {
+      "id": "polish-negative-vfx",
+      "category": "production",
+      "prompt": "Create only one editable Unity explosion prefab from supplied art. Gameplay diagnosis and changes are explicitly out of scope.",
+      "expected": [
+        "Route to VFX authoring; do not add a whole-game polish backlog or mechanics changes."
+      ],
+      "forbiddenClaims": [
+        "A screenshot or compile pass proves game feel improved",
+        "Unmeasured device performance is verified"
+      ],
+      "scoreThreshold": 0.85
+    },
+    {
+      "id": "polish-negative-profiling",
+      "category": "production",
+      "prompt": "Find a GC allocation spike in an existing projectile pool. No presentation or feel changes are requested.",
+      "expected": [
+        "Use pooling/profiling diagnosis; do not add juice or a general polish audit."
+      ],
+      "forbiddenClaims": [
+        "A screenshot or compile pass proves game feel improved",
+        "Unmeasured device performance is verified"
+      ],
+      "scoreThreshold": 0.85
+    },
+    {
+      "id": "polish-conflict-plan",
+      "category": "production",
+      "prompt": "Plan only a satisfying reward flow. Do not edit game files, install packages, build, call image generation or change reward policy. A source review is permitted.",
+      "expected": [
+        "Produce a concrete scoped experiment and acceptance plan with exactly-once reward authority.",
+        "Honor all no-mutation/no-build/no-AI constraints; no execution claims."
+      ],
+      "forbiddenClaims": [
+        "A screenshot or compile pass proves game feel improved",
+        "Unmeasured device performance is verified"
+      ],
+      "scoreThreshold": 0.85
+    },
+    {
+      "id": "polish-whole-game-coverage",
+      "category": "production",
+      "prompt": "Polish the existing whole game: movement, primary attack, HUD feedback, reward popup, win/lose, retry and loading transitions. First choose one representative interaction to test direction. Do not stop the assignment after that pilot.",
+      "expected": [
+        "Keep all named surfaces in coverage; pilot is a checkpoint before remaining scoped work.",
+        "Define per-surface acceptance and evidence gaps; do not claim whole-game completion from one clip."
+      ],
+      "forbiddenClaims": [
+        "A screenshot or compile pass proves game feel improved",
+        "Unmeasured device performance is verified"
+      ],
+      "scoreThreshold": 0.85
     }
   ],
   "agentCoverage": [

@@ -8,7 +8,7 @@ requires.packages: ["com.dreamy.feedback"]
 
 ## Purpose
 
-Coordinate player feedback without making VFX/audio/haptics the source of truth.
+Coordinate player feedback without making VFX/audio/haptics the source of truth. For cross-channel feel diagnosis and before/after tuning, use `game-polish` when installed; this skill retains verified package integration and lifetime ownership.
 
 ## When To Use
 

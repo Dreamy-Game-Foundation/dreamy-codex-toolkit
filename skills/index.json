@@ -481,6 +481,42 @@
       "authoringProfile": "compact-workflow"
     },
     {
+      "name": "game-polish",
+      "category": "production",
+      "priority": "P1",
+      "file": "skills/production/game-polish/SKILL.md",
+      "depth": "D3",
+      "maturity": "experimental",
+      "owners": [
+        "dreamy_skill_author",
+        "dreamy_unity_developer",
+        "dreamy_unity_editor",
+        "dreamy_tester"
+      ],
+      "requiresEvidence": [
+        "project-baseline-or-supplied-reference",
+        "interaction-scope-and-acceptance",
+        "observations-and-hypotheses",
+        "verification-matching-claims"
+      ],
+      "references": 4,
+      "evalCases": [
+        "polish-control-edge",
+        "polish-combat-contact",
+        "polish-cozy-puzzle",
+        "polish-reward-reopen",
+        "polish-mobile-density",
+        "polish-heavy-intent",
+        "polish-screenshot-only",
+        "polish-clock-network",
+        "polish-negative-vfx",
+        "polish-negative-profiling",
+        "polish-conflict-plan",
+        "polish-whole-game-coverage"
+      ],
+      "authoringProfile": "compact-workflow"
+    },
+    {
       "name": "game-state",
       "category": "gameplay",
       "priority": "P1",

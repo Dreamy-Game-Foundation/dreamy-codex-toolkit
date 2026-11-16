@@ -1,0 +1,6 @@
+interface:
+  display_name: "Game Polish"
+  short_description: "Diagnose and tune Unity game feel with evidence"
+  default_prompt: "Use $game-polish to improve the requested Unity interaction, diagnose its game feel, tune the highest-impact changes and compare results against clear acceptance criteria."
+policy:
+  allow_implicit_invocation: true

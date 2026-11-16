@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 1,
+  "kind": "skill-implementation-validation",
+  "skill": "game-polish",
+  "toolkitVersion": "0.1.0-alpha.4",
+  "recordedAtUtc": "2026-11-16T02:08:50.443126+00:00",
+  "status": "structural-and-distribution-validated-semantic-unverified",
+  "scope": "Experimental toolkit skill authoring, catalog/routing integration, isolated distribution and benchmark preparation. No production-game or subjective-quality claim.",
+  "observed": {
+    "entrypointBytes": 4487,
+    "references": 4,
+    "registeredSkills": 91,
+    "catalogCases": 197,
+    "newCaseSpecifications": 12,
+    "developmentCases": 8,
+    "holdoutCases": 4,
+    "contextSizeAdvisories": 6,
+    "unitTests": {
+      "tests": 175,
+      "pass": 174,
+      "fail": 0,
+      "skipped": 1,
+      "skipReason": "PowerShell installer test not executed on this environment."
+    },
+    "distribution": [
+      "Isolated global install/update/uninstall preserves user-owned skill bytes",
+      "Plain Unity consumer installs without manifest/lock changes and restores original AGENTS.md on uninstall",
+      "All installed skill files match source and local links stay within installed folder",
+      "Included via production: unity-production, dreamy-production, unity-full, dreamy-full, dreamy-package; absent from core, unity-minimal, dreamy-project, dreamy-template"
+    ]
+  },
+  "intended": {
+    "maturity": "experimental",
+    "distributionModule": "production",
+    "baselineCommit": "eaec7e219321842676cf6d35393a1777dc836225",
+    "runtimeOwnership": "Existing project/package roots; no distributed runtime framework or package dependency."
+  },
+  "checks": [
+    {
+      "command": "python3 <skill-creator>/scripts/quick_validate.py skills/production/game-polish",
+      "status": "pass"
+    },
+    {
+      "command": "npm test",
+      "status": "pass",
+      "log": ".dreamy/evidence/game-polish-npm-test.log"
+    },
+    {
+      "command": "node --test tests/unit/game-polish-distribution.test.mjs",
+      "status": "pass",
+      "tests": 2
+    },
+    {
+      "command": "env npm_config_userconfig=/dev/null DREAMY_ARTIFACTS_DIR=.dreamy/evidence/game-polish-pack npm run pack:smoke",
+      "status": "pass",
+      "note": "Default inherited allow-scripts=pnpm caused EALLOWSCRIPTS; command-local user-config isolation passed without editing npmrc. Pack is a snapshot; its fresh full fingerprint/report is kept in local evidence.",
+      "report": ".dreamy/evidence/game-polish-pack/npm-pack-smoke.json"
+    },
+    {
+      "command": "git diff --check",
+      "status": "pass"
+    }
+  ],
+  "benchmarkPreparation": {
+    "command": "node scripts/benchmark.mjs --manifest benchmarks/manifests/game-polish.json --split development --prepare --output .dreamy/evidence/game-polish-preparation",
+    "status": "degraded",
+    "exitCode": 2,
+    "reason": "Preparation only; no adapter executed. No configured model adapter; 4 holdout cases remain reserved.",
+    "manifestSha256": "94e4585cac4284ed99f46dc649ce62581bed334df1dd5e7b9baf60ca493497b5",
+    "reportSha256": "71385f7cf6da76000829ff6c046cdaa94a86aa06c4423625d38d7c43f4aa28b7",
+    "reportPath": ".dreamy/evidence/game-polish-preparation/report.json",
+    "summary": {
+      "attempted": 0,
+      "passed": 0,
+      "failed": 0,
+      "notRun": 16
+    },
+    "limitations": "Forced-load decision probes with a decision-field check and manual rubric, not semantic quality, automatic routing, coding or runtime acceptance."
+  },
+  "notRun": [
+    {
+      "gate": "baseline-candidate semantic evaluation",
+      "reason": "No executable model adapter configured; no background calls or transcript collection."
+    },
+    {
+      "gate": "Unity action/control and UI/reward pilots",
+      "reason": "No target game/project and runtime scenarios supplied for this skill implementation; toolkit fixture is not a game-feel pilot."
+    },
+    {
+      "gate": "audio/haptics/target-device profile and human playtest",
+      "reason": "No target runtime/device/evaluator evidence; no preference, budget or enjoyment claim."
+    }
+  ],
+  "unknown": [
+    "Whether the skill improves diagnosis or artifacts over baseline",
+    "Whether authored recipes improve subjective feel in a target game"
+  ],
+  "sourceFiles": [
+    {
+      "path": "skills/production/game-polish/SKILL.md",
+      "sha256": "49b3ea5c0be9da454e5a6cee14a1cc84499263654ce4cb08f464e66db020c835"
+    },
+    {
+      "path": "skills/production/game-polish/agents/openai.yaml",
+      "sha256": "c43dd00de3eeac7421c8f11b163ad9708e1670b824decd782b58eb8a9db5c7b2"
+    },
+    {
+      "path": "skills/production/game-polish/assets/polish-pass.md",
+      "sha256": "2862866efce5e9fe384d8d1de81af2e28f1a36749ef3b41e759c72c514c43674"
+    },
+    {
+      "path": "skills/production/game-polish/references/control-and-impact.md",
+      "sha256": "61d75be42f8c31f1c86999b3ca8d66cc00165cea8bfb7eab3c29747f828dceb9"
+    },
+    {
+      "path": "skills/production/game-polish/references/diagnosis-and-priorities.md",
+      "sha256": "e22cc9ec3f0c86a801673b19dbfef42a5cc60c000892c02741349bb3c9a1498b"
+    },
+    {
+      "path": "skills/production/game-polish/references/ui-reward-and-rhythm.md",
+      "sha256": "4cf6cba5640bf88a487d2a13f34a9e816f61c05e1e2be0d5ffa90ab892311b4b"
+    },
+    {
+      "path": "skills/production/game-polish/references/verification.md",
+      "sha256": "741dea832747b96af3b985fc074efa22c8f62a0c72c9c9865963bc119dd667e8"
+    },
+    {
+      "path": "benchmarks/cases/game-polish.json",
+      "sha256": "8213f37c382cbaa36368410b3b0e31af5341c86229c1a0df8c1851b70e5e1630"
+    },
+    {
+      "path": "benchmarks/manifests/game-polish.json",
+      "sha256": "94e4585cac4284ed99f46dc649ce62581bed334df1dd5e7b9baf60ca493497b5"
+    },
+    {
+      "path": "tests/unit/game-polish-distribution.test.mjs",
+      "sha256": "49f8b645a6c46425c5b7f2675bacf543fa85f82b1dc7694db33876a749b9701c"
+    },
+    {
+      "path": "modules/production/module.json",
+      "sha256": "b3c6d7649247c2b9a9c45da3b5462734ce9080645978262777dbdc65f8e235c2"
+    },
+    {
+      "path": "skills/index.json",
+      "sha256": "316383c1b248604ce8d32dfb5868cc93fba11c466c2dd3d97adee38def26795c"
+    },
+    {
+      "path": "evals/catalog.json",
+      "sha256": "4aaef5369fb1d860681b8ae7ed8312b966b113aa36b078e279552d09023d32e9"
+    }
+  ]
+}

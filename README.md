@@ -9,7 +9,7 @@
 `toolkit.json` serves as the canonical source of truth for versioning, maturity, presets, modules, rules, skills, and harness metadata.
 
 <!-- DREAMY-CATALOG:START -->
-Catalog: **90 skills, 15 agent templates, 50 rules, 9 modules, 9 presets and 185 eval cases**. Counts describe the catalog, not measured model success.
+Catalog: **91 skills, 15 agent templates, 50 rules, 9 modules, 9 presets and 197 eval cases**. Counts describe the catalog, not measured model success.
 <!-- DREAMY-CATALOG:END -->
 
 For responsive uGUI prefab changes, use experimental [`unity-ui-responsive`](skills/unity-ui-responsive/SKILL.md) in `unity-core`; see the [Vietnamese guide and validation limits](docs/unity-ui-responsive.vi.md). SafeArea contains interactive content while full-bleed backgrounds remain outside.
@@ -29,6 +29,8 @@ For clone or original game slices, use the experimental [`game-vibe-workflow`](s
 For requested asset extraction from a supplied APK/XAPK or Unity build, use experimental [`game-asset-extraction`](skills/gameplay/game-asset-extraction/SKILL.md), standalone or from the vibe workflow. It includes source-preserving helpers and hash receipts; see the [Vietnamese extraction guide](docs/game-asset-extraction.vi.md). UnityPy/AssetRipper are optional task-local tools, and exported assets do not establish a runnable game.
 
 For a dedicated Unity clone workflow combining REA findings, AssetRipper recovery and target-project fidelity, use experimental [`game-clone`](skills/gameplay/game-clone/SKILL.md), also in `unity-core`. It reuses the two workflows above and preserves plan-only, slice, whole-game and tool-mode choices; see the [Vietnamese clone guide](docs/game-clone.vi.md). Tool setup and real-game verification remain separate tasks.
+
+For existing gameplay or UI interaction polish, use experimental [`game-polish`](skills/production/game-polish/SKILL.md) in `production`: diagnose responsiveness, impact, readability and rhythm, tune scoped changes and compare evidence. See the [Vietnamese guide](docs/game-polish.vi.md) and [validation limits](docs/evidence/game-polish-validation.json).
 
 For editable 2D/3D Unity effects, use experimental [`unity-vfx-authoring`](skills/unity-vfx-authoring/SKILL.md) in `unity-core`: brief, technique/asset selection, prefab authoring, preview and lifecycle/performance evidence. It supports Particle System, sprites, mesh/trails and capability-gated VFX Graph without requiring a new provider or package. See the [Vietnamese guide](docs/unity-vfx-authoring.vi.md) and [validation scope](docs/evidence/unity-vfx-authoring-validation.json).
 

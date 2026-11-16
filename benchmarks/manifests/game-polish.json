@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "name": "game-polish-baseline-candidate-decision-review",
+  "purpose": "development",
+  "releaseEligible": false,
+  "model": "set-by-run-owner",
+  "reasoning": "set-by-run-owner",
+  "repetitions": 1,
+  "timeoutMs": 180000,
+  "adapter": {
+    "executable": null,
+    "args": [
+      "{promptFile}",
+      "{outputFile}"
+    ]
+  },
+  "caseFiles": [
+    "../cases/game-polish.json"
+  ],
+  "treatments": [
+    {
+      "id": "baseline",
+      "sources": [
+        {
+          "root": "repo",
+          "paths": [
+            "skills/unity-input-system/SKILL.md",
+            "skills/unity-animation/SKILL.md",
+            "skills/unity-camera/SKILL.md",
+            "skills/unity-ui/SKILL.md"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "candidate",
+      "sources": [
+        {
+          "root": "repo",
+          "paths": [
+            "skills/unity-input-system/SKILL.md",
+            "skills/unity-animation/SKILL.md",
+            "skills/unity-camera/SKILL.md",
+            "skills/unity-ui/SKILL.md",
+            "skills/production/game-polish"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -2,6 +2,8 @@
 
 Match evidence to the claim. A scripted path is useful repeatable coverage, not human playtesting. A build that skips the menu cannot prove normal launch.
 
+For a requested pass on existing interaction quality, use `game-polish` when installed. Retain the agreed whole-game coverage here; a successful polish pilot does not replace it. Isolated VFX, UI and profiling tasks stay with their specialists.
+
 | Claim | Smallest useful evidence |
 |---|---|
 | Rule/state works | Reproduction/fixture with expected and actual state deltas |

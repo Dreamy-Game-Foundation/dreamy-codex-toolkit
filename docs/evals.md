@@ -1,7 +1,7 @@
 # Evals
 
 <!-- DREAMY-CATALOG:START -->
-`evals/catalog.json` contains **185** routing and safety case definitions. These are catalog definitions, not 185 observed model passes.
+`evals/catalog.json` contains **197** routing and safety case definitions. These are catalog definitions, not 197 observed model passes.
 <!-- DREAMY-CATALOG:END -->
 
 Each case records a unique `id`, `prompt`, expected behavior, forbidden claims, and a numeric `scoreThreshold`. The catalog also includes `agentCoverage` so agent templates cannot be added without explicit eval coverage.
@@ -54,3 +54,5 @@ automatic skill discovery and production quality evidence.
 The controlled experiment, case contract, metrics, and release gates are defined in `docs/toolkit-benchmark-plan.md`.
 
 Catalog counts in this guide and README are generated from toolkit.json and its catalogs. Run `node scripts/catalog-summary.mjs --write` after catalog changes; `npm run validate` checks for drift. This check does not invoke a model.
+
+The experimental `game-polish` comparison is defined in `benchmarks/manifests/game-polish.json`. Use `--split development --prepare` to prepare 16 not-run slots (8 cases × 2 treatments); reserve the 4 holdout cases for later evaluation. These are decision probes with manual-review rubrics, not observed semantic, coding or gameplay passes. See [usage and limits](game-polish.vi.md).
