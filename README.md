@@ -9,7 +9,7 @@
 `toolkit.json` serves as the canonical source of truth for versioning, maturity, presets, modules, rules, skills, and harness metadata.
 
 <!-- DREAMY-CATALOG:START -->
-Catalog: **91 skills, 15 agent templates, 50 rules, 9 modules, 9 presets and 197 eval cases**. Counts describe the catalog, not measured model success.
+Catalog: **94 skills, 15 agent templates, 50 rules, 10 modules, 10 presets and 207 eval cases**. Counts describe the catalog, not measured model success.
 <!-- DREAMY-CATALOG:END -->
 
 For responsive uGUI prefab changes, use experimental [`unity-ui-responsive`](skills/unity-ui-responsive/SKILL.md) in `unity-core`; see the [Vietnamese guide and validation limits](docs/unity-ui-responsive.vi.md). SafeArea contains interactive content while full-bleed backgrounds remain outside.
@@ -265,11 +265,14 @@ dreamy-kit purge
 | `unity-minimal` | Simple Unity project | Essential C# safety rules & basic Unity skills |
 | `unity-production` | Commercial Unity project | Advanced Unity optimization, UI, safety & asset rules |
 | `unity-full` | Complete Unity setup | Full suite of Unity systems, rendering, gameplay & mobile |
+| `interface-design` | Optional UI design | Web, tool and Unity Editor presentation; Geist-inspired defaults, responsive states and commercial asset guidance |
 | **`dreamy-project`** *(Default)* | Standard Dreamy game | Auto-detects `com.dreamy.*` packages and installs relevant skills |
 | `dreamy-production` | Enterprise Dreamy game | Full Dreamy project setup with strict safety & release gates |
 | `dreamy-package` | Dreamy UPM package | Tailored for package maintainers, asmdef & API compatibility |
 | `dreamy-template` | Boilerplate template | Base configuration for authoring project starters |
-| `dreamy-full` | Comprehensive | Installs **all** available skills, agents, rules & modules |
+| `dreamy-full` | Comprehensive Unity/Dreamy setup | All Unity/Dreamy modules; interface design is a separate opt-in bundle |
+
+The experimental `interface-design` preset includes `frontend-design`, `tool-ui-design` and `unity-editor-ui`. Their default visual direction takes inspiration from Geist while preserving existing brands, frameworks and native editor behavior. Shared references cover icon/font/image provenance and source redistribution. Install with `node src/cli.js install --target /path/to/project --preset interface-design` (or `--target global`). Preview with `--dry-run`: presets select the managed skill set rather than adding to the previous preset, so use a separate target if retaining another installation unchanged. Existing Unity presets keep their context budgets. This is a skill bundle, not a UI framework or proof of visual/Unity compatibility. See the [implementation plan and verification limits](docs/plans/UI_DESIGN_SKILLS_PLAN.vi.md).
 
 ---
 

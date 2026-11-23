@@ -1,0 +1,12 @@
+{
+  "$schema": "../../schemas/module.schema.json",
+  "id": "interface-design",
+  "version": "0.1.0-alpha.1",
+  "dependencies": ["foundation"],
+  "agents": [],
+  "content": [
+    "skills/design/frontend-design",
+    "skills/design/tool-ui-design",
+    "skills/design/unity-editor-ui"
+  ]
+}

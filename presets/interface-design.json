@@ -1,0 +1,6 @@
+{
+  "$schema": "../schemas/preset.schema.json",
+  "id": "interface-design",
+  "description": "Optional web, tool and Unity Editor presentation skills with Geist-inspired defaults and commercial asset guidance.",
+  "modules": ["foundation", "interface-design"]
+}

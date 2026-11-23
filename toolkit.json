@@ -46,7 +46,8 @@
     "presets/dreamy-production.json",
     "presets/dreamy-package.json",
     "presets/dreamy-template.json",
-    "presets/dreamy-full.json"
+    "presets/dreamy-full.json",
+    "presets/interface-design.json"
   ],
   "modules": [
     "modules/foundation/module.json",
@@ -57,7 +58,8 @@
     "modules/dreamy-packages/module.json",
     "modules/mobile/module.json",
     "modules/production/module.json",
-    "modules/unity-rendering/module.json"
+    "modules/unity-rendering/module.json",
+    "modules/interface-design/module.json"
   ],
   "gates": {
     "p0": [

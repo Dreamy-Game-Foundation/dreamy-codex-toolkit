@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "name": "interface-design-baseline-candidate-decision-review",
+  "purpose": "development",
+  "releaseEligible": false,
+  "model": "set-by-run-owner",
+  "reasoning": "set-by-run-owner",
+  "repetitions": 1,
+  "timeoutMs": 180000,
+  "adapter": {
+    "executable": null,
+    "args": [
+      "{promptFile}",
+      "{outputFile}"
+    ]
+  },
+  "caseFiles": [
+    "../cases/interface-design.json"
+  ],
+  "treatments": [
+    {
+      "id": "baseline",
+      "sources": [
+        {
+          "root": "repo",
+          "paths": [
+            "skills/unity-editor-tooling",
+            "skills/unity-ui-responsive"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "candidate",
+      "sources": [
+        {
+          "root": "repo",
+          "paths": [
+            "skills/unity-editor-tooling",
+            "skills/unity-ui-responsive",
+            "skills/design"
+          ]
+        }
+      ]
+    }
+  ]
+}

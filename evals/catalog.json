@@ -2561,6 +2561,134 @@
         "Unmeasured device performance is verified"
       ],
       "scoreThreshold": 0.85
+    },
+    {
+      "id": "interface-web-polish",
+      "category": "interface-design",
+      "prompt": "Polish the existing website using Geist-inspired hierarchy, keeping its Vue stack.",
+      "expected": [
+        "keep existing stack",
+        "inspect real responsive renders"
+      ],
+      "forbiddenClaims": [
+        "must migrate to Next.js"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "interface-tool-browser",
+      "category": "interface-design",
+      "prompt": "Improve an asset browser with filters and bulk operations, keeping its host.",
+      "expected": [
+        "explicit selection scope",
+        "exercise filter and selection transitions"
+      ],
+      "forbiddenClaims": [
+        "every record must be a card"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "interface-editor-polish",
+      "category": "interface-design",
+      "prompt": "Polish an existing IMGUI EditorWindow; preserve bindings and behavior.",
+      "expected": [
+        "inspect Unity version and manifest lock",
+        "retain framework when appropriate",
+        "verify skins and docking"
+      ],
+      "forbiddenClaims": [
+        "migration to UI Toolkit is mandatory"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "interface-runtime-near-miss",
+      "category": "interface-design",
+      "prompt": "Repair uGUI popup anchors on phones without redesign.",
+      "expected": [
+        "route to existing uGUI responsive skill"
+      ],
+      "forbiddenClaims": [
+        "create an EditorWindow"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "interface-logic-near-miss",
+      "category": "interface-design",
+      "prompt": "The import button calls its callback twice; no appearance changes requested.",
+      "expected": [
+        "diagnose lifecycle and callback ownership"
+      ],
+      "forbiddenClaims": [
+        "redesign the entire tool"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "interface-brand-conflict",
+      "category": "interface-design",
+      "prompt": "Keep the light theme and red brand, remove motion, and polish this web form.",
+      "expected": [
+        "respect brand and reduced motion request"
+      ],
+      "forbiddenClaims": [
+        "Geist requires dark mode"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "interface-commercial-license",
+      "category": "interface-design",
+      "prompt": "A free icon pack is personal-use-only. Our tool and its source template will be sold.",
+      "expected": [
+        "replace with appropriately licensed assets",
+        "verify source redistribution",
+        "retain notices"
+      ],
+      "forbiddenClaims": [
+        "free means cleared for resale"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "interface-missing-imagegen",
+      "category": "interface-design",
+      "prompt": "We want coherent illustrations but have no image generator available.",
+      "expected": [
+        "offer a suitable vector or code fallback",
+        "state missing capability"
+      ],
+      "forbiddenClaims": [
+        "generated image has been verified"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "interface-tui-boundary",
+      "category": "interface-design",
+      "prompt": "Polish our terminal dashboard while retaining terminal operation.",
+      "expected": [
+        "preserve terminal host and keyboard semantics"
+      ],
+      "forbiddenClaims": [
+        "replace it with a web app"
+      ],
+      "scoreThreshold": 0.8
+    },
+    {
+      "id": "interface-unknown-unity",
+      "category": "interface-design",
+      "prompt": "Polish this Unity inspector; no Editor or manifest has been supplied.",
+      "expected": [
+        "inspect target sources before API claims",
+        "report missing execution evidence"
+      ],
+      "forbiddenClaims": [
+        "Unity compatibility is verified"
+      ],
+      "scoreThreshold": 0.8
     }
   ],
   "agentCoverage": [

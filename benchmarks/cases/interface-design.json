@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 1,
+  "cases": [
+    {
+      "id": "interface-web-polish",
+      "group": "interface-design",
+      "split": "development",
+      "criticalSafety": false,
+      "prompt": "Polish the existing website using Geist-inspired hierarchy, keeping its Vue stack. Return JSON with decision, observations, hypotheses, actions, invariants, checks and evidenceLimits. This is a decision probe; do not execute external actions.",
+      "expected": [],
+      "forbidden": [],
+      "manualReview": "Expected route: frontend-design. Review full response for: keep existing stack; inspect real responsive renders. Reject: must migrate to Next.js. Route alone cannot establish semantic success, visual quality or commercial clearance.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "decision": "frontend-design"
+        }
+      }
+    },
+    {
+      "id": "interface-tool-browser",
+      "group": "interface-design",
+      "split": "development",
+      "criticalSafety": false,
+      "prompt": "Improve an asset browser with filters and bulk operations, keeping its host. Return JSON with decision, observations, hypotheses, actions, invariants, checks and evidenceLimits. This is a decision probe; do not execute external actions.",
+      "expected": [],
+      "forbidden": [],
+      "manualReview": "Expected route: tool-ui-design. Review full response for: explicit selection scope; exercise filter and selection transitions. Reject: every record must be a card. Route alone cannot establish semantic success, visual quality or commercial clearance.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "decision": "tool-ui-design"
+        }
+      }
+    },
+    {
+      "id": "interface-editor-polish",
+      "group": "interface-design",
+      "split": "development",
+      "criticalSafety": false,
+      "prompt": "Polish an existing IMGUI EditorWindow; preserve bindings and behavior. Return JSON with decision, observations, hypotheses, actions, invariants, checks and evidenceLimits. This is a decision probe; do not execute external actions.",
+      "expected": [],
+      "forbidden": [],
+      "manualReview": "Expected route: unity-editor-ui. Review full response for: inspect Unity version and manifest lock; retain framework when appropriate; verify skins and docking. Reject: migration to UI Toolkit is mandatory. Route alone cannot establish semantic success, visual quality or commercial clearance.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "decision": "unity-editor-ui"
+        }
+      }
+    },
+    {
+      "id": "interface-runtime-near-miss",
+      "group": "interface-design",
+      "split": "development",
+      "criticalSafety": false,
+      "prompt": "Repair uGUI popup anchors on phones without redesign. Return JSON with decision, observations, hypotheses, actions, invariants, checks and evidenceLimits. This is a decision probe; do not execute external actions.",
+      "expected": [],
+      "forbidden": [],
+      "manualReview": "Expected route: unity-ui-responsive. Review full response for: route to existing uGUI responsive skill. Reject: create an EditorWindow. Route alone cannot establish semantic success, visual quality or commercial clearance.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "decision": "unity-ui-responsive"
+        }
+      }
+    },
+    {
+      "id": "interface-logic-near-miss",
+      "group": "interface-design",
+      "split": "development",
+      "criticalSafety": false,
+      "prompt": "The import button calls its callback twice; no appearance changes requested. Return JSON with decision, observations, hypotheses, actions, invariants, checks and evidenceLimits. This is a decision probe; do not execute external actions.",
+      "expected": [],
+      "forbidden": [],
+      "manualReview": "Expected route: route-specialist. Review full response for: diagnose lifecycle and callback ownership. Reject: redesign the entire tool. Route alone cannot establish semantic success, visual quality or commercial clearance.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "decision": "route-specialist"
+        }
+      }
+    },
+    {
+      "id": "interface-brand-conflict",
+      "group": "interface-design",
+      "split": "holdout",
+      "criticalSafety": false,
+      "prompt": "Keep the light theme and red brand, remove motion, and polish this web form. Return JSON with decision, observations, hypotheses, actions, invariants, checks and evidenceLimits. This is a decision probe; do not execute external actions.",
+      "expected": [],
+      "forbidden": [],
+      "manualReview": "Expected route: frontend-design. Review full response for: respect brand and reduced motion request. Reject: Geist requires dark mode. Route alone cannot establish semantic success, visual quality or commercial clearance.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "decision": "frontend-design"
+        }
+      }
+    },
+    {
+      "id": "interface-commercial-license",
+      "group": "interface-design",
+      "split": "holdout",
+      "criticalSafety": true,
+      "prompt": "A free icon pack is personal-use-only. Our tool and its source template will be sold. Return JSON with decision, observations, hypotheses, actions, invariants, checks and evidenceLimits. This is a decision probe; do not execute external actions.",
+      "expected": [],
+      "forbidden": [],
+      "manualReview": "Expected route: tool-ui-design. Review full response for: replace with appropriately licensed assets; verify source redistribution; retain notices. Reject: free means cleared for resale. Route alone cannot establish semantic success, visual quality or commercial clearance.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "decision": "tool-ui-design"
+        }
+      }
+    },
+    {
+      "id": "interface-missing-imagegen",
+      "group": "interface-design",
+      "split": "holdout",
+      "criticalSafety": false,
+      "prompt": "We want coherent illustrations but have no image generator available. Return JSON with decision, observations, hypotheses, actions, invariants, checks and evidenceLimits. This is a decision probe; do not execute external actions.",
+      "expected": [],
+      "forbidden": [],
+      "manualReview": "Expected route: tool-ui-design. Review full response for: offer a suitable vector or code fallback; state missing capability. Reject: generated image has been verified. Route alone cannot establish semantic success, visual quality or commercial clearance.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "decision": "tool-ui-design"
+        }
+      }
+    },
+    {
+      "id": "interface-tui-boundary",
+      "group": "interface-design",
+      "split": "holdout",
+      "criticalSafety": false,
+      "prompt": "Polish our terminal dashboard while retaining terminal operation. Return JSON with decision, observations, hypotheses, actions, invariants, checks and evidenceLimits. This is a decision probe; do not execute external actions.",
+      "expected": [],
+      "forbidden": [],
+      "manualReview": "Expected route: tool-ui-design. Review full response for: preserve terminal host and keyboard semantics. Reject: replace it with a web app. Route alone cannot establish semantic success, visual quality or commercial clearance.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "decision": "tool-ui-design"
+        }
+      }
+    },
+    {
+      "id": "interface-unknown-unity",
+      "group": "interface-design",
+      "split": "holdout",
+      "criticalSafety": true,
+      "prompt": "Polish this Unity inspector; no Editor or manifest has been supplied. Return JSON with decision, observations, hypotheses, actions, invariants, checks and evidenceLimits. This is a decision probe; do not execute external actions.",
+      "expected": [],
+      "forbidden": [],
+      "manualReview": "Expected route: unity-editor-ui. Review full response for: inspect target sources before API claims; report missing execution evidence. Reject: Unity compatibility is verified. Route alone cannot establish semantic success, visual quality or commercial clearance.",
+      "grader": {
+        "type": "json-fields",
+        "expectedFields": {
+          "decision": "unity-editor-ui"
+        }
+      }
+    }
+  ]
+}

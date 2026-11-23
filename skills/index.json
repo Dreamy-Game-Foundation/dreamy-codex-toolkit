@@ -1911,6 +1911,74 @@
         "mobile-first-build-plan-only",
         "mobile-first-build-isolated-gradle"
       ]
+    },
+    {
+      "name": "frontend-design",
+      "category": "design",
+      "priority": "P1",
+      "file": "skills/design/frontend-design/SKILL.md",
+      "depth": "D3",
+      "maturity": "experimental",
+      "owners": [
+        "dreamy_code_reviewer"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "rendered-screenshot",
+        "verification-result"
+      ],
+      "references": 1,
+      "evalCases": [
+        "interface-web-polish",
+        "interface-brand-conflict"
+      ],
+      "authoringProfile": "compact-workflow"
+    },
+    {
+      "name": "tool-ui-design",
+      "category": "design",
+      "priority": "P1",
+      "file": "skills/design/tool-ui-design/SKILL.md",
+      "depth": "D3",
+      "maturity": "experimental",
+      "owners": [
+        "dreamy_architect"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "rendered-screenshot",
+        "verification-result"
+      ],
+      "references": 3,
+      "evalCases": [
+        "interface-tool-browser",
+        "interface-commercial-license",
+        "interface-missing-imagegen",
+        "interface-tui-boundary"
+      ],
+      "authoringProfile": "compact-workflow"
+    },
+    {
+      "name": "unity-editor-ui",
+      "category": "design",
+      "priority": "P1",
+      "file": "skills/design/unity-editor-ui/SKILL.md",
+      "depth": "D3",
+      "maturity": "experimental",
+      "owners": [
+        "dreamy_unity_editor"
+      ],
+      "requiresEvidence": [
+        "project-code",
+        "rendered-screenshot",
+        "verification-result"
+      ],
+      "references": 1,
+      "evalCases": [
+        "interface-editor-polish",
+        "interface-unknown-unity"
+      ],
+      "authoringProfile": "compact-workflow"
     }
   ]
 }
