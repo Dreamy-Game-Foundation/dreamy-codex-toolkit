@@ -62,6 +62,7 @@ Stable key -> table/source -> locale store -> formatter/plural policy -> UI bind
 
 - Use stable keys, not English text as IDs.
 - Validate locale coverage and TMP/font assets.
+- Give each TMP label one copy owner. Refresh timers, counters and selection styles independently. Write dynamic copy only when its source key or formatting arguments change. Track those inputs separately from the translated TMP value so periodic refreshes and cached panel reopens preserve the translation.
 
 ## Anti-patterns
 
@@ -73,6 +74,8 @@ Stable key -> table/source -> locale store -> formatter/plural policy -> UI bind
 
 - Unsupported or drifted API claim.
 - Hidden owner change between package, project, UI, runtime state, or persistence.
+- A presenter that rewrites fallback text on every refresh can flash English between translations. Trace every writer and compare its update cadence to the flash.
+- A synchronous localization write from a TMP text-changed callback can update the property while leaving the old mesh visible. If Unity is rebuilding the canvas, defer the write until the rebuild has finished and recheck the binding revision, locale, and active target before applying.
 - Lifecycle leak through async work, events, tweens, pooled objects, Addressables handles, or scene transitions.
 - Verification skipped without a precise degraded reason.
 
@@ -80,6 +83,7 @@ Stable key -> table/source -> locale store -> formatter/plural policy -> UI bind
 
 - Compile/console/test result when Unity is available, otherwise degraded harness/static evidence with exact reason.
 - Focused regression for duplicate calls, cancellation/destruction, save/load, migration, or platform branch when relevant.
+- For localization flicker, use a non-default locale and exercise multiple timer ticks, cached panel reopens or repeated messages as applicable. In Play Mode, compare the visible TMP glyphs with the expected copy as well as checking the text property. Check locale or source changes still replace the previous translation.
 - Diff review for serialization, `.meta`, asmdef/manifest, scene/prefab, and unrelated changes.
 
 ## Dreamy Integration
